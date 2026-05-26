@@ -696,7 +696,7 @@
   0211000F  write_word      [0x1102]          ; save_data2[0x3C2]
 
 ; New push for Undersea Garden Clam reward code
-  1A000009  push            0x26             
+  1A000009  push            0x1A              ; 26         
 
 ; Old push for Undersea Garden Clam reward code
 ;  06000009  push            0x6      
@@ -777,9 +777,12 @@
   00000009  push            0x0             
   06000001  alu             eq              
   ????????  beqz            @UK_lm06_ard19_evdl_asm_KGR_0_SCRIPT_7_2  ; → PC 688
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0             
-  61010018  syscall         353               ; Play_SE2
+
+; Let the below code handle the sound
+;  1F000009  push            0x1F              ; 31
+;  00000009  push            0x0             
+;  61010018  syscall         353               ; Play_SE2
+
   0C0A0010  read_dword      [0xA0C]           ; runtime?[0xA0C]
   BB000018  syscall         187               ; Clear_resident_effect_ID
 
