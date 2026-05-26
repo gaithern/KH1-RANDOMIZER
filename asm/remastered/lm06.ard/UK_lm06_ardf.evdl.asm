@@ -720,6 +720,7 @@
 ;  01000009  push            0x1             
 ;  02010018  syscall         258               ; Change_bag_items
 
+@UK_lm06_ardf_evdl_asm_KGR_0_SCRIPT_4_2:
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
   01000009  push            0x1             
   06000001  alu             eq              
