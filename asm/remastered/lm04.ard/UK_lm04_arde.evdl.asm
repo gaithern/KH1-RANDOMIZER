@@ -3546,8 +3546,6 @@
 @UK_lm04_arde_evdl_asm_KGR_0_SCRIPT_17_3:
 
 ; New Clam show prompt and item get code
-  1C000009  push            0x1C              ; 28
-  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   47020018  syscall         583               ; Get_item_from_gift_table
   07000009  push            0x7             
