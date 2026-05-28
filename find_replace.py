@@ -120,10 +120,11 @@ def stamp_change_note(content: str, note_text: str) -> tuple[str, bool]:
 
 
 _SCRIPT_HDR_RE = re.compile(r'^; Script\s+(\d+)\s+\|.*\|\s*KGR\s+(\d+)')
-_CINSTR_RE     = re.compile(r'^;  [0-9A-Fa-f?]{8}[ \t]|^;@\w')
+_CINSTR_RE     = re.compile(r'^; +[0-9A-Fa-f?]{8}[ \t]|^;@\w')
 _STDCMT_RE     = re.compile(
     r"^; [─]|^; KGR\b|^; Stream\b|^; Script\b|^; What's changed"
     r"|^; -[ \t]|^;   -|^; Message:|^;[ ]{5}|^; ---"
+    r"|^; ;|^;;|^; @\w"   # double-commented lines + commented-out labels
 )
 
 
