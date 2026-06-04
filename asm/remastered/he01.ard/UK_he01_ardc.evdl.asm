@@ -5128,26 +5128,26 @@
 ;  6B000018  syscall         107               ; Wait_message_end_ID
 ;  07000009  push            0x7             
 ;  02000018  syscall         2                 ; Close_window
-;  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
-;  02000009  push            0x2             
-;  06000001  alu             eq              
-;  ????????  beqz            @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_12  ; → PC 4556
-;  03000009  push            0x3             
-;  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
-;@UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_12:
-;  01000009  push            0x1             
-;  530F000D  write_byte      [0xF53]           ; save_data2[0x213]
-;  ????????  jmp             @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_15  ; → PC 4607
-;@UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_13:
-;  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
-;  01000009  push            0x1             
-;  06000001  alu             eq              
-;  ????????  beqz            @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_14  ; → PC 4567
-;  02000009  push            0x2             
-;  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
-;  07000009  push            0x7             
-;  02000018  syscall         2                 ; Close_window
 
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  02000009  push            0x2             
+  06000001  alu             eq              
+  ????????  beqz            @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_12  ; → PC 4556
+  03000009  push            0x3             
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+@UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_12:
+  01000009  push            0x1             
+  530F000D  write_byte      [0xF53]           ; save_data2[0x213]
+  ????????  jmp             @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_15  ; → PC 4607
+@UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_13:
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  01000009  push            0x1             
+  06000001  alu             eq              
+  ????????  beqz            @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_14  ; → PC 4567
+  02000009  push            0x2             
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  07000009  push            0x7             
+  02000018  syscall         2                 ; Close_window
 @UK_he01_ardc_evdl_asm_KGR_0_SCRIPT_17_14:
   07000009  push            0x7             
   08000009  push            0x8             
