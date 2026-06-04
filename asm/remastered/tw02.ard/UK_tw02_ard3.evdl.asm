@@ -6342,56 +6342,56 @@
 ;  6B000018  syscall         107               ; Wait_message_end_ID
 ;  07000009  push            0x7             
 ;  02000018  syscall         2                 ; Close_window
+;  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+;  02000009  push            0x2             
+;  06000001  alu             eq              
+;  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_19  ; → PC 359
+;  03000009  push            0x3             
+;  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+;@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_19:
+;  1800000A  load_local      [24]            
+;  01000009  push            0x1             
+;  07000001  alu             gt              
+;  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_20  ; → PC 369
+;  00000009  push            0x0             
+;  06000009  push            0x6             
+;  1800000A  load_local      [24]            
+;  01000009  push            0x1             
+;  01000001  alu             sub             
+;  7B020018  syscall         635               ; Set_magic_name_message_multi
+;@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_20:
+;  01000009  push            0x1             
+;  06000009  push            0x6             
+;  1800000A  load_local      [24]            
+;  7B020018  syscall         635               ; Set_magic_name_message_multi
+;  07000009  push            0x7             
+;  00000018  syscall         0                 ; Open_window
+;  1800000A  load_local      [24]            
+;  01000009  push            0x1             
+;  07000001  alu             gt              
+;  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_21  ; → PC 383
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}{iHat}{0x0B}
+;;          {0x0C}{0x03}{0x0E}—{0x0B}{0x04}{0x0C}{0xFF} has been upgraded to {iHat}{0x0C}{0x03}{0x0B}{0x04}{0x0E}0{0x0C}{0xFF}.{0x06}v
+;  05040009  push            0x405             ; 1029
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_22  ; → PC 386
+;@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_21:
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Learned magic spell {0x0C}{0x03}{0x0E}0{0x0C}{0xFF}.{0x06}R
+;  04040009  push            0x404             ; 1028
+;  01000018  syscall         1                 ; Display_message
+;@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_22:
+;  08000009  push            0x8             
+;  08000018  syscall         8                 ; Set_wait_timer
+;  1F000009  push            0x1F              ; 31
+;  00000009  push            0x0             
+;  61010018  syscall         353               ; Play_SE2
+;  07000009  push            0x7             
+;  6B000018  syscall         107               ; Wait_message_end_ID
+;  07000009  push            0x7             
+;  02000018  syscall         2                 ; Close_window
 
-  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
-  02000009  push            0x2             
-  06000001  alu             eq              
-  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_19  ; → PC 359
-  03000009  push            0x3             
-  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
-@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_19:
-  1800000A  load_local      [24]            
-  01000009  push            0x1             
-  07000001  alu             gt              
-  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_20  ; → PC 369
-  00000009  push            0x0             
-  06000009  push            0x6             
-  1800000A  load_local      [24]            
-  01000009  push            0x1             
-  01000001  alu             sub             
-  7B020018  syscall         635               ; Set_magic_name_message_multi
-@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_20:
-  01000009  push            0x1             
-  06000009  push            0x6             
-  1800000A  load_local      [24]            
-  7B020018  syscall         635               ; Set_magic_name_message_multi
-  07000009  push            0x7             
-  00000018  syscall         0                 ; Open_window
-  1800000A  load_local      [24]            
-  01000009  push            0x1             
-  07000001  alu             gt              
-  ????????  beqz            @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_21  ; → PC 383
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}{iHat}{0x0B}
-;          {0x0C}{0x03}{0x0E}—{0x0B}{0x04}{0x0C}{0xFF} has been upgraded to {iHat}{0x0C}{0x03}{0x0B}{0x04}{0x0E}0{0x0C}{0xFF}.{0x06}v
-  05040009  push            0x405             ; 1029
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_22  ; → PC 386
-@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_21:
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Learned magic spell {0x0C}{0x03}{0x0E}0{0x0C}{0xFF}.{0x06}R
-  04040009  push            0x404             ; 1028
-  01000018  syscall         1                 ; Display_message
-@UK_tw02_ard3_evdl_asm_KGR_3_SCRIPT_1_22:
-  08000009  push            0x8             
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0             
-  61010018  syscall         353               ; Play_SE2
-  07000009  push            0x7             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  07000009  push            0x7             
-  02000018  syscall         2                 ; Close_window
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
   02000009  push            0x2             
   06000001  alu             eq              
