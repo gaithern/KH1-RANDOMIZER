@@ -25,7 +25,7 @@ local function load_json_dir(dir_path)
     return tables
 end
 
-local json_dir = SCRIPT_PATH .. "io_packages/json/"
+local json_dir = SCRIPT_PATH .. "/io_packages/json/"
 
 ConsolePrint("Loading JSON files from: " .. json_dir)
 
