@@ -5,9 +5,9 @@ import argparse
 from pathlib import Path
 
 HEADER = """\
-title: KH1FM Randomizer
+title: KH1 Randomizer Core
 originalAuthor: Gicu
-description: KH1FM Randomizer Mod
+description: KH1 Randomizer Mod
 assets:
 """
 
