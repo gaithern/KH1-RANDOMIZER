@@ -3,12 +3,13 @@ LUAGUI_AUTH = "deathofall84"
 LUAGUI_DESC = "Removes low health beeping noise, works up to max health of 41"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 function _OnInit()
 	if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
 		require("VersionCheck")
-		canExecute = canExecute and seed_vars.settings["beep_hack"]
-		if canExecute then
+		ok = canExecute and seed_vars.settings["beep_hack"]
+		if ok then
 			WriteByte(beepHack, 1)
 		end
 	else

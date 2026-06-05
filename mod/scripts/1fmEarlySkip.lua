@@ -3,14 +3,15 @@ LUAGUI_AUTH = "denhonator/TopazTK (edited by deathofall84)"
 LUAGUI_DESC = "Allows skipping cutscenes without waiting for them."
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 local lastFade = 0
 
 function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        canExecute = canExecute and seed_vars.settings["early_skip"]
-        if canExecute then
+        ok = canExecute and seed_vars.settings["early_skip"]
+        if ok then
             WriteInt(skipArray1 - 0x04, 0xFF)
             WriteArray(skipArray1, { 0x0F, 0x9E, 0xC0, 0xC3 })
 

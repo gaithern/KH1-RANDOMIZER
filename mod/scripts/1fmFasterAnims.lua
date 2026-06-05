@@ -3,6 +3,7 @@ LUAGUI_AUTH = "denhonator (edited by deathofall84)"
 LUAGUI_DESC = "Speeds up animations during which you can't play"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 local summonSpeedup = true
 local speedMult = 2.0
@@ -10,14 +11,14 @@ local speedMult = 2.0
 function _OnInit()
 	if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
 		require("VersionCheck")
-		canExecute = canExecute and seed_vars.settings["faster_animations"]
+		ok = canExecute and seed_vars.settings["faster_animations"]
 	else
 		ConsolePrint("KH1 not detected, not running script")
 	end
 end
 
 function _OnFrame()
-	if canExecute then
+	if ok then
 		if ReadFloat(soraHUD) < 1 and ReadInt(inCutscene) > 0
 			and ReadInt(inCutscene) ~= 8  and ReadInt(skippable) ~= 1025
 			and (ReadInt(summoning) == 0 or summonSpeedup)

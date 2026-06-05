@@ -5,6 +5,7 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Handle Accessory Augments"
 
 local kh1_lua_library = require("kh1_lua_library")
 local seed_vars = require("seed_vars")
+local ok = false
 
 local ground_starter_attack_data = {}
 ground_starter_attack_data[9]  = {0xD0, 0x00, 0x05, 0xFF, 0xB8, 0x50, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x05, 0x06, 0x04, 0x00, 0x00, 0x00, 0x00}
@@ -309,14 +310,14 @@ end
 function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        canExecute = canExecute and seed_vars.settings["accessory_augments"]
+        ok = canExecute and seed_vars.settings["accessory_augments"]
     else
         ConsolePrint("KH1 not detected, not running script")
     end
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         local acc_equipped = kh1_lua_library.get_soras_equipped_accessories()
         local haste_mod = handle_walk_and_animation_speed(acc_equipped)
         local ground_combo_length = handle_ground_combo_length(acc_equipped)

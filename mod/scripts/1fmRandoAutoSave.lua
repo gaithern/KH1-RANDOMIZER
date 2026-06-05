@@ -3,6 +3,7 @@ LUAGUI_AUTH = "denhonator (edited by deathofall84 and Gicu)"
 LUAGUI_DESC = "Read readme for button combinations"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 local lastInput = 0
 local prevHUD = 0
@@ -38,7 +39,7 @@ end
 function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        canExecute = canExecute and seed_vars.settings["auto_save"]
+        ok = canExecute and seed_vars.settings["auto_save"]
     else
         ConsolePrint("KH1 not detected, not running script")
     end
@@ -85,7 +86,7 @@ local function SoftReset()
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         if ReadByte(titlescreenpicture) == 0 then
             WriteByte(title, 1)
         end

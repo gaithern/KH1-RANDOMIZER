@@ -3,12 +3,13 @@ LUAGUI_AUTH = "denhonator (edited by deathofall84)"
 LUAGUI_DESC = "Volume 1 mutes the audio channel"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 function _OnInit()
 	if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
 		require("VersionCheck")
-		canExecute = canExecute and seed_vars.settings["unlock_0_volume"]
-		if canExecute then
+		ok = canExecute and seed_vars.settings["unlock_0_volume"]
+		if ok then
 			WriteFloat(volumeZero, 0)
 		end
 	else

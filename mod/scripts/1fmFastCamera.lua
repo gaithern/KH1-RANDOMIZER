@@ -3,6 +3,7 @@ LUAGUI_AUTH = "denhonator (edited by deathofall84)"
 LUAGUI_DESC = "Speeds up camera movement and camera centering"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 local centerSpeed = 2
 local overallSpeed = 1.2
@@ -14,14 +15,14 @@ local deaccelerationSpeed = -0.0016
 function _OnInit()
 	if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
 		require("VersionCheck")
-		canExecute = canExecute and seed_vars.settings["fast_camera"]
+		ok = canExecute and seed_vars.settings["fast_camera"]
 	else
 		ConsolePrint("KH1 not detected, not running script")
 	end
 end
 
 function _OnFrame()
-	if canExecute and ReadByte(menu) == 0 then
+	if ok and ReadByte(menu) == 0 then
 		local currentSpeedH = ReadFloat(curSpeedH)
 		local currentSpeedV = ReadFloat(curSpeedV)
 

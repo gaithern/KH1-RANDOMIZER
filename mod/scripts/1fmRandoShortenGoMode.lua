@@ -18,6 +18,8 @@ local party1 = {0x2DEA1EF, 0x2DE97EF}
 
 local seed_vars = require("seed_vars")
 
+local ok = false
+
 local function RoomWarp(w, r)
     WriteByte(warpType1[game_version], 5)
     WriteByte(warpType2[game_version], 10)
@@ -33,18 +35,18 @@ function _OnInit()
         if ReadByte(IsEpicGLVersion) == 0xF0 then
             ConsolePrint("Epic Version Detected")
             game_version = 1
-            canExecute = seed_vars.settings["shorten_go_mode"]
+            ok = seed_vars.settings["shorten_go_mode"]
         end
         if ReadByte(IsSteamGLVersion) == 0xF0 then
             ConsolePrint("Steam Version Detected")
             game_version = 2
-            canExecute = seed_vars.settings["shorten_go_mode"]
+            ok = seed_vars.settings["shorten_go_mode"]
         end
     end
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         if ReadByte(world[game_version]) == 0x10 and ReadByte(room[game_version]) == 0x21 and ReadByte(cutscene_flags_address[game_version] + 0xB) == 0x6E then
             WriteByte(cutscene_flags_address[game_version] + 0xB, 0x9B)
             WriteByte(party1[game_version], 1)

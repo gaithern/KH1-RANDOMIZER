@@ -3,6 +3,7 @@ LUAGUI_AUTH = "KSX and Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Handle Interacting in Battle and Keyblade Locking"
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 local game_version = 1 --1 for EGS 1.0.0.10, 2 for Steam 1.0.0.10
 local interactset = false
@@ -42,18 +43,18 @@ function _OnInit()
         if ReadByte(IsEpicGLVersion) == 0xF0 then
             ConsolePrint("Epic Version Detected")
             game_version = 1
-            canExecute = canExecute and not seed_vars.settings["world_version"]
+            ok = canExecute and not seed_vars.settings["world_version"] and seed_vars.settings["interact_in_battle"]
         end
         if ReadByte(IsSteamGLVersion) == 0xF0 then
             ConsolePrint("Steam Version Detected")
             game_version = 2
-            canExecute = canExecute and not seed_vars.settings["world_version"] and seed_vars.settings["interact_in_battle"]
+            ok = canExecute and not seed_vars.settings["world_version"] and seed_vars.settings["interact_in_battle"]
         end
     end
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         local chests_address = {0x2B3904, 0x2B5AA4} --changed BOTH 1.0.0.10
         local chests = ReadByte(chests_address[game_version])
         if (seed_vars.chestslocked and has_correct_keyblade() and chests == 0x72) or not seed_vars.chestslocked then

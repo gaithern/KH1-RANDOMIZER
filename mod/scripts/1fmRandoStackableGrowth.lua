@@ -8,6 +8,7 @@ canExecute = false
 dodgeDataAddr = 0
 
 local seed_vars = require("seed_vars")
+local ok = false
 
 function CountSharedAbilities()
     sharedAbilities = {0x2DEA2F9, 0x2DE98F9} --changed for EGS 1.0.0.10
@@ -83,17 +84,17 @@ function _OnInit()
         if ReadByte(IsEpicGLVersion) == 0xF0 then
             ConsolePrint("Epic Version Detected")
             game_version = 1
-            canExecute = seed_vars.settings["extra_shared_abilities"]
+            ok = seed_vars.settings["extra_shared_abilities"]
         end
         if ReadByte(IsSteamGLVersion) == 0xF0 then
             ConsolePrint("Steam Version Detected")
             game_version = 2
-            canExecute = seed_vars.settings["extra_shared_abilities"]
+            ok = seed_vars.settings["extra_shared_abilities"]
         end
     end
 end
 function _OnFrame()
-    if canExecute then
+    if ok then
         StackAbilities()
     end
 end

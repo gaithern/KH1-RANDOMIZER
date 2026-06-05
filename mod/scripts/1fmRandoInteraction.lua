@@ -4,6 +4,7 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Handle Interacting in Battle and Ke
 
 local seed_vars = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
+local ok = false
 
 local interactset = false
 
@@ -39,14 +40,14 @@ end
 function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        canExecute = canExecute and seed_vars.settings["world_version"] and seed_vars.settings["interact_in_battle"]
+        ok = canExecute and seed_vars.settings["world_version"] and seed_vars.settings["interact_in_battle"]
     else
         ConsolePrint("KH1 not detected, not running script")
     end
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         if seed_vars.chestslocked then
             for cmd_idx, cmd in pairs(open_cmds) do
                 if has_correct_keyblade() then

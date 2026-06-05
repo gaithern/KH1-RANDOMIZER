@@ -3,6 +3,7 @@ LUAGUI_AUTH = "denho, Gicu"
 LUAGUI_DESC = "Kingdom Hearts Rando Allow Landing in Destiny Islands"
 
 local seed_vars = require("seed_vars")
+local ok = false
 local canExecute = false
 local game_version = nil
 
@@ -124,18 +125,18 @@ function _OnInit()
         if ReadByte(IsEpicGLVersion) == 0xF0 then
             ConsolePrint("Epic Version Detected")
             game_version = 1
-            canExecute = seed_vars.settings["destiny_islands"]
+            ok = seed_vars.settings["destiny_islands"]
         end
         if ReadByte(IsSteamGLVersion) == 0xF0 then
             ConsolePrint("Steam Version Detected")
             game_version = 2
-            canExecute = seed_vars.settings["destiny_islands"]
+            ok = seed_vars.settings["destiny_islands"]
         end
     end
 end
 
 function _OnFrame()
-    if canExecute then
+    if ok then
         local destiny_islands_item = ReadByte(stock_address[game_version] + (11-1))
         local raft_materials_item = ReadByte(stock_address[game_version] + (12-1))
         revert_day2()
