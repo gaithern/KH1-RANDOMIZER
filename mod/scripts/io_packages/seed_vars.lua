@@ -1,182 +1,42 @@
 ---@diagnostic disable: undefined-global
 
-local ability_costs = {}
-local chests = {}
-local donald_death_link = false
-local goofy_death_link = false
-local reg_death_link = false
-local day_2_materials = 100
-local homecoming_materials = 100
-local level_50_overwrite_value = 0x0
-local level_55_overwrite_value = 0x0
-local eotw_lucky_emblems = 100
-local door_lucky_emblems = 100
-local starting_items = {}
-local synth_item_bytes = {}
-local synth_items = {}
-local stacking_worlds = false
-local stacking_forget_me_not = false
-local interactinbattle = false
-local chestslocked = false
-local puppy_value = 3
-local locations_checked = {}
-local items_received = {}
-local locations_hinted = {}
-local shortenGoMode = false
+local json = require("json")
 
-local effectiveness_values = {}
-effectiveness_values["Fire"] = 20
-effectiveness_values["Fira"] = 28
-effectiveness_values["Firaga"] = 36
-effectiveness_values["Blizzard"] = 22
-effectiveness_values["Blizzara"] = 27
-effectiveness_values["Blizzaga"] = 34
-effectiveness_values["Thunder"] = 16
-effectiveness_values["Thundara"] = 20
-effectiveness_values["Thundaga"] = 26
-effectiveness_values["Cure"] = 15
-effectiveness_values["Cura"] = 27
-effectiveness_values["Curaga"] = 36
-effectiveness_values["Gravity"] = 40
-effectiveness_values["Gravira"] = 55
-effectiveness_values["Graviga"] = 70
-effectiveness_values["Stop"] = 2
-effectiveness_values["Stopra"] = 2
-effectiveness_values["Stopga"] = 2
-effectiveness_values["Aero"] = 18
-effectiveness_values["Aerora"] = 18
-effectiveness_values["Aeroga"] = 18
+local function load_json_dir(dir_path)
+    local tables = {}
+    local handle = io.popen('dir /b "' .. dir_path .. '\\*.json" 2>nul')
+    if handle then
+        for filename in handle:lines() do
+            local name = filename:match("^(.-)%.json$")
+            if name then
+                local f = io.open(dir_path .. "\\" .. filename, "r")
+                if f then
+                    local content = f:read("*a")
+                    f:close()
+                    local ok, result = pcall(json.decode, content)
+                    if ok then
+                        tables[name] = result
+                    end
+                end
+            end
+        end
+        handle:close()
+    end
+    return tables
+end
 
-local spell_costs = {}
-spell_costs["Fire"] = 2
-spell_costs["Fira"] = 2
-spell_costs["Firaga"] = 2
-spell_costs["Blizzard"] = 2
-spell_costs["Blizzara"] = 2
-spell_costs["Blizzaga"] = 2
-spell_costs["Thunder"] = 3
-spell_costs["Thundara"] = 3
-spell_costs["Thundaga"] = 3
-spell_costs["Cure"] = 3
-spell_costs["Cura"] = 3
-spell_costs["Curaga"] = 3
-spell_costs["Gravity"] = 3
-spell_costs["Gravira"] = 3
-spell_costs["Graviga"] = 3
-spell_costs["Stop"] = 4
-spell_costs["Stopra"] = 4
-spell_costs["Stopga"] = 4
-spell_costs["Aero"] = 4
-spell_costs["Aerora"] = 4
-spell_costs["Aeroga"] = 4
+local json_dir = SCRIPT_PATH .. "json"
 
-local aug_acc = {}
-aug_acc["aug_scan_acc"] = 256
-aug_acc["aug_sonic_blade_acc"] = 256
-aug_acc["aug_ars_arcanum_acc"] = 256
-aug_acc["aug_strike_raid_acc"] = 256
-aug_acc["aug_ragnarok_acc"] = 256
-aug_acc["aug_trinity_limit_acc"] = 256
-aug_acc["aug_cheer_acc"] = 256
-aug_acc["aug_vortex_acc"] = 256
-aug_acc["aug_aerial_sweep_acc"] = 256
-aug_acc["aug_counterattack_acc"] = 256
-aug_acc["aug_blitz_acc"] = 256
-aug_acc["aug_guard_acc"] = 256
-aug_acc["aug_dodge_roll_acc"] = 256
-aug_acc["aug_mp_haste_acc"] = 256
-aug_acc["aug_mp_rage_acc"] = 256
-aug_acc["aug_second_chance_acc"] = 256
-aug_acc["aug_berserk_acc"] = 256
-aug_acc["aug_slapshot_acc"] = 256
-aug_acc["aug_sliding_dash_acc"] = 256
-aug_acc["aug_hurricane_blast_acc"] = 256
-aug_acc["aug_ripple_drive_acc"] = 256
-aug_acc["aug_stun_impact_acc"] = 256
-aug_acc["aug_gravity_break_acc"] = 256
-aug_acc["aug_zantetsuken_acc"] = 256
-aug_acc["aug_leaf_bracer_acc"] = 256
-aug_acc["aug_combo_master_acc"] = 256
-aug_acc["aug_finisher_lock_acc"] = 256
-aug_acc["aug_air_finisher_lock_acc"] = 256
-aug_acc["aug_haste_acc"] = 256
-aug_acc["aug_hastera_acc"] = 256
-aug_acc["aug_hastega_acc"] = 256
-aug_acc["aug_slow_acc"] = 256
-aug_acc["aug_slowra_acc"] = 256
-aug_acc["aug_slowga_acc"] = 256
-aug_acc["aug_air_guard_dodge_roll_acc"] = 256
-aug_acc["aug_air_items_acc"] = 256
-aug_acc["aug_fire_cost_up_acc"] = 256
-aug_acc["aug_blizzard_cost_up_acc"] = 256
-aug_acc["aug_thunder_cost_up_acc"] = 256
-aug_acc["aug_cure_cost_up_acc"] = 256
-aug_acc["aug_gravity_cost_up_acc"] = 256
-aug_acc["aug_stop_cost_up_acc"] = 256
-aug_acc["aug_aero_cost_up_acc"] = 256
-aug_acc["aug_fire_cost_down_acc"] = 256
-aug_acc["aug_blizzard_cost_down_acc"] = 256
-aug_acc["aug_thunder_cost_down_acc"] = 256
-aug_acc["aug_cure_cost_down_acc"] = 256
-aug_acc["aug_gravity_cost_down_acc"] = 256
-aug_acc["aug_stop_cost_down_acc"] = 256
-aug_acc["aug_aero_cost_down_acc"] = 256
-aug_acc["aug_fire_boost_acc"] = 256
-aug_acc["aug_blizzard_boost_acc"] = 256
-aug_acc["aug_thunder_boost_acc"] = 256
-aug_acc["aug_cure_boost_acc"] = 256
-aug_acc["aug_gravity_boost_acc"] = 256
-aug_acc["aug_stop_boost_acc"] = 256
-aug_acc["aug_aero_boost_acc"] = 256
-aug_acc["aug_fire_down_acc"] = 256
-aug_acc["aug_blizzard_down_acc"] = 256
-aug_acc["aug_thunder_down_acc"] = 256
-aug_acc["aug_cure_down_acc"] = 256
-aug_acc["aug_gravity_down_acc"] = 256
-aug_acc["aug_stop_down_acc"] = 256
-aug_acc["aug_aero_down_acc"] = 256
-aug_acc["aug_summon_anywhere_acc"] = 256
-aug_acc["aug_summon_boost_acc"] = 256
-aug_acc["aug_grounded_acc"] = 256
-aug_acc["aug_finishing_plus_acc"] = 256
+local loaded = load_json_dir(json_dir)
 
-local togglable_luas = {}
-togglable_luas["OneHP"] = false
-togglable_luas["FourByThree"] = false
-togglable_luas["Achievements"] = false
-togglable_luas["Autoattack"] = false
-togglable_luas["BeepHack"] = false
-togglable_luas["ConsistentFinishers"] = false
-togglable_luas["EarlySkip"] = false
-togglable_luas["FastCamera"] = false
-togglable_luas["FasterAnims"] = false
+local result = {}
 
-return {
-    ability_costs = ability_costs,
-    chests = chests,
-    donald_death_link = donald_death_link,
-    goofy_death_link = goofy_death_link,
-    reg_death_link = reg_death_link,
-    day_2_materials = day_2_materials,
-    homecoming_materials = homecoming_materials,
-    level_50_overwrite_value = level_50_overwrite_value,
-    level_55_overwrite_value = level_55_overwrite_value,
-    eotw_lucky_emblems = eotw_lucky_emblems,
-    door_lucky_emblems = door_lucky_emblems,
-    starting_items = starting_items,
-    synth_item_bytes = synth_item_bytes,
-    synth_items = synth_items,
-    stacking_worlds = stacking_worlds,
-    stacking_forget_me_not = stacking_forget_me_not,
-    interactinbattle = interactinbattle,
-    chestslocked = chestslocked,
-    puppy_value = puppy_value,
-    locations_checked = locations_checked,
-    items_received = items_received,
-    locations_hinted = locations_hinted,
-    shortenGoMode = shortenGoMode,
-    effectiveness_values = effectiveness_values,
-    spell_costs = spell_costs,
-    aug_acc = aug_acc,
-    togglable_luas = togglable_luas
-}
+for name, tbl in pairs(loaded) do
+    if result[name] == nil then
+        result[name] = tbl
+    end
+end
+
+ConsolePrint(json.encode(result, { indent = true }))
+
+return result
