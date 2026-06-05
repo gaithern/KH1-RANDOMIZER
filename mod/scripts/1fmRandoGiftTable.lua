@@ -562,7 +562,6 @@ end
 
 local function calculate_gift_writes()
     for world, _ in pairs(gift_location_ids) do
-        ConsolePrint("Calculating Gift Table Write for World: " .. tostring(world))
         for idx, location_id in pairs(gift_location_ids[world]) do
             ConsolePrint(idx)
             local item_id = nil
