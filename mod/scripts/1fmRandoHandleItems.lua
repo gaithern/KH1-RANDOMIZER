@@ -177,7 +177,7 @@ end
 
 local function handle_puppies(stock)
     local puppy_array_address = {0x2DEB463, 0x2DEAA63}
-    local puppies_item = stock[167] * seed_vars.puppy_value
+    local puppies_item = stock[167] * seed_vars["settings"]["puppy_value"]
     local puppies_array = {0x0}
     local i = 0
     local j = 1

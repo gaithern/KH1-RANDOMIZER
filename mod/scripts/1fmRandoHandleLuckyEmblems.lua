@@ -9,13 +9,13 @@ local stock_address = {0x2DEA1F9, 0x2DE97F9}
 local game_version = nil
 
 local function unlock_eotw()
-    if ReadByte(stock_address[game_version] + 238) >= seed_vars.eotw_lucky_emblems and ReadByte(stock_address[game_version] + 169) == 0 then
+    if ReadByte(stock_address[game_version] + 238) >= seed_vars["settings"]["required_lucky_emblems_eotw"] and ReadByte(stock_address[game_version] + 169) == 0 then
         WriteByte(stock_address[game_version] + 169, 1)
     end
 end
 
 local function unlock_door()
-    if ReadByte(stock_address[game_version] + 238) >= seed_vars.door_lucky_emblems and ReadByte(stock_address[game_version] + 10) == 0 then
+    if ReadByte(stock_address[game_version] + 238) >= seed_vars["settings"]["required_lucky_emblems_door"] and ReadByte(stock_address[game_version] + 10) == 0 then
         WriteByte(stock_address[game_version] + 10, 1)
     end
 end

@@ -5,7 +5,7 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Unlock End of the World with enough lucky embl
 local seed_vars = require("seed_vars")
 
 local function unlock_eotw()
-    if ReadByte(inventory + 238) >= seed_vars.eotw_lucky_emblems and ReadByte(inventory + 168) == 0 then
+    if ReadByte(inventory + 238) >= seed_vars["settings"]["required_lucky_emblems_eotw"] and seed_vars["settings"]["eotw_unlock"] == "emblems" and ReadByte(inventory + 168) == 0 then
         WriteByte(inventory + 168, 1)
     end
 end
