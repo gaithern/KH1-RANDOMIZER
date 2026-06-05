@@ -563,10 +563,9 @@ end
 local function calculate_gift_writes()
     for world, _ in pairs(gift_location_ids) do
         for idx, location_id in pairs(gift_location_ids[world]) do
+            local item_id = nil
             if location_id ~= nil then
-                local item_id = seed_vars["item_location_map"][tostring(location_id)]
-            else
-                local item_id = nil
+                item_id = seed_vars["item_location_map"][tostring(location_id)]
             end
             local gift_replacement = get_gift_replacement(item_id)
             local offset = 0xC6A8 + (2 * idx)
