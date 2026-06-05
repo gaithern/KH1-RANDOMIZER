@@ -574,6 +574,7 @@ local function calculate_gift_writes()
 end
 
 local function write_gift_table_for_world(world)
+    if gift_writes[world] == nil then return end
     for offset, gift_replacement in pairs(gift_writes[world]) do
         WriteArray(jumpHeights - 0xAC + offset, gift_replacement)
     end
@@ -594,7 +595,7 @@ function _OnFrame()
     if canExecute then
         local current_world = kh1_lua_library.get_world()
         if last_world ~= current_world then
-            write_gift_table_for_world(world)
+            write_gift_table_for_world(current_world)
             last_world = current_world
         end
     end
