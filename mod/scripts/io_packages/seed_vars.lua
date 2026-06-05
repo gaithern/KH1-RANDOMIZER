@@ -27,6 +27,8 @@ end
 
 local json_dir = SCRIPT_PATH .. "/json"
 
+ConsolePrint("Loading JSON files from: " .. json_dir)
+
 local loaded = load_json_dir(json_dir)
 
 local result = {}
