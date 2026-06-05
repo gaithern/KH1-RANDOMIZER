@@ -563,7 +563,6 @@ end
 local function calculate_gift_writes()
     for world, _ in pairs(gift_location_ids) do
         for idx, location_id in pairs(gift_location_ids[world]) do
-            ConsolePrint(idx)
             local item_id = nil
             if location_id ~= -1 then
                 item_id = seed_vars["item_location_map"][tostring(location_id)]
