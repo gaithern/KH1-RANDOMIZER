@@ -21,7 +21,7 @@ local og_costs = {
 
 local function apply_costs()
     for idx, cost in pairs(seed_vars["mp_costs"]) do
-        WriteByte(jumpHeights - 0xAC + init_costs_offset + (0x70 * (idx-1)), cost)
+        WriteShort(jumpHeights - 0xAC + init_costs_offset + (0x70 * (idx-1)), cost)
     end
 end
 
@@ -30,8 +30,8 @@ local function apply_effectiveness()
         local multiplier = seed_vars["mp_costs"][idx] / og_cost
         local curr_effectiveness = ReadByte(jumpHeights - 0xAC + init_efftv_offsets[1] + (0x70 * (idx-1)))
         local new_effectiveness = math.ceil(curr_effectiveness * multiplier)
-        WriteByte(jumpHeights - 0xAC + init_efftv_offsets[1] + (0x70 * (idx-1)), new_effectiveness)
-        WriteByte(jumpHeights - 0xAC + init_efftv_offsets[2] + (0x70 * (idx-1)), new_effectiveness)
+        WriteShort(jumpHeights - 0xAC + init_efftv_offsets[1] + (0x70 * (idx-1)), new_effectiveness)
+        WriteShort(jumpHeights - 0xAC + init_efftv_offsets[2] + (0x70 * (idx-1)), new_effectiveness)
     end
 end
 
