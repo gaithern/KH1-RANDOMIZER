@@ -36,19 +36,13 @@ function _OnInit()
     else
         ConsolePrint("KH1 not detected, not running script")
     end
-    if canExecute then
-        if seed_vars["settings"]["exp_multiplier"] == 1.0 or seed_vars["settings"]["exp_multiplier"] == nil then
-            return
-        end
-        if not exp_mult_applied() then
-            apply_exp_mult()
-        end
-    end
 end
 
 function _OnFrame()
     if not canExecute then return end
     if exp_mult_applied then return end
+    if seed_vars["settings"]["exp_multiplier"] == 1.0 then return end
+    if seed_vars["settings"]["exp_multiplier"] == nil then return end
     if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
     apply_exp_mult()
     exp_mult_applied = true
