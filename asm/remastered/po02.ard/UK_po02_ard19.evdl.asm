@@ -1119,7 +1119,7 @@
 ;  07000009  push            0x7             
 ;  00000009  push            0x0             
 ;  01000009  push            0x1             
-  03000018  syscall         3                 ; Set_window_position
+;  03000018  syscall         3                 ; Set_window_position
   07000009  push            0x7             
   00000018  syscall         0                 ; Open_window
   07000009  push            0x7             
@@ -1424,7 +1424,7 @@
 ;  07000009  push            0x7             
 ;  00000009  push            0x0             
 ;  01000009  push            0x1             
-  03000018  syscall         3                 ; Set_window_position
+;  03000018  syscall         3                 ; Set_window_position
   07000009  push            0x7             
   00000018  syscall         0                 ; Open_window
   07000009  push            0x7             
@@ -1440,7 +1440,7 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 
-; Old Chimera reward code
+; Old Chimney reward code
 ;  07000009  push            0x7             
 ;  84020018  syscall         644               ; Get_item_type
 ;  1900000B  store_local     [25]            
