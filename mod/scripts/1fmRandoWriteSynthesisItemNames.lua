@@ -8,9 +8,9 @@ local seed_vars = require("seed_vars")
 local function write_synth_item_name()
     local synth_item_selected_index = ReadByte(synthItemSelected)
     for k,v in ipairs(seed_vars["settings"]["synthesis_item_name_byte_arrays"][synth_item_selected_index+1]) do
-        WriteByte(language + 0x2593 + k - 1, v)
+        WriteByte(language + 0x230E + k - 1, v)
     end
-    WriteByte(language + 0x2593 + #seed_vars["settings"]["synthesis_item_name_byte_arrays"][synth_item_selected_index+1], 0)
+    WriteByte(language + 0x230E + #seed_vars["settings"]["synthesis_item_name_byte_arrays"][synth_item_selected_index+1], 0)
 end
 
 function _OnInit()
