@@ -367,7 +367,7 @@ local function handle_magic_costs(acc_equipped)
     }
     
     for spell, acc_values in pairs(acc_values_lib) do
-        local new_spell_cost = seed_vars.spell_costs[spell]
+        local new_spell_cost = seed_vars["mp_costs"][spell]
         if kh1_lua_library.contains(acc_equipped, acc_values[1]) then
             new_spell_cost = math.min(new_spell_cost + 1, 5)
         end
