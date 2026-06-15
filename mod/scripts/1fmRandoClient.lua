@@ -35,43 +35,6 @@ game_state.goal_sent = false
 local frame_count = 0
 local location_map = {}
 
-local function copy_file(source_path, dest_path)
-    local source_file, err1 = io.open(source_path, "rb") -- Open source in binary read mode
-    if not source_file then
-        return false, "Cannot open source file: " .. tostring(err1)
-    end
-
-    local dest_file, err2 = io.open(dest_path, "wb") -- Open destination in binary write mode
-    if not dest_file then
-        source_file:close()
-        return false, "Cannot open destination file: " .. tostring(err2)
-    end
-
-    local chunk_size = 2^13 -- 8 KB buffer size (can be adjusted)
-    while true do
-        local block = source_file:read(chunk_size) -- Read in chunks
-        if not block then break end -- Break loop at end of file
-        local bytes_written, err3 = dest_file:write(block)
-        if not bytes_written then
-            source_file:close()
-            dest_file:close()
-            return false, "Error writing to destination file: " .. tostring(err3)
-        end
-    end
-
-    source_file:close()
-    dest_file:close()
-    return true, "File copied successfully."
-end
-
-local function copy_dll_files()
-    local OTHER_PATH = SCRIPT_PATH:match("(.*)/") .. "/to_copy"
-    copy_file(OTHER_PATH .. "/libgcc_s_seh-1.dll",  "libgcc_s_seh-1.dll")
-    copy_file(OTHER_PATH .. "/libstdc++-6.dll",     "libstdc++-6.dll")
-    copy_file(OTHER_PATH .. "/libwinpthread-1.dll", "libwinpthread-1.dll")
-    copy_file(OTHER_PATH .. "/zlib1.dll",           "zlib1.dll")
-end
-
 local function reset_game_state()
     game_state.items_received = {}
     game_state.slot_data = {}
@@ -228,7 +191,6 @@ function _OnInit()
     end
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        copy_dll_files()
         message_format = AP.RenderFormat.TEXT
         location_map = item_location_handlers.fill_location_map()
     else
