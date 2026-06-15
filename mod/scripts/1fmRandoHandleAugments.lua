@@ -142,7 +142,7 @@ end
 
 
 local function handle_ground_combo_length(acc_equipped)
-    local ground_combo_length = calculate_ground_combo_limit()
+    local ground_combo_length = kh1_lua_library.calculate_ground_combo_limit()
     if kh1_lua_library.contains(acc_equipped, aug_acc["aug_finisher_lock_acc"]) then
         ground_combo_length = 1
     end
@@ -151,7 +151,7 @@ local function handle_ground_combo_length(acc_equipped)
 end
 
 local function handle_air_combo_length(acc_equipped)
-    local air_combo_length = calculate_air_combo_limit()
+    local air_combo_length = kh1_lua_library.calculate_air_combo_limit()
     if kh1_lua_library.contains(acc_equipped, aug_acc["aug_air_finisher_lock_acc"]) then
         air_combo_length = 1
     end
