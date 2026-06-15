@@ -112,18 +112,6 @@ for i, spell in ipairs(spell_order) do
     effectiveness_values[spell] = math.max(math.floor(base_effectiveness[i] * multiplier + 0.5), 1)
 end
 
-local prev_acc_equipped = {}
-local cached_haste_mod = 1.0
-local cached_ground_combo_length = 1
-
-local function accessories_changed(prev, curr)
-    if #prev ~= #curr then return true end
-    for i = 1, #curr do
-        if prev[i] ~= curr[i] then return true end
-    end
-    return false
-end
-
 local aug_acc = {}
 for loc_id_str, aug_val in pairs(seed_vars["item_location_map"]) do
     local loc_id = tonumber(loc_id_str)
@@ -447,21 +435,18 @@ end
 function _OnFrame()
     if ok then
         local acc_equipped = kh1_lua_library.get_soras_equipped_accessories()
-        if accessories_changed(prev_acc_equipped, acc_equipped) then
-            prev_acc_equipped = acc_equipped
-            cached_haste_mod = handle_walk_and_animation_speed(acc_equipped)
-            cached_ground_combo_length = handle_ground_combo_length(acc_equipped)
-            handle_abilities(acc_equipped)
-            handle_scan(acc_equipped)
-            handle_combo_master(acc_equipped)
-            handle_summon_anywhere(acc_equipped)
-            handle_midair_dodge_roll_guard(acc_equipped)
-            handle_midair_items(acc_equipped)
-            handle_magic_boosts(acc_equipped)
-            handle_magic_costs(acc_equipped)
-            handle_summon_boost(acc_equipped)
-        end
-        handle_grounded(acc_equipped, cached_haste_mod)
-        handle_finishing_plus(acc_equipped, cached_ground_combo_length)
+        local haste_mod = handle_walk_and_animation_speed(acc_equipped)
+        local ground_combo_length = handle_ground_combo_length(acc_equipped)
+        handle_abilities(acc_equipped)
+        handle_scan(acc_equipped)
+        handle_combo_master(acc_equipped)
+        handle_summon_anywhere(acc_equipped)
+        handle_midair_dodge_roll_guard(acc_equipped)
+        handle_midair_items(acc_equipped)
+        handle_magic_boosts(acc_equipped)
+        handle_magic_costs(acc_equipped)
+        handle_summon_boost(acc_equipped)
+        handle_grounded(acc_equipped, haste_mod)
+        handle_finishing_plus(acc_equipped, ground_combo_length)
     end
 end
