@@ -358,7 +358,7 @@ local function handle_magic_costs(acc_equipped)
         ["Gravity"]  = {aug_acc["aug_gravity_cost_up_acc"],  aug_acc["aug_gravity_cost_down_acc"]},
         ["Gravira"]  = {aug_acc["aug_gravity_cost_up_acc"],  aug_acc["aug_gravity_cost_down_acc"]},
         ["Graviga"]  = {aug_acc["aug_gravity_cost_up_acc"],  aug_acc["aug_gravity_cost_down_acc"]},
-        ["Stop"]     = {aug_acc["aug_stop_cost_up acc"],     aug_acc["aug_stop_cost_down acc"]},
+        ["Stop"]     = {aug_acc["aug_stop_cost_up_acc"],     aug_acc["aug_stop_cost_down_acc"]},
         ["Stopra"]   = {aug_acc["aug_stop_cost_up_acc"],     aug_acc["aug_stop_cost_down_acc"]},
         ["Stopga"]   = {aug_acc["aug_stop_cost_up_acc"],     aug_acc["aug_stop_cost_down_acc"]},
         ["Aero"]     = {aug_acc["aug_aero_cost_up_acc"],     aug_acc["aug_aero_cost_down_acc"]},
@@ -367,7 +367,7 @@ local function handle_magic_costs(acc_equipped)
     }
     
     for spell, acc_values in pairs(acc_values_lib) do
-        local new_spell_cost = seed_vars["mp_costs"][spell]
+        local new_spell_cost = seed_vars["mp_costs"][kh1_lua_library.get_index(spell_order, spell)]
         if kh1_lua_library.contains(acc_equipped, acc_values[1]) then
             new_spell_cost = math.min(new_spell_cost + 1, 5)
         end
