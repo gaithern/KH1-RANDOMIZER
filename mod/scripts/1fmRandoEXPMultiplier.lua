@@ -4,8 +4,6 @@ LUAGUI_DESC = "Kingdom Hearts 1FM EXP Multiplier"
 
 local seed_vars = require("seed_vars")
 
-local exp_mult_applied = false
-
 local EXP_CHART_OFFSETS = {
     0x3C60, -- Sora Midday
     0x3D28, -- Sora Dawn
@@ -40,10 +38,9 @@ end
 
 function _OnFrame()
     if not canExecute then return end
-    if exp_mult_applied then return end
     if seed_vars["settings"]["exp_multiplier"] == nil then return end
     if seed_vars["settings"]["exp_multiplier"] == 1.0 then return end
     if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
+    if ReadShort(jumpHeights - 0xAC + 0x3C60) ~= 18 then return end -- already applied
     apply_exp_mult()
-    exp_mult_applied = true
 end
