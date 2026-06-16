@@ -19,6 +19,9 @@
 ;   - New Safe Postcard reward code
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Safe Postcard reward code
+; - KGR[1] Script 4:
+;   - New blue trinity by exit door code
+;   -  Old blue trinity by exit door code
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xAE79  |  KGR 0
@@ -12271,23 +12274,69 @@
   03000015  push_cond       0x3             
   0E000017  await_call      0xE               ; → Script 14 (outside KGR)
   16000018  syscall         22                ; Hide_char
-  20000009  push            0x20              ; 32
-  44000018  syscall         68                ; Random_value
-  0500000B  store_local     [5]             
-  20000009  push            0x20              ; 32
-  44000018  syscall         68                ; Random_value
-  0600000B  store_local     [6]             
-  78000009  push            0x78              ; 120
-  4E0D000E  read_word       [0xD4E]           ; save_data2[0xE]
-  0500000A  load_local      [5]             
-  01000001  alu             sub             
-  500D000E  read_word       [0xD50]           ; save_data2[0x10]
-  C8000009  push            0xC8              ; 200
-  01000001  alu             sub             
-  520D000E  read_word       [0xD52]           ; save_data2[0x12]
-  0600000A  load_local      [6]             
-  00000001  alu             add             
-  2A020018  syscall         554               ; Scatter_map_gimmick_prizes
+
+; New blue trinity by exit door code
+  39000009  push            0x39              ; 57
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  04000018  syscall         4                 ; Set_window_size
+  07000009  push            0x7             
+  01000009  push            0x1             
+  05000018  syscall         5                 ; Set_window_type
+  07000009  push            0x7             
+  00000009  push            0x0             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  53000018  syscall         83                ; Set_window_close_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  50000018  syscall         80                ; Set_window_tail_type
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  DC000009  push            0xDC              ; 220
+  05000001  alu             and             
+  96000009  push            0x96              ; 150
+  05000001  alu             and             
+  B7020018  syscall         695               ; Scale_window_from_gift
+  07000009  push            0x7             
+  00000018  syscall         0                 ; Open_window
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8             
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0             
+  61010018  syscall         353               ; Play_SE2
+  07000009  push            0x7             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  07000009  push            0x7             
+  02000018  syscall         2                 ; Close_window
+
+;  Old blue trinity by exit door code
+  ; 20000009  push            0x20              ; 32
+  ; 44000018  syscall         68                ; Random_value
+  ; 0500000B  store_local     [5]             
+  ; 20000009  push            0x20              ; 32
+  ; 44000018  syscall         68                ; Random_value
+  ; 0600000B  store_local     [6]             
+  ; 78000009  push            0x78              ; 120
+  ; 4E0D000E  read_word       [0xD4E]           ; save_data2[0xE]
+  ; 0500000A  load_local      [5]             
+  ; 01000001  alu             sub             
+  ; 500D000E  read_word       [0xD50]           ; save_data2[0x10]
+  ; C8000009  push            0xC8              ; 200
+  ; 01000001  alu             sub             
+  ; 520D000E  read_word       [0xD52]           ; save_data2[0x12]
+  ; 0600000A  load_local      [6]             
+  ; 00000001  alu             add             
+  ; 2A020018  syscall         554               ; Scatter_map_gimmick_prizes
+  
   06000009  push            0x6             
   01000015  push_cond       0x1             
   11000016  init_call       0x11              ; → Script 17 (outside KGR)
