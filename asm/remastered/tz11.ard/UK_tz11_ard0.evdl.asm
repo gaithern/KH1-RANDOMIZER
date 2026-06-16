@@ -306,7 +306,7 @@
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
-@NaviGPiecePromptStart
+@NaviGPiecePromptStart:
   19000009  push            0x19              ; 25
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
@@ -1317,54 +1317,6 @@
   12000017  await_call      0x12              ; → Script 18 (outside KGR)
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
-
-; New Navi-G Piece Reward Code
-  19000009  push            0x19              ; 25
-  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
-  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
-  47020018  syscall         583               ; Get_item_from_gift_table
-  07000009  push            0x7             
-  00000009  push            0x0             
-  01000009  push            0x1             
-  04000018  syscall         4                 ; Set_window_size
-  07000009  push            0x7             
-  01000009  push            0x1             
-  05000018  syscall         5                 ; Set_window_type
-  07000009  push            0x7             
-  00000009  push            0x0             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
-  53000018  syscall         83                ; Set_window_close_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
-  50000018  syscall         80                ; Set_window_tail_type
-  07000009  push            0x7             
-  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
-  DC000009  push            0xDC              ; 220
-  05000001  alu             and             
-  96000009  push            0x96              ; 150
-  05000001  alu             and             
-  B7020018  syscall         695               ; Scale_window_from_gift
-; Below code should be uncommented if we want the window centered
-;  07000009  push            0x7             
-;  00000009  push            0x0             
-;  01000009  push            0x1             
-;  03000018  syscall         3                 ; Set_window_position
-  07000009  push            0x7             
-  00000018  syscall         0                 ; Open_window
-  07000009  push            0x7             
-  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
-  5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8             
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0             
-  61010018  syscall         353               ; Play_SE2
-  07000009  push            0x7             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  07000009  push            0x7             
-  02000018  syscall         2                 ; Close_window
 
 ; Old Navi-G Piece Reward Code
 ;   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
