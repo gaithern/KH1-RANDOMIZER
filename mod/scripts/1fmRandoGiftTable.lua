@@ -486,6 +486,7 @@ local gift_location_ids = {
         [0x32] = -1,      -- Hollow Bastion Library Salegg Vol. 6
         [0x33] = -1,      -- Hollow Bastion Library Mava Vol. 3
         [0x34] = -1,      -- Hollow Bastion Library Mava Vol. 6
+        [0x35] = 2656623, -- Hollow Bastion Lift Stop from Waterway Examine Node
         [0x3E] = 2656105, -- Hollow Bastion Defeat Behemoth Omega Arts Event
         [0x58] = 2654092, -- Hollow Bastion Rising Falls Under Water 2nd Chest
         [0x59] = 2654133, -- Hollow Bastion Castle Gates Freestanding Pillar Chest
