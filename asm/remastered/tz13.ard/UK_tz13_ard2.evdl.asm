@@ -3173,7 +3173,7 @@
 @UK_tz13_ard2_evdl_asm_KGR_0_SCRIPT_21_29:
 
 ; New Replication Experiment reward code
-  0F000009  push            0xF               ; 15
+  10000009  push            0x10              ; 16
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   47020018  syscall         583               ; Get_item_from_gift_table
@@ -3237,7 +3237,7 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 @ReplicationExperimentReward2Begin:
-  10000009  push            0x10              ; 16
+  11000009  push            0x11              ; 17
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   47020018  syscall         583               ; Get_item_from_gift_table

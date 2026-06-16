@@ -2,8 +2,8 @@
   "tabs": [
     {
       "name": "Prompt",
-      "find": "; Below code should be uncommented if we want the window centered\n  07000009  push            0x7             \n  00000009  push            0x0             \n  01000009  push            0x1             \n  03000018  syscall         3                 ; Set_window_position",
-      "replace": "; Below code should be uncommented if we want the window centered\n;  07000009  push            0x7             \n;  00000009  push            0x0             \n;  01000009  push            0x1             \n;  03000018  syscall         3                 ; Set_window_position",
+      "find": "; New Replication Experiment reward code\n  0F000009  push            0xF               ; 15",
+      "replace": "; New Replication Experiment reward code\n  10000009  push            0x10              ; 16",
       "regex": false,
       "ignorecase": false,
       "dotall": true,
@@ -12,8 +12,8 @@
     },
     {
       "name": "New preset",
-      "find": "  E5000009  push            0xE5              ; 229\n  01000009  push            0x1             \n  05000001  alu             negate          \n  02010018  syscall         258               ; Change_bag_items",
-      "replace": "\n; Don't remove Entry Pass\n{comment}\n",
+      "find": "@ReplicationExperimentReward2Begin:\n  10000009  push            0x10              ; 16",
+      "replace": "@ReplicationExperimentReward2Begin:\n  11000009  push            0x11              ; 17",
       "regex": false,
       "ignorecase": false,
       "dotall": true,
@@ -31,7 +31,7 @@
       "backup": false
     }
   ],
-  "globs": "asm/remastered/tz13.ard/UK_tz13_ard0.evdl.asm",
+  "globs": "asm/remastered/tz13.ard/UK_tz13_ard*.evdl.asm",
   "root": "C:\\Users\\gaith\\Documents\\GitHub\\KH1-RANDOMIZER",
-  "active_tab": 0
+  "active_tab": 1
 }
