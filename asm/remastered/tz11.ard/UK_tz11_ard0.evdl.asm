@@ -1348,10 +1348,10 @@
   05000001  alu             and             
   B7020018  syscall         695               ; Scale_window_from_gift
 ; Below code should be uncommented if we want the window centered
-;  07000009  push            0x7             
-;  00000009  push            0x0             
-;  01000009  push            0x1             
-;  03000018  syscall         3                 ; Set_window_position
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  03000018  syscall         3                 ; Set_window_position
   07000009  push            0x7             
   00000018  syscall         0                 ; Open_window
   07000009  push            0x7             
