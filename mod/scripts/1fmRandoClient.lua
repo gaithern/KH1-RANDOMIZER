@@ -11,7 +11,54 @@ local receive_items          = require("client.receive_items")
 local death_link             = require("death_link")
 local synth_hints            = require("client.synth_hints")
 local item_location_handlers = require("item_location_handlers")
-local ArchGUI                = require("ArchipelagoGUI")
+
+local CONNECT_FILE = "kh1_ap_connection.txt"
+local CONNECT_TEMPLATE =
+[[-- Fill in your Archipelago connection info below and save this file.
+-- Lines starting with -- are comments.
+host=archipelago.gg:38281
+slot=
+password=
+]]
+local MAX_CONNECT_FAILURES = 3
+
+local lastOpenCombo = false
+local lastConnectCombo = false
+local lastStatusCombo = false
+local last_attempted_slot = nil
+local connecting_enabled = false
+local connect_failures = 0
+local is_connected = false
+
+local function read_connect_file()
+    local f = io.open(CONNECT_FILE, "r")
+    if not f then return nil end
+    local data = {host = "", slot = "", password = ""}
+    for line in f:lines() do
+        if line:sub(1, 2) ~= "--" then
+            local key, value = line:match("^(%a+)%s*=%s*(.-)%s*$")
+            if key and data[key] ~= nil then
+                data[key] = value
+            end
+        end
+    end
+    f:close()
+    if data.slot == "" then return nil end
+    return data
+end
+
+local function reset_connect_file()
+    local f = io.open(CONNECT_FILE, "w")
+    if f then
+        f:write(CONNECT_TEMPLATE)
+        f:close()
+    end
+end
+
+local function open_connect_editor()
+    local handle = io.popen('start "" "' .. CONNECT_FILE .. '"')
+    if handle then handle:close() end
+end
 
 -- AP globals
 local game_name = "Kingdom Hearts"
@@ -33,6 +80,7 @@ game_state.slot_data = {}
 game_state.goal_sent = false
 
 local frame_count = 0
+local poll_counter = 0
 local location_map = {}
 
 local function reset_game_state()
@@ -49,11 +97,20 @@ local function connect(server, slot, password)
 
     local function on_socket_error(msg)
         ConsolePrint("Socket error: " .. msg)
-        kh1_lua_library.show_prompt({[1]=""},{[1]={"Failed to connect...", nil}},nil,142)
+        connect_failures = connect_failures + 1
+        is_connected = false
+        if connect_failures >= MAX_CONNECT_FAILURES then
+            connecting_enabled = false
+            ap = nil
+            kh1_lua_library.show_prompt({[1]=""},{[1]={"3 failures, stopping.", nil}},nil,142)
+        else
+            kh1_lua_library.show_prompt({[1]=""},{[1]={"Failed to connect...", nil}},nil,142)
+        end
     end
 
     local function on_socket_disconnected()
         ConsolePrint("Socket disconnected")
+        is_connected = false
         kh1_lua_library.show_prompt({[1]=""},{[1]={"Disconnected...", nil}},nil,142)
         reset_game_state()
     end
@@ -65,6 +122,7 @@ local function connect(server, slot, password)
 
     local function on_slot_connected(slot_data)
         ConsolePrint("Slot connected successfully!")
+        is_connected = true
         kh1_lua_library.show_prompt({[1]=""},{[1]={"Connected!", nil}},nil,142)
         reset_game_state()
         game_state.slot_data = slot_data
@@ -163,43 +221,13 @@ local function connect(server, slot, password)
     ap:set_bounced_handler(on_bounced)
 end
 
-local function CheckForGUIData()
-    -- This calls the C++ 'l_get_data' function via the dynamic loading we set up
-    local data = ArchGUI.get_data()
-
-    if data then
-        ConsolePrint("C++ GUI triggered connection for: " .. tostring(data.slot))
-
-        local server = data.host or ""
-        local slot = data.slot or ""
-        local password = data.password or ""
-
-        if slot ~= "" then
-            connect(server, slot, password)
-        else
-            ConsolePrint("GUI Error: Slot name cannot be empty!")
-        end
-    elseif not ap then
-        -- _OnInit may have missed stored data due to timing; recover on first frame
-        local stored = ArchGUI.peek_data()
-        if stored and stored.slot and stored.slot ~= "" then
-            ConsolePrint("Auto-reconnecting from stored data: " .. tostring(stored.slot))
-            connect(stored.host or "", stored.slot, stored.password or "")
-        end
-    end
-end
-
 function _OnInit()
-    local initialData = ArchGUI.peek_data()
     AP = require("lua-apclientpp")
-    if initialData and initialData.slot ~= "" then
-        ConsolePrint("Auto-connecting to: " .. initialData.slot)
-        connect(initialData.host, initialData.slot, initialData.password)
-    end
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
         message_format = AP.RenderFormat.TEXT
         location_map = item_location_handlers.fill_location_map()
+        reset_connect_file()
     else
         ConsolePrint("KH1 not detected, not running script")
     end
@@ -208,7 +236,46 @@ end
 function _OnFrame()
     if canExecute then
         local status, err = pcall(function()
-            CheckForGUIData()
+            local open_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Triangle"}, true)
+            if open_pressed and not lastOpenCombo then
+                open_connect_editor()
+            end
+            lastOpenCombo = open_pressed
+
+            local connect_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Square"}, true)
+            if connect_pressed and not lastConnectCombo then
+                local saved = read_connect_file()
+                if saved then
+                    connecting_enabled = true
+                    connect_failures = 0
+                    last_attempted_slot = nil
+                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Attempting to connect...", nil}},nil,142)
+                else
+                    kh1_lua_library.show_prompt({[1]=""},{[1]={"No slot name!", nil}},nil,142)
+                end
+            end
+            lastConnectCombo = connect_pressed
+
+            local status_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Circle"}, true)
+            if status_pressed and not lastStatusCombo then
+                if is_connected then
+                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Connected", nil}},nil,142)
+                else
+                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Not connected", nil}},nil,142)
+                end
+            end
+            lastStatusCombo = status_pressed
+
+            poll_counter = (poll_counter + 1) % 60
+            if connecting_enabled and poll_counter == 0 then
+                local saved = read_connect_file()
+                if saved and saved.slot ~= last_attempted_slot then
+                    ConsolePrint("Connecting to: " .. saved.slot)
+                    last_attempted_slot = saved.slot
+                    connect(saved.host, saved.slot, saved.password)
+                end
+            end
+
             if kh1_lua_library.get_world() ~= 0x00 and kh1_lua_library.get_world() ~= 0xFF then
                 frame_count = (frame_count + 1) % 60
                 game_state = send_locations.add_locations_to_locations_checked(location_map, game_state, frame_count)
