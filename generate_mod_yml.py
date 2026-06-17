@@ -7,7 +7,7 @@ from pathlib import Path
 HEADER = """\
 title: KH1 Randomizer Core
 originalAuthor: Gicu
-description: KH1 Randomizer Mod.   Put this below your seed.
+description: KH1 Randomizer Mod.  Put this below your seed.
 assets:
 """
 

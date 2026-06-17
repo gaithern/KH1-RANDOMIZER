@@ -740,6 +740,7 @@ def fix_ard_section_kgr_tables(data: bytearray, inserted_at: int, delta: int):
     for si in range(ns2):
         ss = sec_offs[si]
         if not ss or ss >= len(data) - 4: continue
+        if ss >= inserted_at + delta: continue  # section was shifted wholesale; relative KGR offsets unchanged
         nn = u32(data, ss)
         if nn < 1 or nn > 16: continue
         try:
