@@ -221,7 +221,26 @@ local function connect(server, slot, password)
     ap:set_bounced_handler(on_bounced)
 end
 
+local function preload_dependency(filename)
+    local path = SCRIPT_PATH .. "/io_packages/" .. filename
+    ConsolePrint("Preloading " .. path)
+    local ok, err = package.loadlib(path, "*")
+    if not ok then
+        ConsolePrint("Warning: could not preload " .. filename .. ": " .. tostring(err))
+    end
+end
+
 function _OnInit()
+    -- lua-apclientpp.dll needs these on disk next to it, but some players' machines
+    -- can't resolve them via the normal dependency search. Pre-loading them by full
+    -- path here puts them in process memory first, so lua-apclientpp.dll's own
+    -- implicit references to them resolve against the already-loaded copy instead.
+    preload_dependency("libwinpthread-1.dll")
+    preload_dependency("libgcc_s_seh-1.dll")
+    preload_dependency("zlib1.dll")
+    preload_dependency("libcrypto-3-x64.dll")
+    preload_dependency("libssl-3-x64.dll")
+
     AP = require("lua-apclientpp")
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
