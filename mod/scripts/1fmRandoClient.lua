@@ -239,6 +239,7 @@ function _OnFrame()
             local open_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Triangle"}, true)
             if open_pressed and not lastOpenCombo then
                 open_connect_editor()
+                kh1_lua_library.show_prompt({[1]=""},{[1]={"Opening connection txt", "in your default editor"}},nil,142)
             end
             lastOpenCombo = open_pressed
 
