@@ -66,6 +66,7 @@ function _OnFrame()
                 WriteByte(examine_interaction, 0x70)
                 WriteByte(talk_interaction, 0x70)
                 WriteByte(chests_interaction, 0x73)
+                WriteArray(battleModeCheck, {0xBA, 0x00, 0x00, 0x00, 0x00, 0x90})
                 interactset = true
             end
             if get_dg_count() >= 2 then
