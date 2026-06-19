@@ -120,7 +120,8 @@ local function icon_for_item_number(n)
     if n >= 231 and n <= 237 then return "{0x8A} " end
     if n == 238 then return "{0x8B} " end
     if n >= 239 and n <= 244 then return "" end
-    if n >= 2001 and n <= 2003 then return "{0x85} " end
+    if n >= 2642001 and n <= 2642003 then return "{0x85} " end
+    if n >= 2643000 then return "{0x85} " end
     return "{0x84}"
 end
 
