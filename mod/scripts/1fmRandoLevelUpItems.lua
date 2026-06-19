@@ -116,6 +116,7 @@ local function icon_for_item_number(n)
     if n >= 103 and n <= 118 then return "{0x87} " end
     if n >= 119 and n <= 134 then return "{0x88} " end
     if n >= 142 and n <= 144 then return "{0x83} " end
+    if n >= 152 and n <= 154 then return "{0x83} " end
     if n >= 175 and n <= 181 then return "{0x8A} " end
     if n >= 231 and n <= 237 then return "{0x8A} " end
     if n == 238 then return "{0x8B} " end
