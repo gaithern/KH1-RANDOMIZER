@@ -15,27 +15,15 @@ local LEVEL_GUMMI_IDX = 0x7A
 
 local AP_ITEM_ID = 2641230 -- Placeholder for items delivered remotely over the AP network
 
--- Stats (Slot 1) and Sora abilities (Slot 2) are patched directly into the
--- game's native level-up table by 1fmRandoLevelUpRewards.lua, which grants
--- them and shows the vanilla level-up UI. This script only handles whatever
--- is left: regular items, accessories, weapons, key items, shared abilities, etc.
-local stat_item_ids = {
-    [2641239]=true, [2641240]=true, [2641241]=true, [2641242]=true,
-    [2641243]=true, [2641244]=true, [2641245]=true,
-}
-local sora_ability_item_ids = {
-    [2643005]=true, [2643006]=true, [2643007]=true, [2643008]=true,
-    [2643010]=true, [2643011]=true, [2643012]=true, [2643013]=true,
-    [2643014]=true, [2643015]=true, [2643016]=true, [2643017]=true,
-    [2643018]=true, [2643019]=true, [2643020]=true, [2643021]=true,
-    [2643022]=true, [2643023]=true, [2643024]=true, [2643025]=true,
-    [2643026]=true, [2643027]=true, [2643028]=true,
-    [2643053]=true, [2643054]=true, [2643055]=true, [2643056]=true,
-    [2643057]=true, [2643058]=true, [2643059]=true, [2643060]=true,
-    [2643061]=true, [2643062]=true, [2643064]=true, [2643065]=true,
-}
+-- This is the only script that delivers level-up rewards now (both Slot 1 and
+-- Slot 2). Everything goes through the same generic
+-- item_location_handlers.handle_item_received path used by every other
+-- location in the game -- there's no native level-up table to patch anymore.
 
 -- Display names for the "Item" category (264_1xxx), keyed by local item number.
+-- 239-245 are the synthetic stat-increase items: handle_item_received delivers
+-- them as ordinary stock (via handle_item), and 1fmRandoHandleItems.lua's
+-- handle_stat_ups converts that stock into a permanent stat boost each frame.
 local item_names = {
     [1]="Potion", [2]="Hi-Potion", [3]="Ether", [4]="Elixir",
     [6]="Mega-Potion", [7]="Mega-Ether", [8]="Megalixir",
