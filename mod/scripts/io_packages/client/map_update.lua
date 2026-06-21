@@ -11,6 +11,10 @@ local function get_is_stale()
     return is_stale
 end
 
+local function set_fresh()
+    is_stale = false
+end
+
 local function get_data()
     return {world = update_world, room = room}
 end
@@ -65,4 +69,5 @@ return {
     map_update_frame = map_update_frame,
     is_stale = get_is_stale,
     get_data = get_data,
+    set_fresh = set_fresh,
 }

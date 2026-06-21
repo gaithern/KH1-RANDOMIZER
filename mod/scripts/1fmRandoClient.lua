@@ -329,6 +329,7 @@ function _OnFrame()
                     {game_name},
                     {ap:get_player_number()}
                 )
+                map_update.set_fresh()
             end
             
             if ap then
