@@ -11,6 +11,7 @@ local receive_items          = require("client.receive_items")
 local death_link             = require("death_link")
 local synth_hints            = require("client.synth_hints")
 local item_location_handlers = require("item_location_handlers")
+local map_update             = require("client.map_update")
 
 local CONNECT_FILE = "kh1_ap_connection.txt"
 local CONNECT_TEMPLATE =
@@ -319,6 +320,15 @@ function _OnFrame()
                 if not kh1_lua_library.is_in_gummi_garage() then
                     receive_items.receive_items_from_client(game_state.items_received)
                 end
+            end
+
+            map_update.map_update_frame()
+            if ap and map_update.is_stale() then
+                ap:Bounce(
+                    map_update.get_data(),
+                    {game_name},
+                    {ap:get_player_number()}
+                )
             end
             
             if ap then
