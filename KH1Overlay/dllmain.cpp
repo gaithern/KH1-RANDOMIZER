@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <d3d11.h>
+#include <tlhelp32.h>
 #include <cstring>
 #include <cstdio>
 #include <string>
@@ -28,8 +29,8 @@ static void LogDebug(const char* msg) {
 }
 
 // --- LUA FUNCTION POINTERS ---
-// Resolved against the host process's already-loaded lua54.dll (same approach the
-// original ArchipelagoGUI used -- no Lua headers needed).
+// Resolved against whichever already-loaded module in the host process exports
+// the Lua C API (no Lua headers needed) -- see FindLuaModule().
 typedef void        (__cdecl* t_lua_createtable)(void* L, int narr, int nrec);
 typedef const char*  (__cdecl* t_lua_pushstring)(void* L, const char* s);
 typedef void        (__cdecl* t_lua_pushboolean)(void* L, int b);
@@ -507,10 +508,36 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {nullptr, nullptr}
 };
 
+// LuaBackend (the OpenKH Lua host) embeds the Lua 5.4 runtime in its own DLL
+// rather than loading a separate "lua54.dll", and that host DLL's name varies
+// by build/game. So instead of guessing a filename, walk every module loaded
+// in this process and use whichever one actually exports the Lua C API.
+static HMODULE FindLuaModule() {
+    HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, GetCurrentProcessId());
+    if (snap == INVALID_HANDLE_VALUE) return nullptr;
+
+    HMODULE found = nullptr;
+    MODULEENTRY32W me = {};
+    me.dwSize = sizeof(me);
+    if (Module32FirstW(snap, &me)) {
+        do {
+            if (GetProcAddress(me.hModule, "lua_createtable")) {
+                found = me.hModule;
+                char msg[MAX_PATH + 32];
+                snprintf(msg, sizeof(msg), "Found Lua API in module: %ls", me.szModule);
+                LogDebug(msg);
+                break;
+            }
+        } while (Module32NextW(snap, &me));
+    }
+    CloseHandle(snap);
+    return found;
+}
+
 extern "C" __declspec(dllexport) int luaopen_kh1_overlay(void* L) {
     LogDebug("luaopen_kh1_overlay called");
 
-    HMODULE hLua = GetModuleHandleA("lua54.dll");
+    HMODULE hLua = FindLuaModule();
     if (hLua && !p_lua_createtable) {
         p_lua_createtable = (t_lua_createtable)GetProcAddress(hLua, "lua_createtable");
         p_lua_pushstring  = (t_lua_pushstring) GetProcAddress(hLua, "lua_pushstring");
@@ -526,10 +553,11 @@ extern "C" __declspec(dllexport) int luaopen_kh1_overlay(void* L) {
     }
 
     if (!p_lua_createtable || !p_luaL_setfuncs || !p_lua_rawlen || !p_lua_rawgeti || !p_lua_settop) {
-        // Couldn't resolve lua54.dll's exports -- bail out without touching any of
-        // them. Returning 0 (no pushed values) makes require() hand back `true`
-        // rather than crashing on a null function pointer call.
-        LogDebug("luaopen_kh1_overlay: failed to resolve lua54.dll exports, aborting safely");
+        // Couldn't find a loaded module exporting the Lua C API -- bail out
+        // without touching any of them. Returning 0 (no pushed values) makes
+        // require() hand back `true` rather than crashing on a null function
+        // pointer call.
+        LogDebug("luaopen_kh1_overlay: failed to resolve Lua API exports, aborting safely");
         return 0;
     }
 
