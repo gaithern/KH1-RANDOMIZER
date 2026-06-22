@@ -67,6 +67,7 @@ static int g_itemsReceived = 0;
 static std::vector<std::string> g_itemNames;
 static std::vector<std::string> g_locationNames;
 static std::vector<std::string> g_messages;
+static std::vector<std::string> g_settingsLines;
 
 static bool g_pending = false;
 static char g_pendingHost[256] = "";
@@ -133,6 +134,7 @@ static void DrawForm() {
     std::vector<std::string> itemNames;
     std::vector<std::string> locationNames;
     std::vector<std::string> messages;
+    std::vector<std::string> settingsLines;
     AcquireSRWLockExclusive(&g_lock);
     connected = g_connected;
     strncpy_s(slot, g_statusSlot, _TRUNCATE);
@@ -140,6 +142,7 @@ static void DrawForm() {
     itemNames = g_itemNames;
     locationNames = g_locationNames;
     messages = g_messages;
+    settingsLines = g_settingsLines;
     ReleaseSRWLockExclusive(&g_lock);
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -218,6 +221,21 @@ static void DrawForm() {
             ImGui::BeginChild("LocationsListChild", ImVec2(0, 0), true);
             for (const auto& name : locationNames) {
                 ImGui::TextUnformatted(name.c_str());
+            }
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Settings")) {
+            static ImGuiTextFilter filter;
+            filter.Draw("Filter", -1.0f);
+            ImGui::Text("%d setting(s)", static_cast<int>(settingsLines.size()));
+            ImGui::Separator();
+            ImGui::BeginChild("SettingsListChild", ImVec2(0, 0), true);
+            for (const auto& line : settingsLines) {
+                if (filter.PassFilter(line.c_str())) {
+                    ImGui::TextUnformatted(line.c_str());
+                }
             }
             ImGui::EndChild();
             ImGui::EndTabItem();
@@ -404,6 +422,18 @@ extern "C" int l_set_locations(void* L) {
     return 0;
 }
 
+// Called once at startup with the seed's randomizer settings, pre-formatted by
+// Lua as "key: value" strings (settings are static for the seed, unlike the
+// other lists which grow over a session).
+extern "C" int l_set_settings(void* L) {
+    std::vector<std::string> lines;
+    ReadStringArray(L, 1, lines);
+    AcquireSRWLockExclusive(&g_lock);
+    g_settingsLines = std::move(lines);
+    ReleaseSRWLockExclusive(&g_lock);
+    return 0;
+}
+
 // Called whenever the chat/message log grows, with the full (capped) list of
 // already-rendered display strings (Lua renders via ap:render_json/on_print).
 extern "C" int l_set_messages(void* L) {
@@ -471,6 +501,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"set_items", reinterpret_cast<void*>(l_set_items)},
     {"set_locations", reinterpret_cast<void*>(l_set_locations)},
     {"set_messages", reinterpret_cast<void*>(l_set_messages)},
+    {"set_settings", reinterpret_cast<void*>(l_set_settings)},
     {"poll_send_message", reinterpret_cast<void*>(l_poll_send_message)},
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {nullptr, nullptr}

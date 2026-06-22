@@ -199,6 +199,45 @@ local function connect(server, slot, password)
     ap:set_bounced_handler(on_bounced)
 end
 
+local function format_setting_value(value)
+    local value_type = type(value)
+    if value_type == "boolean" then
+        return value and "true" or "false"
+    elseif value_type == "table" then
+        local count = #value
+        if count > 0 and count <= 8 then
+            local parts = {}
+            for i = 1, count do
+                if type(value[i]) == "table" then
+                    return string.format("<%d items>", count)
+                end
+                parts[i] = tostring(value[i])
+            end
+            return "[" .. table.concat(parts, ", ") .. "]"
+        end
+        return string.format("<%d items>", count)
+    else
+        return tostring(value)
+    end
+end
+
+local function build_settings_lines()
+    local settings = seed_vars["settings"]
+    if type(settings) ~= "table" then
+        return {}
+    end
+    local keys = {}
+    for key in pairs(settings) do
+        keys[#keys + 1] = key
+    end
+    table.sort(keys)
+    local lines = {}
+    for _, key in ipairs(keys) do
+        lines[#lines + 1] = key .. ": " .. format_setting_value(settings[key])
+    end
+    return lines
+end
+
 local function preload_dependency(filename)
     local path = SCRIPT_PATH .. "/io_packages/" .. filename
     ConsolePrint("Preloading " .. path)
@@ -227,6 +266,7 @@ function _OnInit()
     local overlay_ok, overlay = pcall(require, "kh1_overlay")
     if overlay_ok and type(overlay) == "table" then
         kh1_overlay = overlay
+        kh1_overlay.set_settings(build_settings_lines())
     else
         ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
     end
