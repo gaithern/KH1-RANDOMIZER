@@ -146,7 +146,7 @@ local function connect(server, slot, password)
             push_chat_message(rendered)
         end
 
-        if extra.type == "ItemSend" then
+        if extra.type == "ItemSend" or extra.type == "ItemCheat" then
             local item_id = extra.item.item
             local receiver_id = extra.receiving
             local sender_id = extra.item.player
