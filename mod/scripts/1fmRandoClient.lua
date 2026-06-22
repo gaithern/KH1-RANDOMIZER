@@ -267,6 +267,10 @@ function _OnInit()
     if overlay_ok and type(overlay) == "table" then
         kh1_overlay = overlay
         kh1_overlay.set_settings(build_settings_lines())
+        local settings = seed_vars["settings"]
+        if type(settings) == "table" and type(settings["slot_name"]) == "string" then
+            kh1_overlay.set_default_slot(settings["slot_name"])
+        end
     else
         ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
     end

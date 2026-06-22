@@ -75,6 +75,10 @@ static char g_pendingHost[256] = "";
 static char g_pendingSlot[256] = "";
 static char g_pendingPass[256] = "";
 
+// Slot name from the seed's settings, used to prefill the Slot Name field so
+// the player doesn't have to retype it every session.
+static char g_defaultSlot[256] = "";
+
 static bool g_messagePending = false;
 static char g_pendingMessage[512] = "";
 
@@ -128,6 +132,15 @@ static void DrawForm() {
     static char slot_buf[256] = "";
     static char pass_buf[256] = "";
     static char chat_buf[400] = "";
+    static bool defaultSlotApplied = false;
+    if (!defaultSlotApplied && slot_buf[0] == '\0') {
+        AcquireSRWLockExclusive(&g_lock);
+        if (g_defaultSlot[0] != '\0') {
+            strncpy_s(slot_buf, g_defaultSlot, _TRUNCATE);
+            defaultSlotApplied = true;
+        }
+        ReleaseSRWLockExclusive(&g_lock);
+    }
 
     bool connected;
     char slot[256];
@@ -423,6 +436,16 @@ extern "C" int l_set_locations(void* L) {
     return 0;
 }
 
+// Called once at startup with the seed's slot_name setting, to prefill the
+// Slot Name field on the Connect tab.
+extern "C" int l_set_default_slot(void* L) {
+    const char* slot = p_lua_tolstring(L, 1, nullptr);
+    AcquireSRWLockExclusive(&g_lock);
+    strncpy_s(g_defaultSlot, slot ? slot : "", _TRUNCATE);
+    ReleaseSRWLockExclusive(&g_lock);
+    return 0;
+}
+
 // Called once at startup with the seed's randomizer settings, pre-formatted by
 // Lua as "key: value" strings (settings are static for the seed, unlike the
 // other lists which grow over a session).
@@ -503,6 +526,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"set_locations", reinterpret_cast<void*>(l_set_locations)},
     {"set_messages", reinterpret_cast<void*>(l_set_messages)},
     {"set_settings", reinterpret_cast<void*>(l_set_settings)},
+    {"set_default_slot", reinterpret_cast<void*>(l_set_default_slot)},
     {"poll_send_message", reinterpret_cast<void*>(l_poll_send_message)},
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {nullptr, nullptr}
