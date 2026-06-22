@@ -3,6 +3,7 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Client"
 
 local AP                     = nil -- Will load in init()
+local kh1_overlay            = nil -- F4 ImGui overlay, optional (Will load in init())
 local json                   = require("json")
 local seed_vars              = require("seed_vars")
 local kh1_lua_library        = require("kh1_lua_library")
@@ -12,53 +13,14 @@ local death_link             = require("death_link")
 local synth_hints            = require("client.synth_hints")
 local item_location_handlers = require("item_location_handlers")
 
-local CONNECT_FILE = "kh1_ap_connection.txt"
-local CONNECT_TEMPLATE =
-[[-- Fill in your Archipelago connection info below and save this file.
--- Lines starting with -- are comments.
-host=archipelago.gg:38281
-slot=
-password=
-]]
 local MAX_CONNECT_FAILURES = 3
 
-local lastOpenCombo = false
-local lastConnectCombo = false
-local lastStatusCombo = false
 local last_attempted_slot = nil
-local connecting_enabled = false
 local connect_failures = 0
 local is_connected = false
-
-local function read_connect_file()
-    local f = io.open(CONNECT_FILE, "r")
-    if not f then return nil end
-    local data = {host = "", slot = "", password = ""}
-    for line in f:lines() do
-        if line:sub(1, 2) ~= "--" then
-            local key, value = line:match("^(%a+)%s*=%s*(.-)%s*$")
-            if key and data[key] ~= nil then
-                data[key] = value
-            end
-        end
-    end
-    f:close()
-    if data.slot == "" then return nil end
-    return data
-end
-
-local function reset_connect_file()
-    local f = io.open(CONNECT_FILE, "w")
-    if f then
-        f:write(CONNECT_TEMPLATE)
-        f:close()
-    end
-end
-
-local function open_connect_editor()
-    local handle = io.popen('start "" "' .. CONNECT_FILE .. '"')
-    if handle then handle:close() end
-end
+local last_reported_items_count = 0
+local last_reported_locations_count = 0
+local last_reported_chat_count = 0
 
 -- AP globals
 local game_name = "Kingdom Hearts"
@@ -80,8 +42,17 @@ game_state.slot_data = {}
 game_state.goal_sent = false
 
 local frame_count = 0
-local poll_counter = 0
 local location_map = {}
+
+local chat_log = {}
+local MAX_CHAT_LOG = 300
+
+local function push_chat_message(text)
+    table.insert(chat_log, text)
+    if #chat_log > MAX_CHAT_LOG then
+        table.remove(chat_log, 1)
+    end
+end
 
 local function reset_game_state()
     game_state.items_received = {}
@@ -100,7 +71,6 @@ local function connect(server, slot, password)
         connect_failures = connect_failures + 1
         is_connected = false
         if connect_failures >= MAX_CONNECT_FAILURES then
-            connecting_enabled = false
             ap = nil
             kh1_lua_library.show_prompt({[1]=""},{[1]={"3 failures, stopping.", nil}},nil,142)
         else
@@ -165,9 +135,17 @@ local function connect(server, slot, password)
         ConsolePrint("Locations checked: " .. table.concat(locations, ", "))
     end
 
-    local function on_print(msg) ConsolePrint(msg) end
+    local function on_print(msg)
+        ConsolePrint(msg)
+        push_chat_message(msg)
+    end
 
     local function on_print_json(msg, extra)
+        local rendered_ok, rendered = pcall(ap.render_json, ap, msg, message_format)
+        if rendered_ok and rendered then
+            push_chat_message(rendered)
+        end
+
         if extra.type == "ItemSend" then
             local item_id = extra.item.item
             local receiver_id = extra.receiving
@@ -242,11 +220,21 @@ function _OnInit()
     preload_dependency("libssl-3-x64.dll")
 
     AP = require("lua-apclientpp")
+
+    -- kh1_overlay.dll's ImGui DX11 backend compiles its shaders at runtime via
+    -- D3DCompiler_47.dll, which isn't guaranteed present on every machine.
+    preload_dependency("d3dcompiler_47.dll")
+    local overlay_ok, overlay = pcall(require, "kh1_overlay")
+    if overlay_ok and type(overlay) == "table" then
+        kh1_overlay = overlay
+    else
+        ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
+    end
+
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
         message_format = AP.RenderFormat.TEXT
         location_map = item_location_handlers.fill_location_map()
-        reset_connect_file()
     else
         ConsolePrint("KH1 not detected, not running script")
     end
@@ -255,44 +243,63 @@ end
 function _OnFrame()
     if canExecute then
         local status, err = pcall(function()
-            local open_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Triangle"}, true)
-            if open_pressed and not lastOpenCombo then
-                open_connect_editor()
-                kh1_lua_library.show_prompt({[1]=""},{[1]={"Opening connection txt", "in your default editor"}},nil,142)
-            end
-            lastOpenCombo = open_pressed
+            if kh1_overlay then
+                kh1_overlay.set_status(is_connected, last_attempted_slot or "", #game_state.items_received)
 
-            local connect_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Square"}, true)
-            if connect_pressed and not lastConnectCombo then
-                local saved = read_connect_file()
-                if saved then
-                    connecting_enabled = true
-                    connect_failures = 0
-                    last_attempted_slot = nil
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Attempting to connect...", nil}},nil,142)
-                else
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={"No slot name!", nil}},nil,142)
+                if ap and #game_state.items_received ~= last_reported_items_count then
+                    local player_game = ap:get_player_game(ap:get_player_number())
+                    local item_names = {}
+                    for _, item_id in ipairs(game_state.items_received) do
+                        local ok, name = pcall(ap.get_item_name, ap, item_id, player_game)
+                        if ok and name and not name:lower():find("unknown") then
+                            item_names[#item_names + 1] = name
+                        end
+                    end
+                    kh1_overlay.set_items(item_names)
+                    last_reported_items_count = #game_state.items_received
                 end
-            end
-            lastConnectCombo = connect_pressed
 
-            local status_pressed = kh1_lua_library.is_pressed({"L2", "R2", "Circle"}, true)
-            if status_pressed and not lastStatusCombo then
-                if is_connected then
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Connected", nil}},nil,142)
-                else
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Not connected", nil}},nil,142)
+                if ap and #game_state.locations ~= last_reported_locations_count then
+                    local player_game = ap:get_player_game(ap:get_player_number())
+                    local location_names = {}
+                    for _, location_id in ipairs(game_state.locations) do
+                        local ok, name = pcall(ap.get_location_name, ap, location_id, player_game)
+                        if ok and name and not name:lower():find("unknown") then
+                            location_names[#location_names + 1] = name
+                        end
+                    end
+                    kh1_overlay.set_locations(location_names)
+                    last_reported_locations_count = #game_state.locations
                 end
-            end
-            lastStatusCombo = status_pressed
 
-            poll_counter = (poll_counter + 1) % 60
-            if connecting_enabled and poll_counter == 0 then
-                local saved = read_connect_file()
-                if saved and saved.slot ~= last_attempted_slot then
-                    ConsolePrint("Connecting to: " .. saved.slot)
-                    last_attempted_slot = saved.slot
-                    connect(saved.host, saved.slot, saved.password)
+                if #chat_log ~= last_reported_chat_count then
+                    kh1_overlay.set_messages(chat_log)
+                    last_reported_chat_count = #chat_log
+                end
+
+                local outgoing = kh1_overlay.poll_send_message()
+                if outgoing then
+                    if ap and is_connected then
+                        local ok, err = pcall(ap.Say, ap, outgoing)
+                        if not ok then
+                            ConsolePrint("Failed to send message: " .. tostring(err))
+                        end
+                    else
+                        ConsolePrint("Cannot send message: not connected")
+                    end
+                end
+
+                local pending = kh1_overlay.poll_connect_request()
+                if pending then
+                    if pending.slot ~= "" then
+                        ConsolePrint("Connecting to: " .. pending.slot)
+                        connect_failures = 0
+                        last_attempted_slot = pending.slot
+                        connect(pending.host, pending.slot, pending.password)
+                        kh1_lua_library.show_prompt({[1]=""},{[1]={"Attempting to connect...", nil}},nil,142)
+                    else
+                        kh1_lua_library.show_prompt({[1]=""},{[1]={"No slot name!", nil}},nil,142)
+                    end
                 end
             end
 
