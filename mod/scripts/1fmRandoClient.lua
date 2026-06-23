@@ -379,7 +379,7 @@ function _OnFrame()
             if ap and map_update.is_stale() then
                 ap:Bounce(
                     map_update.get_data(),
-                    {game_name},
+                    {},
                     {ap:get_player_number()}
                 )
                 map_update.set_fresh()
