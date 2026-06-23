@@ -654,8 +654,9 @@ def repack_evdl(orig: bytes, kgrs: list, new_streams: list) -> bytes:
             c[:13] = h; c[13:] = orig_full
         else:
             h[12] = count_scripts(ns)
-            c = bytearray(13 + len(ns))
-            c[:13] = h; c[13:] = ns
+            trailing = orig_full[len(orig_s):]
+            c = bytearray(13 + len(ns) + len(trailing))
+            c[:13] = h; c[13:13+len(ns)] = ns; c[13+len(ns):] = trailing
         blocks.append(bytes(c))
 
     noffs = []
