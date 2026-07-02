@@ -9,7 +9,7 @@ function _OnInit()
 	if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
 		require("VersionCheck")
 		ok = canExecute and seed_vars["settings"]["one_hp"]
-		if canExecute then
+		if ok then
 			WriteByte(beepHack, 1)
 		end
 	else
