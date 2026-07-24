@@ -226,7 +226,7 @@ local function handle_olympus_cups(stock)
 end
 
 local function handle_forget_me_not(stock)
-    if seed_vars["settings"]["stacking_forget_me_not"] and stock[227] > 0 and stock[228] == 0 then
+    if seed_vars["settings"]["halloween_town_key_item_bundle"] and stock[227] > 0 and stock[228] == 0 then
         WriteByte(inventory + 228 - 1, 1)
     end
 end
