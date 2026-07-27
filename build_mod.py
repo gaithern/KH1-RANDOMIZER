@@ -18,6 +18,11 @@ e.g.:
 game files evdl_tool.py's GUI also defaults to). Override with --game-data
 or the KH1_GAME_DATA environment variable.
 
+evdl_tool.py itself lives in the separate KH1-EVDL-TOOLS repo, expected as a
+sibling checkout at C:/Users/gaith/Documents/GitHub/KH1-EVDL-TOOLS. Override
+with the KH1_EVDL_TOOLS_DIR environment variable, or if neither is found
+you'll be prompted for its location.
+
 Usage:
   python build_mod.py
   python build_mod.py --game-data D:/path/to/data/kh1
@@ -38,8 +43,34 @@ ROOT = Path(__file__).parent
 ASM_DIR = ROOT / 'asm'
 MOD_DIR = ROOT / 'mod'
 DEFAULT_GAME_DATA = 'C:/OpenKH/OpenKHEGS/data/kh1'
+DEFAULT_EVDL_TOOLS_DIR = Path(r'C:\Users\gaith\Documents\GitHub\KH1-EVDL-TOOLS')
 
-sys.path.insert(0, str(ROOT))
+
+def find_evdl_tools_dir():
+    """Locate the KH1-EVDL-TOOLS checkout containing evdl_tool.py: the
+    KH1_EVDL_TOOLS_DIR env var, then the default sibling-repo path, then an
+    interactive prompt."""
+    env_dir = os.environ.get('KH1_EVDL_TOOLS_DIR')
+    if env_dir and (Path(env_dir) / 'evdl_tool.py').is_file():
+        return Path(env_dir)
+
+    if (DEFAULT_EVDL_TOOLS_DIR / 'evdl_tool.py').is_file():
+        return DEFAULT_EVDL_TOOLS_DIR
+
+    print(f'Could not find evdl_tool.py at {DEFAULT_EVDL_TOOLS_DIR}', file=sys.stderr)
+    while True:
+        answer = input('Enter path to KH1-EVDL-TOOLS (or its evdl_tool.py): ').strip().strip('"')
+        if not answer:
+            continue
+        path = Path(answer)
+        if path.is_file() and path.name == 'evdl_tool.py':
+            return path.parent
+        if (path / 'evdl_tool.py').is_file():
+            return path
+        print(f'evdl_tool.py not found at {path}', file=sys.stderr)
+
+
+sys.path.insert(0, str(find_evdl_tools_dir()))
 import evdl_tool
 
 
