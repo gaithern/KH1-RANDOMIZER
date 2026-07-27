@@ -2,7 +2,7 @@
 
 An [Archipelago](https://archipelago.gg/) multiworld randomizer mod for **Kingdom Hearts Final Mix (HD 1.5 Remix)**, built on top of [OpenKH](https://github.com/OpenKH/OpenKh)'s Lua modding framework. The mod connects the game to an Archipelago server, sends checks (chests, gifts, bosses, etc.) as locations, and receives items back in real time, alongside a large set of quality-of-life and bugfix scripts needed to make the base game randomizer-friendly.
 
-This repository contains both the **mod itself** (`mod/`, `mod.yml`) and the **tooling** used to build/edit it (Python scripts for disassembling and patching the game's binary script format, plus a small native overlay DLL).
+This repository contains the **mod itself** (`mod/`, `mod.yml`) and the build scripts that assemble it (`build.py`, `build_mod.py`, `generate_mod_yml.py`). The actual EVDL/ARD/WDT disassembler-assembler (`evdl_tool.py`) and the bulk find/replace helper (`find_replace.py`) live in the separate [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS) repo and are expected to be checked out as a sibling directory (`build_mod.py` looks for `C:/Users/gaith/Documents/GitHub/KH1-EVDL-TOOLS` by default; see below for overriding that).
 
 ## Repository layout
 
@@ -19,24 +19,25 @@ mod/                      The actual mod payload — everything OpenKH copies in
 asm/                      Human-readable .asm disassembly of the patched .ard/.evdl files,
                             used as the editable "source" for the binaries shipped in mod/
 working/                  Scratch space for in-progress disassembly/reassembly of scripts
-evdl_tool.py              Disassembler/assembler for KH1's EVDL/ARD/WDT binary script format
-find_replace.py           GUI/CLI tool for bulk find-and-replace across .asm files
+build.py                  Full build: compiles KH1Overlay, then build_mod.py, then generate_mod_yml.py
+build_mod.py              Reassembles asm/ into mod/ using evdl_tool.py from KH1-EVDL-TOOLS
 generate_mod_yml.py       Regenerates mod.yml by scanning mod/ for files to package
-save_data_labels.json     Known save-data memory offsets, used to annotate evdl_tool.py output
-find_replace_presets.json Saved find/replace presets for find_replace.py's GUI
 KH1Overlay/               Native ImGui overlay DLL (optional, in-game debug/status overlay)
 ```
+
+evdl_tool.py, find_replace.py, save_data_labels.json, and find_replace_presets.json now live in [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS); see that repo for their usage.
 
 ## How the pieces fit together
 
 1. **`asm/`** holds editable disassembly (`.asm`) of the game's room/world scripts (EVDL bytecode used in `.ard`, `.evdl`, and `.ev` files). These are edited by hand to change game logic (e.g. what a chest gives, what a cutscene does).
-2. **`evdl_tool.py`** round-trips between the binary format and that `.asm` text:
+2. **`evdl_tool.py`** (from KH1-EVDL-TOOLS) round-trips between the binary format and that `.asm` text:
    - `python evdl_tool.py disasm <file.evdl|file.ard>` → writes a `.asm` file you can edit.
    - `python evdl_tool.py asm <file.asm>` → reassembles it back into a patched binary (the original binary must sit alongside the `.asm`, since its name/header is recorded by `disasm`).
    - Running it with no arguments opens a file-picker GUI.
 3. The reassembled binaries are placed under `mod/` (e.g. `mod/remastered/tw01.ard/...`), alongside the Lua scripts in `mod/scripts/`.
 4. **`generate_mod_yml.py`** scans `mod/` and rewrites `mod.yml`, the manifest OpenKH's mod loader reads to know what files to copy into the game and where.
-5. **`find_replace.py`** is a helper for making the same edit across many `.asm` files at once (e.g. renumbering a gift table index everywhere it appears).
+5. **`find_replace.py`** (from KH1-EVDL-TOOLS) is a helper for making the same edit across many `.asm` files at once (e.g. renumbering a gift table index everywhere it appears).
+6. **`build_mod.py`** drives step 2 in bulk: it walks every `.asm` under `asm/`, reassembles each against the matching original binary, and writes the result into `mod/`. It imports `evdl_tool` from the KH1-EVDL-TOOLS checkout — found via the `KH1_EVDL_TOOLS_DIR` environment variable, then the default sibling-repo path, then (if neither exists) an interactive prompt for the path.
 
 ### The Lua scripts (`mod/scripts/`)
 
