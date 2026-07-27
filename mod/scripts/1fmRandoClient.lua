@@ -3,7 +3,7 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Client"
 
 local AP                     = nil -- Will load in init()
-local kh1_overlay            = nil -- F4 ImGui overlay, optional (Will load in init())
+local kh1_overlay            = nil -- Will load in init()
 local json                   = require("json")
 local seed_vars              = require("seed_vars")
 local kh1_lua_library        = require("kh1_lua_library")
@@ -20,10 +20,6 @@ local CONNECT_TIMEOUT_SECONDS = 15
 local last_attempted_slot = nil
 local connect_failures = 0
 local is_connected = false
--- Set when a connect attempt is sent and cleared as soon as we hear anything
--- back from the host (room info, refusal, socket error/disconnect) or the slot
--- connects. If it's still set after CONNECT_TIMEOUT_SECONDS, the host never
--- responded at all.
 local connect_attempt_time = nil
 local last_reported_items_count = 0
 local last_reported_locations_count = 0
@@ -63,8 +59,6 @@ local function push_chat_message(text)
     chat_log_version = chat_log_version + 1
 end
 
--- Pushes a connection-failure message to the F4 overlay's Connect tab (pass
--- nil/"" to clear it, e.g. on a fresh attempt or a successful connection).
 local function set_overlay_error(msg)
     if kh1_overlay then
         kh1_overlay.set_connect_error(msg or "")
@@ -290,12 +284,6 @@ local function preload_dependency(filename)
 end
 
 local function preload_system_or_bundled(filename)
-    -- Prefer whichever copy Windows can already resolve (System32, or one the
-    -- game itself already loaded) over our bundled copy. The bundled DLL can
-    -- carry runtime dependencies (e.g. a newer msvcp140.dll export) that
-    -- aren't present on every machine and would otherwise turn into an
-    -- unrecoverable "Entry Point Not Found" loader error. Only fall back to
-    -- the bundled copy when no system copy can be found at all.
     if package.loadlib(filename, "*") then
         ConsolePrint("Using system " .. filename)
         return
@@ -304,10 +292,6 @@ local function preload_system_or_bundled(filename)
 end
 
 function _OnInit()
-    -- lua-apclientpp.dll needs these on disk next to it, but some players' machines
-    -- can't resolve them via the normal dependency search. Pre-loading them by full
-    -- path here puts them in process memory first, so lua-apclientpp.dll's own
-    -- implicit references to them resolve against the already-loaded copy instead.
     preload_dependency("libwinpthread-1.dll")
     preload_dependency("libgcc_s_seh-1.dll")
     preload_dependency("zlib1.dll")
@@ -316,8 +300,6 @@ function _OnInit()
 
     AP = require("lua-apclientpp")
 
-    -- kh1_overlay.dll's ImGui DX11 backend compiles its shaders at runtime via
-    -- D3DCompiler_47.dll, which isn't guaranteed present on every machine.
     preload_system_or_bundled("d3dcompiler_47.dll")
     local overlay_ok, overlay = pcall(require, "kh1_overlay")
     if overlay_ok and type(overlay) == "table" then
@@ -333,10 +315,6 @@ function _OnInit()
 
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
-        -- ANSI embeds the same classification colors CommonClient.py's console
-        -- shows (plum/slateblue/salmon/cyan for progression/useful/trap/filler,
-        -- etc.) as escape codes right in the rendered string -- the F4 overlay
-        -- parses them back out in DrawForm's Messages tab.
         message_format = AP.RenderFormat.ANSI
         location_map = item_location_handlers.fill_location_map()
     else
@@ -409,10 +387,6 @@ function _OnFrame()
                     end
                 end
 
-                -- apclientpp has no connect-timeout callback of its own: if the host
-                -- never responds (unreachable address, firewalled port, etc.) none of
-                -- on_room_info/on_socket_error/on_socket_disconnected ever fire and the
-                -- player would otherwise be stuck on "Attempting to connect..." forever.
                 if connect_attempt_time and not is_connected
                     and (os.clock() - connect_attempt_time) > CONNECT_TIMEOUT_SECONDS then
                     connect_attempt_time = nil

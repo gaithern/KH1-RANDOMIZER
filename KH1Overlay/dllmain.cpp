@@ -30,8 +30,6 @@ static void LogDebug(const char* msg) {
 }
 
 // --- LUA FUNCTION POINTERS ---
-// Resolved against whichever already-loaded module in the host process exports
-// the Lua C API (no Lua headers needed) -- see FindLuaModule().
 typedef void        (__cdecl* t_lua_createtable)(void* L, int narr, int nrec);
 typedef const char*  (__cdecl* t_lua_pushstring)(void* L, const char* s);
 typedef void        (__cdecl* t_lua_pushboolean)(void* L, int b);
@@ -59,16 +57,13 @@ static t_lua_settop      p_lua_settop      = nullptr;
 struct luaL_Reg { const char* name; void* func; };
 
 // --- SHARED STATE ---
-// Bridges Lua's _OnFrame (set_status / poll_connect_request) with the form window's
-// own thread. Guarded by g_lock since the two run on different threads.
 static SRWLOCK g_lock = SRWLOCK_INIT;
 
 static bool g_connected = false;
 static char g_statusSlot[256] = "";
 static int g_itemsReceived = 0;
-// Last connection failure (wrong slot name, refused, socket error, timeout, etc).
-// Cleared by Lua on a fresh connect attempt or a successful slot connection.
 static char g_connectError[256] = "";
+
 static std::vector<std::string> g_itemNames;
 static std::vector<std::string> g_locationNames;
 static std::vector<std::string> g_messages;
@@ -79,18 +74,12 @@ static char g_pendingHost[256] = "";
 static char g_pendingSlot[256] = "";
 static char g_pendingPass[256] = "";
 
-// Slot name from the seed's settings, used to prefill the Slot Name field so
-// the player doesn't have to retype it every session.
 static char g_defaultSlot[256] = "";
 
 static bool g_messagePending = false;
 static char g_pendingMessage[512] = "";
 
 // --- STANDALONE IMGUI WINDOW ---
-// Its own window, own D3D11 device, own swap chain, own message/render loop --
-// completely independent of the game's window and D3D12 renderer. We never touch
-// the game's swap chain or command queue, so this can't destabilize the game the
-// way hooking its renderer did.
 static HWND g_hwnd = nullptr;
 static ID3D11Device* g_device = nullptr;
 static ID3D11DeviceContext* g_context = nullptr;
@@ -131,14 +120,6 @@ static LRESULT CALLBACK FormWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
     return DefWindowProcA(hwnd, msg, wParam, lParam);
 }
 
-// Lua's message_format is AP.RenderFormat.ANSI, so apclientpp's render_json
-// (apclient.hpp's color2ansi) embeds these exact escape codes for item
-// classification (plum/slateblue/salmon/cyan), locations, players
-// (magenta/yellow), etc. right in the chat text. We map each code back to
-// the real UI hex from Archipelago's NetUtils.py color_codes table (the ANSI
-// codes are just close-enough terminal approximations of those) -- except
-// where apclientpp's own color choice diverges from the canonical client,
-// see the location_id case below.
 static bool AnsiCodeToColor(const std::string& code, ImVec4& outColor) {
     if (code.rfind("38:5:", 0) == 0 || code.rfind("38;5;", 0) == 0) {
         int n = atoi(code.c_str() + 5);
@@ -153,16 +134,11 @@ static bool AnsiCodeToColor(const std::string& code, ImVec4& outColor) {
     case 31: outColor = ImVec4(0.933f, 0.0f,   0.0f,   1.0f); return true; // red     #EE0000
     case 32: outColor = ImVec4(0.0f,   1.0f,   0.498f, 1.0f); return true; // green   #00FF7F
     case 33: outColor = ImVec4(0.980f, 0.980f, 0.824f, 1.0f); return true; // yellow  #FAFAD2
-    // apclientpp's render_json hardcodes "blue" (ansi 34) for location_id, but the
-    // canonical Python client (NetUtils.py's _handle_location_name) colors locations
-    // green (#00FF7F) instead -- apclientpp doesn't use "blue" for anything else
-    // (it has no entrance_name handler at all), so remapping this code is safe and
-    // matches what players see in the real Archipelago client.
     case 34: outColor = ImVec4(0.0f,   1.0f,   0.498f, 1.0f); return true; // location -> green #00FF7F
     case 35: outColor = ImVec4(0.933f, 0.0f,   0.933f, 1.0f); return true; // magenta #EE00EE
     case 36: outColor = ImVec4(0.0f,   0.933f, 0.933f, 1.0f); return true; // cyan    #00EEEE
     case 90: outColor = ImVec4(0.6f,   0.6f,   0.6f,   1.0f); return true; // gray (hint: unspecified)
-    default: return false; // 0 (reset) and anything unrecognized -> default text color
+    default: return false;
     }
 }
 
@@ -172,8 +148,6 @@ struct AnsiSegment {
     std::string text;
 };
 
-// Splits a possibly ANSI-colored line into (color, text) runs, stripping the
-// escape codes themselves out of the visible text.
 static std::vector<AnsiSegment> ParseAnsiLine(const std::string& line) {
     std::vector<AnsiSegment> segments;
     ImVec4 currentColor(1, 1, 1, 1);
@@ -200,11 +174,6 @@ static std::vector<AnsiSegment> ParseAnsiLine(const std::string& line) {
     return segments;
 }
 
-// ImGui has no built-in multi-color rich text, so word-wrapping across
-// differently-colored segments has to be done by hand: walk every word in
-// order (regardless of which segment it came from), track how much width is
-// left on the current line, and manually break to a new line when a word
-// would overflow -- mirroring what ImGui::TextWrapped does for a single color.
 static void DrawWrappedColoredLine(const std::vector<AnsiSegment>& segments, const ImVec4& defaultColor) {
     float wrapWidth = ImGui::GetContentRegionAvail().x;
     float spaceWidth = ImGui::CalcTextSize(" ").x;
@@ -424,12 +393,6 @@ static DWORD WINAPI FormThread(LPVOID) {
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
 
-    // Default ImGui font is a tiny 13px bitmap font that reads as cramped and
-    // blurry on today's high-resolution monitors. Load Roboto (Apache 2.0,
-    // see kh1_overlay_font_LICENSE.txt) shipped next to this DLL -- a real
-    // path on disk works identically on Windows and under Proton/Wine, unlike
-    // reaching into an OS font store. Fall back to the built-in font if the
-    // file is ever missing (e.g. an older install).
     char fontPath[MAX_PATH];
     snprintf(fontPath, MAX_PATH, "%skh1_overlay_font.ttf", g_dllDir);
     ImFont* font = io.Fonts->AddFontFromFileTTF(fontPath, 20.0f);
@@ -481,9 +444,6 @@ static DWORD WINAPI FormThread(LPVOID) {
         Sleep(16);
     }
 
-    // Reached on WM_QUIT or when DllMain(DLL_PROCESS_DETACH) asks us to stop --
-    // either way, fully tear down before this thread returns so nothing is left
-    // executing inside this DLL's code if/when it gets unloaded out from under us.
     LogDebug("Form window thread shutting down");
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
@@ -506,7 +466,6 @@ static void EnsureFormThreadStarted() {
 static void ToggleFormVisibility() {
     EnsureFormThreadStarted();
 
-    // First press only: the form thread needs a moment to create the window.
     for (int i = 0; i < 50 && !g_hwnd; ++i) {
         Sleep(10);
     }
@@ -522,8 +481,6 @@ static void ToggleFormVisibility() {
 }
 
 // --- LUA-CALLABLE FUNCTIONS ---
-
-// Called every Lua frame to push live connection state into the form's status display.
 extern "C" int l_set_status(void* L) {
     int connected = p_lua_toboolean(L, 1);
     const char* slot = p_lua_tolstring(L, 2, nullptr);
@@ -546,9 +503,6 @@ extern "C" int l_set_status(void* L) {
     return 0;
 }
 
-// Called on a connection failure (wrong slot name, socket error, disconnect,
-// timeout) with a human-readable message to show on the Connect tab. Called
-// with an empty string to clear the error (fresh attempt / successful connect).
 extern "C" int l_set_connect_error(void* L) {
     const char* msg = p_lua_tolstring(L, 1, nullptr);
     AcquireSRWLockExclusive(&g_lock);
@@ -557,7 +511,6 @@ extern "C" int l_set_connect_error(void* L) {
     return 0;
 }
 
-// Reads the array of strings at Lua stack argument argIdx into out.
 static const unsigned long long MAX_LIST_ENTRIES = 5000;
 static void ReadStringArray(void* L, int argIdx, std::vector<std::string>& out) {
     out.clear();
@@ -572,8 +525,6 @@ static void ReadStringArray(void* L, int argIdx, std::vector<std::string>& out) 
     }
 }
 
-// Called whenever the received-items list grows, with the full list of
-// already-resolved display names (Lua resolves IDs -> names via ap:get_item_name).
 extern "C" int l_set_items(void* L) {
     std::vector<std::string> names;
     ReadStringArray(L, 1, names);
@@ -583,7 +534,6 @@ extern "C" int l_set_items(void* L) {
     return 0;
 }
 
-// Same as l_set_items, for checked-location display names.
 extern "C" int l_set_locations(void* L) {
     std::vector<std::string> names;
     ReadStringArray(L, 1, names);
@@ -593,8 +543,6 @@ extern "C" int l_set_locations(void* L) {
     return 0;
 }
 
-// Called once at startup with the seed's slot_name setting, to prefill the
-// Slot Name field on the Connect tab.
 extern "C" int l_set_default_slot(void* L) {
     const char* slot = p_lua_tolstring(L, 1, nullptr);
     AcquireSRWLockExclusive(&g_lock);
@@ -603,9 +551,6 @@ extern "C" int l_set_default_slot(void* L) {
     return 0;
 }
 
-// Called once at startup with the seed's randomizer settings, pre-formatted by
-// Lua as "key: value" strings (settings are static for the seed, unlike the
-// other lists which grow over a session).
 extern "C" int l_set_settings(void* L) {
     std::vector<std::string> lines;
     ReadStringArray(L, 1, lines);
@@ -615,8 +560,6 @@ extern "C" int l_set_settings(void* L) {
     return 0;
 }
 
-// Called whenever the chat/message log grows, with the full (capped) list of
-// already-rendered display strings (Lua renders via ap:render_json/on_print).
 extern "C" int l_set_messages(void* L) {
     std::vector<std::string> names;
     ReadStringArray(L, 1, names);
@@ -626,8 +569,6 @@ extern "C" int l_set_messages(void* L) {
     return 0;
 }
 
-// Called every Lua frame. Returns a one-shot string the first frame after the
-// user submits the Messages tab's chat box, or 0 results if nothing pending.
 extern "C" int l_poll_send_message(void* L) {
     bool has;
     char text[512];
@@ -645,8 +586,6 @@ extern "C" int l_poll_send_message(void* L) {
     return 1;
 }
 
-// Called every Lua frame. Polls F4 to show/hide the form; returns a one-shot
-// {host=, slot=, password=} table once the user clicks Connect.
 extern "C" int l_poll_connect_request(void* L) {
     static bool lastF4 = false;
     bool currF4 = (GetAsyncKeyState(VK_F4) & 0x8000) != 0;
@@ -690,10 +629,6 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {nullptr, nullptr}
 };
 
-// LuaBackend (the OpenKH Lua host) embeds the Lua 5.4 runtime in its own DLL
-// rather than loading a separate "lua54.dll", and that host DLL's name varies
-// by build/game. So instead of guessing a filename, walk every module loaded
-// in this process and use whichever one actually exports the Lua C API.
 static HMODULE FindLuaModule() {
     HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, GetCurrentProcessId());
     if (snap == INVALID_HANDLE_VALUE) return nullptr;
@@ -735,10 +670,6 @@ extern "C" __declspec(dllexport) int luaopen_kh1_overlay(void* L) {
     }
 
     if (!p_lua_createtable || !p_luaL_setfuncs || !p_lua_rawlen || !p_lua_rawgeti || !p_lua_settop) {
-        // Couldn't find a loaded module exporting the Lua C API -- bail out
-        // without touching any of them. Returning 0 (no pushed values) makes
-        // require() hand back `true` rather than crashing on a null function
-        // pointer call.
         LogDebug("luaopen_kh1_overlay: failed to resolve Lua API exports, aborting safely");
         return 0;
     }
@@ -753,26 +684,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
         GetModuleFileNameA(hModule, g_dllDir, MAX_PATH);
         char* last = strrchr(g_dllDir, '\\');
         if (last) *(last + 1) = '\0';
-
-        // Pin ourselves in memory with an extra reference we never release.
-        // LuaBackend's script-refresh feature appears to FreeLibrary() native
-        // modules it required, as part of giving scripts a clean reload. If our
-        // background form thread is still running at that exact moment, having
-        // this DLL's code unmapped out from under it is an instant crash --
-        // and waiting for the thread to exit from DLL_PROCESS_DETACH risks a
-        // loader-lock deadlock instead (confirmed: the thread got as far as
-        // logging "shutting down" and then never finished). Holding an extra
-        // reference means a single external FreeLibrary() call just decrements
-        // our refcount instead of actually unloading us, so the thread is never
-        // disturbed and DLL_PROCESS_DETACH is never reached mid-session at all.
         char selfPath[MAX_PATH];
         GetModuleFileNameA(hModule, selfPath, MAX_PATH);
         LoadLibraryA(selfPath);
     } else if (reason == DLL_PROCESS_DETACH) {
-        // Only reached on real process shutdown now. When lpReserved is non-null
-        // the process is terminating and other threads may already be gone, so
-        // per Microsoft's own guidance we must not synchronize with anything
-        // here -- just let the OS reclaim everything.
         (void)lpReserved;
         g_shuttingDown = true;
     }
