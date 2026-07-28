@@ -21,8 +21,13 @@
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Defeat Riku Potion reward code
 ; - KGR[0] Script 4:
-;   - REMOVED: item counting, save_data accumulation, quota computation
-;   - REMOVED: quota checks no longer needed, always proceed to animation
+;   - New get Log qty
+;   - Old get Log qty
+;   - New get Cloth qty
+;   - Old get Cloth qty
+;   - New get Rope qty
+;   - Old get Rope qty
+;   - Don't remove DI items
 ; - KGR[0] Script 5:
 ;   - Give reward always (don't check for 99 Potions)
 ;   - New Defeat Trio Potion reward code
@@ -1824,86 +1829,107 @@
   00000009  push            0x0             
   6D000018  syscall         109               ; Start_texture_animation
 
-; REMOVED: item counting, save_data accumulation, quota computation
-;   C0000009  push            0xC0              ; 192
-;   FD000018  syscall         253               ; Check_bag_item_count
-;   0C090011  write_dword     [0x90C]           ; runtime?[0x90C]
-;   C1000009  push            0xC1              ; 193
-;   FD000018  syscall         253               ; Check_bag_item_count
-;   10090011  write_dword     [0x910]           ; runtime?[0x910]
-;   C2000009  push            0xC2              ; 194
-;   FD000018  syscall         253               ; Check_bag_item_count
-;   14090011  write_dword     [0x914]           ; runtime?[0x914]
-;   0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
-;   0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
-;   00000001  alu             add             
-;   0C04000D  write_byte      [0x40C]           ; save_data[0x40C]
-;   0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
-;   10090010  read_dword      [0x910]           ; runtime?[0x910]
-;   00000001  alu             add             
-;   0D04000D  write_byte      [0x40D]           ; save_data[0x40D]
-;   0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
-;   14090010  read_dword      [0x914]           ; runtime?[0x914]
-;   00000001  alu             add             
-;   0E04000D  write_byte      [0x40E]           ; save_data[0x40E]
-;   02000009  push            0x2             
-;   0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
-;   01000001  alu             sub             
-;   34090011  write_dword     [0x934]           ; runtime?[0x934]
-;   01000009  push            0x1             
-;   0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
-;   01000001  alu             sub             
-;   38090011  write_dword     [0x938]           ; runtime?[0x938]
-;   01000009  push            0x1             
-;   0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
-;   01000001  alu             sub             
-;   3C090011  write_dword     [0x93C]           ; runtime?[0x93C]
-;   1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
-;   01000009  push            0x1             
-;   06000001  alu             eq              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_2  ; → PC 1657
-;   C0000009  push            0xC0              ; 192
-;   0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
-;   C1000009  push            0xC1              ; 193
-;   10090010  read_dword      [0x910]           ; runtime?[0x910]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
-;   C2000009  push            0xC2              ; 194
-;   14090010  read_dword      [0x914]           ; runtime?[0x914]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_3  ; → PC 1685
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_2:
-;   1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
-;   00000009  push            0x0             
-;   06000001  alu             eq              
-;   34090010  read_dword      [0x934]           ; runtime?[0x934]
-;   00000009  push            0x0             
-;   0A000001  alu             le              
-;   0C000001  alu             and             
-;   38090010  read_dword      [0x938]           ; runtime?[0x938]
-;   00000009  push            0x0             
-;   0A000001  alu             le              
-;   0C000001  alu             and             
-;   3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
-;   00000009  push            0x0             
-;   0A000001  alu             le              
-;   0C000001  alu             and             
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_3  ; → PC 1685
-;   C0000009  push            0xC0              ; 192
-;   0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
-;   C1000009  push            0xC1              ; 193
-;   10090010  read_dword      [0x910]           ; runtime?[0x910]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
-;   C2000009  push            0xC2              ; 194
-;   14090010  read_dword      [0x914]           ; runtime?[0x914]
-;   05000001  alu             negate          
-;   02010018  syscall         258               ; Change_bag_items
+; New get Log qty
+  00000009  push            0x00
+
+; Old get Log qty
+;  C0000009  push            0xC0              ; 192
+;  FD000018  syscall         253               ; Check_bag_item_count
+
+  0C090011  write_dword     [0x90C]           ; runtime?[0x90C]
+
+; New get Cloth qty
+  00000009  push            0x00
+
+; Old get Cloth qty
+;  C1000009  push            0xC1              ; 193
+;  FD000018  syscall         253               ; Check_bag_item_count
+
+  10090011  write_dword     [0x910]           ; runtime?[0x910]
+
+; New get Rope qty
+  00000009  push            0x00
+
+; Old get Rope qty
+;  C2000009  push            0xC2              ; 194
+;  FD000018  syscall         253               ; Check_bag_item_count
+
+  14090011  write_dword     [0x914]           ; runtime?[0x914]
+  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+  0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
+  00000001  alu             add             
+  0C04000D  write_byte      [0x40C]           ; save_data[0x40C]
+  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
+  10090010  read_dword      [0x910]           ; runtime?[0x910]
+  00000001  alu             add             
+  0D04000D  write_byte      [0x40D]           ; save_data[0x40D]
+  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
+  14090010  read_dword      [0x914]           ; runtime?[0x914]
+  00000001  alu             add             
+  0E04000D  write_byte      [0x40E]           ; save_data[0x40E]
+  02000009  push            0x2             
+  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+  01000001  alu             sub             
+  34090011  write_dword     [0x934]           ; runtime?[0x934]
+  01000009  push            0x1             
+  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
+  01000001  alu             sub             
+  38090011  write_dword     [0x938]           ; runtime?[0x938]
+  01000009  push            0x1             
+  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
+  01000001  alu             sub             
+  3C090011  write_dword     [0x93C]           ; runtime?[0x93C]
+  1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
+  01000009  push            0x1             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_2  ; → PC 1657
+
+; Don't remove DI items
+;  C0000009  push            0xC0              ; 192
+;  0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+;  C1000009  push            0xC1              ; 193
+;  10090010  read_dword      [0x910]           ; runtime?[0x910]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+;  C2000009  push            0xC2              ; 194
+;  14090010  read_dword      [0x914]           ; runtime?[0x914]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_3  ; → PC 1685
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_2:
+  1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
+  00000009  push            0x0             
+  06000001  alu             eq              
+  34090010  read_dword      [0x934]           ; runtime?[0x934]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  38090010  read_dword      [0x938]           ; runtime?[0x938]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_3  ; → PC 1685
+  
+; Don't remove DI items
+;  C0000009  push            0xC0              ; 192
+;  0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+;  C1000009  push            0xC1              ; 193
+;  10090010  read_dword      [0x910]           ; runtime?[0x910]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+;  C2000009  push            0xC2              ; 194
+;  14090010  read_dword      [0x914]           ; runtime?[0x914]
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
 
 @UK_di01a_ev_asm_KGR_0_SCRIPT_4_3:
   1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
@@ -1912,21 +1938,18 @@
   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_14  ; → PC 1869
   04000009  push            0x4             
   020B000D  write_byte      [0xB02]           ; save_data[0x902]  (alias, unsigned)
-
-; REMOVED: quota checks no longer needed, always proceed to animation
-  ; 34090010  read_dword      [0x934]           ; runtime?[0x934]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 38090010  read_dword      [0x938]           ; runtime?[0x938]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 0C000001  alu             and             
-  ; 3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 0C000001  alu             and             
-  ; ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_8  ; → PC 1782
-
+  34090010  read_dword      [0x934]           ; runtime?[0x934]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  38090010  read_dword      [0x938]           ; runtime?[0x938]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_8  ; → PC 1782
   06000009  push            0x6             
   15000015  push_cond       0x15            
   0C000016  init_call       0xC               ; → Script 12 (0x20005)  PC 5493
@@ -2010,101 +2033,97 @@
   15000015  push_cond       0x15            
   0C000017  await_call      0xC               ; → Script 12 (0x20005)  PC 5493
   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_13  ; → PC 1868
-
-; --- REMOVED: _SCRIPT_4_8 through _SCRIPT_4_12 were the "quota not met" animation+dialogue
-;              path, now unreachable since we removed the beqz that branched here ---
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_8:
-;   06000009  push            0x6             
-;   15000015  push_cond       0x15            
-;   0B000016  init_call       0xB               ; → Script 11 (0x20004)  PC 5462
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   54010009  push            0x154             ; 340
-;   0A000001  alu             le              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   0E010009  push            0x10E             ; 270
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_9  ; → PC 1804
-;   CA000009  push            0xCA              ; 202
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_9:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   B4000009  push            0xB4              ; 180
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_10  ; → PC 1819
-;   CC000009  push            0xCC              ; 204
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_10:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   5A000009  push            0x5A              ; 90
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_11  ; → PC 1834
-;   CB000009  push            0xCB              ; 203
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_11:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   14000009  push            0x14              ; 20
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
-;   C9000009  push            0xC9              ; 201
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12:
-;   67000018  syscall         103               ; Wait_motion_end
-;   CD000009  push            0xCD              ; 205
-;   0D000018  syscall         13                ; Change_motion
-;   1D000009  push            0x1D              ; 29
-;   08000018  syscall         8                 ; Set_wait_timer
-;   1D000009  push            0x1D              ; 29
-;   45000009  push            0x45              ; 69
-;   01000009  push            0x1             
-;   7B000018  syscall         123               ; Play_partial_motion
-;   06000009  push            0x6             
-;   15000015  push_cond       0x15            
-;   0B000017  await_call      0xB               ; → Script 11 (0x20004)  PC 5462
-;   01000009  push            0x1             
-;   1204000D  write_byte      [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
-;   00000009  push            0x0             
-;   0C04000D  write_byte      [0x40C]           ; save_data[0x40C]
-;   00000009  push            0x0             
-;   0D04000D  write_byte      [0x40D]           ; save_data[0x40D]
-;   00000009  push            0x0             
-;   0E04000D  write_byte      [0x40E]           ; save_data[0x40E]
-
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_8:
+  06000009  push            0x6             
+  15000015  push_cond       0x15            
+  0B000016  init_call       0xB               ; → Script 11 (0x20004)  PC 5462
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  54010009  push            0x154             ; 340
+  0A000001  alu             le              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  0E010009  push            0x10E             ; 270
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_9  ; → PC 1804
+  CA000009  push            0xCA              ; 202
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_9:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  B4000009  push            0xB4              ; 180
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_10  ; → PC 1819
+  CC000009  push            0xCC              ; 204
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_10:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  5A000009  push            0x5A              ; 90
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_11  ; → PC 1834
+  CB000009  push            0xCB              ; 203
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_11:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  14000009  push            0x14              ; 20
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 1848
+  C9000009  push            0xC9              ; 201
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_12:
+  67000018  syscall         103               ; Wait_motion_end
+  CD000009  push            0xCD              ; 205
+  0D000018  syscall         13                ; Change_motion
+  1D000009  push            0x1D              ; 29
+  08000018  syscall         8                 ; Set_wait_timer
+  1D000009  push            0x1D              ; 29
+  45000009  push            0x45              ; 69
+  01000009  push            0x1             
+  7B000018  syscall         123               ; Play_partial_motion
+  06000009  push            0x6             
+  15000015  push_cond       0x15            
+  0B000017  await_call      0xB               ; → Script 11 (0x20004)  PC 5462
+  01000009  push            0x1             
+  1204000D  write_byte      [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
+  00000009  push            0x0             
+  0C04000D  write_byte      [0x40C]           ; save_data[0x40C]
+  00000009  push            0x0             
+  0D04000D  write_byte      [0x40D]           ; save_data[0x40D]
+  00000009  push            0x0             
+  0E04000D  write_byte      [0x40E]           ; save_data[0x40E]
 @UK_di01a_ev_asm_KGR_0_SCRIPT_4_13:
   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_35  ; → PC 2217
 @UK_di01a_ev_asm_KGR_0_SCRIPT_4_14:
@@ -2114,21 +2133,18 @@
   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_30  ; → PC 2139
   00000009  push            0x0             
   18090011  write_dword     [0x918]           ; runtime?[0x918]
-
-; --- REMOVED: quota checks, always fall through to dialogue ---
-  ; 34090010  read_dword      [0x934]           ; runtime?[0x934]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 38090010  read_dword      [0x938]           ; runtime?[0x938]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 0C000001  alu             and             
-  ; 3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
-  ; 00000009  push            0x0             
-  ; 0A000001  alu             le              
-  ; 0C000001  alu             and             
-  ; ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_19  ; → PC 1965
-
+  34090010  read_dword      [0x934]           ; runtime?[0x934]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  38090010  read_dword      [0x938]           ; runtime?[0x938]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  3C090010  read_dword      [0x93C]           ; runtime?[0x93C]
+  00000009  push            0x0             
+  0A000001  alu             le              
+  0C000001  alu             and             
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_19  ; → PC 1965
   06000009  push            0x6             
   15000015  push_cond       0x15            
   0C000016  init_call       0xC               ; → Script 12 (0x20005)  PC 5493
@@ -2211,105 +2227,101 @@
   06000009  push            0x6             
   15000015  push_cond       0x15            
   0C000017  await_call      0xC               ; → Script 12 (0x20005)  PC 5493
-
-; --- REMOVED: _SCRIPT_4_19 through _SCRIPT_4_23 handled "has items but quota not met"
-;              dialogue via Script 13 — no longer reachable ---
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_19:
-;   0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
-;   00000009  push            0x0             
-;   06000001  alu             eq              
-;   10090010  read_dword      [0x910]           ; runtime?[0x910]
-;   00000009  push            0x0             
-;   06000001  alu             eq              
-;   0C000001  alu             and             
-;   14090010  read_dword      [0x914]           ; runtime?[0x914]
-;   00000009  push            0x0             
-;   06000001  alu             eq              
-;   0C000001  alu             and             
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_24  ; → PC 2055
-;   06000009  push            0x6             
-;   15000015  push_cond       0x15            
-;   0D000016  init_call       0xD               ; → Script 13 (0x20006)  PC 5524
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   54010009  push            0x154             ; 340
-;   0A000001  alu             le              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   0E010009  push            0x10E             ; 270
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_20  ; → PC 1999
-;   CA000009  push            0xCA              ; 202
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_20:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   B4000009  push            0xB4              ; 180
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_21  ; → PC 2014
-;   CC000009  push            0xCC              ; 204
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_21:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   5A000009  push            0x5A              ; 90
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_22  ; → PC 2029
-;   CB000009  push            0xCB              ; 203
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-;   ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_22:
-;   24090010  read_dword      [0x924]           ; runtime?[0x924]
-;   14000009  push            0x14              ; 20
-;   08000001  alu             ge              
-;   ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
-;   C9000009  push            0xC9              ; 201
-;   05000009  push            0x5             
-;   6E000018  syscall         110               ; Motion_change_no_loop_interp
-;   05000009  push            0x5             
-;   08000018  syscall         8                 ; Set_wait_timer
-;   14000009  push            0x14              ; 20
-;   14000015  push_cond       0x14            
-;   AF000018  syscall         175               ; Face_actor
-;   14000009  push            0x14              ; 20
-;   08000018  syscall         8                 ; Set_wait_timer
-; @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23:
-;   67000018  syscall         103               ; Wait_motion_end
-;   CD000009  push            0xCD              ; 205
-;   0D000018  syscall         13                ; Change_motion
-;   1D000009  push            0x1D              ; 29
-;   08000018  syscall         8                 ; Set_wait_timer
-;   1D000009  push            0x1D              ; 29
-;   45000009  push            0x45              ; 69
-;   01000009  push            0x1             
-;   7B000018  syscall         123               ; Play_partial_motion
-;   06000009  push            0x6             
-;   15000015  push_cond       0x15            
-;   0D000017  await_call      0xD               ; → Script 13 (0x20006)  PC 5524
-
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_19:
+  0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
+  00000009  push            0x0             
+  06000001  alu             eq              
+  10090010  read_dword      [0x910]           ; runtime?[0x910]
+  00000009  push            0x0             
+  06000001  alu             eq              
+  0C000001  alu             and             
+  14090010  read_dword      [0x914]           ; runtime?[0x914]
+  00000009  push            0x0             
+  06000001  alu             eq              
+  0C000001  alu             and             
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_24  ; → PC 2055
+  06000009  push            0x6             
+  15000015  push_cond       0x15            
+  0D000016  init_call       0xD               ; → Script 13 (0x20006)  PC 5524
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  54010009  push            0x154             ; 340
+  0A000001  alu             le              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  0E010009  push            0x10E             ; 270
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_20  ; → PC 1999
+  CA000009  push            0xCA              ; 202
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_20:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  B4000009  push            0xB4              ; 180
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_21  ; → PC 2014
+  CC000009  push            0xCC              ; 204
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_21:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  5A000009  push            0x5A              ; 90
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_22  ; → PC 2029
+  CB000009  push            0xCB              ; 203
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+  ????????  jmp             @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_22:
+  24090010  read_dword      [0x924]           ; runtime?[0x924]
+  14000009  push            0x14              ; 20
+  08000001  alu             ge              
+  ????????  beqz            @UK_di01a_ev_asm_KGR_0_SCRIPT_4_23  ; → PC 2043
+  C9000009  push            0xC9              ; 201
+  05000009  push            0x5             
+  6E000018  syscall         110               ; Motion_change_no_loop_interp
+  05000009  push            0x5             
+  08000018  syscall         8                 ; Set_wait_timer
+  14000009  push            0x14              ; 20
+  14000015  push_cond       0x14            
+  AF000018  syscall         175               ; Face_actor
+  14000009  push            0x14              ; 20
+  08000018  syscall         8                 ; Set_wait_timer
+@UK_di01a_ev_asm_KGR_0_SCRIPT_4_23:
+  67000018  syscall         103               ; Wait_motion_end
+  CD000009  push            0xCD              ; 205
+  0D000018  syscall         13                ; Change_motion
+  1D000009  push            0x1D              ; 29
+  08000018  syscall         8                 ; Set_wait_timer
+  1D000009  push            0x1D              ; 29
+  45000009  push            0x45              ; 69
+  01000009  push            0x1             
+  7B000018  syscall         123               ; Play_partial_motion
+  06000009  push            0x6             
+  15000015  push_cond       0x15            
+  0D000017  await_call      0xD               ; → Script 13 (0x20006)  PC 5524
 @UK_di01a_ev_asm_KGR_0_SCRIPT_4_24:
   18090010  read_dword      [0x918]           ; runtime?[0x918]
   00000009  push            0x0             
@@ -2522,7 +2534,7 @@
   C8000009  push            0xC8              ; 200
   0D000018  syscall         13                ; Change_motion
   50010018  syscall         336               ; Make_invincible
-  10000005  yield           0x10            
+  10000005  yield           0x10                     
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 5  |  17 subscript(s)  |  PC 2256  |  file 0x10729  |  KGR 0
