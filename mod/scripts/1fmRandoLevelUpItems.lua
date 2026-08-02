@@ -8,22 +8,10 @@ local seed_vars = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
 local item_location_handlers = require("item_location_handlers")
 
--- Tracks the highest level we've already given Level Slot rewards for.
--- Stored directly via WriteByte/ReadByte (not kh1_lua_library's gummi qty
--- helpers) because set_gummi_qty_at_index clamps to 99 and levels go to 100.
 local LEVEL_GUMMI_IDX = 0x7A
+local AP_ITEM_ID = 2641230
 
-local AP_ITEM_ID = 2641230 -- Placeholder for items delivered remotely over the AP network
 
--- This is the only script that delivers level-up rewards now (both Slot 1 and
--- Slot 2). Everything goes through the same generic
--- item_location_handlers.handle_item_received path used by every other
--- location in the game -- there's no native level-up table to patch anymore.
-
--- Display names for the "Item" category (264_1xxx), keyed by local item number.
--- 239-245 are the synthetic stat-increase items: handle_item_received delivers
--- them as ordinary stock (via handle_item), and 1fmRandoHandleItems.lua's
--- handle_stat_ups converts that stock into a permanent stat boost each frame.
 local item_names = {
     [1]="Potion", [2]="Hi-Potion", [3]="Ether", [4]="Elixir",
     [6]="Mega-Potion", [7]="Mega-Ether", [8]="Megalixir",
@@ -90,8 +78,6 @@ local shared_ability_names = {
     [2642001]="High Jump", [2642002]="Mermaid Kick", [2642003]="Glide",
 }
 
--- Display names for Sora abilities (264_3xxx), matching the names used in
--- ap_costs.json / kh1_lua_library's enable_ability.
 local sora_ability_names = {
     [2643005]="Treasure Magnet", [2643006]="Combo Plus", [2643007]="Air Combo Plus",
     [2643008]="Critical Plus",
