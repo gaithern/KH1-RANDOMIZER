@@ -70,6 +70,7 @@ static std::vector<std::string> g_messages;
 static std::vector<std::string> g_settingsLines;
 
 static bool g_pending = false;
+static bool g_everConnected = false;
 static char g_pendingHost[256] = "";
 static char g_pendingSlot[256] = "";
 static char g_pendingPass[256] = "";
@@ -497,6 +498,7 @@ extern "C" int l_set_status(void* L) {
 
     AcquireSRWLockExclusive(&g_lock);
     g_connected = connected != 0;
+    if (g_connected) g_everConnected = true;
     if (slot) strncpy_s(g_statusSlot, slot, _TRUNCATE);
     g_itemsReceived = static_cast<int>(items);
     ReleaseSRWLockExclusive(&g_lock);
@@ -616,6 +618,22 @@ extern "C" int l_poll_connect_request(void* L) {
     return 1;
 }
 
+extern "C" int l_request_reconnect(void* L) {
+    bool queued = false;
+    AcquireSRWLockExclusive(&g_lock);
+    if (g_everConnected && g_pendingSlot[0] != '\0') {
+        g_pending = true;
+        queued = true;
+    }
+    ReleaseSRWLockExclusive(&g_lock);
+
+    LogDebug(queued ? "request_reconnect: queued reconnect with stored details"
+                    : "request_reconnect: no previous successful connection, ignoring");
+
+    p_lua_pushboolean(L, queued ? 1 : 0);
+    return 1;
+}
+
 static const luaL_Reg kh1_overlay_lib[] = {
     {"set_status", reinterpret_cast<void*>(l_set_status)},
     {"set_connect_error", reinterpret_cast<void*>(l_set_connect_error)},
@@ -626,6 +644,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"set_default_slot", reinterpret_cast<void*>(l_set_default_slot)},
     {"poll_send_message", reinterpret_cast<void*>(l_poll_send_message)},
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
+    {"request_reconnect", reinterpret_cast<void*>(l_request_reconnect)},
     {nullptr, nullptr}
 };
 
@@ -669,7 +688,8 @@ extern "C" __declspec(dllexport) int luaopen_kh1_overlay(void* L) {
         p_lua_settop      = (t_lua_settop)     GetProcAddress(hLua, "lua_settop");
     }
 
-    if (!p_lua_createtable || !p_luaL_setfuncs || !p_lua_rawlen || !p_lua_rawgeti || !p_lua_settop) {
+    if (!p_lua_createtable || !p_luaL_setfuncs || !p_lua_rawlen || !p_lua_rawgeti || !p_lua_settop
+        || !p_lua_pushboolean) {
         LogDebug("luaopen_kh1_overlay: failed to resolve Lua API exports, aborting safely");
         return 0;
     }

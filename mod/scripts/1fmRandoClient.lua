@@ -341,6 +341,14 @@ function _OnInit()
         if type(settings) == "table" and type(settings["slot_name"]) == "string" then
             kh1_overlay.set_default_slot(settings["slot_name"])
         end
+        -- The overlay DLL outlives a script reload, so if it still holds details from a connection
+        -- that previously succeeded, re-arm the request and let _OnFrame connect on the next frame.
+        if type(kh1_overlay.request_reconnect) == "function" then
+            local ok, queued = pcall(kh1_overlay.request_reconnect)
+            if ok and queued then
+                ConsolePrint("Scripts reloaded, reconnecting with previous details...")
+            end
+        end
     else
         ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
     end
