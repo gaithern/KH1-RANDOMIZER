@@ -85,8 +85,8 @@ local function run_section(name, fn)
     end
     if text ~= last_script_error then
         last_script_error = text
-        set_overlay_error(text)
-        push_chat_message(text)
+        pcall(set_overlay_error, text)
+        pcall(push_chat_message, text)
     end
     return false
 end
