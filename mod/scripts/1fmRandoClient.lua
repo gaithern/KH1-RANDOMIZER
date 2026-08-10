@@ -16,6 +16,7 @@ local map_update             = require("client.map_update")
 
 local MAX_CONNECT_FAILURES = 3
 local CONNECT_TIMEOUT_SECONDS = 15
+local ERROR_LOG_INTERVAL_FRAMES = 600
 
 local last_attempted_slot = nil
 local connect_failures = 0
@@ -24,6 +25,10 @@ local connect_attempt_time = nil
 local last_reported_items_count = 0
 local last_reported_locations_count = 0
 local last_reported_chat_version = 0
+local last_sent_location_index = 0
+local last_sent_hint_index = 0
+local section_error_counts = {}
+local last_script_error = nil
 
 -- AP globals
 local game_name = "Kingdom Hearts"
@@ -65,11 +70,34 @@ local function set_overlay_error(msg)
     end
 end
 
+local function run_section(name, fn)
+    local ok, err = pcall(fn)
+    if ok then
+        section_error_counts[name] = nil
+        return true
+    end
+
+    local count = (section_error_counts[name] or 0) + 1
+    section_error_counts[name] = count
+    local text = "Script error in " .. name .. ": " .. tostring(err)
+    if count <= 3 or count % ERROR_LOG_INTERVAL_FRAMES == 0 then
+        ConsolePrint("LUA ERROR (x" .. count .. ") " .. text)
+    end
+    if text ~= last_script_error then
+        last_script_error = text
+        pcall(set_overlay_error, text)
+        pcall(push_chat_message, text)
+    end
+    return false
+end
+
 local function reset_game_state()
     game_state.items_received = {}
     game_state.slot_data = {}
     game_state.victory = false
     game_state.goal_sent = false
+    last_sent_location_index = 0
+    last_sent_hint_index = 0
 end
 
 local function connect(server, slot, password)
@@ -145,6 +173,7 @@ local function connect(server, slot, password)
     end
 
     local function on_items_received(items)
+        local remote_location_ids = game_state.slot_data and game_state.slot_data.remote_location_ids or {}
         for _, item in ipairs(items) do
             local item_id = item.item
             local location_id = item.location
@@ -152,10 +181,12 @@ local function connect(server, slot, password)
             local player_id = ap:get_player_number()
             if 2641017 <= item_id and item_id <= 2641071 then
                 local acc_location_id = item_id - 2641017 + 2659100
-                table.insert(game_state.locations, acc_location_id)
+                if not kh1_lua_library.contains(game_state.locations, acc_location_id) then
+                    table.insert(game_state.locations, acc_location_id)
+                end
             end
             if 
-                (player_id == sender_id and kh1_lua_library.contains(game_state.slot_data.remote_location_ids, location_id))
+                (player_id == sender_id and kh1_lua_library.contains(remote_location_ids, location_id))
                 or (player_id == sender_id and location_id == -1)
                 or player_id ~= sender_id then
                 table.insert(game_state.items_received, item_id)
@@ -183,6 +214,7 @@ local function connect(server, slot, password)
         end
 
         if extra.type == "ItemSend" or extra.type == "ItemCheat" then
+            local remote_location_ids = game_state.slot_data and game_state.slot_data.remote_location_ids or {}
             local item_id = extra.item.item
             local receiver_id = extra.receiving
             local sender_id = extra.item.player
@@ -199,7 +231,7 @@ local function connect(server, slot, password)
                 elseif sender_id == ap:get_player_number() and receiver_id ~= sender_id then -- Item sent to someone else
                     line1 = item_name
                     line2 = "to " .. receiver_name
-                elseif kh1_lua_library.contains(game_state.slot_data.remote_location_ids, location_id) then
+                elseif kh1_lua_library.contains(remote_location_ids, location_id) then
                     line1 = item_name
                     line2 = nil
                 end
@@ -291,6 +323,37 @@ local function preload_system_or_bundled(filename)
     preload_dependency(filename)
 end
 
+local function refresh_connection_state()
+    if not ap then
+        is_connected = false
+        return
+    end
+    local ok, state = pcall(ap.get_state, ap)
+    if ok and state ~= nil then
+        is_connected = (state == AP.State.SLOT_CONNECTED)
+    end
+end
+
+local function send_pending_locations()
+    if #game_state.locations > last_sent_location_index then
+        local new_locations = {}
+        for i = last_sent_location_index + 1, #game_state.locations do
+            new_locations[#new_locations + 1] = game_state.locations[i]
+        end
+        ap:LocationChecks(new_locations)
+        last_sent_location_index = #game_state.locations
+    end
+
+    if #game_state.hinted_locations > last_sent_hint_index then
+        local new_hints = {}
+        for i = last_sent_hint_index + 1, #game_state.hinted_locations do
+            new_hints[#new_hints + 1] = game_state.hinted_locations[i]
+        end
+        ap:CreateHints(new_hints)
+        last_sent_hint_index = #game_state.hinted_locations
+    end
+end
+
 function _OnInit()
     preload_dependency("libwinpthread-1.dll")
     preload_dependency("libgcc_s_seh-1.dll")
@@ -309,6 +372,14 @@ function _OnInit()
         if type(settings) == "table" and type(settings["slot_name"]) == "string" then
             kh1_overlay.set_default_slot(settings["slot_name"])
         end
+        -- The overlay DLL outlives a script reload, so if it still holds details from a connection
+        -- that previously succeeded, re-arm the request and let _OnFrame connect on the next frame.
+        if type(kh1_overlay.request_reconnect) == "function" then
+            local ok, queued = pcall(kh1_overlay.request_reconnect)
+            if ok and queued then
+                ConsolePrint("Scripts reloaded, reconnecting with previous details...")
+            end
+        end
     else
         ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
     end
@@ -324,7 +395,8 @@ end
 
 function _OnFrame()
     if canExecute then
-        local status, err = pcall(function()
+        run_section("overlay", function()
+            refresh_connection_state()
             if kh1_overlay then
                 kh1_overlay.set_status(is_connected, last_attempted_slot or "", #game_state.items_received)
 
@@ -395,7 +467,9 @@ function _OnFrame()
                     kh1_lua_library.show_prompt({[1]=""},{[1]={"Connection timed out.", nil}},nil,142)
                 end
             end
+        end)
 
+        run_section("game state", function()
             if kh1_lua_library.get_world() ~= 0x00 and kh1_lua_library.get_world() ~= 0xFF then
                 frame_count = (frame_count + 1) % 60
                 game_state = send_locations.add_locations_to_locations_checked(location_map, game_state, frame_count)
@@ -420,7 +494,9 @@ function _OnFrame()
                     receive_items.receive_items_from_client(game_state.items_received)
                 end
             end
+        end)
 
+        run_section("map update", function()
             map_update.map_update_frame()
             if ap and map_update.is_stale() then
                 ap:Bounce(
@@ -430,17 +506,18 @@ function _OnFrame()
                 )
                 map_update.set_fresh()
             end
-            
+        end)
+
+        run_section("location sync", function()
             if ap then
-                ap:LocationChecks(game_state.locations)
-                ap:CreateHints(game_state.hinted_locations)
+                send_pending_locations()
+            end
+        end)
+
+        run_section("network poll", function()
+            if ap then
                 ap:poll()
             end
         end)
-        
-        if not status then
-            ConsolePrint("LUA ERROR: " .. tostring(err))
-            canExecute = false
-        end
     end
 end
