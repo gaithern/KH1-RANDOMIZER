@@ -364,7 +364,7 @@ static DWORD WINAPI FormThread(LPVOID) {
     wc.hCursor = LoadCursorA(nullptr, reinterpret_cast<LPCSTR>(IDC_ARROW));
     RegisterClassExA(&wc);
 
-    g_hwnd = CreateWindowExA(WS_EX_TOPMOST, wc.lpszClassName, "Archipelago Connection",
+    g_hwnd = CreateWindowExA(WS_EX_TOOLWINDOW, wc.lpszClassName, "KH1 Randomizer - Archipelago",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 720, 780, nullptr, nullptr, wc.hInstance, nullptr);
 
