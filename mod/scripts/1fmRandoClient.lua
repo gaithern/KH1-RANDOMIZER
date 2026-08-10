@@ -323,6 +323,37 @@ local function preload_system_or_bundled(filename)
     preload_dependency(filename)
 end
 
+local function refresh_connection_state()
+    if not ap then
+        is_connected = false
+        return
+    end
+    local ok, state = pcall(ap.get_state, ap)
+    if ok and state ~= nil then
+        is_connected = (state == AP.State.SLOT_CONNECTED)
+    end
+end
+
+local function send_pending_locations()
+    if #game_state.locations > last_sent_location_index then
+        local new_locations = {}
+        for i = last_sent_location_index + 1, #game_state.locations do
+            new_locations[#new_locations + 1] = game_state.locations[i]
+        end
+        ap:LocationChecks(new_locations)
+        last_sent_location_index = #game_state.locations
+    end
+
+    if #game_state.hinted_locations > last_sent_hint_index then
+        local new_hints = {}
+        for i = last_sent_hint_index + 1, #game_state.hinted_locations do
+            new_hints[#new_hints + 1] = game_state.hinted_locations[i]
+        end
+        ap:CreateHints(new_hints)
+        last_sent_hint_index = #game_state.hinted_locations
+    end
+end
+
 function _OnInit()
     preload_dependency("libwinpthread-1.dll")
     preload_dependency("libgcc_s_seh-1.dll")
@@ -359,37 +390,6 @@ function _OnInit()
         location_map = item_location_handlers.fill_location_map()
     else
         ConsolePrint("KH1 not detected, not running script")
-    end
-end
-
-local function refresh_connection_state()
-    if not ap then
-        is_connected = false
-        return
-    end
-    local ok, state = pcall(ap.get_state, ap)
-    if ok and state ~= nil then
-        is_connected = (state == AP.State.SLOT_CONNECTED)
-    end
-end
-
-local function send_pending_locations()
-    if #game_state.locations > last_sent_location_index then
-        local new_locations = {}
-        for i = last_sent_location_index + 1, #game_state.locations do
-            new_locations[#new_locations + 1] = game_state.locations[i]
-        end
-        ap:LocationChecks(new_locations)
-        last_sent_location_index = #game_state.locations
-    end
-
-    if #game_state.hinted_locations > last_sent_hint_index then
-        local new_hints = {}
-        for i = last_sent_hint_index + 1, #game_state.hinted_locations do
-            new_hints[#new_hints + 1] = game_state.hinted_locations[i]
-        end
-        ap:CreateHints(new_hints)
-        last_sent_hint_index = #game_state.hinted_locations
     end
 end
 
