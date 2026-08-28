@@ -87,32 +87,11 @@ local spell_order = {
     "Stop", "Stopra", "Stopga",
     "Aero", "Aerora", "Aeroga"
 }
-local original_spell_costs = {
-    30, 30, 30,
-    30, 30, 30,
-    100, 100, 100,
-    100, 100, 100,
-    100, 100, 100,
-    200, 200, 200,
-    200, 200, 200
-}
-local base_effectiveness = {
-    20, 28, 36,
-    22, 27, 34,
-    16, 20, 26,
-    15, 27, 36,
-    40, 55, 70,
-    2, 2, 2,
-    18, 18, 18
-}
-
+-- Base potency comes from the generator (already scaled by MP cost if scaling_spell_potency is on).
+-- Boost/Down accessories multiply on top of this.
 local effectiveness_values = {}
 for i, spell in ipairs(spell_order) do
-    local multiplier = 1.0
-    if seed_vars["settings"]["scaling_spell_potency"] then
-        multiplier = seed_vars["mp_costs"][i] / original_spell_costs[i]
-    end
-    effectiveness_values[spell] = math.max(math.floor(base_effectiveness[i] * multiplier + 0.5), 1)
+    effectiveness_values[spell] = seed_vars["spell_effectiveness"][i]
 end
 
 local aug_acc = {}
