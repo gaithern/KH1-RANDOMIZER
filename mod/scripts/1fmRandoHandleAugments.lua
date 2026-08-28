@@ -108,7 +108,10 @@ local base_effectiveness = {
 
 local effectiveness_values = {}
 for i, spell in ipairs(spell_order) do
-    local multiplier = seed_vars["mp_costs"][i] / original_spell_costs[i]
+    local multiplier = 1.0
+    if seed_vars["settings"]["scaling_spell_potency"] then
+        multiplier = seed_vars["mp_costs"][i] / original_spell_costs[i]
+    end
     effectiveness_values[spell] = math.max(math.floor(base_effectiveness[i] * multiplier + 0.5), 1)
 end
 

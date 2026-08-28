@@ -1,15 +1,24 @@
+---@diagnostic disable: undefined-global
 LUAGUI_NAME = "1fmRandoHandleMagic"
 LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Handle Spell Costs and Effectiveness"
 
+local kh1_lua_library = require("kh1_lua_library")
 local seed_vars = require("seed_vars")
 
 local costs_and_effc_applied = false
 
-local init_costs_offset = 0x5F58
-local init_efftv_offsets = {0x5F3C, 0x5F70}
+local spell_order = {
+    "Fire", "Fira", "Firaga",
+    "Blizzard", "Blizzara", "Blizzaga",
+    "Thunder", "Thundara", "Thundaga",
+    "Cure", "Cura", "Curaga",
+    "Gravity", "Gravira", "Graviga",
+    "Stop", "Stopra", "Stopga",
+    "Aero", "Aerora", "Aeroga"
+}
 
-local og_costs = {
+local original_spell_costs = {
     30, 30, 30,
     30, 30, 30,
     100, 100, 100,
@@ -19,19 +28,32 @@ local og_costs = {
     200, 200, 200
 }
 
+local base_effectiveness = {
+    20, 28, 36,
+    22, 27, 34,
+    16, 20, 26,
+    15, 27, 36,
+    40, 55, 70,
+    2, 2, 2,
+    18, 18, 18
+}
+
+local cost_tiers = {15, 30, 100, 200, 300}
+
 local function apply_costs()
-    for idx, cost in pairs(seed_vars["mp_costs"]) do
-        WriteShort(jumpHeights - 0xAC + init_costs_offset + (0x70 * (idx-1)), cost)
+    for idx, spell in ipairs(spell_order) do
+        local tier = kh1_lua_library.get_index(cost_tiers, seed_vars["mp_costs"][idx])
+        if tier then
+            kh1_lua_library.set_spell_cost(spell, tier)
+        end
     end
 end
 
 local function apply_effectiveness()
-    for idx, og_cost in pairs(og_costs) do
-        local multiplier = seed_vars["mp_costs"][idx] / og_cost
-        local curr_effectiveness = ReadByte(jumpHeights - 0xAC + init_efftv_offsets[1] + (0x70 * (idx-1)))
-        local new_effectiveness = math.ceil(curr_effectiveness * multiplier)
-        WriteShort(jumpHeights - 0xAC + init_efftv_offsets[1] + (0x70 * (idx-1)), new_effectiveness)
-        WriteShort(jumpHeights - 0xAC + init_efftv_offsets[2] + (0x70 * (idx-1)), new_effectiveness)
+    for idx, spell in ipairs(spell_order) do
+        local multiplier = seed_vars["mp_costs"][idx] / original_spell_costs[idx]
+        local new_effectiveness = math.max(math.floor(base_effectiveness[idx] * multiplier + 0.5), 1)
+        kh1_lua_library.set_spell_effectiveness(spell, new_effectiveness)
     end
 end
 
