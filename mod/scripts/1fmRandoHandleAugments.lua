@@ -87,8 +87,6 @@ local spell_order = {
     "Stop", "Stopra", "Stopga",
     "Aero", "Aerora", "Aeroga"
 }
--- Base potency comes from the generator (already scaled by MP cost if scaling_spell_potency is on).
--- Boost/Down accessories multiply on top of this.
 local effectiveness_values = {}
 for i, spell in ipairs(spell_order) do
     effectiveness_values[spell] = seed_vars["spell_effectiveness"][i]
