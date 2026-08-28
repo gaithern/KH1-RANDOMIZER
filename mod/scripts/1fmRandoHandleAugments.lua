@@ -87,9 +87,23 @@ local spell_order = {
     "Stop", "Stopra", "Stopga",
     "Aero", "Aerora", "Aeroga"
 }
+local vanilla_effectiveness = {
+    20, 28, 36,
+    22, 27, 34,
+    16, 20, 26,
+    15, 27, 36,
+    40, 55, 70,
+    2, 2, 2,
+    18, 18, 18
+}
+local base_effectiveness = seed_vars["spell_effectiveness"]
+if base_effectiveness == nil then
+    ConsolePrint("[Augments] spell_effectiveness.json missing (old seed?) - using vanilla spell potency")
+    base_effectiveness = vanilla_effectiveness
+end
 local effectiveness_values = {}
 for i, spell in ipairs(spell_order) do
-    effectiveness_values[spell] = seed_vars["spell_effectiveness"][i]
+    effectiveness_values[spell] = base_effectiveness[i]
 end
 
 local aug_acc = {}
