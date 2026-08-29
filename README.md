@@ -39,4 +39,7 @@ If you'd like to make a change to KH1Overlay, the entirety of the code lives in 
 If you'd like make changes or add a lua script, they structure is automatically picked up in `build.py`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.
 
 ### MDLS and Other Binary Edits
-Currently, MDLS files are edited using a hex editor.  I reocmmend [ImHex](https://imhex.werwolv.net/).  
+Currently, MDLS files are edited using a hex editor.  I reocmmend [ImHex](https://imhex.werwolv.net/).
+
+### Discord Notifications
+There is a custom discord notification GitHub action defined in `/.github/workflows/discord-notify.yml/`  This is to update the [KH1 Archipelago Randomizer Discord](https://www.kh1fmrando.com/discord) with changes to main (and main only, don't want to spam the channel).  The webhook URL is defined in a repository secret, and more can be added if we want to in the future.
