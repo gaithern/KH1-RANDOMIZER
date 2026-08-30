@@ -17,7 +17,7 @@ end
 function _OnFrame()
 	if ok then
 		if zantValue == 0 then
-			zantValue = ReadShort(zantHack) + 78
+			zantValue = ReadShort(zantHack) + 88
 		end
 		if ReadShort(zantHack) ~= zantValue then
 			WriteFloat(gravBreak, -1.0)
