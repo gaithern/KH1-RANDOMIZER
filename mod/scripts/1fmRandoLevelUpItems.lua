@@ -155,7 +155,7 @@ local function process_level(level)
     end
 
     if line1 then
-        kh1_lua_library.show_prompt({[1]=""}, {[1]={line1, line2}}, "Sora", 0)
+        kh1_lua_library.show_prompt({[1]="Sora"}, {[1]={line1, line2}}, nil, 0)
     end
 end
 
