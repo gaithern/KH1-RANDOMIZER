@@ -25,12 +25,13 @@ local NOTIFY_STYLE = 1
 local NOTIFY_X, NOTIFY_Y = 0, -130
 local NOTIFY_WIDTH, NOTIFY_HEIGHT = 10, 1
 local NOTIFY_TAIL = 0
+local NOTIFY_SOUND = 31
 
-local function notify(line1, line2)
+local function notify(line1, line2, sound)
     if not kh1_lua_library.open_text_box then return end
     local text = line2 and (line1 .. "\n" .. line2) or line1
     pcall(kh1_lua_library.open_text_box, text, 1, NOTIFY_SECONDS, NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y, NOTIFY_WIDTH, NOTIFY_HEIGHT, NOTIFY_TAIL)
-    pcall(kh1_lua_library.play_se2, 31, 0)
+    if sound then pcall(kh1_lua_library.play_se2, sound, 0) end
 end
 
 local last_attempted_slot = nil
@@ -257,7 +258,7 @@ local function connect(server, slot, password)
                     line2 = "from server"
                 end
                 if line1 ~= nil then
-                    notify(line1, line2)
+                    notify(line1, line2, NOTIFY_SOUND)
                 end
             end
         end
