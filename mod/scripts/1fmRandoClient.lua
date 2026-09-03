@@ -20,7 +20,7 @@ local ERROR_LOG_INTERVAL_FRAMES = 600
 
 -- On-screen notification text box (replaces the level-up prompt)
 local NOTIFY_SECONDS = 2.5
-local NOTIFY_STYLE = 0
+local NOTIFY_STYLE = 1
 local NOTIFY_X, NOTIFY_Y = 0, -130
 
 local function notify(line1, line2)
@@ -237,14 +237,14 @@ local function connect(server, slot, password)
                 local sender_name = ap:get_player_alias(sender_id)
                 local receiver_name = ap:get_player_alias(receiver_id)
                 if receiver_id == ap:get_player_number() and receiver_id ~= sender_id then -- Item received from someone else
-                    line1 = "From " .. tostring(sender_name)
-                    line2 = item_name
+                    line1 = "Obtained " .. item_name
+                    line2 = "from " .. tostring(sender_name)
                 elseif sender_id == ap:get_player_number() and receiver_id ~= sender_id then -- Item sent to someone else
-                    line1 = item_name
+                    line1 = "Sent " .. item_name
                     line2 = "to " .. receiver_name
                 elseif kh1_lua_library.contains(remote_location_ids, location_id) then
-                    line1 = item_name
-                    line2 = nil
+                    line1 = "Obtained " .. item_name
+                    line2 = "from server"
                 end
                 if line1 ~= nil then
                     notify(line1, line2)
