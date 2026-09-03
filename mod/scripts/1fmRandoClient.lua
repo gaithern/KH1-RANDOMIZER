@@ -20,7 +20,7 @@ local ERROR_LOG_INTERVAL_FRAMES = 600
 
 -- On-screen notification text box (replaces the level-up prompt)
 local NOTIFY_SECONDS = 2.5
-local NOTIFY_STYLE = 2
+local NOTIFY_STYLE = 1
 local NOTIFY_X, NOTIFY_Y = 0, -130
 local NOTIFY_WIDTH, NOTIFY_HEIGHT = 10, 1
 local NOTIFY_TAIL = 0
