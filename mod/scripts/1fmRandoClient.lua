@@ -18,6 +18,17 @@ local MAX_CONNECT_FAILURES = 3
 local CONNECT_TIMEOUT_SECONDS = 15
 local ERROR_LOG_INTERVAL_FRAMES = 600
 
+-- On-screen notification text box (replaces the level-up prompt)
+local NOTIFY_SECONDS = 2.5
+local NOTIFY_STYLE = 0
+local NOTIFY_X, NOTIFY_Y = 0, -130
+
+local function notify(line1, line2)
+    if not kh1_lua_library.open_text_box then return end
+    local text = line2 and (line1 .. "\n" .. line2) or line1
+    pcall(kh1_lua_library.open_text_box, text, 1, NOTIFY_SECONDS, NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y)
+end
+
 local last_attempted_slot = nil
 local connect_failures = 0
 local is_connected = false
@@ -113,10 +124,10 @@ local function connect(server, slot, password)
         if connect_failures >= MAX_CONNECT_FAILURES then
             ap = nil
             set_overlay_error("3 connection failures, stopping: " .. tostring(msg))
-            kh1_lua_library.show_prompt({[1]=""},{[1]={"3 failures, stopping.", nil}},nil,142)
+            notify("3 failures, stopping.")
         else
             set_overlay_error("Failed to connect: " .. tostring(msg))
-            kh1_lua_library.show_prompt({[1]=""},{[1]={"Failed to connect...", nil}},nil,142)
+            notify("Failed to connect...")
         end
     end
 
@@ -125,7 +136,7 @@ local function connect(server, slot, password)
         is_connected = false
         connect_attempt_time = nil
         set_overlay_error("Disconnected from host")
-        kh1_lua_library.show_prompt({[1]=""},{[1]={"Disconnected...", nil}},nil,142)
+        notify("Disconnected...")
         reset_game_state()
     end
 
@@ -144,7 +155,7 @@ local function connect(server, slot, password)
             ap:reset()
             ap = nil
             set_overlay_error("Seed mismatch: the installed mod's seed does not match the connected slot's seed")
-            kh1_lua_library.show_prompt({[1]=""},{[1]={"Seed mismatch!", nil}},nil,142)
+            notify("Seed mismatch!")
             return
         end
 
@@ -152,7 +163,7 @@ local function connect(server, slot, password)
         is_connected = true
         connect_attempt_time = nil
         set_overlay_error(nil)
-        kh1_lua_library.show_prompt({[1]=""},{[1]={"Connected!", nil}},nil,142)
+        notify("Connected!")
         reset_game_state()
         game_state.slot_data = slot_data
         if slot_data.death_link == "on" or slot_data.death_link == "toggle" then
@@ -169,7 +180,7 @@ local function connect(server, slot, password)
         is_connected = false
         connect_attempt_time = nil
         set_overlay_error("Slot refused: " .. reason_text)
-        kh1_lua_library.show_prompt({[1]=""},{[1]={"Slot refused:", reason_text}},nil,142)
+        notify("Slot refused:", reason_text)
     end
 
     local function on_items_received(items)
@@ -236,7 +247,7 @@ local function connect(server, slot, password)
                     line2 = nil
                 end
                 if line1 ~= nil then
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={line1, line2}},nil,142)
+                    notify(line1, line2)
                 end
             end
         end
@@ -397,6 +408,7 @@ function _OnFrame()
     if canExecute then
         run_section("overlay", function()
             refresh_connection_state()
+            if kh1_lua_library.update_text_boxes then kh1_lua_library.update_text_boxes() end
             if kh1_overlay then
                 kh1_overlay.set_status(is_connected, last_attempted_slot or "", #game_state.items_received)
 
@@ -452,10 +464,10 @@ function _OnFrame()
                         set_overlay_error(nil)
                         connect_attempt_time = os.clock()
                         connect(pending.host, pending.slot, pending.password)
-                        kh1_lua_library.show_prompt({[1]=""},{[1]={"Attempting to connect...", nil}},nil,142)
+                        notify("Attempting to connect...")
                     else
                         set_overlay_error("No slot name entered")
-                        kh1_lua_library.show_prompt({[1]=""},{[1]={"No slot name!", nil}},nil,142)
+                        notify("No slot name!")
                     end
                 end
 
@@ -464,7 +476,7 @@ function _OnFrame()
                     connect_attempt_time = nil
                     ap = nil
                     set_overlay_error("Host did not respond (connection timed out)")
-                    kh1_lua_library.show_prompt({[1]=""},{[1]={"Connection timed out.", nil}},nil,142)
+                    notify("Connection timed out.")
                 end
             end
         end)
