@@ -253,7 +253,7 @@ local function connect(server, slot, password)
                 elseif sender_id == ap:get_player_number() and receiver_id ~= sender_id then -- Item sent to someone else
                     line1 = "Sent " .. item_name
                     line2 = "to " .. receiver_name
-                elseif kh1_lua_library.contains(remote_location_ids, location_id) then
+                else
                     line1 = "Obtained " .. item_name
                     line2 = "from server"
                 end
