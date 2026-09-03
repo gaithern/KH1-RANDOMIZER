@@ -112,7 +112,7 @@ end
 
 local function build_line(item_id)
     if item_id == AP_ITEM_ID then
-        return "{0x84} Archipelago Item"
+        return "{0x97} Archipelago Item"
     end
     if item_id >= 2641000 and item_id < 2642000 then
         local n = item_id - 2641000
@@ -124,7 +124,7 @@ local function build_line(item_id)
     if item_id >= 2643000 and item_id < 2644000 then
         return "{0x85} " .. (sora_ability_names[item_id] or "Unknown Ability")
     end
-    return "{0x84} Archipelago Item"
+    return "{0x97} Archipelago Item"
 end
 
 local function get_last_processed_level()
