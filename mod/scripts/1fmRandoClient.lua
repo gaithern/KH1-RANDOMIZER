@@ -13,6 +13,7 @@ local death_link             = require("death_link")
 local synth_hints            = require("client.synth_hints")
 local item_location_handlers = require("item_location_handlers")
 local map_update             = require("client.map_update")
+local item_display           = require("item_display")
 
 local MAX_CONNECT_FAILURES = 3
 local CONNECT_TIMEOUT_SECONDS = 15
@@ -230,6 +231,7 @@ local function connect(server, slot, password)
         if extra.type == "ItemSend" or extra.type == "ItemCheat" then
             local remote_location_ids = game_state.slot_data and game_state.slot_data.remote_location_ids or {}
             local item_id = extra.item.item
+            local item_flags = extra.item.flags or 0
             local receiver_id = extra.receiving
             local sender_id = extra.item.player
             local location_id = extra.item.location
@@ -237,6 +239,11 @@ local function connect(server, slot, password)
             local line2 = nil
             if receiver_id == ap:get_player_number() or sender_id == ap:get_player_number() then
                 local item_name = ap:get_item_name(item_id, ap:get_player_game(receiver_id))
+                if receiver_id ~= ap:get_player_number() then
+                    item_name = item_display.format_item_for_text_box(nil, item_flags, item_name)
+                else
+                    item_name = item_display.format_item_for_text_box(item_id, item_flags, item_name)
+                end
                 local sender_name = ap:get_player_alias(sender_id)
                 local receiver_name = ap:get_player_alias(receiver_id)
                 if receiver_id == ap:get_player_number() and receiver_id ~= sender_id then -- Item received from someone else

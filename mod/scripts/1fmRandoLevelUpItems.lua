@@ -7,6 +7,7 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Level Up Item Rewards"
 local seed_vars = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
 local item_location_handlers = require("item_location_handlers")
+local item_display = require("item_display")
 
 local LEVEL_GUMMI_IDX = 0x7A
 local AP_ITEM_ID = 2641230
@@ -95,28 +96,13 @@ local sora_ability_names = {
     [2643064]="EXP Zero", [2643065]="Combo Master",
 }
 
-local function icon_for_item_number(n)
-    if n >= 1 and n <= 8 then return "{0x82} " end
-    if n >= 17 and n <= 71 then return "{0x89} " end
-    if n >= 81 and n <= 102 then return "{0x86} " end
-    if n >= 103 and n <= 118 then return "{0x87} " end
-    if n >= 119 and n <= 134 then return "{0x88} " end
-    if n >= 142 and n <= 144 then return "{0x83} " end
-    if n >= 152 and n <= 154 then return "{0x83} " end
-    if n >= 175 and n <= 181 then return "{0x8A} " end
-    if n >= 231 and n <= 237 then return "{0x8A} " end
-    if n == 238 then return "{0x8B} " end
-    if n >= 239 and n <= 244 then return "" end
-    return "{0x84} "
-end
-
 local function build_line(item_id)
     if item_id == AP_ITEM_ID then
         return "{0x97} Archipelago Item"
     end
     if item_id >= 2641000 and item_id < 2642000 then
         local n = item_id - 2641000
-        return icon_for_item_number(n) .. (item_names[n] or "Unknown Item")
+        return item_display.icon_for_item_number(n) .. (item_names[n] or "Unknown Item")
     end
     if item_id >= 2642000 and item_id < 2643000 then
         return "{0x85} " .. (shared_ability_names[item_id] or "Unknown Ability")
