@@ -1,4 +1,5 @@
 local kh1_lua_library = require("kh1_lua_library")
+local state           = require("client.state")
 
 local frame_count = 0
 local is_stale = false
@@ -65,7 +66,16 @@ local function map_update_frame()
     end
 end
 
+local function frame()
+    map_update_frame()
+    if state.ap and is_stale then
+        state.ap:Bounce(get_data(), {}, {state.ap:get_player_number()})
+        set_fresh()
+    end
+end
+
 return {
+    frame = frame,
     map_update_frame = map_update_frame,
     is_stale = get_is_stale,
     get_data = get_data,
