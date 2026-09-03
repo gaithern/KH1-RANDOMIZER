@@ -256,7 +256,7 @@ local function connect(server, slot, password)
                 elseif receiver_id == ap:get_player_number() and kh1_lua_library.contains(remote_location_ids, location_id) then
                     line1 = "Obtained " .. item_name
                     line2 = nil
-                elseif receiver_id == ap:get_player_number() and sender_id == -1 then
+                elseif receiver_id == ap:get_player_number() and location_id == -1 then
                     line1 = "Obtained " .. item_name
                     line2 = "from server"
                 end
