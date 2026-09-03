@@ -20,13 +20,14 @@ local ERROR_LOG_INTERVAL_FRAMES = 600
 
 -- On-screen notification text box (replaces the level-up prompt)
 local NOTIFY_SECONDS = 2.5
-local NOTIFY_STYLE = 1
+local NOTIFY_STYLE = 2
 local NOTIFY_X, NOTIFY_Y = 0, -130
+local NOTIFY_WIDTH, NOTIFY_HEIGHT = 10, 2
 
 local function notify(line1, line2)
     if not kh1_lua_library.open_text_box then return end
     local text = line2 and (line1 .. "\n" .. line2) or line1
-    pcall(kh1_lua_library.open_text_box, text, 1, NOTIFY_SECONDS, NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y)
+    pcall(kh1_lua_library.open_text_box, text, 1, NOTIFY_SECONDS, NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y, NOTIFY_WIDTH, NOTIFY_HEIGHT)
 end
 
 local last_attempted_slot = nil
