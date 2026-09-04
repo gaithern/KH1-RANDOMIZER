@@ -3,7 +3,6 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Client"
 
 local state          = require("client.state")
-local notifications  = require("client.notifications")
 local overlay_bridge = require("client.overlay_bridge")
 local connection     = require("client.connection")
 local game_state     = require("client.game_state")
@@ -76,7 +75,6 @@ end
 function _OnFrame()
     if not canExecute then return end
     run_section("connection",    connection.frame)
-    run_section("notifications", notifications.frame)
     run_section("overlay",       overlay_bridge.frame)
     run_section("game state",    game_state.frame)
     run_section("map update",    map_update.frame)

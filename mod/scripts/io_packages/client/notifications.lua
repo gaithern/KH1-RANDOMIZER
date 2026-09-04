@@ -4,6 +4,7 @@ local state           = require("client.state")
 local kh1_lua_library = require("kh1_lua_library")
 local item_display    = require("item_display")
 
+local NOTIFY_WINDOW = 6
 local NOTIFY_SECONDS = 2.5
 local NOTIFY_STYLE = 1
 local NOTIFY_X, NOTIFY_Y = 0, -130
@@ -11,30 +12,21 @@ local NOTIFY_WIDTH, NOTIFY_HEIGHT = 10, 1
 local NOTIFY_TAIL = 0
 local NOTIFY_SOUND = 31
 
-local NOTIFY_GAP_SECONDS = 0.15
-
 local SERVER_PLAYER = 0
 
-local queue = {}
-local showing_until = nil
-
-local function show(entry)
-    local text = entry.line2 and (entry.line1 .. "\n" .. entry.line2) or entry.line1
-    pcall(kh1_lua_library.open_text_box, text, 1, NOTIFY_SECONDS, NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y, NOTIFY_WIDTH, NOTIFY_HEIGHT, NOTIFY_TAIL)
-    if entry.sound then pcall(kh1_lua_library.play_se2, entry.sound, 0) end
-    showing_until = os.clock() + NOTIFY_SECONDS + NOTIFY_GAP_SECONDS
-end
-
 local function notify(line1, line2, sound)
-    if not kh1_lua_library.open_text_box then return end
-    queue[#queue + 1] = {line1 = line1, line2 = line2, sound = sound}
-end
-
-local function advance_queue()
-    if showing_until and os.clock() < showing_until then return end
-    showing_until = nil
-    local entry = table.remove(queue, 1)
-    if entry then show(entry) end
+    kh1_lua_library.queue_text_box{
+        text = line2 and (line1 .. "\n" .. line2) or line1,
+        window = NOTIFY_WINDOW,
+        duration = NOTIFY_SECONDS,
+        style = NOTIFY_STYLE,
+        x = NOTIFY_X,
+        y = NOTIFY_Y,
+        width = NOTIFY_WIDTH,
+        height = NOTIFY_HEIGHT,
+        tail = NOTIFY_TAIL,
+        sound = sound,
+    }
 end
 
 local function safe_alias(player_id)
@@ -89,15 +81,7 @@ local function item_sent(extra)
     notify("Sent " .. text, "to " .. safe_alias(receiver_id), NOTIFY_SOUND)
 end
 
-local function frame()
-    if kh1_lua_library.update_text_boxes then
-        kh1_lua_library.update_text_boxes()
-    end
-    advance_queue()
-end
-
 return {
-    frame = frame,
     notify = notify,
     item_applied = item_applied,
     items_applied = items_applied,
