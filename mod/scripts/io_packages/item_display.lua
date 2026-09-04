@@ -144,9 +144,9 @@ end
 
 local function colour_for_flags(flags)
     if has_flag(flags, FLAG_PROGRESSION) then return COLOUR_BLUE end
-    if has_flag(flags, FLAG_USEFUL) then return COLOUR_BLUE end
+    if has_flag(flags, FLAG_USEFUL) then return COLOUR_GREEN end
     if has_flag(flags, FLAG_TRAP) then return COLOUR_RED end
-    return COLOUR_GREEN
+    return ""
 end
 
 local function name_for_item_id(item_id)
