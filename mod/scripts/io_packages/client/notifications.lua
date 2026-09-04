@@ -63,12 +63,9 @@ local function item_applied(record)
 end
 
 local function items_applied(records)
-    if not records or #records == 0 then return end
-    if #records == 1 then
-        item_applied(records[1])
-        return
+    for _, record in ipairs(records or {}) do
+        item_applied(record)
     end
-    notify("Obtained " .. #records .. " items", nil, NOTIFY_SOUND)
 end
 
 local function item_sent(extra)
