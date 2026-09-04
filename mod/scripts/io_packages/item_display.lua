@@ -4,17 +4,17 @@ local seed_vars = require("seed_vars")
 
 local AP_ITEM_ID = 2641230
 
-local ICON_CONSUMABLE = "{0x82} "
-local ICON_STAT       = "{0x83} "
-local ICON_KEY_ITEM   = "{0x84} "
-local ICON_ABILITY    = "{0x85} "
-local ICON_KEYBLADE   = "{0x86} "
-local ICON_STAFF      = "{0x87} "
-local ICON_SHIELD     = "{0x88} "
-local ICON_ACCESSORY  = "{0x89} "
-local ICON_MAGIC      = "{0x8A} "
-local ICON_EMBLEM     = "{0x8B} "
-local ICON_AP         = "{0x97} "
+local ICON_CONSUMABLE = "{0x82}"
+local ICON_STAT       = "{0x83}"
+local ICON_KEY_ITEM   = "{0x84}"
+local ICON_ABILITY    = "{0x85}"
+local ICON_KEYBLADE   = "{0x86}"
+local ICON_STAFF      = "{0x87}"
+local ICON_SHIELD     = "{0x88}"
+local ICON_ACCESSORY  = "{0x89}"
+local ICON_MAGIC      = "{0x8A}"
+local ICON_EMBLEM     = "{0x8B}"
+local ICON_AP         = "{0x97}"
 
 local COLOUR_RESET = "{0x0C}{0xFF}"
 local COLOUR_RED   = "{0x0C}{0x02}"
@@ -181,7 +181,9 @@ local function display_name(item_id, server_name)
 end
 
 local function build_line(item_id)
-    return icon_for_item_id(item_id) .. display_name(item_id)
+    local icon = icon_for_item_id(item_id)
+    if icon ~= "" then icon = icon .. " " end
+    return icon .. display_name(item_id)
 end
 
 local function format_item_for_text_box(item_id, flags, server_name)
