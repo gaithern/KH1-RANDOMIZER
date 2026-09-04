@@ -4,7 +4,7 @@ local state           = require("client.state")
 local kh1_lua_library = require("kh1_lua_library")
 local item_display    = require("item_display")
 
-local NOTIFY_WINDOW = 6
+
 local NOTIFY_SECONDS = 2.5
 local NOTIFY_STYLE = 1
 local NOTIFY_X, NOTIFY_Y = 0, -130
@@ -15,12 +15,17 @@ local NOTIFY_SOUND = 31
 local SERVER_PLAYER = 0
 
 local function notify(line1, line2, sound)
-    local text = line2 and (line1 .. "\n" .. line2) or line1
-    local ok, opened = pcall(kh1_lua_library.open_text_box, text, NOTIFY_WINDOW, NOTIFY_SECONDS,
-        NOTIFY_STYLE, NOTIFY_X, NOTIFY_Y, NOTIFY_WIDTH, NOTIFY_HEIGHT, NOTIFY_TAIL)
-    if ok and opened and sound then
-        pcall(kh1_lua_library.play_se2, sound, 0)
-    end
+    kh1_lua_library.queue_text_box{
+        text = line2 and (line1 .. "\n" .. line2) or line1,
+        duration = NOTIFY_SECONDS,
+        sound = sound,
+        style = NOTIFY_STYLE,
+        x = NOTIFY_X,
+        y = NOTIFY_Y,
+        width = NOTIFY_WIDTH,
+        height = NOTIFY_HEIGHT,
+        tail = NOTIFY_TAIL,
+    }
 end
 
 local function safe_alias(player_id)
