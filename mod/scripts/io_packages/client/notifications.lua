@@ -7,16 +7,18 @@ local item_display    = require("item_display")
 
 local NOTIFY_SECONDS = 2.5
 local NOTIFY_STYLE = 1
-local NOTIFY_X, NOTIFY_Y = 0, -130
-local NOTIFY_WIDTH, NOTIFY_HEIGHT = 10, 1
+local NOTIFY_X, NOTIFY_Y = -300, -166
+local NOTIFY_WIDTH = 10
 local NOTIFY_TAIL = 0
 local NOTIFY_SOUND = 31
 
 local SERVER_PLAYER = 0
 
+local NOTIFY_HEIGHT = 0
+
 local function notify(line1, line2, sound)
     kh1_lua_library.queue_text_box{
-        text = line2 and (line1 .. "\n" .. line2) or line1,
+        text = line2 and (line1 .. " " .. line2) or line1,
         duration = NOTIFY_SECONDS,
         sound = sound,
         style = NOTIFY_STYLE,
@@ -24,6 +26,7 @@ local function notify(line1, line2, sound)
         y = NOTIFY_Y,
         width = NOTIFY_WIDTH,
         height = NOTIFY_HEIGHT,
+        auto_width = true,
         tail = NOTIFY_TAIL,
     }
 end
