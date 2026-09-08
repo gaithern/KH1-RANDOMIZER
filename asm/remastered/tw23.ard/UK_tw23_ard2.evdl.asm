@@ -3466,7 +3466,7 @@
   0D000017  await_call      0xD               ; → Script 13 (outside KGR)
 
 ; New - Skip TT second visit (replaces Section 5 in FlagFixes)
-  4E000009  push            0x4E              ; 78
+  78000009  push            0x78              ; 120
   040B000D  write_byte      [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
   05000009  push            0x5               ; 5
   C811000D  write_byte      [0x11C8]          ; tw01 set -> 5 (worldFlagBase - 0xC8)
