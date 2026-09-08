@@ -353,9 +353,9 @@ local function fill_location_map(location_map)
     table.insert(location_map, {2654772, chests_opened_address        + 0x1DC,  2, 0x01, 0}) --End of the World Final Rest Chest
     table.insert(location_map, {2655092, chests_opened_address        + 0x1FC,  2, 0x01, 0}) --Monstro Chamber 6 White Trinity Chest
     table.insert(location_map, {2655093, chests_opened_address        + 0x1FC,  3, 0x01, 0}) --Awakening Chest
-    table.insert(location_map, {2656011, world_progress_array_address + 0x0,    0, 0x31, 0}) --Traverse Town Defeat Guard Armor Dodge Roll Event
-    table.insert(location_map, {2656012, world_progress_array_address + 0x0,    0, 0x31, 0}) --Traverse Town Defeat Guard Armor Fire Event
-    table.insert(location_map, {2656013, world_progress_array_address + 0x0,    0, 0x31, 0}) --Traverse Town Defeat Guard Armor Blue Trinity Event
+    table.insert(location_map, {2656011, world_progress_array_address + 0x0,    0, 0x2B, 0}) --Traverse Town Defeat Guard Armor Dodge Roll Event
+    table.insert(location_map, {2656012, world_progress_array_address + 0x0,    0, 0x2B, 0}) --Traverse Town Defeat Guard Armor Fire Event
+    table.insert(location_map, {2656013, world_progress_array_address + 0x0,    0, 0x2B, 0}) --Traverse Town Defeat Guard Armor Blue Trinity Event
     table.insert(location_map, {2656014, world_progress_array_address + 0x0,    0, 0x3E, 0}) --Traverse Town Leon Secret Waterway Earthshine Event
     table.insert(location_map, {2656015, world_progress_array_address + 0x0,    0, 0x8C, 0}) --Traverse Town Kairi Secret Waterway Oathkeeper Event
     table.insert(location_map, {2656016, world_progress_array_address + 0x0,    0, 0x2B, 0}) --Traverse Town Defeat Guard Armor Brave Warrior Event
@@ -558,7 +558,7 @@ local function fill_location_map(location_map)
     table.insert(location_map, {2656517, world_flags_address          + 0x11A2, 0, 0x02, 0}) --Hollow Bastion Entrance Hall Emblem Piece (Chest)
     table.insert(location_map, {2656518, world_flags_address          + 0x11A3, 0, 0x02, 0}) --Hollow Bastion Entrance Hall Emblem Piece (Statue)
     table.insert(location_map, {2656519, world_flags_address          + 0x11A4, 0, 0x02, 0}) --Hollow Bastion Entrance Hall Emblem Piece (Fountain)
-    table.insert(location_map, {2656520, world_progress_array_address + 0x0,    0, 0x31, 0}) --Traverse Town 1st District Leon Gift
+    table.insert(location_map, {2656520, world_progress_array_address + 0x0,    0, 0x2B, 0}) --Traverse Town 1st District Leon Gift
     table.insert(location_map, {2656521, world_flags_address          + 0x2,    0, 0x01, 0}) --Traverse Town 1st District Aerith Gift
     table.insert(location_map, {2656522, world_flags_address          + 0x402,  0, 0x01, 0}) --Hollow Bastion Library Speak to Belle Divine Rose
     table.insert(location_map, {2656523, world_flags_address          + 0x401,  0, 0x01, 0}) --Hollow Bastion Library Speak to Aerith Cure
