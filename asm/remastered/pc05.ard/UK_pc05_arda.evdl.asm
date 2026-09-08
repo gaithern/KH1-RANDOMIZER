@@ -1990,11 +1990,19 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
   02020018  syscall         514               ; Event_camera_off
-  03000009  push            0x3             
-  19000009  push            0x19              ; 25
-  03000009  push            0x3             
-  43000009  push            0x43              ; 67
-  64020018  syscall         612               ; Start_map_change_rewrite_set
+  
+; New code, warp to Rising Falls
+  0F000009  push       0xF
+  00000009  push       0x0
+  5E12000C  read_byte  [0x125E]
+  3B000018  syscall    59                     ; Change_map
+
+; Old code, don't warp to TT
+;  03000009  push            0x3             
+;  19000009  push            0x19              ; 25
+;  03000009  push            0x3             
+;  43000009  push            0x43              ; 67
+
   00020018  syscall         512               ; Exit_event_mode
   10000005  yield           0x10            
 
