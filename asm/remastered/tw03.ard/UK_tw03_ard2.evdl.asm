@@ -6382,6 +6382,10 @@
   21000018  syscall         33                ; Wait_message_end
 @GuardArmorEnd:
 
+  ; New - allow Leon Waterway
+  02000009  push            0x2
+  DE11000D  write_byte      [0x11DE]
+
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            

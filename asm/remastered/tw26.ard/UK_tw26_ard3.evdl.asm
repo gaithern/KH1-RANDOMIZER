@@ -2164,8 +2164,11 @@
   4A020018  syscall         586               ; Set_game_clear_flag
   BE000009  push            0xBE              ; 190
   000B000D  write_byte      [0xB00]           ; save_data[0x900]  (alias, unsigned)
-  6E000009  push            0x6E              ; 110
-  040B000D  write_byte      [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
+
+; Don't update TT story progress
+;  6E000009  push            0x6E              ; 110
+;  040B000D  write_byte      [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
+
   13000009  push            0x13              ; 19
   85010018  syscall         389               ; Write_set_number_from_table
 
@@ -2188,17 +2191,23 @@
   64000009  push            0x64              ; 100
   08000001  alu             ge              
   ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_0  ; → PC 43
-  09000009  push            0x9             
-  12000009  push            0x12              ; 18
-  EB010018  syscall         491               ; Write_other_world_set_number
+
+; Don't touch Atlantica
+;  09000009  push            0x9             
+;  12000009  push            0x12              ; 18
+;  EB010018  syscall         491               ; Write_other_world_set_number
+
 @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_0:
   0C0B000C  read_byte       [0xB0C]           ; save_data[0x90C]  (alias, unsigned)
   6A000009  push            0x6A              ; 106
   08000001  alu             ge              
   ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_1  ; → PC 50
-  0A000009  push            0xA               ; 10
-  12000009  push            0x12              ; 18
-  EB010018  syscall         491               ; Write_other_world_set_number
+
+; Don't touch Halloween Town
+;  0A000009  push            0xA               ; 10
+;  12000009  push            0x12              ; 18
+;  EB010018  syscall         491               ; Write_other_world_set_number
+
 @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_1:
 
 ; Don't touch Neverland

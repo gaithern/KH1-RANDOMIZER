@@ -956,9 +956,17 @@
 ; Script 5  |  12 subscript(s)  |  PC 857  |  file 0xEE61  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
-  040B000C  read_byte       [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
-  46000009  push            0x46              ; 70
+; New - check for Old Book
+  BB000009  push            0xBB              ; 187
+  FD000018  syscall         253               ; Check_bag_item_count
+  01000009  push            0x1               ; 1
   08000001  alu             ge              
+
+; Old - don't check TT progress
+;  040B000C  read_byte       [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
+;  46000009  push            0x46              ; 70
+;  08000001  alu             ge              
+
   ????????  beqz            @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_5_1  ; → PC 877
   0808000C  read_byte       [0x808]           ; save_data[0x808]
   00000009  push            0x0             
@@ -5116,10 +5124,13 @@
   06000009  push            0x6             
   05000015  push_cond       0x5             
   0C000016  init_call       0xC               ; → Script 12 (outside KGR)
-  BB000009  push            0xBB              ; 187
-  01000009  push            0x1             
-  05000001  alu             negate          
-  02010018  syscall         258               ; Change_bag_items
+
+; Don't take Old Book
+;  BB000009  push            0xBB              ; 187
+;  01000009  push            0x1             
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
   10000005  yield           0x10            
   0F000009  push            0xF               ; 15
   1C000018  syscall         28                ; Fade_out

@@ -54,28 +54,6 @@ function FlagFixes()
         WriteByte(worldFlagBase - 0xB2, 2)
     end
 
-    -- Skip TT2
-    if ReadByte(cutsceneFlags + 4) == 0x3E then
-        debugPrint("Section 5")
-        WriteByte(cutsceneFlags + 4, 0x4E)
-        WriteByte(worldFlagBase - 0xC8, 5)
-    end
-
-    -- Revert HB1 effect on TT story
-    if (ReadByte(cutsceneFlags + 4) == 0x6E and ReadByte(worldFlagBase - 0xC8) ~= 5)
-                                            or ReadByte(cutsceneFlags + 4) == 0x96 then
-        debugPrint("Section 6")
-        WriteByte(cutsceneFlags + 4, prevTTFlag)
-    end
-
-    if ReadByte(cutsceneFlags + 0xE) >= 0xA0 and ReadByte(worldFlagBase - 0xC8) == 5
-                                            and ReadByte(cutsceneFlags + 4) < 0x6E then
-        debugPrint("Section 7")
-        WriteByte(cutsceneFlags + 4, 0x6E)
-        WriteByte(cutsceneFlags, math.max(0xBE, ReadByte(cutsceneFlags)))
-        --debugPrint("Post HB TT")
-    end
-
     prevTTFlag = ReadByte(cutsceneFlags + 4)
 
     if ReadByte(oppositeState) >= 5 then
@@ -83,45 +61,6 @@ function FlagFixes()
         WriteByte(oppositeTrigger, 0)
     end
 
-    --if ReadByte(world) == 3 and ReadByte(room) == 0x13 then
-    --    debugPrint("Section 9")
-    --    local simbaAddr = ReadLong(scriptPointer[game_version]) + 0x131C8
-    --    local earthshine = -0x423B
-    --    if ReadInt(simbaAddr, true) == 0x53090000 then
-    --        simbaAddr = simbaAddr + 0x460 --Spanish
-    --    elseif ReadInt(simbaAddr, true) == 0x01400500 then
-    --        simbaAddr = simbaAddr + 0x10B0 --German
-    --    elseif ReadInt(simbaAddr, true) == 0x6D090000 then
-    --        simbaAddr = simbaAddr - 0x1F68 --Japanese
-    --        earthshine = -0x4227
-    --    end
-    --    if ReadByte(simbaAddr, true)==5 then
-    --        local hasSummons = {}
-    --        local hasAll = true
-    --        for i=0,5 do
-    --            hasSummons[ReadByte(summons[game_version]+i)] = true
-    --            hasAll = hasAll and ReadByte(summons[game_version]+i) < 0xFF
-    --        end
-    --
-    --        WriteByte(summonsReturned[game_version], hasSummons[1] and 1 or 0)
-    --        WriteByte(summonsReturned[game_version]+1, hasSummons[0] and 1 or 0)
-    --        WriteByte(summonsReturned[game_version]+2, hasSummons[4] and 1 or 0)
-    --        WriteByte(summonsReturned[game_version]-1, hasSummons[5] and 1 or 0)
-    --
-    --        local c = ReadByte(inventory[game_version]+0xD0) > 0
-    --        local genie = ReadByte(inventory[game_version]+0x88) > 0
-    --        local tbell = ReadByte(inventory[game_version]+0x8B) > 0
-    --
-    --        -- Nullify normal simba acqusition
-    --        WriteInt(simbaAddr+4, c and 0x18000238 or 0x18000004, true)
-    --        WriteInt(simbaAddr+12, c and 0x18000233 or 0x18000004, true)
-    --        -- Replace another summon with Simba
-    --        WriteByte(simbaAddr+earthshine, c and 0xD1 or 0xCF, true)
-    --        WriteByte(simbaAddr+0x16FB, c and 0xD1 or 0xCF, true)
-    --        WriteByte(simbaAddr+0x164B, c and 5 or 1, true)
-    --        WriteByte(simbaAddr+0x164B+8, c and 5 or 1, true)
-    --    end
-    --end
 
     if ReadByte(cutsceneFlags + 4) >= 0x31 then
         debugPrint("Section 11")
@@ -280,23 +219,6 @@ function FlagFixes()
             WriteByte(collectedFruits, math.max(ReadByte(collectedFruits), (ReadByte(room)-0xF)*10))
         end
         
-        -- Handled in EVDL now
-        -- if ReadByte(cutsceneFlags + 5) <= 0x1A then
-        --     if ReadByte(room) == 0xC then
-        --         local o = 0
-        --         while ReadInt(slideActive+o*0x4B0+4) ~= 0x40018 and ReadInt(slideActive+o*0x4B0+4) ~= 0 and o > -5 do
-        --             o = o-1
-        --         end
-        --         if ReadInt(slideActive+o*0x4B0+4) == 0x40018 then
-        --             for i=0,5 do
-        --                 if ReadInt(slideActive+(i+o)*0x4B0+4) == 0x40018+(i>1 and i+4 or i) then
-        --                     WriteLong(slideActive+(i+o)*0x4B0, 0)
-        --                 end
-        --             end
-        --         end
-        --         --end
-        --     end
-        -- end
     end
 
     if ReadByte(world) == 6 then
@@ -345,60 +267,6 @@ function FlagFixes()
             local doorClose = ReadByte(roomWarpRead) >= 0x10 and ReadByte(roomWarpRead) <= 0x13
             WriteByte(emblemDoor, doorClose and 3 or 4)
             WriteByte(emblemDoor+3, doorClose and 1 or 5)
-            --if ReadByte(emblemCount+1) > 1 and ReadByte(emblemCount+2) > 1 and ReadByte(emblemCount+3) > 1 and ReadByte(emblemCount+4) > 1 then
-            --    WriteByte(emblemDoor, 4)
-            --elseif ReadByte(emblemDoor+3) == 0x05 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x01)
-            --elseif ReadByte(emblemDoor+3) == 0x15 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x11)
-            --elseif ReadByte(emblemDoor+3) == 0x25 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x21)
-            --elseif ReadByte(emblemDoor+3) == 0x35 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x31)
-            --elseif ReadByte(emblemDoor+3) == 0x45 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x41)
-            --elseif ReadByte(emblemDoor+3) == 0x45 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x41)
-            --elseif ReadByte(emblemDoor+3) == 0x55 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x51)
-            --elseif ReadByte(emblemDoor+3) == 0x65 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x61)
-            --elseif ReadByte(emblemDoor+3) == 0x75 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x71)
-            --elseif ReadByte(emblemDoor+3) == 0x85 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x81)
-            --elseif ReadByte(emblemDoor+3) == 0x95 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0x91)
-            --elseif ReadByte(emblemDoor+3) == 0xA5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xA1)
-            --elseif ReadByte(emblemDoor+3) == 0xB5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xB1)
-            --elseif ReadByte(emblemDoor+3) == 0xC5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xC1)
-            --elseif ReadByte(emblemDoor+3) == 0xD5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xD1)
-            --elseif ReadByte(emblemDoor+3) == 0xE5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xE1)
-            --elseif ReadByte(emblemDoor+3) == 0xF5 then
-            --    WriteByte(emblemDoor, 3)
-            --    WriteByte(emblemDoor+3, 0xF1)
-            --end
         end
 
         if ReadByte(room) == 5 then
