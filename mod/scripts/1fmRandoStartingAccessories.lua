@@ -6,12 +6,10 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Party Member Starting Accessories"
 
 local seed_vars       = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
+local items           = require("items")
 
--- Gummi slot 0x79 used as a persistent save-data flag:
--- 0 = starting accessories not yet applied, 1 = done
 local APPLIED_FLAG_IDX = 0x79
 
--- char_id (from fnc_2AC_equip_accessory) → ordered list of AP location IDs per slot
 local char_accessory_locations = {
     [1] = {2656800, 2656801},           -- Donald        (2 slots)
     [2] = {2656802, 2656803},           -- Goofy         (2 slots)
@@ -23,20 +21,11 @@ local char_accessory_locations = {
     [9] = {2656814},                    -- Beast         (1 slot)
 }
 
--- Returns the KH1 item byte for accessories (regular items in 1001-1999 range),
--- or nil for abilities / AP items from other games that shouldn't be equipped.
 local function get_accessory_item_id(loc_id)
     local item_id = seed_vars["item_location_map"][tostring(loc_id)]
-    if item_id == nil then return nil end
-    item_id = item_id % 264000
-    if item_id > 1000 and item_id < 2000 then
-        return item_id % 1000
-    end
-    return nil
+    return items.idx_of(item_id)
 end
 
--- Accessory slots live at: maxHP + 0x16 + char_id*0x74 (count)
---                          maxHP + 0x17 + char_id*0x74 (slot array)
 local function apply_starting_accessories()
     for char_id, loc_ids in pairs(char_accessory_locations) do
         local slot_count = ReadByte(maxHP + 0x16 + char_id * 0x74)
@@ -64,7 +53,7 @@ end
 
 function _OnFrame()
     if canExecute and kh1_lua_library.get_gummi_qty_at_index(APPLIED_FLAG_IDX) == 0 then
-        if ReadByte(maxHP + 0x16) > 0 then  -- Sora's slot count > 0 means char data is loaded
+        if ReadByte(maxHP + 0x16) > 0 then
             apply_starting_accessories()
         end
     end

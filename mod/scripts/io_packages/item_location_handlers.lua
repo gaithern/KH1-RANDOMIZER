@@ -2,6 +2,7 @@
 --[[Shared functions for item/location handlers]]
 
 local kh1_lua_library = require("kh1_lua_library")
+local items           = require("items")
 
 local function set_check_number(check_number)
     --[[Writes the current check number directly as a 4-byte int across 4 unused gummi item slots
@@ -85,17 +86,21 @@ local function write_sora_ability(ability_value)
     kh1_lua_library.give_sora_ability(ability_value)
 end
 
+local SLIDE_1_IDX = 217
+
 local function handle_item_received(received_item_id)
-    if received_item_id >= 2641000 and received_item_id < 2642000 then
-        if received_item_id % 2641000 == 217 then
+    local kind = items.kind_of(received_item_id)
+    local value = items.value_of(received_item_id)
+    if kind == "item" then
+        if value == SLIDE_1_IDX then
             write_slides()
         else
-            handle_item(received_item_id % 2641000)
+            handle_item(value)
         end
-    elseif received_item_id >= 2642000 and received_item_id < 2642100 then
-        write_shared_ability(received_item_id % 2642000)
-    elseif received_item_id >= 2643000 and received_item_id < 2644000 then
-        write_sora_ability(received_item_id % 2643000)
+    elseif kind == "shared_ability" then
+        write_shared_ability(value)
+    elseif kind == "sora_ability" then
+        write_sora_ability(value)
     end
 end
 

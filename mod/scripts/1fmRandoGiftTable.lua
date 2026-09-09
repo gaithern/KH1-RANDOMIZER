@@ -4,8 +4,9 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Gifts"
 
 local seed_vars       = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
+local items           = require("items")
 
-local AP_ITEM_ID = 1
+local PLACEHOLDER_GIFT_ID = 1
 
 local last_world = nil
 local gift_location_ids = {
@@ -535,31 +536,17 @@ local gift_writes = {[1]={},[3]={},[4]={},[5]={},[6]={},[8]={},
     [9]={},[10]={},[11]={},[12]={},[13]={},[15]={},[16]={}}
 
 local function get_gift_replacement(item_id)
-
-    -- If no item ID
-    if item_id == nil then
-        return {0xF0, AP_ITEM_ID}
+    local kind = items.kind_of(item_id)
+    local value = items.value_of(item_id)
+    if kind == "item" and value >= 1 then
+        return {0xF0, value}
+    elseif kind == "shared_ability" and value >= 1 then
+        return {0xB1, value}
+    elseif kind == "sora_ability" and value >= 1 then
+        return {0x01, value}
     end
 
-    item_id = item_id % 264000
-
-    -- Regular item
-    if item_id > 1000 and item_id < 2000 then
-        return {0xF0, item_id % 1000}
-    end
-
-    -- Shared ability
-    if item_id > 2000 and item_id < 3000 then
-        return {0xB1, item_id % 2000}
-    end
-    
-    -- Sora ability
-    if item_id > 3000 and item_id < 4000 then
-        return {0x01, item_id % 3000}
-    end
-
-    -- Else?
-    return {0xF0, AP_ITEM_ID}
+    return {0xF0, PLACEHOLDER_GIFT_ID}
 end
 
 local function calculate_gift_writes()

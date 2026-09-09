@@ -6,11 +6,12 @@ local kh1_lua_library = require("kh1_lua_library")
 local state           = require("client.state")
 local notifications   = require("client.notifications")
 local overlay_bridge  = require("client.overlay_bridge")
+local kh1_items       = require("items")
 
 local MAX_CONNECT_FAILURES = 3
 local CONNECT_TIMEOUT_SECONDS = 15
 
-local ACCESSORY_ITEM_FIRST, ACCESSORY_ITEM_LAST = 2641017, 2641071
+local ACCESSORY_ITEM_FIRST, ACCESSORY_ITEM_LAST = kh1_items.ACCESSORY_FIRST_AP_ID, kh1_items.ACCESSORY_LAST_AP_ID
 local ACCESSORY_LOCATION_BASE = 2659100
 
 local notify = notifications.notify
