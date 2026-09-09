@@ -1121,6 +1121,12 @@
   D0000009  push            0xD0              ; 208
   FD000018  syscall         253               ; Check_bag_item_count
   2A01000D  write_byte      [0x12A]           ; save_data[0x12A]
+
+; Also check for Earthshine
+  D1000009  push            0xD1              ; 209
+  FD000018  syscall         253               ; Check_bag_item_count
+  2B01000D  write_byte      [0x12B]           ; save_data[0x12B]
+
 @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_7_3:
   2801000C  read_byte       [0x128]           ; save_data[0x128]
   00000009  push            0x0             
@@ -1133,6 +1139,13 @@
   00000009  push            0x0             
   0B000001  alu             ne              
   0D000001  alu             or              
+
+  ; Also check for Earthshine
+  2B01000C  read_byte       [0x12B]           ; save_data[0x12B]
+  00000009  push            0x0             
+  0B000001  alu             ne              
+  0D000001  alu             or       
+
   ????????  beqz            @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_7_4  ; → PC 1013
   06000009  push            0x6             
   7E000018  syscall         126               ; Trigger_event
