@@ -5005,6 +5005,10 @@
 ;  07000009  push            0x7             
 ;  02000018  syscall         2                 ; Close_window
 
+; Add new save byte for marking this check complete
+  01000009  push            0x1
+  4000000D  write_byte      [0x40]           ; save_data1[0x40]
+
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   02000009  push            0x2             
   06000001  alu             eq              

@@ -2227,9 +2227,9 @@ local function build()
             name = "Traverse Town Secret Waterway Navi Gummi Event",
             world = 3,
             gift = 0x16,
-            address = world_progress_array_address + 0x0,
+            address = world_flags_address - 0xCD,
             bit = 0,
-            value = 0x8C,
+            value = 0x01,
         },
         [2656114] = {
             name = "Traverse Town Magician's Study Earthshine Event",
