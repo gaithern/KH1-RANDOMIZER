@@ -1,5 +1,5 @@
 ; evdl-tool disassembly
-; source: UK_tw26_ard3.evdl
+; source: UK_tw26d.ev
 ; type: evdl
 ; kgr_count: 2
 ; --- Do not edit the lines above ---
@@ -7,16 +7,16 @@
 
 
 ############################################################################
-# KGR[0]  KGR@0xC134  stream@0xC141
+# KGR[0]  KGR@0xA1F4  stream@0xA201
 ############################################################################
 ; ────────────────────────────────────────────────────────────────────────
-; KGR  UK_tw26_ard3.evdl  KGR@0xC134  NN=9
-; Stream @ 0xC141  (1941 instructions)
+; KGR  UK_tw26d.ev  KGR@0xA1F4  NN=9
+; Stream @ 0xA201  (1999 instructions)
 ; ────────────────────────────────────────────────────────────────────────
 
 ; What's changed:
 ; - KGR[1] Script 0:
-;   - Don't update TT story progress
+;   - Don't touch TT story progress  
 ;   - Don't touch Wonderland
 ;   - Don't touch Deep Jungle
 ;   - Don't touch Agrabah
@@ -25,7 +25,7 @@
 ;   - Don't touch Neverland
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xC141  |  KGR 0
+; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xA201  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   6A010018  syscall         362               ; Disable_all_battle_event_boxes
@@ -72,10 +72,10 @@
   00000009  push            0x0             
   06000001  alu             eq              
   0D000001  alu             or              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_0  ; → PC 48
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_0  ; → PC 48
   04000009  push            0x4             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_0_0:
   01000009  push            0x1             
   2E6B001F  write_bit       [0x6B2E]          ; save_data2[0x5DEE]
   00000009  push            0x0             
@@ -89,9 +89,9 @@
   A0000009  push            0xA0              ; 160
   06000001  alu             eq              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_1  ; → PC 63
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_1  ; → PC 63
   9F010018  syscall         415               ; Stop_BGM
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_1:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_0_1:
   10000005  yield           0x10            
   400D000C  read_byte       [0xD40]           ; save_data2[0x0]
   0F000009  push            0xF               ; 15
@@ -100,7 +100,7 @@
   A0000009  push            0xA0              ; 160
   06000001  alu             eq              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_2  ; → PC 89
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_2  ; → PC 89
   01000009  push            0x1             
   7E000018  syscall         126               ; Trigger_event
   64000009  push            0x64              ; 100
@@ -117,8 +117,8 @@
   00000009  push            0x0             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   6B010018  syscall         363               ; Enable_all_battle_event_boxes
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_3  ; → PC 105
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_2:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_3  ; → PC 105
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_0_2:
   8B010018  syscall         395               ; Get_camera_info
   04000009  push            0x4             
   08000018  syscall         8                 ; Set_wait_timer
@@ -135,11 +135,11 @@
   00000009  push            0x0             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   6B010018  syscall         363               ; Enable_all_battle_event_boxes
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_3:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_0_3:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_4  ; → PC 108
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_3  ; → PC 105
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_0_4:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_4  ; → PC 108
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_0_3  ; → PC 105
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_0_4:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -152,17 +152,17 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 1  |  11 subscript(s)  |  PC 118  |  file 0xC319  |  KGR 0
+; Script 1  |  11 subscript(s)  |  PC 118  |  file 0xA3D9  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   00000309  push            0x30000           ; 196608
   0A000018  syscall         10                ; Set_char_ID
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_1_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_1_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_1_1  ; → PC 125
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_1_0  ; → PC 122
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_1_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_1_1  ; → PC 125
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_1_0  ; → PC 122
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_1_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -175,7 +175,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 2  |  11 subscript(s)  |  PC 135  |  file 0xC35D  |  KGR 0
+; Script 2  |  11 subscript(s)  |  PC 135  |  file 0xA41D  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   00000209  push            0x20000           ; 131072
@@ -202,11 +202,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_1  ; → PC 163
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_0  ; → PC 160
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_1  ; → PC 163
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_0  ; → PC 160
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -237,10 +237,10 @@
   67010009  push            0x167             ; 359
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_2  ; → PC 196
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_2  ; → PC 196
   00000009  push            0x0             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_2:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_2:
   14000009  push            0x14              ; 20
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -248,16 +248,15 @@
   6D000009  push            0x6D              ; 109
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_3  ; → PC 212
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_3  ; → PC 211
   02000009  push            0x2             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C5000009  push            0xC5              ; 197
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_3:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_3:
   FB000009  push            0xFB              ; 251
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -265,16 +264,15 @@
   54010009  push            0x154             ; 340
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_4  ; → PC 228
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_4  ; → PC 226
   01000009  push            0x1             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C4000009  push            0xC4              ; 196
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_4:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_4:
   6E000009  push            0x6E              ; 110
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -282,16 +280,15 @@
   B4000009  push            0xB4              ; 180
   09000001  alu             lt              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_5  ; → PC 244
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_5  ; → PC 241
   04000009  push            0x4             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C7000009  push            0xC7              ; 199
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_5:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_5:
   B4000009  push            0xB4              ; 180
   0500000A  load_local      [5]             
   09000001  alu             lt              
@@ -299,33 +296,31 @@
   FA000009  push            0xFA              ; 250
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_6  ; → PC 260
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_6  ; → PC 256
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_6:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_6:
   0500000A  load_local      [5]             
   B4000009  push            0xB4              ; 180
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_7  ; → PC 272
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_7  ; → PC 267
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_7:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_7:
   2401000C  read_byte       [0x124]           ; save_data[0x124]
   00000009  push            0x0             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_8  ; → PC 298
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_8  ; → PC 293
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0B000016  init_call       0xB               ; → Script 11 (outside KGR)
@@ -347,15 +342,15 @@
   0B000017  await_call      0xB               ; → Script 11 (outside KGR)
   01000009  push            0x1             
   2401000D  write_byte      [0x124]           ; save_data[0x124]
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_10  ; → PC 350
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_8:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_10  ; → PC 345
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_8:
   09000009  push            0x9             
   44000018  syscall         68                ; Random_value
   0400000B  store_local     [4]             
   0400000A  load_local      [4]             
   05000009  push            0x5             
   09000001  alu             lt              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_9  ; → PC 325
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_9  ; → PC 320
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0C000016  init_call       0xC               ; → Script 12 (outside KGR)
@@ -375,8 +370,8 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0C000017  await_call      0xC               ; → Script 12 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_10  ; → PC 350
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_9:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_10  ; → PC 345
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_9:
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0D000016  init_call       0xD               ; → Script 13 (outside KGR)
@@ -402,7 +397,7 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0E000017  await_call      0xE               ; → Script 14 (outside KGR)
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_10:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_10:
   B4000018  syscall         180               ; End_talk_camera
   00020018  syscall         512               ; Exit_event_mode
   0A000009  push            0xA               ; 10
@@ -415,7 +410,7 @@
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   01000009  push            0x1             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_11  ; → PC 371
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_11  ; → PC 366
   C5000009  push            0xC5              ; 197
   0D000018  syscall         13                ; Change_motion
   B4000009  push            0xB4              ; 180
@@ -424,11 +419,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_11:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_11:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   02000009  push            0x2             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_12  ; → PC 383
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_12  ; → PC 378
   C4000009  push            0xC4              ; 196
   0D000018  syscall         13                ; Change_motion
   B4000009  push            0xB4              ; 180
@@ -437,11 +432,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_12:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_12:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   03000009  push            0x3             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_13  ; → PC 395
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_13  ; → PC 390
   C7000009  push            0xC7              ; 199
   0D000018  syscall         13                ; Change_motion
   B4000009  push            0xB4              ; 180
@@ -450,11 +445,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_13:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_13:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   04000009  push            0x4             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_14  ; → PC 407
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_2_14  ; → PC 402
   C6000009  push            0xC6              ; 198
   0D000018  syscall         13                ; Change_motion
   B4000009  push            0xB4              ; 180
@@ -463,7 +458,7 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_2_14:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_2_14:
   00000009  push            0x0             
   0D000018  syscall         13                ; Change_motion
   10000005  yield           0x10            
@@ -474,7 +469,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 3  |  11 subscript(s)  |  PC 415  |  file 0xC7BD  |  KGR 0
+; Script 3  |  11 subscript(s)  |  PC 410  |  file 0xA869  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   01000209  push            0x20001           ; 131073
@@ -499,11 +494,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_1  ; → PC 441
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_0  ; → PC 438
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_1  ; → PC 436
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_0  ; → PC 433
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -535,10 +530,10 @@
   67010009  push            0x167             ; 359
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_2  ; → PC 475
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_2  ; → PC 470
   00000009  push            0x0             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_2:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_2:
   14000009  push            0x14              ; 20
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -546,16 +541,15 @@
   6D000009  push            0x6D              ; 109
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_3  ; → PC 491
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_3  ; → PC 485
   02000009  push            0x2             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C5000009  push            0xC5              ; 197
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_3:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_3:
   FB000009  push            0xFB              ; 251
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -563,16 +557,15 @@
   54010009  push            0x154             ; 340
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_4  ; → PC 507
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_4  ; → PC 500
   01000009  push            0x1             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C4000009  push            0xC4              ; 196
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_4:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_4:
   6E000009  push            0x6E              ; 110
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -580,16 +573,15 @@
   B4000009  push            0xB4              ; 180
   09000001  alu             lt              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_5  ; → PC 523
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_5  ; → PC 515
   04000009  push            0x4             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C7000009  push            0xC7              ; 199
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_5:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_5:
   B4000009  push            0xB4              ; 180
   0500000A  load_local      [5]             
   09000001  alu             lt              
@@ -597,33 +589,31 @@
   FA000009  push            0xFA              ; 250
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_6  ; → PC 539
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_6  ; → PC 530
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_6:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_6:
   0500000A  load_local      [5]             
   B4000009  push            0xB4              ; 180
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_7  ; → PC 551
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_7  ; → PC 541
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_7:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_7:
   2501000C  read_byte       [0x125]           ; save_data[0x125]
   00000009  push            0x0             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_8  ; → PC 577
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_8  ; → PC 567
   06000009  push            0x6             
   06000015  push_cond       0x6             
   13000016  init_call       0x13              ; → Script 19 (outside KGR)
@@ -645,12 +635,12 @@
   13000017  await_call      0x13              ; → Script 19 (outside KGR)
   01000009  push            0x1             
   2501000D  write_byte      [0x125]           ; save_data[0x125]
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_11  ; → PC 647
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_8:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_11  ; → PC 637
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_8:
   040B000C  read_byte       [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
   78000009  push            0x78              ; 120
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_9  ; → PC 601
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_9  ; → PC 591
   06000009  push            0x6             
   06000015  push_cond       0x6             
   16000016  init_call       0x16              ; → Script 22 (outside KGR)
@@ -670,15 +660,15 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   16000017  await_call      0x16              ; → Script 22 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_11  ; → PC 647
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_9:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_11  ; → PC 637
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_9:
   09000009  push            0x9             
   44000018  syscall         68                ; Random_value
   0400000B  store_local     [4]             
   0400000A  load_local      [4]             
   05000009  push            0x5             
   09000001  alu             lt              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_10  ; → PC 628
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_10  ; → PC 618
   06000009  push            0x6             
   06000015  push_cond       0x6             
   14000016  init_call       0x14              ; → Script 20 (outside KGR)
@@ -698,8 +688,8 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   14000017  await_call      0x14              ; → Script 20 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_11  ; → PC 647
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_10:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_11  ; → PC 637
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_10:
   06000009  push            0x6             
   06000015  push_cond       0x6             
   15000016  init_call       0x15              ; → Script 21 (outside KGR)
@@ -719,7 +709,7 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   15000017  await_call      0x15              ; → Script 21 (outside KGR)
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_11:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_11:
   B4000018  syscall         180               ; End_talk_camera
   00020018  syscall         512               ; Exit_event_mode
   0A000009  push            0xA               ; 10
@@ -732,7 +722,7 @@
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   01000009  push            0x1             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_12  ; → PC 668
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_12  ; → PC 658
   C5000009  push            0xC5              ; 197
   0D000018  syscall         13                ; Change_motion
   5A000009  push            0x5A              ; 90
@@ -741,11 +731,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_12:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_12:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   02000009  push            0x2             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_13  ; → PC 680
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_13  ; → PC 670
   C4000009  push            0xC4              ; 196
   0D000018  syscall         13                ; Change_motion
   5A000009  push            0x5A              ; 90
@@ -754,11 +744,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_13:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_13:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   03000009  push            0x3             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_14  ; → PC 692
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_14  ; → PC 682
   C7000009  push            0xC7              ; 199
   0D000018  syscall         13                ; Change_motion
   5A000009  push            0x5A              ; 90
@@ -767,11 +757,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_14:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_14:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   04000009  push            0x4             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_15  ; → PC 704
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_3_15  ; → PC 694
   C6000009  push            0xC6              ; 198
   0D000018  syscall         13                ; Change_motion
   5A000009  push            0x5A              ; 90
@@ -780,7 +770,7 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_3_15:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_3_15:
   00000009  push            0x0             
   0D000018  syscall         13                ; Change_motion
   38000018  syscall         56                ; Motion_ctrl_on
@@ -792,7 +782,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 4  |  11 subscript(s)  |  PC 713  |  file 0xCC65  |  KGR 0
+; Script 4  |  11 subscript(s)  |  PC 703  |  file 0xACFD  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   02000209  push            0x20002           ; 131074
@@ -814,11 +804,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_1  ; → PC 736
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_0  ; → PC 733
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_1  ; → PC 726
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_0  ; → PC 723
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -850,10 +840,10 @@
   67010009  push            0x167             ; 359
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_2  ; → PC 770
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_2  ; → PC 760
   00000009  push            0x0             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_2:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_2:
   14000009  push            0x14              ; 20
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -861,16 +851,15 @@
   6D000009  push            0x6D              ; 109
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_3  ; → PC 786
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_3  ; → PC 775
   02000009  push            0x2             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C5000009  push            0xC5              ; 197
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_3:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_3:
   FB000009  push            0xFB              ; 251
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -878,16 +867,15 @@
   54010009  push            0x154             ; 340
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_4  ; → PC 802
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_4  ; → PC 790
   01000009  push            0x1             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C4000009  push            0xC4              ; 196
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_4:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_4:
   6E000009  push            0x6E              ; 110
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -895,16 +883,15 @@
   B4000009  push            0xB4              ; 180
   09000001  alu             lt              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_5  ; → PC 818
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_5  ; → PC 805
   04000009  push            0x4             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C7000009  push            0xC7              ; 199
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_5:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_5:
   B4000009  push            0xB4              ; 180
   0500000A  load_local      [5]             
   09000001  alu             lt              
@@ -912,33 +899,31 @@
   FA000009  push            0xFA              ; 250
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_6  ; → PC 834
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_6  ; → PC 820
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_6:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_6:
   0500000A  load_local      [5]             
   B4000009  push            0xB4              ; 180
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_7  ; → PC 846
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_7  ; → PC 831
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_7:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_7:
   2601000C  read_byte       [0x126]           ; save_data[0x126]
   00000009  push            0x0             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_8  ; → PC 872
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_8  ; → PC 857
   06000009  push            0x6             
   06000015  push_cond       0x6             
   0F000016  init_call       0xF               ; → Script 15 (outside KGR)
@@ -960,12 +945,12 @@
   0F000017  await_call      0xF               ; → Script 15 (outside KGR)
   01000009  push            0x1             
   2601000D  write_byte      [0x126]           ; save_data[0x126]
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_11  ; → PC 942
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_8:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_11  ; → PC 927
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_8:
   040B000C  read_byte       [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
   78000009  push            0x78              ; 120
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_9  ; → PC 896
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_9  ; → PC 881
   06000009  push            0x6             
   06000015  push_cond       0x6             
   12000016  init_call       0x12              ; → Script 18 (outside KGR)
@@ -985,15 +970,15 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   12000017  await_call      0x12              ; → Script 18 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_11  ; → PC 942
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_9:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_11  ; → PC 927
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_9:
   09000009  push            0x9             
   44000018  syscall         68                ; Random_value
   0400000B  store_local     [4]             
   0400000A  load_local      [4]             
   05000009  push            0x5             
   09000001  alu             lt              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_10  ; → PC 923
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_10  ; → PC 908
   06000009  push            0x6             
   06000015  push_cond       0x6             
   10000016  init_call       0x10              ; → Script 16 (outside KGR)
@@ -1013,8 +998,8 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   10000017  await_call      0x10              ; → Script 16 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_11  ; → PC 942
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_10:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_11  ; → PC 927
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_10:
   06000009  push            0x6             
   06000015  push_cond       0x6             
   11000016  init_call       0x11              ; → Script 17 (outside KGR)
@@ -1034,7 +1019,7 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   11000017  await_call      0x11              ; → Script 17 (outside KGR)
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_11:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_11:
   B4000018  syscall         180               ; End_talk_camera
   00020018  syscall         512               ; Exit_event_mode
   0A000009  push            0xA               ; 10
@@ -1047,7 +1032,7 @@
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   01000009  push            0x1             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_12  ; → PC 963
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_12  ; → PC 948
   C5000009  push            0xC5              ; 197
   0D000018  syscall         13                ; Change_motion
   1E000009  push            0x1E              ; 30
@@ -1056,11 +1041,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_12:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_12:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   02000009  push            0x2             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_13  ; → PC 975
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_13  ; → PC 960
   C4000009  push            0xC4              ; 196
   0D000018  syscall         13                ; Change_motion
   1E000009  push            0x1E              ; 30
@@ -1069,11 +1054,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_13:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_13:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   03000009  push            0x3             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_14  ; → PC 987
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_14  ; → PC 972
   C7000009  push            0xC7              ; 199
   0D000018  syscall         13                ; Change_motion
   1E000009  push            0x1E              ; 30
@@ -1082,11 +1067,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_14:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_14:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   04000009  push            0x4             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_15  ; → PC 999
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_4_15  ; → PC 984
   C6000009  push            0xC6              ; 198
   0D000018  syscall         13                ; Change_motion
   1E000009  push            0x1E              ; 30
@@ -1095,7 +1080,7 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_4_15:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_4_15:
   00000009  push            0x0             
   0D000018  syscall         13                ; Change_motion
   38000018  syscall         56                ; Motion_ctrl_on
@@ -1107,7 +1092,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 5  |  11 subscript(s)  |  PC 1008  |  file 0xD101  |  KGR 0
+; Script 5  |  11 subscript(s)  |  PC 993  |  file 0xB185  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   04000209  push            0x20004           ; 131076
@@ -1129,7 +1114,7 @@
   040B000C  read_byte       [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
   78000009  push            0x78              ; 120
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_0  ; → PC 1036
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_0  ; → PC 1021
   00000009  push            0x0             
   C6000018  syscall         198               ; Set_command_speak_range
   1A000018  syscall         26                ; Collision_off
@@ -1137,13 +1122,13 @@
   16000018  syscall         22                ; Hide_char
   18000018  syscall         24                ; Hide_char_shadow
   41010018  syscall         321               ; Disable_targeting
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_0:
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_1:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_1:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_2  ; → PC 1040
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_1  ; → PC 1037
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_2:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_2  ; → PC 1025
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_1  ; → PC 1022
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_2:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -1174,10 +1159,10 @@
   67010009  push            0x167             ; 359
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_3  ; → PC 1073
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_3  ; → PC 1058
   00000009  push            0x0             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_3:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_3:
   14000009  push            0x14              ; 20
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -1185,16 +1170,15 @@
   6D000009  push            0x6D              ; 109
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_4  ; → PC 1089
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_4  ; → PC 1073
   02000009  push            0x2             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C5000009  push            0xC5              ; 197
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_4:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_4:
   FB000009  push            0xFB              ; 251
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -1202,16 +1186,15 @@
   54010009  push            0x154             ; 340
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_5  ; → PC 1105
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_5  ; → PC 1088
   01000009  push            0x1             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C4000009  push            0xC4              ; 196
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_5:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_5:
   6E000009  push            0x6E              ; 110
   0500000A  load_local      [5]             
   0A000001  alu             le              
@@ -1219,16 +1202,15 @@
   B4000009  push            0xB4              ; 180
   09000001  alu             lt              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_6  ; → PC 1121
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_6  ; → PC 1103
   04000009  push            0x4             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C7000009  push            0xC7              ; 199
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_6:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_6:
   B4000009  push            0xB4              ; 180
   0500000A  load_local      [5]             
   09000001  alu             lt              
@@ -1236,29 +1218,27 @@
   FA000009  push            0xFA              ; 250
   0A000001  alu             le              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_7  ; → PC 1137
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_7  ; → PC 1118
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_7:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_7:
   0500000A  load_local      [5]             
   B4000009  push            0xB4              ; 180
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_8  ; → PC 1149
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_8  ; → PC 1129
   03000009  push            0x3             
   870C000D  write_byte      [0xC87]           ; runtime?[0xC87]
   C6000009  push            0xC6              ; 198
-  0A000009  push            0xA               ; 10
-  3A000018  syscall         58                ; Change_motion_interp
+  0D000018  syscall         13                ; Change_motion
   19000009  push            0x19              ; 25
   01000015  push_cond       0x1             
   AF000018  syscall         175               ; Face_actor
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_8:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_8:
   00000009  push            0x0             
   04000009  push            0x4             
   B3000018  syscall         179               ; Start_talk_camera
@@ -1268,7 +1248,7 @@
   0300000A  load_local      [3]             
   00000006  store_reg                       
   00000007  cmp_reg_imm                     
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_9  ; → PC 1179
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_9  ; → PC 1159
   06000009  push            0x6             
   06000015  push_cond       0x6             
   17000016  init_call       0x17              ; → Script 23 (outside KGR)
@@ -1288,10 +1268,10 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   17000017  await_call      0x17              ; → Script 23 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_11  ; → PC 1223
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_9:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_11  ; → PC 1203
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_9:
   01000007  cmp_reg_imm     0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_10  ; → PC 1201
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_10  ; → PC 1181
   06000009  push            0x6             
   06000015  push_cond       0x6             
   18000016  init_call       0x18              ; → Script 24 (outside KGR)
@@ -1311,10 +1291,10 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   18000017  await_call      0x18              ; → Script 24 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_11  ; → PC 1223
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_10:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_11  ; → PC 1203
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_10:
   02000007  cmp_reg_imm     0x2             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_11  ; → PC 1223
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_11  ; → PC 1203
   06000009  push            0x6             
   06000015  push_cond       0x6             
   19000016  init_call       0x19              ; → Script 25 (outside KGR)
@@ -1334,8 +1314,8 @@
   06000009  push            0x6             
   06000015  push_cond       0x6             
   19000017  await_call      0x19              ; → Script 25 (outside KGR)
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_11  ; → PC 1223
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_11:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_11  ; → PC 1203
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_11:
   00000008  dec_reg_idx                     
   B4000018  syscall         180               ; End_talk_camera
   00020018  syscall         512               ; Exit_event_mode
@@ -1349,7 +1329,7 @@
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   01000009  push            0x1             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_12  ; → PC 1245
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_12  ; → PC 1225
   C5000009  push            0xC5              ; 197
   0D000018  syscall         13                ; Change_motion
   00000009  push            0x0             
@@ -1358,11 +1338,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_12:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_12:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   02000009  push            0x2             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_13  ; → PC 1257
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_13  ; → PC 1237
   C4000009  push            0xC4              ; 196
   0D000018  syscall         13                ; Change_motion
   00000009  push            0x0             
@@ -1371,11 +1351,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_13:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_13:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   03000009  push            0x3             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_14  ; → PC 1269
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_14  ; → PC 1249
   C7000009  push            0xC7              ; 199
   0D000018  syscall         13                ; Change_motion
   00000009  push            0x0             
@@ -1384,11 +1364,11 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_14:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_14:
   870C000C  read_byte       [0xC87]           ; runtime?[0xC87]
   04000009  push            0x4             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_15  ; → PC 1281
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_5_15  ; → PC 1261
   C6000009  push            0xC6              ; 198
   0D000018  syscall         13                ; Change_motion
   00000009  push            0x0             
@@ -1397,7 +1377,7 @@
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   67000018  syscall         103               ; Wait_motion_end
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_5_15:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_5_15:
   00000009  push            0x0             
   0D000018  syscall         13                ; Change_motion
   38000018  syscall         56                ; Motion_ctrl_on
@@ -1409,7 +1389,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 6  |  26 subscript(s)  |  PC 1290  |  file 0xD569  |  KGR 0
+; Script 6  |  26 subscript(s)  |  PC 1270  |  file 0xB5D9  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   00000009  push            0x0             
@@ -1473,11 +1453,11 @@
   01000009  push            0x1             
   53000018  syscall         83                ; Set_window_close_speed
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_6_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_6_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_6_1  ; → PC 1355
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_6_0  ; → PC 1352
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_6_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_6_1  ; → PC 1335
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_6_0  ; → PC 1332
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_6_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -1492,6 +1472,16 @@
   21000009  push            0x21              ; 33
   00000009  push            0x0             
   6D000018  syscall         109               ; Start_texture_animation
+  01000009  push            0x1             
+  00000009  push            0x0             
+  28000009  push            0x28              ; 40
+  03000018  syscall         3                 ; Set_window_position
+  01000009  push            0x1             
+  03000009  push            0x3             
+  51000018  syscall         81                ; Set_window_tail_location
+  01000009  push            0x1             
+  4F010009  push            0x14F             ; 335
+  52000018  syscall         82                ; Set_window_tail_rotation
   01000009  push            0x1             
   03000009  push            0x3             
   05000018  syscall         5                 ; Set_window_type
@@ -1505,398 +1495,436 @@
   01000009  push            0x1             
   53000018  syscall         83                ; Set_window_close_speed
   01000009  push            0x1             
-  0B000009  push            0xB               ; 11
+  08000009  push            0x8             
   02000009  push            0x2             
   04000018  syscall         4                 ; Set_window_size
   01000009  push            0x1             
   00000018  syscall         0                 ; Open_window
   01000009  push            0x1             
-; Message: {0x07}{0x0C}It seems the other princesses
-;          have been freed as well.
-  DE010009  push            0x1DE             ; 478
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-; Message: {0x07}{0x0C}Jasmine apparently hasn't
-;          returned to Agrabah.
-  DF010009  push            0x1DF             ; 479
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-; Message: {0x07}{0x0C}I suspect the others are still
-;          in the castle, too.
-  E0010009  push            0x1E0             ; 480
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  02000015  push_cond       0x2             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  02000015  push_cond       0x2             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  01000009  push            0x1             
-  03000009  push            0x3             
-  05000018  syscall         5                 ; Set_window_type
-  01000009  push            0x1             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  01000009  push            0x1             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  01000009  push            0x1             
-  0A000009  push            0xA               ; 10
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  01000009  push            0x1             
-  00000018  syscall         0                 ; Open_window
-  01000009  push            0x1             
-; Message: {0x07}{0x0C}Why would they stay in
-;          that castle?
-  E1010009  push            0x1E1             ; 481
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  02000015  push_cond       0x2             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  02000015  push_cond       0x2             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  01000009  push            0x1             
-  03000009  push            0x3             
-  05000018  syscall         5                 ; Set_window_type
-  01000009  push            0x1             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  01000009  push            0x1             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  01000009  push            0x1             
-  0A000009  push            0xA               ; 10
-  03000009  push            0x3             
-  04000018  syscall         4                 ; Set_window_size
-  01000009  push            0x1             
-  00000018  syscall         0                 ; Open_window
-  01000009  push            0x1             
-; Message: {0x07}{0x14}Has the darkness taken
-;          them, too?
-  E2010009  push            0x1E2             ; 482
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  02000015  push_cond       0x2             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  02000015  push_cond       0x2             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  01000009  push            0x1             
-  03000009  push            0x3             
-  05000018  syscall         5                 ; Set_window_type
-  01000009  push            0x1             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  01000009  push            0x1             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  01000009  push            0x1             
-  0A000009  push            0xA               ; 10
-  03000009  push            0x3             
-  04000018  syscall         4                 ; Set_window_size
-  01000009  push            0x1             
-  00000018  syscall         0                 ; Open_window
-  01000009  push            0x1             
-; Message: {0x07}{0x0C}Maybe it's hopeless for
-;          ordinary people to oppose
-;          the darkness.
-  E3010009  push            0x1E3             ; 483
-  01000018  syscall         1                 ; Display_message
-  01000009  push            0x1             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  02000015  push_cond       0x2             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  04000015  push_cond       0x4             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  02000009  push            0x2             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  02000009  push            0x2             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  02000009  push            0x2             
-  0A000009  push            0xA               ; 10
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  02000009  push            0x2             
-  00000018  syscall         0                 ; Open_window
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}I thought the Keyhole would
-;          strengthen the darkness.
-  E4010009  push            0x1E4             ; 484
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}I mean, the darkness is
-;          strong, but still…
-  E5010009  push            0x1E5             ; 485
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}It's almost as if someone is
-;          holding the darkness back.
-  E6010009  push            0x1E6             ; 486
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  04000015  push_cond       0x4             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  04000015  push_cond       0x4             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  02000009  push            0x2             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  02000009  push            0x2             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  02000009  push            0x2             
-  09000009  push            0x9             
-  03000009  push            0x3             
-  04000018  syscall         4                 ; Set_window_size
-  02000009  push            0x2             
-  00000018  syscall         0                 ; Open_window
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}We have to close the
-;          Keyhole before the
-;          darkness overwhelms us.
-  E7010009  push            0x1E7             ; 487
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  04000015  push_cond       0x4             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  04000015  push_cond       0x4             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  02000009  push            0x2             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  02000009  push            0x2             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  02000009  push            0x2             
-  09000009  push            0x9             
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  02000009  push            0x2             
-  00000018  syscall         0                 ; Open_window
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}I think Cid knows a way
-;          to get to Hollow Bastion.
-  E8010009  push            0x1E8             ; 488
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  04000015  push_cond       0x4             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  04000015  push_cond       0x4             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  02000009  push            0x2             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  02000009  push            0x2             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  02000009  push            0x2             
-  0A000009  push            0xA               ; 10
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  02000009  push            0x2             
-  00000018  syscall         0                 ; Open_window
-  02000009  push            0x2             
-; Message: {0x07}{0x0C}Kairi said she was going to
-;          the cavern. I wonder why?
-  26020009  push            0x226             ; 550
-  01000018  syscall         1                 ; Display_message
-  02000009  push            0x2             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  04000015  push_cond       0x4             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  03000015  push_cond       0x3             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  03000009  push            0x3             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  03000009  push            0x3             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  03000009  push            0x3             
-  09000009  push            0x9             
-  03000009  push            0x3             
-  04000018  syscall         4                 ; Set_window_size
-  03000009  push            0x3             
-  00000018  syscall         0                 ; Open_window
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}Not sure why, but the
-;          Heartless are getting
-;          stronger.
-  E9010009  push            0x1E9             ; 489
-  01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}New types of Heartless
-;          are popping up all over
-;          the place!
-  EA010009  push            0x1EA             ; 490
-  01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}If anything happens to
-;          us, I know we can count
-;          on you, Sora.
-  EB010009  push            0x1EB             ; 491
-  01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  03000015  push_cond       0x3             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  03000015  push_cond       0x3             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  03000009  push            0x3             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  03000009  push            0x3             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  03000009  push            0x3             
-  0A000009  push            0xA               ; 10
-  03000009  push            0x3             
-  04000018  syscall         4                 ; Set_window_size
-  03000009  push            0x3             
-  00000018  syscall         0                 ; Open_window
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}Super strong Heartless are
-;          showing up all over. Wipe
-;          them out, Sora!
-  EC010009  push            0x1EC             ; 492
-  01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  03000015  push_cond       0x3             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  03000015  push_cond       0x3             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  03000009  push            0x3             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  03000009  push            0x3             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  03000009  push            0x3             
-  0A000009  push            0xA               ; 10
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  03000009  push            0x3             
-  00000018  syscall         0                 ; Open_window
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}I wonder if Ansem is waiting
-;          in Hollow Bastion?
+; Message: {0x0B}{0x05}{0x07}{0x0C}âÜ{0x19}{0x07}{0x19}j{0x1A}J{0xA8}{0x19}4{0x19}{0x07}{0x19}{0x0D}íì{0xB2}
+;          {0x0B}{0x05}{0x1B}]{0x1B}{iHat}{iGummi7}{0xB9}{0x9F}{0xB5}►Œ{0xBE}{0x0B}{0x04}o
   ED010009  push            0x1ED             ; 493
   01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  03000015  push_cond       0x3             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  03000015  push_cond       0x3             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  03000009  push            0x3             
   01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  03000009  push            0x3             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  03000009  push            0x3             
-  08000009  push            0x8             
-  02000009  push            0x2             
-  04000018  syscall         4                 ; Set_window_size
-  03000009  push            0x3             
-  00000018  syscall         0                 ; Open_window
-  03000009  push            0x3             
-; Message: {0x07}{0x0C}You look ready to wipe
-;          out some Heartless!
-  27020009  push            0x227             ; 551
-  01000018  syscall         1                 ; Display_message
-  03000009  push            0x3             
-  6B000018  syscall         107               ; Wait_message_end_ID
-  03000015  push_cond       0x3             
-  1E000009  push            0x1E              ; 30
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  10000005  yield           0x10            
-  05000015  push_cond       0x5             
-  21000009  push            0x21              ; 33
-  00000009  push            0x0             
-  6D000018  syscall         109               ; Start_texture_animation
-  04000009  push            0x4             
-  01000009  push            0x1             
-  06000018  syscall         6                 ; Set_window_opening_speed
-  04000009  push            0x4             
-  01000009  push            0x1             
-  53000018  syscall         83                ; Set_window_close_speed
-  04000009  push            0x4             
-  0A000009  push            0xA               ; 10
-  01000009  push            0x1             
-  04000018  syscall         4                 ; Set_window_size
-  04000009  push            0x4             
-  00000018  syscall         0                 ; Open_window
-  04000009  push            0x4             
-; Message: {0x07}{0x0C}{0x08}I wonder how Riku's doing…
+; Message: {0x0B}{0x05}{0x07}{0x0C}{0x19}{0x14}{0x19}Cì{0xFF}{0x19}{0x0D}®Û{0x19}{0x10}{0x19}{0x06}{0x19}{0x1D}q{0xA5}
+;          {0x0B}{0x05}{0x1A}ÁÚ{0xA2}▼{0xA4}▼{0xB6}{iGummi8}▼j
   EE010009  push            0x1EE             ; 494
   01000018  syscall         1                 ; Display_message
-  21000018  syscall         33                ; Wait_message_end
-  05000015  push_cond       0x5             
+  01000009  push            0x1             
+; Message: {0x0B}{0x05}{0x07}{0x0C}{iGummi1}{0x9E}{0xB6}{iGummi4}{0x1A}・{0xA8}{0x19}4{0x19}{0x07}{0x19}{0x0D}íì{0xB2}
+;          {0x0B}{0x05}▲{0xA8}{0x1B}&{0xA5}{0x1A}óÚ{0xA2}▼{0xB8}{0xB5}►Œj
+  EF010009  push            0x1EF             ; 495
+  01000018  syscall         1                 ; Display_message
+  01000009  push            0x1             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  02000015  push_cond       0x2             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  02000015  push_cond       0x2             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  01000009  push            0x1             
+  00000009  push            0x0             
+  28000009  push            0x28              ; 40
+  03000018  syscall         3                 ; Set_window_position
+  01000009  push            0x1             
+  03000009  push            0x3             
+  51000018  syscall         81                ; Set_window_tail_location
+  01000009  push            0x1             
+  4F010009  push            0x14F             ; 335
+  52000018  syscall         82                ; Set_window_tail_rotation
+  01000009  push            0x1             
+  03000009  push            0x3             
+  05000018  syscall         5                 ; Set_window_type
+  01000009  push            0x1             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  01000009  push            0x1             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  01000009  push            0x1             
+  07000009  push            0x7             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  01000009  push            0x1             
+  00000018  syscall         0                 ; Open_window
+  01000009  push            0x1             
+; Message: {0x07}{0x0C}{0x19}4{0x19}{0x07}{0x19}{0x0D}íì{0x9F}{0xA0}®{0x1A}—{iGummi2}{0x1A}n{0x1B}{0xA4}{0xBE}▲Ú{0xA2}
+;          ▲{0xA8}{0x1B}&{0xA5}{0xA3}À{0xAE}Ú{0xA2}▼{0xB8}{0xA8}Œ{0xBA}►{iGummi2}{0x0B}{0x04}o
+  F0010009  push            0x1F0             ; 496
+  01000018  syscall         1                 ; Display_message
+  01000009  push            0x1             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  02000015  push_cond       0x2             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  02000015  push_cond       0x2             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  01000009  push            0x1             
+  00000009  push            0x0             
+  28000009  push            0x28              ; 40
+  03000018  syscall         3                 ; Set_window_position
+  01000009  push            0x1             
+  03000009  push            0x3             
+  51000018  syscall         81                ; Set_window_tail_location
+  01000009  push            0x1             
+  4F010009  push            0x14F             ; 335
+  52000018  syscall         82                ; Set_window_tail_rotation
+  01000009  push            0x1             
+  03000009  push            0x3             
+  05000018  syscall         5                 ; Set_window_type
+  01000009  push            0x1             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  01000009  push            0x1             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  01000009  push            0x1             
+  06000009  push            0x6             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  01000009  push            0x1             
+  00000018  syscall         0                 ; Open_window
+  01000009  push            0x1             
+; Message: {0x07}{0x0C}{0xFE}{0x19}{0x09}》{0x19}8í{0x19}{0x0D}ô{0xAD}À{0x1A}{0xC2}{0x19}*{0xA4}
+;          {0x19}q{0x1D}Â{0x19}O▼¿{iGummi9}{0xB6}{0x1A}v{0xA8}{0x19}*{0xA5}
+;          {0xA8}{0xAF}{iGummi6}{0xAE}{0xB9}{0xA2}{iGummi8}{0xAE}Ú{0x9F}{0xA8}{iGummi2}{0x0B}{0x04}o
+  F1010009  push            0x1F1             ; 497
+  01000018  syscall         1                 ; Display_message
+  01000009  push            0x1             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  02000015  push_cond       0x2             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  02000015  push_cond       0x2             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  01000009  push            0x1             
+  03000009  push            0x3             
+  05000018  syscall         5                 ; Set_window_type
+  01000009  push            0x1             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  01000009  push            0x1             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  01000009  push            0x1             
+  08000009  push            0x8             
+  03000009  push            0x3             
+  04000018  syscall         4                 ; Set_window_size
+  01000009  push            0x1             
+  00000018  syscall         0                 ; Open_window
+  01000009  push            0x1             
+; Message: {0x07}{0x0C}{0xAB}{0xA1}►{0xA8}{0x19},{0x1A}r{0xBE}i{0x1A}v{0xA5}{0x1A}:{0xA0}{0x1A}{iGummi2}{iGummi2}►{0xA8}®
+;          {0x1A}h{0x1B}~{0xA4}{0xA8}{iGummi2}{0xB2}{iGummi8}{0xB9}{0xBD}{0xA4}j
+  F2010009  push            0x1F2             ; 498
+  01000018  syscall         1                 ; Display_message
+  01000009  push            0x1             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  02000015  push_cond       0x2             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  04000015  push_cond       0x4             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  02000009  push            0x2             
+  3C000009  push            0x3C              ; 60
+  05000001  alu             negate          
+  91000009  push            0x91              ; 145
+  05000001  alu             negate          
+  03000018  syscall         3                 ; Set_window_position
+  02000009  push            0x2             
+  0D000009  push            0xD               ; 13
+  51000018  syscall         81                ; Set_window_tail_location
+  02000009  push            0x2             
+  87000009  push            0x87              ; 135
+  52000018  syscall         82                ; Set_window_tail_rotation
+  02000009  push            0x2             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  02000009  push            0x2             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  02000009  push            0x2             
+  08000009  push            0x8             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  02000009  push            0x2             
+  00000018  syscall         0                 ; Open_window
+  02000009  push            0x2             
+; Message: {0x07}{0x0C}{0x1A}k{0x1B}I{0xBE}{0x19}M{0x1A}ù{iGummi8}{0x9F}{0xB6}i{0x1A}v{0xA8}{0x19}*i
+;          {0xB2}Ú{0xA3}{0x1A}{0xC2}{iGummi4}{0xA4}{0xB8}{0xA3}{0x19}●Ú{0xA2}{0x9F}j
+  F3010009  push            0x1F3             ; 499
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+; Message: {0x07}{0x0C}{0x1A}NŒÚ{0xA2}{0x1A}{0xC2}{iGummi4}{0xA4}Ú{0xA2}▼{0xB8}{iGummi5}Ài
+;          {iGummi6}{0xBD}{0xA4}{0xB2}{0xA8}¿®{0xA4}▼®{VII}j
+  F4010009  push            0x1F4             ; 500
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+; Message: {0x0B}{0x05}{0x07}{0x0C}{0xB2}{iGummi8}{iGummi2}{iGummi8}{0x9F}{0xB6}{0x1A}?{iGummi2}{0xBE}i
+;          {0x0B}{0x05}{0x1A}vi{iGummi1}{iGummi7}◄{0xA2}▼{0xB8}{0xA8}{iGummi2}{0xB2}{0x0B}{0x04}o
+  F5010009  push            0x1F5             ; 501
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  04000015  push_cond       0x4             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  04000015  push_cond       0x4             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  02000009  push            0x2             
+  3C000009  push            0x3C              ; 60
+  05000001  alu             negate          
+  91000009  push            0x91              ; 145
+  05000001  alu             negate          
+  03000018  syscall         3                 ; Set_window_position
+  02000009  push            0x2             
+  0D000009  push            0xD               ; 13
+  51000018  syscall         81                ; Set_window_tail_location
+  02000009  push            0x2             
+  87000009  push            0x87              ; 135
+  52000018  syscall         82                ; Set_window_tail_rotation
+  02000009  push            0x2             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  02000009  push            0x2             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  02000009  push            0x2             
+  08000009  push            0x8             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  02000009  push            0x2             
+  00000018  syscall         0                 ; Open_window
+  02000009  push            0x2             
+; Message: {0x0B}{0x05}{0x07}{0x0C}{0x1A}{0xA5}▼¿{0x1A}k{0x1B}I{0xBC}{0x1A}ô{III}{0xA4}▼{0xA3}
+;          {0x0B}{0x05}{0x1A}v{0xBE}▲{0xAB}{0xB9}{0xA2}{iGummi8}{0xAE}►{0xBB}j
+  F6010009  push            0x1F6             ; 502
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  04000015  push_cond       0x4             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  04000015  push_cond       0x4             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  02000009  push            0x2             
+  3C000009  push            0x3C              ; 60
+  05000001  alu             negate          
+  91000009  push            0x91              ; 145
+  05000001  alu             negate          
+  03000018  syscall         3                 ; Set_window_position
+  02000009  push            0x2             
+  0D000009  push            0xD               ; 13
+  51000018  syscall         81                ; Set_window_tail_location
+  02000009  push            0x2             
+  87000009  push            0x87              ; 135
+  52000018  syscall         82                ; Set_window_tail_rotation
+  02000009  push            0x2             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  02000009  push            0x2             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  02000009  push            0x2             
+  07000009  push            0x7             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  02000009  push            0x2             
+  00000018  syscall         0                 ; Open_window
+  02000009  push            0x2             
+; Message: {0x07}{0x0C}{0xFD}{0x19}{0x0A}ß{0x19}{0x1D}ìó{0x19}8á{0x19}{0x0D}{0xA5}{0x1A}1{iGummi4}{0x1A}↑{0x1D}Âi
+;          ë{0x19}{0x1C}{iGummi7}{0xBD}{0xA4}{0xB6}i{0xBB}{iGummi2}{0xB8}{0xA3}{0x19}●►j
+  F7010009  push            0x1F7             ; 503
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  04000015  push_cond       0x4             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  04000015  push_cond       0x4             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  02000009  push            0x2             
+  3C000009  push            0x3C              ; 60
+  05000001  alu             negate          
+  91000009  push            0x91              ; 145
+  05000001  alu             negate          
+  03000018  syscall         3                 ; Set_window_position
+  02000009  push            0x2             
+  0D000009  push            0xD               ; 13
+  51000018  syscall         81                ; Set_window_tail_location
+  02000009  push            0x2             
+  87000009  push            0x87              ; 135
+  52000018  syscall         82                ; Set_window_tail_rotation
+  02000009  push            0x2             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  02000009  push            0x2             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  02000009  push            0x2             
+  0A000009  push            0xA               ; 10
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  02000009  push            0x2             
+  00000018  syscall         0                 ; Open_window
+  02000009  push            0x2             
+; Message: {0x07}{0x0C}âÜ{0x19}{0x07}{0xA4}{0xB6}i{0x19}{iKey}{0x19}d{0x1C}
+;          {0x1C}u{0xA5}{0x1A}1{iGummi4}Ú{0xA2}j
+;          ▲{0xBD}{0xA4}{0xA3}{iGummi6}{0xBA}{0xA5}{0x1A}—{0xA8}{0x19}P{iGummi2}{iGummi8}{0xB6}{0x0B}{0x04}e
+  35020009  push            0x235             ; 565
+  01000018  syscall         1                 ; Display_message
+  02000009  push            0x2             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  04000015  push_cond       0x4             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  03000015  push_cond       0x3             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  03000009  push            0x3             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  03000009  push            0x3             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  03000009  push            0x3             
+  06000009  push            0x6             
+  03000009  push            0x3             
+  04000018  syscall         4                 ; Set_window_size
+  03000009  push            0x3             
+  00000018  syscall         0                 ; Open_window
+  03000009  push            0x3             
+; Message: {0x07}{0x0C}{0x1A}k{0x1B}I{0xBE}{0x19}n▼{0x9F}{iGummi10}▼{iGummi2}i{0xBB}{iGummi2}{0xBD}{0xA4}▼{iGummi5}À
+;          °qô{0x19}{0x09}ì{0xBE}{0x19}*{0xBC}{0x1C}){iGummi8}{0xA2}{0xB8}{0xBD}Œ{0xB5}j
+  F8010009  push            0x1F8             ; 504
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+; Message: {0x0B}{0x05}{0x07}{0x0C}▲{0xA0}{iGummi6}{0xA0}{0xA8}{0x1A}2{0x1A}3¿i{0x1A}N{0xAE}¿{0x1A}9{0x9F}{iGummi6}{0xA3}{0xB2}
+;          {0x0B}{0x05}{0xA4}▼{0x1A}{0xC2}▼°qô{0x19}{0x09}ì{0xBE}{0x19}u{0x19}M{0x19}N{0x0B}{0x04}d
+  F9010009  push            0x1F9             ; 505
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+; Message: {0x0B}{0x0F}{0x07}{0x0C}{0x1A}L{0x9F}{0xA0}{0xB2}{0x1B}*Ú{0xA2}{0xAF}{0xB8}{iGummi5}À
+;          {0x0B}{0x0F}{0x1A}—{iGummi2}▲Ú{0x9F}{0xB6}iî{0x19}{0x06}{0xB2}{0xB5}{0xBA}{iGummi8}{iGummi4}{0xA7}j
+  FA010009  push            0x1FA             ; 506
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  03000015  push_cond       0x3             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  03000015  push_cond       0x3             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  03000009  push            0x3             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  03000009  push            0x3             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  03000009  push            0x3             
+  08000009  push            0x8             
+  03000009  push            0x3             
+  04000018  syscall         4                 ; Set_window_size
+  03000009  push            0x3             
+  00000018  syscall         0                 ; Open_window
+  03000009  push            0x3             
+; Message: {0x07}{0x0C}▲{0xA0}{iGummi6}{0xA0}{0xA5}{0x1A}{0xC2}▼°qô{0x19}{0x09}ì{0xBE}{0x1A}{0xA2}{0xB9}{0x9F}{0xA8}j
+;          î{0x19}{0x06}i{0xAE}{0xA3}{0xB1}{0xA2}{0xB3}Ú{0xA1}{iGummi5}{0xA0}ÔÚ{0xA2}{0xB5}{0x0B}{0x04}d
+  FB010009  push            0x1FB             ; 507
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  03000015  push_cond       0x3             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  03000015  push_cond       0x3             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  03000009  push            0x3             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  03000009  push            0x3             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  03000009  push            0x3             
+  08000009  push            0x8             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  03000009  push            0x3             
+  00000018  syscall         0                 ; Open_window
+  03000009  push            0x3             
+; Message: {0x07}{0x0C}{0xFD}{0x19}{0x0A}ß{0x19}{0x1D}ìó{0x19}8á{0x19}{0x0D}{0xA5}®
+;          Û{0x19}{0x0D}í{0x18}{0x19}{0xBE}{0x1B}FÚ{0xA2}{0xB8}{0xA8}{iGummi2}{0xA4}{0x0B}{0x04}e
+  FC010009  push            0x1FC             ; 508
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  03000015  push_cond       0x3             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  03000015  push_cond       0x3             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  03000009  push            0x3             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  03000009  push            0x3             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  03000009  push            0x3             
+  07000009  push            0x7             
+  02000009  push            0x2             
+  04000018  syscall         4                 ; Set_window_size
+  03000009  push            0x3             
+  00000018  syscall         0                 ; Open_window
+  03000009  push            0x3             
+; Message: {0x0B}{0x05}{0x07}{0x0C}{iGummi1}Ú{0x0B}{0x04}d {0xA4}{0xBD}Œ{iGummi2}âá{0xA5}
+;          {0x0B}{0x05}{0x19}?{0x1A};{0xBE}{0x1A}×Ú{0xA2}{0xB8}{0xB5}{0x0B}{0x04}d
+  36020009  push            0x236             ; 566
+  01000018  syscall         1                 ; Display_message
+  03000009  push            0x3             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  03000015  push_cond       0x3             
   1E000009  push            0x1E              ; 30
   00000009  push            0x0             
   6D000018  syscall         109               ; Start_texture_animation
@@ -1913,15 +1941,14 @@
   53000018  syscall         83                ; Set_window_close_speed
   04000009  push            0x4             
   08000009  push            0x8             
-  03000009  push            0x3             
+  01000009  push            0x1             
   04000018  syscall         4                 ; Set_window_size
   04000009  push            0x4             
   00000018  syscall         0                 ; Open_window
   04000009  push            0x4             
-; Message: {0x07}{0x0C}Sora, are you feeling
-;          okay now? If you're
-;          not, then say so.
-  EF010009  push            0x1EF             ; 495
+; Message: {0x07}{0x0C}{0x19}{0x07}ç{0x0B}{0x04}o
+;          {0x1A}N{0xC2}{0xBA}iÀ►{iGummi8}{0xA2}{0xB8}{0xA8}{iGummi2}{0xA4}{0x0B}{0x04}o
+  FD010009  push            0x1FD             ; 509
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   05000015  push_cond       0x5             
@@ -1940,15 +1967,42 @@
   01000009  push            0x1             
   53000018  syscall         83                ; Set_window_close_speed
   04000009  push            0x4             
-  09000009  push            0x9             
+  06000009  push            0x6             
+  03000009  push            0x3             
+  04000018  syscall         4                 ; Set_window_size
+  04000009  push            0x4             
+  00000018  syscall         0                 ; Open_window
+  04000009  push            0x4             
+; Message: {0x07}{0x0C}î{0x19}{0x06}i{0xB2}►{0x1B}{0xC1}®{0xA4}{0xBD}{0xA3}{0xB2}{0xA4}▼{0x0B}{0x04}e
+;          {iGummi1}{iGummi2}{iGummi8}{0xA4}{0xA3}{iGummi6}{0xBA}{0xBE}▲Ú{0x9F}{0xB6}{0x1A}GÚ{0xA2}{0xA7}j
+  FE010009  push            0x1FE             ; 510
+  01000018  syscall         1                 ; Display_message
+  21000018  syscall         33                ; Wait_message_end
+  05000015  push_cond       0x5             
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  10000005  yield           0x10            
+  05000015  push_cond       0x5             
+  21000009  push            0x21              ; 33
+  00000009  push            0x0             
+  6D000018  syscall         109               ; Start_texture_animation
+  04000009  push            0x4             
+  01000009  push            0x1             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  04000009  push            0x4             
+  01000009  push            0x1             
+  53000018  syscall         83                ; Set_window_close_speed
+  04000009  push            0x4             
+  07000009  push            0x7             
   02000009  push            0x2             
   04000018  syscall         4                 ; Set_window_size
   04000009  push            0x4             
   00000018  syscall         0                 ; Open_window
   04000009  push            0x4             
-; Message: {0x07}{0x0C}Even in your Heartless
-;          form, I knew it was you.
-  F0010009  push            0x1F0             ; 496
+; Message: {0x0B}{0x05}{0x07}{0x0C}°qô{0x19}{0x09}ì{0xA8}{0x1A}Ó{0xA5}{0xA4}Ú{0xA2}▼{0xA2}{0xB2}
+;          {0x0B}{0x05}î{0x19}{0x06}®î{0x19}{0x06}ŒÚ{0xA2}{0xBB}{iGummi2}Ú{0x9F}{0xB5}j
+  FF010009  push            0x1FF             ; 511
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   05000015  push_cond       0x5             
@@ -1958,17 +2012,17 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 7  |  11 subscript(s)  |  PC 1785  |  file 0xDD25  |  KGR 0
+; Script 7  |  11 subscript(s)  |  PC 1843  |  file 0xBECD  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   97000018  syscall         151               ; All_char_ctrl_off
   51020018  syscall         593               ; Make_party_invincible
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_7_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_7_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_7_1  ; → PC 1792
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_7_0  ; → PC 1789
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_7_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_7_1  ; → PC 1850
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_7_0  ; → PC 1847
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_7_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -1981,7 +2035,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 8  |  11 subscript(s)  |  PC 1802  |  file 0xDD69  |  KGR 0
+; Script 8  |  11 subscript(s)  |  PC 1860  |  file 0xBF11  |  KGR 0
 ; ────────────────────────────────────────────────────────────────────────
 
   02000409  push            0x40002           ; 262146
@@ -2007,13 +2061,13 @@
   1200000B  store_local     [18]            
   00000009  push            0x0             
   1300000B  store_local     [19]            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_0:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_6  ; → PC 1931
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_6  ; → PC 1989
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   04000009  push            0x4             
   0B000001  alu             ne              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_5  ; → PC 1930
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_5  ; → PC 1988
   01000009  push            0x1             
   08000018  syscall         8                 ; Set_wait_timer
   2E030009  push            0x32E             ; 814
@@ -2046,14 +2100,14 @@
   00000001  alu             add             
   07000001  alu             gt              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_1  ; → PC 1868
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_1  ; → PC 1926
   01000009  push            0x1             
   1200000B  store_local     [18]            
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_2  ; → PC 1870
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_1:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_2  ; → PC 1928
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_1:
   00000009  push            0x0             
   1200000B  store_local     [18]            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_2:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_2:
   1200000A  load_local      [18]            
   00000009  push            0x0             
   0B000001  alu             ne              
@@ -2061,7 +2115,7 @@
   00000009  push            0x0             
   06000001  alu             eq              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_3  ; → PC 1910
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_3  ; → PC 1968
   01000009  push            0x1             
   1300000B  store_local     [19]            
   01000009  push            0x1             
@@ -2091,11 +2145,11 @@
   07000009  push            0x7             
   B1000018  syscall         177               ; Open_window_no_close
   07000009  push            0x7             
-; Message: {0x08}{0x0A}Third District
-  88030009  push            0x388             ; 904
+; Message: {0x08}{0x0A}x3{0x1B}3{0x1B}Qy{0xAC}{0xA8}{0x1A}{-}
+  9D030009  push            0x39D             ; 925
   01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_4  ; → PC 1924
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_3:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_4  ; → PC 1982
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_3:
   1200000A  load_local      [18]            
   00000009  push            0x0             
   06000001  alu             eq              
@@ -2103,23 +2157,23 @@
   01000009  push            0x1             
   06000001  alu             eq              
   0C000001  alu             and             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_4  ; → PC 1924
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_4  ; → PC 1982
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
   00000009  push            0x0             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   00000009  push            0x0             
   1300000B  store_local     [19]            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_4:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_4:
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   03000009  push            0x3             
   06000001  alu             eq              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_5  ; → PC 1930
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_5  ; → PC 1988
   00000009  push            0x0             
   1300000B  store_local     [19]            
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_5:
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_0  ; → PC 1826
-@UK_tw26_ard3_evdl_asm_KGR_0_SCRIPT_8_6:
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_5:
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_0_SCRIPT_8_0  ; → PC 1884
+@UK_tw26d_ev_asm_KGR_0_SCRIPT_8_6:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2133,16 +2187,16 @@
 
 
 ############################################################################
-# KGR[1]  KGR@0xDF95  stream@0xDFA2
+# KGR[1]  KGR@0xC13D  stream@0xC14A
 ############################################################################
 ; ────────────────────────────────────────────────────────────────────────
-; KGR  UK_tw26_ard3.evdl  KGR@0xDF95  NN=11
-; Stream @ 0xDFA2  (1124 instructions)
+; KGR  UK_tw26d.ev  KGR@0xC13D  NN=11
+; Stream @ 0xC14A  (1127 instructions)
 ; ────────────────────────────────────────────────────────────────────────
 
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xDFA2  |  KGR 1
+; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xC14A  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   10000005  yield           0x10            
@@ -2168,7 +2222,7 @@
   BE000009  push            0xBE              ; 190
   000B000D  write_byte      [0xB00]           ; save_data[0x900]  (alias, unsigned)
 
-; Don't update TT story progress
+; Don't touch TT story progress  
 ;  6E000009  push            0x6E              ; 110
 ;  040B000D  write_byte      [0xB04]           ; save_data[0x904]  (TRAVERSE_TOWN_PROGRESS)
 
@@ -2193,25 +2247,25 @@
   0A0B000C  read_byte       [0xB0A]           ; save_data[0x90A]  (alias, unsigned)
   64000009  push            0x64              ; 100
   08000001  alu             ge              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_0  ; → PC 43
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_0_0  ; → PC 43
 
 ; Don't touch Atlantica
 ;  09000009  push            0x9             
 ;  12000009  push            0x12              ; 18
 ;  EB010018  syscall         491               ; Write_other_world_set_number
 
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_0_0:
   0C0B000C  read_byte       [0xB0C]           ; save_data[0x90C]  (alias, unsigned)
   6A000009  push            0x6A              ; 106
   08000001  alu             ge              
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_1  ; → PC 50
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_0_1  ; → PC 50
 
 ; Don't touch Halloween Town
 ;  0A000009  push            0xA               ; 10
 ;  12000009  push            0x12              ; 18
 ;  EB010018  syscall         491               ; Write_other_world_set_number
 
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_0_1:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_0_1:
 
 ; Don't touch Neverland
 ;  0D000009  push            0xD               ; 13
@@ -2233,15 +2287,15 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 1  |  14 subscript(s)  |  PC 66  |  file 0xE0AA  |  KGR 1
+; Script 1  |  14 subscript(s)  |  PC 66  |  file 0xC252  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_1_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_1_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_1_1  ; → PC 71
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_1_0  ; → PC 68
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_1_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_1_1  ; → PC 71
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_1_0  ; → PC 68
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_1_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2557,7 +2611,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 2  |  18 subscript(s)  |  PC 384  |  file 0xE5A2  |  KGR 1
+; Script 2  |  18 subscript(s)  |  PC 384  |  file 0xC74A  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   00000309  push            0x30000           ; 196608
@@ -2576,11 +2630,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_2_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_2_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_2_1  ; → PC 404
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_2_0  ; → PC 401
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_2_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_2_1  ; → PC 404
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_2_0  ; → PC 401
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_2_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2662,7 +2716,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 3  |  13 subscript(s)  |  PC 483  |  file 0xE72E  |  KGR 1
+; Script 3  |  13 subscript(s)  |  PC 483  |  file 0xC8D6  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   03000209  push            0x20003           ; 131075
@@ -2685,11 +2739,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_3_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_3_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_3_1  ; → PC 507
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_3_0  ; → PC 504
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_3_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_3_1  ; → PC 507
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_3_0  ; → PC 504
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_3_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2724,7 +2778,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 4  |  14 subscript(s)  |  PC 539  |  file 0xE80E  |  KGR 1
+; Script 4  |  14 subscript(s)  |  PC 539  |  file 0xC9B6  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   01000309  push            0x30001           ; 196609
@@ -2741,11 +2795,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_4_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_4_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_4_1  ; → PC 557
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_4_0  ; → PC 554
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_4_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_4_1  ; → PC 557
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_4_0  ; → PC 554
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_4_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2779,7 +2833,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 5  |  14 subscript(s)  |  PC 588  |  file 0xE8D2  |  KGR 1
+; Script 5  |  14 subscript(s)  |  PC 588  |  file 0xCA7A  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   02000309  push            0x30002           ; 196610
@@ -2796,11 +2850,11 @@
   00000009  push            0x0             
   45000018  syscall         69                ; Turn_char
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_5_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_5_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_5_1  ; → PC 606
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_5_0  ; → PC 603
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_5_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_5_1  ; → PC 606
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_5_0  ; → PC 603
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_5_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2834,7 +2888,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 6  |  18 subscript(s)  |  PC 637  |  file 0xE996  |  KGR 1
+; Script 6  |  18 subscript(s)  |  PC 637  |  file 0xCB3E  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   00000209  push            0x20000           ; 131072
@@ -2863,11 +2917,11 @@
   39000018  syscall         57                ; Motion_ctrl_off
   CA000009  push            0xCA              ; 202
   0D000018  syscall         13                ; Change_motion
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_6_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_6_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_6_1  ; → PC 667
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_6_0  ; → PC 664
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_6_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_6_1  ; → PC 667
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_6_0  ; → PC 664
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_6_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2920,7 +2974,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 7  |  12 subscript(s)  |  PC 717  |  file 0xEAD6  |  KGR 1
+; Script 7  |  12 subscript(s)  |  PC 717  |  file 0xCC7E  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   01000209  push            0x20001           ; 131073
@@ -2952,11 +3006,11 @@
   39000018  syscall         57                ; Motion_ctrl_off
   C9000009  push            0xC9              ; 201
   0D000018  syscall         13                ; Change_motion
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_7_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_7_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_7_1  ; → PC 750
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_7_0  ; → PC 747
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_7_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_7_1  ; → PC 750
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_7_0  ; → PC 747
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_7_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -2988,7 +3042,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 8  |  13 subscript(s)  |  PC 779  |  file 0xEBCE  |  KGR 1
+; Script 8  |  13 subscript(s)  |  PC 779  |  file 0xCD76  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   02000209  push            0x20002           ; 131074
@@ -3017,11 +3071,11 @@
   39000018  syscall         57                ; Motion_ctrl_off
   C9000009  push            0xC9              ; 201
   0D000018  syscall         13                ; Change_motion
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_8_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_8_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_8_1  ; → PC 809
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_8_0  ; → PC 806
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_8_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_8_1  ; → PC 809
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_8_0  ; → PC 806
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_8_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -3068,17 +3122,17 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 9  |  11 subscript(s)  |  PC 853  |  file 0xECF6  |  KGR 1
+; Script 9  |  11 subscript(s)  |  PC 853  |  file 0xCE9E  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   04000209  push            0x20004           ; 131076
   0A000018  syscall         10                ; Set_char_ID
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_9_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_9_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_9_1  ; → PC 860
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_9_0  ; → PC 857
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_9_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_9_1  ; → PC 860
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_9_0  ; → PC 857
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_9_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -3091,7 +3145,7 @@
   10000005  yield           0x10            
 
 ; ────────────────────────────────────────────────────────────────────────
-; Script 10  |  24 subscript(s)  |  PC 870  |  file 0xED3A  |  KGR 1
+; Script 10  |  24 subscript(s)  |  PC 870  |  file 0xCEE2  |  KGR 1
 ; ────────────────────────────────────────────────────────────────────────
 
   00000009  push            0x0             
@@ -3147,11 +3201,11 @@
   02000009  push            0x2             
   53000018  syscall         83                ; Set_window_close_speed
   10000005  yield           0x10            
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_10_0:
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_10_0:
   01000009  push            0x1             
-  ????????  beqz            @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_10_1  ; → PC 927
-  ????????  jmp             @UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_10_0  ; → PC 924
-@UK_tw26_ard3_evdl_asm_KGR_1_SCRIPT_10_1:
+  ????????  beqz            @UK_tw26d_ev_asm_KGR_1_SCRIPT_10_1  ; → PC 927
+  ????????  jmp             @UK_tw26d_ev_asm_KGR_1_SCRIPT_10_0  ; → PC 924
+@UK_tw26d_ev_asm_KGR_1_SCRIPT_10_1:
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
@@ -3174,8 +3228,8 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          Tell me what happened.{0x05}C
-  CD010009  push            0x1CD             ; 461
+;          {0x1A}—{0xBE}▲Ú{0x9F}{iGummi2}{0x1A}j{iGummi8}{0xA2}{iGummi4}{0xB9}{0x05}C
+  DC010009  push            0x1DC             ; 476
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3190,9 +3244,9 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}{-}{0x0A}{0x07}{0x0C}So the darkness is flowing
-;          {0x0B}{-}out of that Keyhole…{0x05}g
-  CE010009  push            0x1CE             ; 462
+; Message: {0x0A}{0x07}{0x0C}{0x08}
+;          {0x1A}k{0x1B}I{0xBE}{0x1A}v{0xBC}{0x1C}Ì{iGummi3}{0x19}↓{iGummi8}{0xA2}▼{0xB8}{0xA8}{iGummi2}{0x05}g
+  DD010009  push            0x1DD             ; 477
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3207,9 +3261,9 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}7{0x0A}{0x07}{0x0C}No wonder there are more and more
-;          {0x0B}7Heartless everywhere.{0x05}<
-  CF010009  push            0x1CF             ; 463
+; Message: {0x0B}-{0x0A}{0x07}{0x0C}{0x9E}{0xA8}{iGummi10}▼¿ ▲{0xA0}{iGummi6}{0xA0}{0xA8}{0x1A}2{0x1A}3¿
+;          {0x0B}-°qô{0x19}{0x09}ì {0x1C})◄{0xA2}{0xB8}{0xA8}{0x05}<
+  DE010009  push            0x1DE             ; 478
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3217,8 +3271,8 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          The only way to stop them is--{0x05}R
-  D0010009  push            0x1D0             ; 464
+;          {0x1A}X▼{0xA3}{0xB1}{0xB8}{0x1A}↑{0x1D}Â®{0x0B}{0x04}——{0x05}R
+  DF010009  push            0x1DF             ; 479
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3234,8 +3288,8 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          Seal the Keyhole, right?{0x05}C
-  D1010009  push            0x1D1             ; 465
+;          {0x1A}k{0x1B}I{0xBC}{0x1A}ô{III}{0xB9}Á▼▼{0xBD}Œ{0xB5}{0xA4}{0x05}C
+  E0010009  push            0x1E0             ; 480
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3250,9 +3304,9 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}R{0x0A}{0x07}{0x0C}Maybe. But no one knows what will
-;          {0x0B}Rhappen once it's sealed.{0x05}<
-  D2010009  push            0x1D2             ; 466
+; Message: {0x0B}{-}{0x0A}{0x07}{0x0C}Œ{0xBE} {0x1A}ô{III}{0x9F}{0x1A}d{0xA5}{0x1A}—{0xBE}{0x1A}{iGem}{iGummi6}{0xB8}{iGummi2}
+;          {0x0B}{-}{0x1A}?{0xA5}{0xB2}{0xBB}{iGummi2}{0xB6}{0xA4}▼{0x05}<
+  E1010009  push            0x1E1             ; 481
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3267,14 +3321,14 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}R{0x0A}{0x07}{0x0C}Well, we can't just stay here.
-;          {0x0B}RWe have to do something.{0x05}v
-  D3010009  push            0x1D3             ; 467
+; Message: {0x0B}{-}{0x0A}{0x07}{0x0C}Œ{iGummi2}{0xB6}Ú{0xA2} {0xAD}Ú{0xA3}{iGummi5}{0xB8}{iGummi2}{0xB5}
+;          {0x0B}{-}▲{0x9E}{iGummi6}{0xA5}® {0xA3}{0xB2}Œ{0xA0}{0xBE}▼{0xB8}{0xBD}Œ{0x05}{iPotion}
+  E2010009  push            0x1E2             ; 482
   01000018  syscall         1                 ; Display_message
   00000009  push            0x0             
-; Message: {0x07}{0x0C}{0x08}{0x0A}
-;          I've got a friend back there.{0x05}{0x1E}
-  D4010009  push            0x1D4             ; 468
+; Message: {0x0A}{0x07}{0x0C}{0x08}
+;          âÜ{0x19}{0x07} {0x1A}0{0xBC}{0x1B}®{0xBD}Œ{0xA8}{iGummi2}{0x0B}{0x04}e{0x05}b
+  DB010009  push            0x1DB             ; 475
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3290,13 +3344,13 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          That's right.{0x05}7
-  D5010009  push            0x1D5             ; 469
+;          {0x9E}►ŒÚ{0x9F}{0xA4}{0x05}2
+  E3010009  push            0x1E3             ; 483
   01000018  syscall         1                 ; Display_message
   00000009  push            0x0             
-; Message: {0x0B}b{0x07}{0x0C}{0x0A}You have one more friend to
-;          {0x0B}bworry about.{0x05}M
-  D6010009  push            0x1D6             ; 470
+; Message: {0x07}{0x0C}{0x0A}{0x08}
+;          âÜ{0x19}{0x07}Œ{iGummi5}¿{0xA4}{iGummi4}{0x1B}G{0xB2}{0x1A}…{iGummi5}{0xA4}{iGummi4}{0xA2}®{0xA4}{0x05}R
+  E4010009  push            0x1E4             ; 484
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3311,14 +3365,14 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}{0x1E}{0x0A}{0x07}{0x0C}Riku's Keyblade must have been born
-;          {0x0B}{0x1E}of the captive princesses' hearts--{0x05}{゛b}
-  D7010009  push            0x1D7             ; 471
+; Message: {0x0B}-{0x0A}{0x07}{0x0C}{0x1B}G{0xBE}{0x19}OÚ{0xA2}▼{0x9F}äq{0x19}{0x1F}{0x19}{0x09}q{0x19}{0x1C}®
+;          {0x0B}-{0x1A}k{0x1B}I{0xA3}{0x1B}B{III}{iGummi4}{0x0B}{0x04}——{0x05}{゛b}
+  E5010009  push            0x1E5             ; 485
   01000018  syscall         1                 ; Display_message
   00000009  push            0x0             
-; Message: {0x07}{0x0C}{0x08}{0x0A}
-;          just like that Keyhole you saw.{0x05}b
-  D8010009  push            0x1D8             ; 472
+; Message: {0x0B}○{0x07}{0x0C}{0x0A}{0x1D}{0x0C}{0xBB}{0xB9}{0x9F}{0x19}4{0x19}{0x07}{0x19}{0x0D}íì{0xA8}
+;          {0x0B}○{0x1A}E{iGummi2}{0xB6}{0x19}N{0xAE}{0xB9}{0x9F}{0xB2}{0xA8}Œ{0xBA}►{0x05}b
+  E6010009  push            0x1E6             ; 486
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3333,9 +3387,14 @@
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}R{0x0A}{0x07}{0x0C}Of course, without Kairi's heart,
-;          {0x0B}Rit remained incomplete.{0x05}○
-  D9010009  push            0x1D9             ; 473
+; Message: {0x0A}{0x07}{0x0C}{0x08}
+;          {0xB2}Ú{0xA3}{0xB2} âÜ{0x19}{0x07}{0xA8}{0x1A}E{0xBE}{0x1A}▼{iGummi5}{0xA2}▼{0x9F}{0x19}j{0x19}k{0x05}b
+  E7010009  push            0x1E7             ; 487
+  01000018  syscall         1                 ; Display_message
+  00000009  push            0x0             
+; Message: {0x0A}{0x07}{0x0C}{0x08}
+;          {0x19}h{0x1B}a{0x1A}→ŒÚ{0x9F}{0xB5}►Œ{0xBE}{0x0B}{0x04}——{0x05}b
+  E8010009  push            0x1E8             ; 488
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3351,13 +3410,13 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          Once that Keyblade was destroyed,{0x05}R
-  DA010009  push            0x1DA             ; 474
+;          {0x9E}{0xA8}äq{0x19}{0x1F}{0x19}{0x09}q{0x19}{0x1C}{0xBE}{iGummi4}Œ{iGummi5}{0x1C}>{0xB8}{0xA3}{0x1B}B{0x1A}d{0xA5}{0x05}R
+  E9010009  push            0x1E9             ; 489
   01000018  syscall         1                 ; Display_message
   00000009  push            0x0             
-; Message: {0x0B}b{0x07}{0x0C}{0x0A}the princesses' hearts should
-;          {0x0B}bhave been freed.{0x05}!
-  DB010009  push            0x1DB             ; 475
+; Message: {0x07}{0x0C}{0x0A}{0x08}
+;          {0x19}4{0x19}{0x07}{0x19}{0x0D}íì{0xA8}{0x1A}E®{0x1B}]{0x1B}{iHat}{iGummi7}{0xB9}{0x9F}{0x0B}{0x04}——{0x0B}{0x04}®{VII}Œ{0x05}!
+  EA010009  push            0x1EA             ; 490
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
@@ -3369,17 +3428,17 @@
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
 ; Message: {0x0A}{0x07}{0x0C}{0x08}
-;          Don't worry, Sora.{0x05}7
-  DC010009  push            0x1DC             ; 476
+;          {0x19}u{0x1A}*{0x1A}+Œ î{0x19}{0x06}{0x05}7
+  EB010009  push            0x1EB             ; 491
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
   00000009  push            0x0             
   00000018  syscall         0                 ; Open_window
   00000009  push            0x0             
-; Message: {0x0B}R{0x0A}{0x07}{0x0C}If anyone can save your friend,
-;          {0x0B}Ryou can.{0x05}{iPotion}
-  DD010009  push            0x1DD             ; 477
+; Message: {0x0A}{0x07}{0x0C}{0x08}
+;          {iGummi1}{0xAE}◄{0xA4}{0xB6}{iGummi3}Ú{0xA3} {0xA3}{0xB2}Œ{0xA0}{0xBC}{0x1C}?◄{0xB8}{0x05}{iPotion}
+  EC010009  push            0x1EC             ; 492
   01000018  syscall         1                 ; Display_message
   21000018  syscall         33                ; Wait_message_end
   10000005  yield           0x10            
