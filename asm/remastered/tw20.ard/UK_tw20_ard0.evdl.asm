@@ -7454,12 +7454,14 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_6:
-  01000009  push            0x1             
-  38020018  syscall         568               ; Learn_summon
-  01000009  push            0x1             
-  33020018  syscall         563               ; Set_summon_name_message
+
+; New Bambi reward code
+  46000009  push            0x46              ; 70
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
   07000009  push            0x7             
-  0F000009  push            0xF               ; 15
+  00000009  push            0x0             
   01000009  push            0x1             
   04000018  syscall         4                 ; Set_window_size
   07000009  push            0x7             
@@ -7475,15 +7477,22 @@
   00000009  push            0x0             
   50000018  syscall         80                ; Set_window_tail_type
   07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  DC000009  push            0xDC              ; 220
+  05000001  alu             and             
+  96000009  push            0x96              ; 150
+  05000001  alu             and             
+  B7020018  syscall         695               ; Scale_window_from_gift
+; Below code should be uncommented if we want the window centered
+  07000009  push            0x7             
   00000009  push            0x0             
   01000009  push            0x1             
   03000018  syscall         3                 ; Set_window_position
   07000009  push            0x7             
   00000018  syscall         0                 ; Open_window
   07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Learned summon spell {0x0C}{0x03}{0x0E}{0x06}{0x0C}{0xFF}.{0x06}v
-  10040009  push            0x410             ; 1040
-  01000018  syscall         1                 ; Display_message
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
   08000009  push            0x8             
   08000018  syscall         8                 ; Set_wait_timer
   1F000009  push            0x1F              ; 31
@@ -7493,6 +7502,48 @@
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
+
+; Old Bambi reward code
+;  01000009  push            0x1             
+;  38020018  syscall         568               ; Learn_summon
+;  01000009  push            0x1             
+;  33020018  syscall         563               ; Set_summon_name_message
+;  07000009  push            0x7             
+;  0F000009  push            0xF               ; 15
+;  01000009  push            0x1             
+;  04000018  syscall         4                 ; Set_window_size
+;  07000009  push            0x7             
+;  01000009  push            0x1             
+;  05000018  syscall         5                 ; Set_window_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  06000018  syscall         6                 ; Set_window_opening_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  53000018  syscall         83                ; Set_window_close_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  50000018  syscall         80                ; Set_window_tail_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  01000009  push            0x1             
+;  03000018  syscall         3                 ; Set_window_position
+;  07000009  push            0x7             
+;  00000018  syscall         0                 ; Open_window
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Learned summon spell {0x0C}{0x03}{0x0E}{0x06}{0x0C}{0xFF}.{0x06}v
+;  10040009  push            0x410             ; 1040
+;  01000018  syscall         1                 ; Display_message
+;  08000009  push            0x8             
+;  08000018  syscall         8                 ; Set_wait_timer
+;  1F000009  push            0x1F              ; 31
+;  00000009  push            0x0             
+;  61010018  syscall         353               ; Play_SE2
+;  07000009  push            0x7             
+;  6B000018  syscall         107               ; Wait_message_end_ID
+;  07000009  push            0x7             
+;  02000018  syscall         2                 ; Close_window
+
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   02000009  push            0x2             
   06000001  alu             eq              
@@ -7534,12 +7585,14 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_10:
-  04000009  push            0x4             
-  38020018  syscall         568               ; Learn_summon
-  04000009  push            0x4             
-  33020018  syscall         563               ; Set_summon_name_message
+
+; New Mushu reward code
+  47000009  push            0x47              ; 71
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
   07000009  push            0x7             
-  0F000009  push            0xF               ; 15
+  00000009  push            0x0             
   01000009  push            0x1             
   04000018  syscall         4                 ; Set_window_size
   07000009  push            0x7             
@@ -7555,15 +7608,22 @@
   00000009  push            0x0             
   50000018  syscall         80                ; Set_window_tail_type
   07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  DC000009  push            0xDC              ; 220
+  05000001  alu             and             
+  96000009  push            0x96              ; 150
+  05000001  alu             and             
+  B7020018  syscall         695               ; Scale_window_from_gift
+; Below code should be uncommented if we want the window centered
+  07000009  push            0x7             
   00000009  push            0x0             
   01000009  push            0x1             
   03000018  syscall         3                 ; Set_window_position
   07000009  push            0x7             
   00000018  syscall         0                 ; Open_window
   07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Learned summon spell {0x0C}{0x03}{0x0E}{0x06}{0x0C}{0xFF}.{0x06}v
-  10040009  push            0x410             ; 1040
-  01000018  syscall         1                 ; Display_message
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
   08000009  push            0x8             
   08000018  syscall         8                 ; Set_wait_timer
   1F000009  push            0x1F              ; 31
@@ -7573,6 +7633,48 @@
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
+
+; Old Mushu reward code
+;  04000009  push            0x4             
+;  38020018  syscall         568               ; Learn_summon
+;  04000009  push            0x4             
+;  33020018  syscall         563               ; Set_summon_name_message
+;  07000009  push            0x7             
+;  0F000009  push            0xF               ; 15
+;  01000009  push            0x1             
+;  04000018  syscall         4                 ; Set_window_size
+;  07000009  push            0x7             
+;  01000009  push            0x1             
+;  05000018  syscall         5                 ; Set_window_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  06000018  syscall         6                 ; Set_window_opening_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  53000018  syscall         83                ; Set_window_close_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  50000018  syscall         80                ; Set_window_tail_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  01000009  push            0x1             
+;  03000018  syscall         3                 ; Set_window_position
+;  07000009  push            0x7             
+;  00000018  syscall         0                 ; Open_window
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Learned summon spell {0x0C}{0x03}{0x0E}{0x06}{0x0C}{0xFF}.{0x06}v
+;  10040009  push            0x410             ; 1040
+;  01000018  syscall         1                 ; Display_message
+;  08000009  push            0x8             
+;  08000018  syscall         8                 ; Set_wait_timer
+;  1F000009  push            0x1F              ; 31
+;  00000009  push            0x0             
+;  61010018  syscall         353               ; Play_SE2
+;  07000009  push            0x7             
+;  6B000018  syscall         107               ; Wait_message_end_ID
+;  07000009  push            0x7             
+;  02000018  syscall         2                 ; Close_window
+
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
   02000009  push            0x2             
   06000001  alu             eq              
