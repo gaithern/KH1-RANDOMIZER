@@ -7454,7 +7454,7 @@
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_2:
 
 ; New acquire Dumbo reward
-  45000009  push            0x45              ; 69
+  46000009  push            0x46              ; 70
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   47020018  syscall         583               ; Get_item_from_gift_table
@@ -7588,7 +7588,7 @@
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_6:
 
 ; New Bambi reward code
-  46000009  push            0x46              ; 70
+  45000009  push            0x45              ; 69
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   47020018  syscall         583               ; Get_item_from_gift_table
