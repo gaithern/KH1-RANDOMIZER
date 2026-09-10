@@ -7414,10 +7414,13 @@
   03000009  push            0x3             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
 @Earthshine_Cleanup:
-  D1000009  push            0xD1              ; 209
-  01000009  push            0x1             
-  05000001  alu             negate          
-  02010018  syscall         258               ; Change_bag_items
+
+; Don't take summon gem
+;  D1000009  push            0xD1              ; 209
+;  01000009  push            0x1             
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
   01000009  push            0x1             
   2B01000D  write_byte      [0x12B]           ; save_data[0x12B]
   00000009  push            0x0             
@@ -7546,10 +7549,13 @@
   03000009  push            0x3             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_3:
-  CE000009  push            0xCE              ; 206
-  01000009  push            0x1             
-  05000001  alu             negate          
-  02010018  syscall         258               ; Change_bag_items
+
+; Don't take summon gem
+;  CE000009  push            0xCE              ; 206
+;  01000009  push            0x1             
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
   01000009  push            0x1             
   2D01000D  write_byte      [0x12D]           ; save_data[0x12D]
   00000009  push            0x0             
@@ -7677,10 +7683,13 @@
   03000009  push            0x3             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_7:
-  CF000009  push            0xCF              ; 207
-  01000009  push            0x1             
-  05000001  alu             negate          
-  02010018  syscall         258               ; Change_bag_items
+
+; Don't take summon gem
+;  CF000009  push            0xCF              ; 207
+;  01000009  push            0x1             
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
   01000009  push            0x1             
   2C01000D  write_byte      [0x12C]           ; save_data[0x12C]
   00000009  push            0x0             
@@ -7808,10 +7817,13 @@
   03000009  push            0x3             
   430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
 @UK_tw20_ard0_evdl_asm_KGR_6_SCRIPT_1_11:
-  D0000009  push            0xD0              ; 208
-  01000009  push            0x1             
-  05000001  alu             negate          
-  02010018  syscall         258               ; Change_bag_items
+
+; Don't take summon gem
+;  D0000009  push            0xD0              ; 208
+;  01000009  push            0x1             
+;  05000001  alu             negate          
+;  02010018  syscall         258               ; Change_bag_items
+
   01000009  push            0x1             
   2E01000D  write_byte      [0x12E]           ; save_data[0x12E]
   00000009  push            0x0             
