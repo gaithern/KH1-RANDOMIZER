@@ -1114,17 +1114,53 @@
   ????????  beqz            @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_7_3  ; → PC 998
   CF000009  push            0xCF              ; 207
   FD000018  syscall         253               ; Check_bag_item_count
+
+  ; Only push 1, and only if item bag count is >= 1 and the summon hasn't already been turned in
+  01000009  push            0x1
+  08000001  alu             ge     
+  2C01000C  read_byte       [0x12C]           ; save_data[0x12C]
+  00000009  push            0x0             
+  06000001  alu             eq      
+  0C000001  alu             and             
+
   2801000D  write_byte      [0x128]           ; save_data[0x128]
   CE000009  push            0xCE              ; 206
   FD000018  syscall         253               ; Check_bag_item_count
+
+  ; Only push 1, and only if item bag count is >= 1 and the summon hasn't already been turned in
+  01000009  push            0x1
+  08000001  alu             ge     
+  2D01000C  read_byte       [0x12D]           ; save_data[0x12D]
+  00000009  push            0x0             
+  06000001  alu             eq      
+  0C000001  alu             and             
+
   2901000D  write_byte      [0x129]           ; save_data[0x129]
   D0000009  push            0xD0              ; 208
   FD000018  syscall         253               ; Check_bag_item_count
+
+  ; Only push 1, and only if item bag count is >= 1 and the summon hasn't already been turned in
+  01000009  push            0x1
+  08000001  alu             ge     
+  2E01000C  read_byte       [0x12E]           ; save_data[0x12E]
+  00000009  push            0x0             
+  06000001  alu             eq      
+  0C000001  alu             and             
+
   2A01000D  write_byte      [0x12A]           ; save_data[0x12A]
 
 ; Also check for Earthshine
   D1000009  push            0xD1              ; 209
   FD000018  syscall         253               ; Check_bag_item_count
+
+  ; Only push 1, and only if item bag count is >= 1 and the summon hasn't already been turned in
+  01000009  push            0x1
+  08000001  alu             ge     
+  2B01000C  read_byte       [0x12B]           ; save_data[0x12B]
+  00000009  push            0x0             
+  06000001  alu             eq      
+  0C000001  alu             and             
+
   4100000D  write_byte      [0x41]            ; save_data[0x41]
  
 @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_7_3:
