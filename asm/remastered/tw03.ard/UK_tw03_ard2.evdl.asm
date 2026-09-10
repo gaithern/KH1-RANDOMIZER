@@ -6385,6 +6385,8 @@
   ; New - allow Leon Waterway
   02000009  push            0x2
   DE11000D  write_byte      [0x11DE]
+  01000009  push            0x1
+  1201000D  write_byte      [0x112]
 
   10000005  yield           0x10            
   10000005  yield           0x10            

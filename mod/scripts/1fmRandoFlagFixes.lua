@@ -47,13 +47,6 @@ function FlagFixes()
         WriteByte(worldFlagBase - 0xC8, 2)
     end
 
-    -- Secret waterway Leon unmissable
-    if ReadByte(cutsceneFlags - 0x7EE) == 0 and ReadByte(cutsceneFlags + 4) >= 0x31 then
-        debugPrint("Section 4")
-        WriteByte(cutsceneFlags + 4, 0x31)
-        WriteByte(worldFlagBase - 0xB2, 2)
-    end
-
     prevTTFlag = ReadByte(cutsceneFlags + 4)
 
     if ReadByte(oppositeState) >= 5 then
@@ -287,10 +280,6 @@ function FlagFixes()
         WriteByte(warpType1, 5)
         WriteByte(warpType2, 12)
         WriteByte(warpTrigger, 0x02)
-    end
-    if (ReadByte(world) ~= 0x03 or ReadByte(room) ~= 0x16) and (ReadByte(cutsceneFlags + 4) >= 0x31 and ReadByte(cutsceneFlags + 4) < 0x3E) and ReadByte(cutsceneFlags - 0x7EE) == 1 then --Prevent Missing Earthshine after talking to Leon only once in Secret Waterway
-        debugPrint("Section 30")
-        WriteByte(cutsceneFlags - 0x7EE, 0)
     end
     if ReadByte(cutsceneFlags + 0xA) < 0x21 then --Prevent Atlantica Sunken Ship Softlock
         debugPrint("Section 31")

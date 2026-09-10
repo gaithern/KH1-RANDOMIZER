@@ -2002,6 +2002,7 @@
 ;  19000009  push            0x19              ; 25
 ;  03000009  push            0x3             
 ;  43000009  push            0x43              ; 67
+;  64020018  syscall         612               ; Start_map_change_rewrite_set
 
   00020018  syscall         512               ; Exit_event_mode
   10000005  yield           0x10            
