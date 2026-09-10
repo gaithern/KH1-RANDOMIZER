@@ -1125,8 +1125,8 @@
 ; Also check for Earthshine
   D1000009  push            0xD1              ; 209
   FD000018  syscall         253               ; Check_bag_item_count
-  2B01000D  write_byte      [0x12B]           ; save_data[0x12B]
-
+  4100000D  write_byte      [0x41]            ; save_data[0x41]
+ 
 @UK_tw20_ard0_evdl_asm_KGR_0_SCRIPT_7_3:
   2801000C  read_byte       [0x128]           ; save_data[0x128]
   00000009  push            0x0             
@@ -1141,7 +1141,7 @@
   0D000001  alu             or              
 
   ; Also check for Earthshine
-  2B01000C  read_byte       [0x12B]           ; save_data[0x12B]
+  4100000C  read_byte       [0x41]            ; save_data[0x41]
   00000009  push            0x0             
   0B000001  alu             ne              
   0D000001  alu             or       
@@ -7310,6 +7310,96 @@
   1D000018  syscall         29                ; White_in
   05000009  push            0x5             
   08000018  syscall         8                 ; Set_wait_timer
+
+; Acquire Simba/Earthshine reward handler
+  4100000C  read_byte       [0x41]            ; save_data[0x41]
+  01000009  push            0x1             
+  06000001  alu             eq       
+  ????????  beqz            @Earthshine_Reward_End
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  01000009  push            0x1             
+  06000001  alu             eq              
+  ????????  beqz            @Earthshine_Gift_Get
+  02000009  push            0x2             
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  07000009  push            0x7             
+  02000018  syscall         2                 ; Close_window
+@Earthshine_Gift_Get:
+  44000009  push            0x44              ; 68
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  04000018  syscall         4                 ; Set_window_size
+  07000009  push            0x7             
+  01000009  push            0x1             
+  05000018  syscall         5                 ; Set_window_type
+  07000009  push            0x7             
+  00000009  push            0x0             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  53000018  syscall         83                ; Set_window_close_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  50000018  syscall         80                ; Set_window_tail_type
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  DC000009  push            0xDC              ; 220
+  05000001  alu             and             
+  96000009  push            0x96              ; 150
+  05000001  alu             and             
+  B7020018  syscall         695               ; Scale_window_from_gift
+; Below code should be uncommented if we want the window centered
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  03000018  syscall         3                 ; Set_window_position
+  07000009  push            0x7             
+  00000018  syscall         0                 ; Open_window
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8             
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0             
+  61010018  syscall         353               ; Play_SE2
+  07000009  push            0x7             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  07000009  push            0x7             
+  02000018  syscall         2                 ; Close_window
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+  02000009  push            0x2             
+  06000001  alu             eq              
+  ????????  beqz            @Earthshine_Cleanup
+  03000009  push            0x3             
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_STATE)
+@Earthshine_Cleanup:
+  D1000009  push            0xD1              ; 209
+  01000009  push            0x1             
+  05000001  alu             negate          
+  02010018  syscall         258               ; Change_bag_items
+  01000009  push            0x1             
+  2B01000D  write_byte      [0x12B]           ; save_data[0x12B]
+  00000009  push            0x0             
+  D100000D  write_byte      [0xD1]            ; save_data[0xD1]
+  32000009  push            0x32              ; 50
+  07020018  syscall         519               ; Check_char_in_dictionary
+  0100000B  store_local     [1]             
+  0100000A  load_local      [1]             
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @Earthshine_Timer
+  32000009  push            0x32              ; 50
+  06020018  syscall         518               ; Add_char_to_dictionary
+@Earthshine_Timer:
+  0A000009  push            0xA               ; 10
+  08000018  syscall         8                 ; Set_wait_timer
+@Earthshine_Reward_End:
+
   2901000C  read_byte       [0x129]           ; save_data[0x129]
   01000009  push            0x1             
   06000001  alu             eq              
