@@ -483,6 +483,15 @@
   03000018  syscall         3                 ; Set_window_position
   01000009  push            0x1             
   07000009  push            0x7             
+
+; Expand window if Phantom option is available
+  0D0B000C  read_byte       [0xB0D]
+  96000009  push            0x96
+  09000001  alu             lt
+  03000009  push            0x3
+  02000001  alu             mul
+  00000001  alu             add               ; width 7, or 10 while Phantom is unbeaten
+
   02000009  push            0x2             
 
 ; Extend window if Phantom option is available
