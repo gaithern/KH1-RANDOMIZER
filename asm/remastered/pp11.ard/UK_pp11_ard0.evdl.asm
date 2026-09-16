@@ -529,10 +529,10 @@
   02000009  push            0x2             
 
 ; Extend last-line argument if pre Phantom
-  0D0B000C  read_byte       [0xB0D]
-  96000009  push            0x96
-  09000001  alu             lt
-  00000001  alu             add               ; last line 2 or 3
+;  0D0B000C  read_byte       [0xB0D]
+;  96000009  push            0x96
+;  09000001  alu             lt
+;  00000001  alu             add               ; last line 2 or 3
 
   00090010  read_dword      [0x900]           ; runtime?[0x900]
   58000018  syscall         88                ; Enter_selection_mode
