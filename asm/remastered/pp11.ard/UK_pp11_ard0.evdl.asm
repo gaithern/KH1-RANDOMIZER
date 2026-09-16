@@ -519,7 +519,7 @@
   0D0B000C  read_byte       [0xB0D]
   96000009  push            0x96
   09000001  alu             lt
-  00000009  push            0x0              ; 0x91 + 0x9F = 0x130
+  9F000009  push            0x9F              ; 0x91 + 0x9F = 0x130
   02000001  alu             mul
   00000001  alu             add
 
