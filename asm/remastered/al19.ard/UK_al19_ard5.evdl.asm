@@ -1475,14 +1475,28 @@
 ; ────────────────────────────────────────────────────────────────────────
 
   10000005  yield           0x10            
-  000B000C  read_byte       [0xB00]           ; save_data[0x900]  (alias, unsigned)
-  BE000009  push            0xBE              ; 190
-  08000001  alu             ge              
-  ????????  beqz            @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_2  ; → PC 1285
-  080B000C  read_byte       [0xB08]           ; save_data[0x908]  (alias, unsigned)
-  00000006  store_reg                       
-  82000007  cmp_reg_imm     0x82            
-  ????????  beqz            @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_0  ; → PC 1281
+
+  ; Check for Ansem's Report 11 and earlier story progress
+  0A000009  push            0xA               ; Report 11, 0-based
+  0F020018  syscall         527               ; Check_anthem_report
+  00000009  push            0x0
+  06000001  alu             eq                ; true when the report is NOT in the journal
+  080B000C  read_byte       [0xB08]           ; save_data[0x908] Agrabah progress
+  78000009  push            0x78
+  08000001  alu             ge                ; 1 when world cleared
+  0C000001  alu             and
+  ????????  beqz            @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_2
+
+; Old story progress check (checked for post Riku-Ansem)
+;  000B000C  read_byte       [0xB00]           ; save_data[0x900]  (alias, unsigned)
+;  BE000009  push            0xBE              ; 190
+;  08000001  alu             ge              
+;  ????????  beqz            @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_2  ; → PC 1285
+;  080B000C  read_byte       [0xB08]           ; save_data[0x908]  (alias, unsigned)
+;  00000006  store_reg                       
+;  82000007  cmp_reg_imm     0x82            
+;  ????????  beqz            @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_0  ; → PC 1281
+
   05000209  push            0x20005           ; 131077
   0A000018  syscall         10                ; Set_char_ID
   69000018  syscall         105               ; Char_bg_off
@@ -1502,7 +1516,10 @@
   05000209  push            0x20005           ; 131077
   3F010018  syscall         319               ; Discard_object_data
 @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_1:
-  00000008  dec_reg_idx                     
+
+; No longer needed
+;  00000008  dec_reg_idx            
+
   ????????  jmp             @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_3  ; → PC 1287
 @UK_al19_ard5_evdl_asm_KGR_0_SCRIPT_9_2:
   05000209  push            0x20005           ; 131077
