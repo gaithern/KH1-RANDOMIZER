@@ -5,8 +5,6 @@ LUAGUI_DESC = "Kingdom Hearts Rando Allow Landing in Destiny Islands"
 local seed_vars = require("seed_vars")
 local ok = false
 
-local frames = 0
-
 local function enable_di_landing(destiny_islands_item)
     if destiny_islands_item > 0 then
         if ReadInt(inGummi) > 0 then
@@ -34,23 +32,6 @@ local function revert_day2()
     end
 end
 
-local function homecoming_arrival()
-    -- The Day 2 ending event (di03 KGR 4) now warps to End of the World itself and sets this
-    -- byte first. Once we are there and faded in, do the engine's "continue" reload once.
-    if ReadByte(world) == 16 and ReadByte(blackFade) == 0 and ReadByte(HOMECOMING_ARRIVAL_PENDING) == 1 then
-        frames = frames + 1
-        if frames > 300 then
-            WriteByte(warpType1, 5)
-            WriteByte(warpType2, 12)
-            WriteByte(warpTrigger, 2)
-            WriteByte(HOMECOMING_ARRIVAL_PENDING, 0)
-            frames = 0
-        end
-    else
-        frames = 0
-    end
-end
-
 function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
@@ -68,6 +49,5 @@ function _OnFrame()
         write_material_bytes()
         revert_day2()
         enable_di_landing(destiny_islands_item)
-        --homecoming_arrival()
     end
 end
