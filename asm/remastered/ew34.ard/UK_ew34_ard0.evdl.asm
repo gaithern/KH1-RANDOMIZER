@@ -12,7 +12,8 @@
 ; What's changed:
 ; - KGR[0] Script 0 (set 0 of ew34, area 0x21 = Lua room 0x21):
 ;   - Shorten Go Mode: when save_data1[0x4C] is set and EotW progress is 0x6E on arrival, write progress 0x9B,
-;     Set_party(Donald, Goofy) and Change_area 62 (ew33) — replaces 1fmRandoShortenGoMode.lua
+;     Set_party(Donald, Goofy) and Start_map_change_rewrite_set(16, 32, Read_set_number(16, 32), 62) into ew33
+;     — replaces 1fmRandoShortenGoMode.lua
 
 
 ; ────────────────────────────────────────────────────────────────────────
@@ -30,7 +31,7 @@
   5E010018  syscall         350               ; Set_party
 ; Shorten Go Mode: this set is entered from the Ansem fight with progress 0x6E. With the setting on, treat the
 ; World of Chaos as done (progress 0x9B), put Donald and Goofy back after the Set_party(-1,-1,-1) above, and go
-; straight to the final arena (entrance 62 = area 32 = ew33), exactly what 1fmRandoShortenGoMode.lua used to do
+; straight to the final arena (entrance 62 = area 32 = ew33), what 1fmRandoShortenGoMode.lua used to do
   4C00000C  read_byte       [0x4C]            ; save_data1[0x4C]  (SHORTEN_GO_MODE)
   ????????  beqz            @UK_ew34_ard0_evdl_asm_KGR_0_SCRIPT_0_SHORTEN_GO_MODE_SKIP
   0F0B000C  read_byte       [0xB0F]           ; save_data[0x90F]  (alias, unsigned)
@@ -50,10 +51,18 @@
   2F6B001F  write_bit       [0x6B2F]          ; save_data2[0x5DEF]
   01000009  push            0x1             
   2E6B001F  write_bit       [0x6B2E]          ; save_data2[0x5DEE]
+  A2010018  syscall         418               ; Pad_ctrl_off
   10000005  yield           0x10            
   02020018  syscall         514               ; Event_camera_off
-  3E000009  push            0x3E              ; 62
-  3C000018  syscall         60                ; Change_area
+; Full map change (same call the Destiny Islands homecoming warp uses), not Change_area: this set never loaded
+; Donald and Goofy, and a plain Change_area after Set_party crashed in the actor-resource linker on arrival
+  10000009  push            0x10              ; 16 = End of the World
+  20000009  push            0x20              ; 32 = area of entrance 62 (ew33)
+  10000009  push            0x10              ; 16
+  20000009  push            0x20              ; 32
+  54020018  syscall         596               ; Read_set_number
+  3E000009  push            0x3E              ; 62 = entrance (spawn point)
+  64020018  syscall         612               ; Start_map_change_rewrite_set
 @UK_ew34_ard0_evdl_asm_KGR_0_SCRIPT_0_SHORTEN_GO_MODE_SKIP:
   6A010018  syscall         362               ; Disable_all_battle_event_boxes
   C6020018  syscall         710               ; Stop_all_enemy_scripts
