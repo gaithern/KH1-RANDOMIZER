@@ -15,6 +15,8 @@
 ; ────────────────────────────────────────────────────────────────────────
 
 ; What's changed:
+; - KGR[0] Script 0:
+;   - New: the drinking water spot only appears with the Empty Bottle in the bag
 ; - KGR[0] Script 35:
 ;   - New coconut always drops until the reward is obtained, never after
 ;   - Old random coconut drop
@@ -322,6 +324,12 @@
   0004000C  read_byte       [0x400]           ; save_data[0x400]
   01000009  push            0x1             
   06000001  alu             eq              
+  0C000001  alu             and             
+; New: the drinking water spot only appears with the Empty Bottle in the bag
+  BA000009  push            0xBA              ; 186 = Empty Bottle
+  FD000018  syscall         253               ; Check_bag_item_count
+  00000009  push            0x0             
+  07000001  alu             gt              
   0C000001  alu             and             
   ????????  beqz            @UK_di01_ard2_evdl_asm_KGR_0_SCRIPT_0_3  ; → PC 263
   62000009  push            0x62              ; 98
