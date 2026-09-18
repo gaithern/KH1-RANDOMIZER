@@ -1880,7 +1880,7 @@ local function build()
             value = 0x01,
         },
         [2655102] = {
-            name = "Destiny Islands Seashore Gather Coconut (Day 2)",
+            name = "Destiny Islands Gather Coconut (Day 2)",
             world = 1,
             gift = 0x0F,
             address = world_flags_address - 0xC9,
@@ -1912,7 +1912,7 @@ local function build()
             value = 0x01,
         },
         [2655106] = {
-            name = "Destiny Islands Seashore Talk to Kairi Potion Reward (Day 2)",
+            name = "Destiny Islands Cove Talk to Kairi Potion Reward (Day 2)",
             world = 1,
             gift = 0x13,
             address = world_flags_address - 0xC5,
@@ -1920,7 +1920,7 @@ local function build()
             value = 0x01,
         },
         [2655107] = {
-            name = "Destiny Islands Seashore Talk to Kairi Hi-Potion Reward (Day 2)",
+            name = "Destiny Islands Cove Talk to Kairi Hi-Potion Reward (Day 2)",
             world = 1,
             gift = 0x14,
             address = world_flags_address - 0xC4,
@@ -3835,18 +3835,6 @@ local function build()
             bit = 0,
             value = 0x01,
         },
-        [2656708] = {
-            name = "Destiny Islands Seashore Defeat Riku (Day 1)",
-            address = world_flags_address + 0x329,
-            bit = 0,
-            value = 0x01,
-        },
-        [2656710] = {
-            name = "Destiny Islands Seashore Deliver Kairi Items (Day 1)",
-            address = world_flags_address + 0x305,
-            bit = 0,
-            value = 0x02,
-        },
         [2656711] = {
             name = "Destiny Islands Secret Place Gather Mushroom (Day 2)",
             world = 1,
@@ -3886,12 +3874,6 @@ local function build()
             address = world_flags_address + 0x2FA,
             bit = 0,
             value = 0x01,
-        },
-        [2656716] = {
-            name = "Destiny Islands Cove Deliver Kairi Items (Day 2)",
-            address = world_flags_address + 0x301,
-            bit = 0,
-            value = 0x02,
         },
         [2656800] = {
             name = "Donald Starting Accessory 1",
