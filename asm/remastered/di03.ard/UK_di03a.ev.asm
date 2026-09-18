@@ -18611,6 +18611,10 @@
   00000009  push            0x0             
   0B0B000D  write_byte      [0xB0B]           ; save_data[0x90B]  (alias, unsigned)
 @UK_di03a_ev_asm_KGR_4_SCRIPT_3_HOMECOMING_WARP:
+; Mark End of the World as already visited: its room-init then does Fade_in (the first-arrival
+; scene only does White_in, which leaves the black fade from Destiny Islands on screen)
+  5A000009  push            0x5A              ; 90
+  0F0B000D  write_byte      [0xB0F]           ; save_data[0x90F]  (alias, unsigned)
   01000009  push            0x1             
   4D00000D  write_byte      [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
   10000009  push            0x10              ; 16 = End of the World
