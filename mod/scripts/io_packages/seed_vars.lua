@@ -2,39 +2,31 @@
 
 local json = require("json")
 
+local names = {
+    "settings",
+    "item_location_map",
+    "ap_costs",
+    "mp_costs",
+    "keyblade_stats",
+    "spell_effectiveness",
+}
+
 local function load_json_dir(dir_path)
     local tables = {}
-    local handle = io.popen('dir /b "' .. dir_path .. '\\*.json" 2>nul')
-    if handle then
-        for filename in handle:lines() do
-            local name = filename:match("^(.-)%.json$")
-            if name then
-                local f = io.open(dir_path .. "\\" .. filename, "r")
-                if f then
-                    local content = f:read("*a")
-                    f:close()
-                    local ok, result = pcall(json.decode, content)
-                    if ok then
-                        tables[name] = result
-                    end
-                end
+    for _, name in ipairs(names) do
+        local f = io.open(dir_path .. name .. ".json", "r")
+        if f then
+            local content = f:read("*a")
+            f:close()
+            local ok, result = pcall(json.decode, content)
+            if ok then
+                tables[name] = result
             end
         end
-        handle:close()
     end
     return tables
 end
 
 local json_dir = SCRIPT_PATH .. "/io_packages/json/"
 
-local loaded = load_json_dir(json_dir)
-
-local result = {}
-
-for name, tbl in pairs(loaded) do
-    if result[name] == nil then
-        result[name] = tbl
-    end
-end
-
-return result
+return load_json_dir(json_dir)
