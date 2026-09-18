@@ -5,6 +5,7 @@ local json = require("json")
 local names = {
     "settings",
     "item_location_map",
+    "location_spheres",
     "ap_costs",
     "mp_costs",
     "keyblade_stats",
