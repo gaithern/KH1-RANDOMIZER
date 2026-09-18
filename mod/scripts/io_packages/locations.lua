@@ -1863,6 +1863,70 @@ local function build()
             bit = 3,
             value = 0x01,
         },
+        [2655100] = {
+            name = "Destiny Islands Seashore Defeat Riku (Day 1)",
+            world = 1,
+            gift = 0x0D,
+            address = world_flags_address - 0xCB,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655101] = {
+            name = "Destiny Islands Seashore Defeat Trio (Day 2)",
+            world = 1,
+            gift = 0x0E,
+            address = world_flags_address - 0xCA,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655102] = {
+            name = "Destiny Islands Seashore Gather Coconut (Day 2)",
+            world = 1,
+            gift = 0x0F,
+            address = world_flags_address - 0xC9,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655103] = {
+            name = "Destiny Islands Seashore Talk to Kairi Potion Reward (Day 1)",
+            world = 1,
+            gift = 0x10,
+            address = world_flags_address - 0xC8,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655104] = {
+            name = "Destiny Islands Seashore Talk to Kairi Hi-Potion Reward (Day 1)",
+            world = 1,
+            gift = 0x11,
+            address = world_flags_address - 0xC7,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655105] = {
+            name = "Destiny Islands Cove Race Riku (Day 2)",
+            world = 1,
+            gift = 0x12,
+            address = world_flags_address - 0xC6,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655106] = {
+            name = "Destiny Islands Seashore Talk to Kairi Potion Reward (Day 2)",
+            world = 1,
+            gift = 0x13,
+            address = world_flags_address - 0xC5,
+            bit = 0,
+            value = 0x01,
+        },
+        [2655107] = {
+            name = "Destiny Islands Seashore Talk to Kairi Hi-Potion Reward (Day 2)",
+            world = 1,
+            gift = 0x14,
+            address = world_flags_address - 0xC4,
+            bit = 0,
+            value = 0x01,
+        },
         [2656011] = {
             name = "Traverse Town Defeat Guard Armor Dodge Roll Event",
             world = 3,
@@ -5386,16 +5450,6 @@ end
 
 -- Vanilla gift slots with no Archipelago location; the gift table writes a placeholder into these.
 local unmapped_gifts = {
-    [1] = {
-        0x0D, -- Destiny Islands Seashore Defeat Riku (Day 1)
-        0x0E, -- Destiny Islands Seashore Defeat Trio (Day 2)
-        0x0F, -- Destiny Islands Seashore Gather Coconut (Day 2)
-        0x10, -- Destiny Islands Seashore Talk to Kairi Potion Reward (Day 1)
-        0x11, -- Destiny Islands Seashore Talk to Kairi Hi-Potion Reward (Day 1)
-        0x12, -- Destiny Islands Cove Race Riku (Day 2)
-        0x13, -- Destiny Islands Seashore Talk to Kairi Potion Reward (Day 2)
-        0x14, -- Destiny Islands Seashore Talk to Kairi Hi-Potion Reward (Day 2)
-    },
     [15] = {
         0x2C, -- Hollow Bastion Library Khama Vol. 8
         0x2D, -- Hollow Bastion Library Theon Vol. 6

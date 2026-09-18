@@ -16,11 +16,15 @@
 
 ; What's changed:
 ; - KGR[0] Script 1:
+;   - Check if defeat Riku reward was already obtained
+;   - Mark for 1 time reward
 ;   - Give reward always (don't check for 99 Potions)
 ;   - New Defeat Riku Potion reward code
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Defeat Riku Potion reward code
 ; - KGR[0] Script 4:
+;   - New raft materials check (needed - have, <= 0 when enough)
+;   - Old log/cloth/rope remaining
 ;   - New get Log qty
 ;   - Old get Log qty
 ;   - New get Cloth qty
@@ -29,6 +33,8 @@
 ;   - Old get Rope qty
 ;   - Don't remove DI items
 ; - KGR[0] Script 5:
+;   - Check if defeat Trio reward was already obtained
+;   - Mark for 1 time reward
 ;   - Give reward always (don't check for 99 Potions)
 ;   - New Defeat Trio Potion reward code
 ;   - Below code should be uncommented if we want the window centered
@@ -46,6 +52,13 @@
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Cloth reward code
 ; - KGR[0] Script 21:
+;   - Check if Hi-Potion reward was already obtained
+;   - Mark for 1 time reward
+;   - New Kairi Day 1 Potion reward (given together with the Hi-Potion)
+;   - New Kairi gift unmissable (hopeless flag ignored)
+;   - Old Kairi hopeless flag check
+;   - New Kairi gift unmissable (hint flag ignored)
+;   - Old Kairi hint flag check
 ;   - New Kairi Day 1 Potion reward code
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Kairi Day 1 Potion reward code
@@ -1180,6 +1193,12 @@
   02000018  syscall         2                 ; Close_window
 @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_1_27:
 
+; Check if defeat Riku reward was already obtained
+  4200000C  read_byte       [0x42]            ; save_data1[0x42]
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_1_31
+
 ; New Defeat Riku Potion reward code
   0D000009  push            0xD               ; 13
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
@@ -1296,6 +1315,10 @@
 ;  6B000018  syscall         107               ; Wait_message_end_ID
 ;  07000009  push            0x7             
 ;  02000018  syscall         2                 ; Close_window
+
+; Mark for 1 time reward
+  01000009  push            0x1             
+  4200000D  write_byte      [0x42]           ; save_data1[0x42]
 
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
   02000009  push            0x2             
@@ -1867,18 +1890,29 @@
   14090010  read_dword      [0x914]           ; runtime?[0x914]
   00000001  alu             add             
   0E04000D  write_byte      [0x40E]           ; save_data[0x40E]
-  02000009  push            0x2             
-  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+; New raft materials check (needed - have, <= 0 when enough)
+  4A00000C  read_byte       [0x4A]            ; save_data1[0x4A]  (DAY_2_MATERIALS_REQUIRED)
+  0C000009  push            0xC               ; 12 = Raft Materials
+  FD000018  syscall         253               ; Check_bag_item_count
   01000001  alu             sub             
   34090011  write_dword     [0x934]           ; runtime?[0x934]
-  01000009  push            0x1             
-  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
-  01000001  alu             sub             
+  00000009  push            0x0             
   38090011  write_dword     [0x938]           ; runtime?[0x938]
-  01000009  push            0x1             
-  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
-  01000001  alu             sub             
+  00000009  push            0x0             
   3C090011  write_dword     [0x93C]           ; runtime?[0x93C]
+; Old log/cloth/rope remaining
+;  02000009  push            0x2             
+;  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+;  01000001  alu             sub             
+;  34090011  write_dword     [0x934]           ; runtime?[0x934]
+;  01000009  push            0x1             
+;  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
+;  01000001  alu             sub             
+;  38090011  write_dword     [0x938]           ; runtime?[0x938]
+;  01000009  push            0x1             
+;  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
+;  01000001  alu             sub             
+;  3C090011  write_dword     [0x93C]           ; runtime?[0x93C]
   1204000C  read_byte       [0x412]           ; save_data[0x412]  (CAN_PROGRESS_DI_DAY_1)
   01000009  push            0x1             
   06000001  alu             eq              
@@ -3483,6 +3517,12 @@
   02000018  syscall         2                 ; Close_window
 @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_5_42:
 
+; Check if defeat Trio reward was already obtained
+  4300000C  read_byte       [0x43]            ; save_data1[0x43]
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_5_50
+
 ; New Defeat Trio Potion reward code
   0E000009  push            0xE               ; 14
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
@@ -3629,6 +3669,10 @@
 ;  6B000018  syscall         107               ; Wait_message_end_ID
 ;  07000009  push            0x7             
 ;  02000018  syscall         2                 ; Close_window
+
+; Mark for 1 time reward
+  01000009  push            0x1             
+  4300000D  write_byte      [0x43]           ; save_data1[0x43]
 
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
   02000009  push            0x2             
@@ -7726,7 +7770,10 @@
   02000018  syscall         2                 ; Close_window
 @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_3:
   10000005  yield           0x10            
-  4504000C  read_byte       [0x445]           ; save_data[0x445]
+; New Kairi gift unmissable (hopeless flag ignored)
+  00000009  push            0x0             
+; Old Kairi hopeless flag check
+;  4504000C  read_byte       [0x445]           ; save_data[0x445]
   01000009  push            0x1             
   06000001  alu             eq              
   ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_6  ; → PC 6844
@@ -7790,7 +7837,10 @@
   21000018  syscall         33                ; Wait_message_end
   0A000009  push            0xA               ; 10
   08000018  syscall         8                 ; Set_wait_timer
-  4404000C  read_byte       [0x444]           ; save_data[0x444]
+; New Kairi gift unmissable (hint flag ignored)
+  00000009  push            0x0             
+; Old Kairi hint flag check
+;  4404000C  read_byte       [0x444]           ; save_data[0x444]
   01000009  push            0x1             
   06000001  alu             eq              
   ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_13  ; → PC 6941
@@ -7941,6 +7991,11 @@
 @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_14:
 
 ; New Kairi Day 1 Hi-Potion reward
+; Check if Hi-Potion reward was already obtained
+  4600000C  read_byte       [0x46]            ; save_data1[0x46]  (DI_KAIRI_HI_POTION_DAY_1_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_HIPOTION_DONE
   11000009  push            0x11              ; 17
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
@@ -7987,6 +8042,65 @@
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
+; Mark for 1 time reward
+  01000009  push            0x1             
+  4600000D  write_byte      [0x46]            ; save_data1[0x46]  (DI_KAIRI_HI_POTION_DAY_1_REWARD)
+@UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_HIPOTION_DONE:
+; New Kairi Day 1 Potion reward (given together with the Hi-Potion)
+  4500000C  read_byte       [0x45]            ; save_data1[0x45]  (DI_KAIRI_POTION_DAY_1_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_POTION_DONE
+  10000009  push            0x10              ; 16
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  04000018  syscall         4                 ; Set_window_size
+  07000009  push            0x7             
+  01000009  push            0x1             
+  05000018  syscall         5                 ; Set_window_type
+  07000009  push            0x7             
+  00000009  push            0x0             
+  06000018  syscall         6                 ; Set_window_opening_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  53000018  syscall         83                ; Set_window_close_speed
+  07000009  push            0x7             
+  00000009  push            0x0             
+  50000018  syscall         80                ; Set_window_tail_type
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  DC000009  push            0xDC              ; 220
+  05000001  alu             and             
+  96000009  push            0x96              ; 150
+  05000001  alu             and             
+  B7020018  syscall         695               ; Scale_window_from_gift
+  07000009  push            0x7             
+  00000009  push            0x0             
+  01000009  push            0x1             
+  03000018  syscall         3                 ; Set_window_position
+  07000009  push            0x7             
+  00000018  syscall         0                 ; Open_window
+  07000009  push            0x7             
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8             
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0             
+  61010018  syscall         353               ; Play_SE2
+  07000009  push            0x7             
+  6B000018  syscall         107               ; Wait_message_end_ID
+  07000009  push            0x7             
+  02000018  syscall         2                 ; Close_window
+; Mark for 1 time reward
+  01000009  push            0x1             
+  4500000D  write_byte      [0x45]            ; save_data1[0x45]  (DI_KAIRI_POTION_DAY_1_REWARD)
+@UK_di01_ard0_evdl_asm_KGR_0_SCRIPT_21_POTION_DONE:
+
 
 ; Old Kairi Day 1 Hi-Potion Reward
 ;   01000009  push            0x1             

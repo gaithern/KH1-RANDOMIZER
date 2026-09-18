@@ -15,6 +15,21 @@
 ; ────────────────────────────────────────────────────────────────────────
 
 ; What's changed:
+; - KGR[1] Script 4:
+;   - New Kairi Day 2 talk treats the first race as already run
+;   - Old race check
+; - KGR[1] Script 2:
+;   - New Riku Day 2 talk treats the first race as already run
+;   - Old race check
+; - KGR[0] Script 1:
+;   - New Riku Day 2 talk treats the first race as already run
+;   - Old race check
+; - KGR[0] Script 2:
+;   - New Kairi Day 2 talk does not require the Riku race
+;   - Old race check
+; - KGR[4] Script 0:
+;   - New raft materials check (needed - have, <= 0 when enough)
+;   - Old day 2 supplies remaining
 ; - KGR[0] Script 3:
 ;   - New Mushroom 1 reward code
 ;   - Below code should be uncommented if we want the window centered
@@ -40,6 +55,10 @@
 ;   - Below code should be uncommented if we want the window centered
 ;   - Old Coconut reward code
 ; - KGR[4] Script 3:
+;   - New Kairi gift unmissable (hopeless flag ignored)
+;   - Old Kairi hopeless flag check
+;   - New Kairi gift unmissable (hint flag ignored)
+;   - Old Kairi hint flag check
 ;   - Don't remove excess Coconuts
 ; - KGR[10] Script 0:
 ;   - Don't remove Empty Bottle
@@ -277,7 +296,10 @@
   21000009  push            0x21              ; 33
   5A000009  push            0x5A              ; 90
   6D000018  syscall         109               ; Start_texture_animation
-  2204000E  read_word       [0x422]           ; save_data[0x422]
+; New Riku Day 2 talk treats the first race as already run
+  01000009  push            0x1             
+; Old race check
+;  2204000E  read_word       [0x422]           ; save_data[0x422]
   00000009  push            0x0             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_0_SCRIPT_1_2  ; → PC 234
@@ -362,7 +384,10 @@
   06000009  push            0x6             
   07000015  push_cond       0x7             
   0C000017  await_call      0xC               ; → Script 12 (0x4001F)  PC 1453
-  2204000E  read_word       [0x422]           ; save_data[0x422]
+; New Kairi Day 2 talk does not require the Riku race
+  01000009  push            0x1             
+; Old race check
+;  2204000E  read_word       [0x422]           ; save_data[0x422]
   00000009  push            0x0             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_0_SCRIPT_2_2  ; → PC 303
@@ -6492,7 +6517,10 @@
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
-  2204000E  read_word       [0x422]           ; save_data[0x422]
+; New Riku Day 2 talk treats the first race as already run
+  01000009  push            0x1             
+; Old race check
+;  2204000E  read_word       [0x422]           ; save_data[0x422]
   00000009  push            0x0             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_1_SCRIPT_2_2  ; → PC 104
@@ -6591,7 +6619,10 @@
   10000005  yield           0x10            
   10000005  yield           0x10            
   10000005  yield           0x10            
-  2204000E  read_word       [0x422]           ; save_data[0x422]
+; New Kairi Day 2 talk treats the first race as already run
+  01000009  push            0x1             
+; Old race check
+;  2204000E  read_word       [0x422]           ; save_data[0x422]
   00000009  push            0x0             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_1_SCRIPT_4_6  ; → PC 242
@@ -17564,26 +17595,41 @@
   1C090010  read_dword      [0x91C]           ; runtime?[0x91C]
   00000001  alu             add             
   1104000D  write_byte      [0x411]           ; save_data[0x411]
-  01000009  push            0x1             
-  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+; New raft materials check (needed - have, <= 0 when enough)
+  4B00000C  read_byte       [0x4B]            ; save_data1[0x4B]  (HOMECOMING_MATERIALS_REQUIRED)
+  0C000009  push            0xC               ; 12 = Raft Materials
+  FD000018  syscall         253               ; Check_bag_item_count
   01000001  alu             sub             
   24090011  write_dword     [0x924]           ; runtime?[0x924]
-  03000009  push            0x3             
-  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
-  01000001  alu             sub             
+  00000009  push            0x0             
   28090011  write_dword     [0x928]           ; runtime?[0x928]
-  02000009  push            0x2             
-  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
-  01000001  alu             sub             
+  00000009  push            0x0             
   2C090011  write_dword     [0x92C]           ; runtime?[0x92C]
-  03000009  push            0x3             
-  0F04000C  read_byte       [0x40F]           ; save_data[0x40F]
-  01000001  alu             sub             
+  00000009  push            0x0             
   30090011  write_dword     [0x930]           ; runtime?[0x930]
-  01000009  push            0x1             
-  1104000C  read_byte       [0x411]           ; save_data[0x411]
-  01000001  alu             sub             
+  00000009  push            0x0             
   34090011  write_dword     [0x934]           ; runtime?[0x934]
+; Old day 2 supplies remaining
+;  01000009  push            0x1             
+;  0C04000C  read_byte       [0x40C]           ; save_data[0x40C]
+;  01000001  alu             sub             
+;  24090011  write_dword     [0x924]           ; runtime?[0x924]
+;  03000009  push            0x3             
+;  0D04000C  read_byte       [0x40D]           ; save_data[0x40D]
+;  01000001  alu             sub             
+;  28090011  write_dword     [0x928]           ; runtime?[0x928]
+;  02000009  push            0x2             
+;  0E04000C  read_byte       [0x40E]           ; save_data[0x40E]
+;  01000001  alu             sub             
+;  2C090011  write_dword     [0x92C]           ; runtime?[0x92C]
+;  03000009  push            0x3             
+;  0F04000C  read_byte       [0x40F]           ; save_data[0x40F]
+;  01000001  alu             sub             
+;  30090011  write_dword     [0x930]           ; runtime?[0x930]
+;  01000009  push            0x1             
+;  1104000C  read_byte       [0x411]           ; save_data[0x411]
+;  01000001  alu             sub             
+;  34090011  write_dword     [0x934]           ; runtime?[0x934]
   C3000009  push            0xC3              ; 195
   0C090010  read_dword      [0x90C]           ; runtime?[0x90C]
   05000001  alu             negate          
@@ -18857,7 +18903,10 @@
   6B000018  syscall         107               ; Wait_message_end_ID
 @UK_di03_ard0_evdl_asm_KGR_4_SCRIPT_3_47:
   10000005  yield           0x10            
-  4504000C  read_byte       [0x445]           ; save_data[0x445]
+; New Kairi gift unmissable (hopeless flag ignored)
+  00000009  push            0x0             
+; Old Kairi hopeless flag check
+;  4504000C  read_byte       [0x445]           ; save_data[0x445]
   01000009  push            0x1             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_4_SCRIPT_3_48  ; → PC 1404
@@ -18890,7 +18939,10 @@
   21000018  syscall         33                ; Wait_message_end
   0A000009  push            0xA               ; 10
   08000018  syscall         8                 ; Set_wait_timer
-  4404000C  read_byte       [0x444]           ; save_data[0x444]
+; New Kairi gift unmissable (hint flag ignored)
+  00000009  push            0x0             
+; Old Kairi hint flag check
+;  4404000C  read_byte       [0x444]           ; save_data[0x444]
   01000009  push            0x1             
   06000001  alu             eq              
   ????????  beqz            @UK_di03_ard0_evdl_asm_KGR_4_SCRIPT_3_54  ; → PC 1494
