@@ -16,10 +16,8 @@
 
 ; What's changed:
 ; - KGR[0] Script 0:
+;   - New homecoming arrival: restore screen brightness before the arrival scene when coming from Destiny Islands
 ;   - New homecoming arrival: clear the flag if we came from Destiny Islands but the scene was already seen
-; - KGR[0] Script 1:
-;   - New homecoming arrival: fade in from black when coming from Destiny Islands (its ending uses Fade_out)
-;   - Old arrival from the world map (white overlay)
 
 
 ; ────────────────────────────────────────────────────────────────────────
@@ -85,6 +83,17 @@
   5A000009  push            0x5A              ; 90
   09000001  alu             lt              
   ????????  beqz            @UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_0_1  ; → PC 87
+; New homecoming arrival: coming from Destiny Islands the screen is faded to black (its ending uses Fade_out),
+; so restore it here before the arrival scene; a world-map landing arrives with the screen already lit
+  4D00000C  read_byte       [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
+  01000009  push            0x1             
+  06000001  alu             eq              
+  ????????  beqz            @UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_0_HOMECOMING_LIT
+  08000009  push            0x8             
+  1B000018  syscall         27                ; Fade_in
+  00000009  push            0x0             
+  4D00000D  write_byte      [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
+@UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_0_HOMECOMING_LIT:
   06000009  push            0x6             
   01000015  push_cond       0x1             
   0B000016  init_call       0xB               ; → Script 11 (outside KGR)
@@ -202,19 +211,7 @@
   00000009  push            0x0             
   22000018  syscall         34                ; Play_camera_motion
   78000009  push            0x78              ; 120
-; New homecoming arrival: fade in from black when coming from Destiny Islands (its ending uses Fade_out)
-  4D00000C  read_byte       [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
-  01000009  push            0x1             
-  06000001  alu             eq              
-  ????????  beqz            @UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_1_WHITE_IN
-  1B000018  syscall         27                ; Fade_in
-  00000009  push            0x0             
-  4D00000D  write_byte      [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
-  ????????  jmp             @UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_1_FADE_DONE
-@UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_1_WHITE_IN:
-; Old arrival from the world map (white overlay)
   1D000018  syscall         29                ; White_in
-@UK_ew36_ard0_evdl_asm_KGR_0_SCRIPT_1_FADE_DONE:
   78000009  push            0x78              ; 120
   6F020018  syscall         623               ; Widescreen_on_frame
   E23A0009  push            0x3AE2            ; 15074
