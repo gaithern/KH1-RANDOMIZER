@@ -21,11 +21,6 @@ local function enable_di_landing(destiny_islands_item)
     end
 end
 
-local function write_material_bytes()
-    WriteByte(DAY_2_MATERIALS_REQUIRED, math.min(seed_vars["settings"]["day_2_materials"], 255))
-    WriteByte(HOMECOMING_MATERIALS_REQUIRED, math.min(seed_vars["settings"]["homecoming_materials"], 255))
-end
-
 local function revert_day2()
     if (ReadByte(world) ~= 1 and ReadByte(world) ~= 2) and ReadByte(DI01_SET_NUMBER) ~= 0 then --Not in Destiny Islands and Seashore not on Day 1
         WriteByte(DI01_SET_NUMBER, 0)
@@ -46,7 +41,6 @@ end
 function _OnFrame()
     if ok then
         local destiny_islands_item = ReadByte(inventory + 10)
-        write_material_bytes()
         revert_day2()
         enable_di_landing(destiny_islands_item)
     end
