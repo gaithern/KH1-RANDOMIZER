@@ -115,6 +115,8 @@
 ;   - Randomizer: item checks removed — progression gated on save_data[0x400] set externally
 ;   - Randomizer: item removal removed — progression gated on save_data[0x400] set externally
 ; - KGR[4] Script 3:
+;   - New homecoming: warp straight to End of the World (was Change_area 10, handled by Lua before)
+;   - Old homecoming: go to the night raft scene
 ;   - Check if Hi-Potion reward was already obtained
 ;   - Mark for 1 time reward
 ;   - New Kairi Day 2 Potion reward (given together with the Hi-Potion)
@@ -18595,8 +18597,32 @@
   01000009  push            0x1             
   2E6B001F  write_bit       [0x6B2E]          ; save_data2[0x5DEE]
   02020018  syscall         514               ; Event_camera_off
-  0A000009  push            0xA               ; 10
-  3C000018  syscall         60                ; Change_area
+; New homecoming: warp straight to End of the World (was Change_area 10, handled by Lua before)
+  01000009  push            0x1             
+  02000009  push            0x2             
+  FF000009  push            0xFF              ; 255
+  5E010018  syscall         350               ; Set_party (Donald, Goofy, none)
+  00000009  push            0x0             
+  B611000D  write_byte      [0x11B6]          ; save_data2[0x476]  (DI04_SET_NUMBER)
+  0B0B000C  read_byte       [0xB0B]           ; save_data[0x90B]  (alias, unsigned)
+  5A000009  push            0x5A              ; 90
+  08000001  alu             ge              
+  ????????  beqz            @UK_di03a_ev_asm_KGR_4_SCRIPT_3_HOMECOMING_WARP
+  00000009  push            0x0             
+  0B0B000D  write_byte      [0xB0B]           ; save_data[0x90B]  (alias, unsigned)
+@UK_di03a_ev_asm_KGR_4_SCRIPT_3_HOMECOMING_WARP:
+  01000009  push            0x1             
+  4D00000D  write_byte      [0x4D]            ; save_data1[0x4D]  (HOMECOMING_ARRIVAL_PENDING)
+  10000009  push            0x10              ; 16 = End of the World
+  23000009  push            0x23              ; 35 = area of world-map entrance 66
+  10000009  push            0x10              ; 16
+  23000009  push            0x23              ; 35
+  54020018  syscall         596               ; Read_set_number
+  42000009  push            0x42              ; 66 = entrance (spawn point)
+  64020018  syscall         612               ; Start_map_change_rewrite_set
+; Old homecoming: go to the night raft scene
+;  0A000009  push            0xA               ; 10
+;  3C000018  syscall         60                ; Change_area
   ????????  jmp             @UK_di03a_ev_asm_KGR_4_SCRIPT_3_18  ; → PC 929
 @UK_di03a_ev_asm_KGR_4_SCRIPT_3_15:
   38090010  read_dword      [0x938]           ; runtime?[0x938]

@@ -6,7 +6,6 @@ local seed_vars = require("seed_vars")
 local ok = false
 
 local frames = 0
-local warped_to_eotw = false
 
 local function enable_di_landing(destiny_islands_item)
     if destiny_islands_item > 0 then
@@ -35,36 +34,20 @@ local function revert_day2()
     end
 end
 
-local function RoomWarp(w, r)
-    WriteByte(warpType1, 5)
-    WriteByte(warpType2, 10)
-    WriteByte(worldWarp, w)
-    WriteByte(roomWarp, r)
-    WriteByte(warpTrigger, 2)
-end
-
-local function warp_to_homecoming()
-    if ReadByte(world) == 16 and ReadByte(blackFade) == 0 and warped_to_eotw then
+local function homecoming_arrival()
+    -- The Day 2 ending event (di03 KGR 4) now warps to End of the World itself and sets this
+    -- byte first. Once we are there and faded in, do the engine's "continue" reload once.
+    if ReadByte(world) == 16 and ReadByte(blackFade) == 0 and ReadByte(HOMECOMING_ARRIVAL_PENDING) == 1 then
         frames = frames + 1
         if frames > 300 then
             WriteByte(warpType1, 5)
             WriteByte(warpType2, 12)
             WriteByte(warpTrigger, 2)
+            WriteByte(HOMECOMING_ARRIVAL_PENDING, 0)
             frames = 0
-            warped_to_eotw = false
         end
     else
         frames = 0
-    end
-    if ReadByte(world) == 1 and ReadByte(blackFade) > 0 and ReadByte(DI04_SET_NUMBER) == 2 then -- DI Day2 Warp to EotW
-        RoomWarp(16, 66)
-        WriteByte(party1, 1)
-        WriteByte(party1 + 1, 2)
-        WriteByte(DI04_SET_NUMBER, 0)
-        if ReadByte(cutsceneFlags + 11) >= 90 then
-            WriteByte(cutsceneFlags + 11, 0)
-        end
-        warped_to_eotw = true
     end
 end
 
@@ -85,6 +68,6 @@ function _OnFrame()
         write_material_bytes()
         revert_day2()
         enable_di_landing(destiny_islands_item)
-        warp_to_homecoming()
+        --homecoming_arrival()
     end
 end
