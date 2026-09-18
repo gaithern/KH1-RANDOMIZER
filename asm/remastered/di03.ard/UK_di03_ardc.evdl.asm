@@ -10,6 +10,33 @@
 ; ────────────────────────────────────────────────────────────────────────
 
 ; What's changed:
+; - KGR[None] Script 18:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 17:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 16:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 15:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 14:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 13:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 10:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 9:
+;   - New coconut always drops until the reward is obtained, never after
+;   - Old random coconut drop
+; - KGR[None] Script 8:
+;   - Check if coconut reward was already obtained
+;   - Mark for 1 time reward
 ; - KGR[0] Script 8:
 ;   - New Coconut reward code
 ;   - Below code should be uncommented if we want the window centered
@@ -1671,6 +1698,12 @@
   02000018  syscall         2                 ; Close_window
 @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_8_15:
 
+; Check if coconut reward was already obtained
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+  ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_8_23
+
 ; New Coconut reward code
   0F000009  push            0xF               ; 15
   04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
@@ -1718,6 +1751,9 @@
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
+; Mark for 1 time reward
+  01000009  push            0x1             
+  4400000D  write_byte      [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
 
 ; Old Coconut reward code
 ;  C6000009  push            0xC6              ; 198
@@ -2016,9 +2052,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_9_6  ; → PC 1770
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -2315,9 +2356,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_10_6  ; → PC 2041
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -3104,9 +3150,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_13_6  ; → PC 2754
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -3403,9 +3454,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_14_6  ; → PC 3025
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -3702,9 +3758,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_15_6  ; → PC 3296
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -3997,9 +4058,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_16_6  ; → PC 3563
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -4296,9 +4362,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_17_6  ; → PC 3834
   08000009  push            0x8             
   0200000B  store_local     [2]             
@@ -4595,9 +4666,14 @@
   01000001  alu             sub             
   44000018  syscall         68                ; Random_value
   0300000B  store_local     [3]             
-  0300000A  load_local      [3]             
-  0600000A  load_local      [6]             
-  09000001  alu             lt              
+; New coconut always drops until the reward is obtained, never after
+  4400000C  read_byte       [0x44]            ; save_data1[0x44]  (DI_GATHER_COCONUT_REWARD)
+  00000009  push            0x0             
+  06000001  alu             eq              
+; Old random coconut drop
+;  0300000A  load_local      [3]             
+;  0600000A  load_local      [6]             
+;  09000001  alu             lt              
   ????????  beqz            @UK_di03_ardc_evdl_asm_KGR_0_SCRIPT_18_6  ; → PC 4105
   08000009  push            0x8             
   0200000B  store_local     [2]             
