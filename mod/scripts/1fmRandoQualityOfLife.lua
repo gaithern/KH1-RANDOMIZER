@@ -20,9 +20,6 @@ end
 
 function _OnFrame()
     if canExecute then
-       if ReadByte(evidence + 0x0E60) == 0x00 then --No Red Trinities Activated
-           WriteByte(evidence + 0x0E60, 0x01) --Activated 1 Red Trinity because Secret Waterway Entrance
-       end
        if ReadByte(evidence + 0x0EB5) == 0x01 then --Stepped on All 3 Switches in Gizmo Shop
            WriteByte(evidence + 0x0EB5, 0x03) --No Wait Time for the 2 Postcards
        end

@@ -85,16 +85,6 @@ function FlagFixes()
         end
     end
 
-    if (ReadByte(waterwayGate) // 0x80) % 2 == 0 then
-        debugPrint("Section 14")
-        WriteByte(waterwayGate, ReadByte(waterwayGate)+0x80)
-    end
-
-    if (ReadByte(waterwayTrinity) // 0x20) % 2 == 0 then
-        debugPrint("Section 15")
-        WriteByte(waterwayTrinity, ReadByte(waterwayTrinity)+0x20)
-    end
-
     if ReadByte(worldFlagBase - 0xAE) >= 0 then
         debugPrint("Section 16")
         if (ReadByte(chestsOpened + 0x10)//2) % 2 == 0 then
