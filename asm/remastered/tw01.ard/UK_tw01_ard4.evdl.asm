@@ -21,6 +21,8 @@
 ;  - KGR[1] Script 01:
 ;    - Changed the aquisition of Blue Trinity and Fire to instead use the gift table (idxs 20 and 21)
 ;    - Leon gift is always given (even when the player doesn't defeat Leon in 1st District)
+;    - Aerith gift (gift table idx 2) is given after the Leon gift if it was missed before Guard Armor,
+;      with new line "And this is from me." (message 0x41D in UK_tw01_ard3ec.binl)
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0xB995
@@ -8298,6 +8300,161 @@
   05000015  push_cond       0x5             
   0D000016  init_call       0xD               ; → Script 13 (outside KGR)
 @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_12:
+
+; New - Aerith gift made unmissable: if the 1st District Aerith gift (gift table idx 2,
+; save_data[0x10F]) was not collected before Guard Armor, Aerith hands it over here,
+; right after "And this is from Leon."  Message 0x41D "And this is from me." is added
+; to UK_tw01_ard3ec.binl.  Gift window code mirrors KGR[0] Script 3 (Aerith talk).
+  0F01000C  read_byte       [0x10F]           ; save_data[0x10F]  (AERITH_GIFT_GIVEN)
+  00000009  push            0x0
+  06000001  alu             eq
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_END
+  07000015  push_cond       0x7
+  21000009  push            0x21              ; 33
+  00000009  push            0x0
+  6D000018  syscall         109               ; Start_texture_animation
+  00000009  push            0x0
+  07000009  push            0x7
+  01000009  push            0x1
+  04000018  syscall         4                 ; Set_window_size
+  00000009  push            0x0
+  64000009  push            0x64              ; 100
+  78000009  push            0x78              ; 120
+  05000001  alu             and
+  03000018  syscall         3                 ; Set_window_position
+  00000009  push            0x0
+  0C000009  push            0xC               ; 12
+  51000018  syscall         81                ; Set_window_tail_location
+  00000009  push            0x0
+  87000009  push            0x87              ; 135
+  52000018  syscall         82                ; Set_window_tail_rotation
+  00000009  push            0x0
+  B1000018  syscall         177               ; Open_window_no_close
+  00000009  push            0x0
+; Message: {0x0A 00 00 01}{0x08}{0x07 0C 00}And this is from me.
+  1D040009  push            0x41D             ; 1053
+  01000018  syscall         1                 ; Display_message
+  00000009  push            0x0
+  6B000018  syscall         107               ; Wait_message_end_ID
+  00000009  push            0x0
+  02000018  syscall         2                 ; Close_window
+  07000015  push_cond       0x7
+  1E000009  push            0x1E              ; 30
+  00000009  push            0x0
+  6D000018  syscall         109               ; Start_texture_animation
+  0A000009  push            0xA               ; 10
+  08000018  syscall         8                 ; Set_wait_timer
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+  01000009  push            0x1
+  06000001  alu             eq
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_1
+  02000009  push            0x2
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+  07000009  push            0x7
+  02000018  syscall         2                 ; Close_window
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_1:
+  07000009  push            0x7
+  11000009  push            0x11              ; 17
+  01000009  push            0x1
+  04000018  syscall         4                 ; Set_window_size
+  07000009  push            0x7
+  01000009  push            0x1
+  05000018  syscall         5                 ; Set_window_type
+  07000009  push            0x7
+  00000009  push            0x0
+  06000018  syscall         6                 ; Set_window_opening_speed
+  07000009  push            0x7
+  00000009  push            0x0
+  53000018  syscall         83                ; Set_window_close_speed
+  07000009  push            0x7
+  00000009  push            0x0
+  50000018  syscall         80                ; Set_window_tail_type
+  07000009  push            0x7
+  00000009  push            0x0
+  01000009  push            0x1
+  03000018  syscall         3                 ; Set_window_position
+  E8020018  syscall         744               ; Check_shared_ability_taken
+  1600000B  store_local     [22]
+  07000009  push            0x7
+  B1000018  syscall         177               ; Open_window_no_close
+  07000009  push            0x7
+  02000009  push            0x2
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0
+  61010018  syscall         353               ; Play_SE2
+  AD000018  syscall         173               ; Get_pad_trigger
+  1800000B  store_local     [24]
+  00000009  push            0x0
+  1900000B  store_local     [25]
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_2:
+  1900000A  load_local      [25]
+  5A000009  push            0x5A              ; 90
+  09000001  alu             lt
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_4
+  AD000018  syscall         173               ; Get_pad_trigger
+  1800000B  store_local     [24]
+  1800000A  load_local      [24]
+  01000009  push            0x1
+  0C000001  alu             and
+  00000009  push            0x0
+  06000001  alu             eq
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_3
+  1900000A  load_local      [25]
+  1700000B  store_local     [23]
+  5A000009  push            0x5A              ; 90
+  1900000B  store_local     [25]
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_3:
+  1900000A  load_local      [25]
+  01000009  push            0x1
+  00000001  alu             add
+  1900000B  store_local     [25]
+  ????????  jmp             @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_2
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_4:
+  1700000A  load_local      [23]
+  3C000009  push            0x3C              ; 60
+  00000001  alu             add
+  1700000B  store_local     [23]
+  1700000A  load_local      [23]
+  1900000B  store_local     [25]
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_5:
+  1900000A  load_local      [25]
+  5A000009  push            0x5A              ; 90
+  09000001  alu             lt
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_6
+  1900000A  load_local      [25]
+  01000009  push            0x1
+  00000001  alu             add
+  1900000B  store_local     [25]
+  ????????  jmp             @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_5
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_6:
+  07000009  push            0x7
+  6B000018  syscall         107               ; Wait_message_end_ID
+  07000009  push            0x7
+  02000018  syscall         2                 ; Close_window
+  430D000C  read_byte       [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+  02000009  push            0x2
+  06000001  alu             eq
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_7
+  03000009  push            0x3
+  430D000D  write_byte      [0xD43]           ; save_data2[0x3]  (DIALOG_CHOICE_STATE)
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_7:
+  1600000A  load_local      [22]
+  00000009  push            0x0
+  06000001  alu             eq
+  ????????  beqz            @UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_8
+  01000009  push            0x1
+  08000018  syscall         8                 ; Set_wait_timer
+  21000018  syscall         33                ; Wait_message_end
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_8:
+  02000009  push            0x2
+  47020018  syscall         583               ; Get_item_from_gift_table
+  01000009  push            0x1
+  0F01000D  write_byte      [0x10F]           ; save_data[0x10F]  (AERITH_GIFT_GIVEN)
+@UK_tw01_ard4_evdl_asm_KGR_1_SCRIPT_1_AERITH_END:
+; End new Aerith gift block
   06000009  push            0x6             
   09000015  push_cond       0x9             
   10000016  init_call       0x10              ; → Script 16 (outside KGR)
