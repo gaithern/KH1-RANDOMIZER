@@ -17,6 +17,9 @@
 ; What's changed:
 ;  KGR[0] Script 11:
 ;    - Adjusted Flower Pot reward to use gift table idx 13
+; - Evidence boxes: set-number gates replaced with push 1 (boxes appear in every set);
+;   pickups give gift table idx 0x1B-0x1E (Footprints, Claw Marks, Stench, Antenna)
+;   Touched: KGR[0] S5, KGR[0] S21, KGR[0] S22
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0x4BE9  |  KGR 0
@@ -599,13 +602,16 @@
   00000009  push            0x0             
   65010018  syscall         357               ; Set_comm_work
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_5_0:
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_5_1  ; → PC 555
   7672001E  read_bit        [0x7276]          ; save_data2[0x6536]
   00000009  push            0x0             
@@ -614,13 +620,16 @@
   13000409  push            0x40013           ; 262163
   B7000018  syscall         183               ; Display_model
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_5_1:
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_5_2  ; → PC 569
   7572001E  read_bit        [0x7275]          ; save_data2[0x6535]
   00000009  push            0x0             
@@ -2457,13 +2466,16 @@
 ; ────────────────────────────────────────────────────────────────────────
 
   10000005  yield           0x10            
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_0  ; → PC 2193
   7672001E  read_bit        [0x7276]          ; save_data2[0x6536]
   00000009  push            0x0             
@@ -2472,13 +2484,16 @@
   13000409  push            0x40013           ; 262163
   0A000018  syscall         10                ; Set_char_ID
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_0:
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_1  ; → PC 2202
   ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_0  ; → PC 2193
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_1:
@@ -2577,100 +2592,147 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_4:
-  E0000009  push            0xE0              ; 224
-  84020018  syscall         644               ; Get_item_type
-  1900000B  store_local     [25]            
-  E0000009  push            0xE0              ; 224
-  01000009  push            0x1             
-  02010018  syscall         258               ; Change_bag_items
-  E0000009  push            0xE0              ; 224
-  6C010018  syscall         364               ; Set_item_number_in_message
-  07000009  push            0x7             
-  00000009  push            0x0             
-  01000009  push            0x1             
+; New Claw Marks evidence box reward code (gift table idx 0x1C)
+  1C000009  push            0x1C              ; 28
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
+  07000009  push            0x7
+  00000009  push            0x0
+  01000009  push            0x1
   04000018  syscall         4                 ; Set_window_size
-  07000009  push            0x7             
-  01000009  push            0x1             
+  07000009  push            0x7
+  01000009  push            0x1
   05000018  syscall         5                 ; Set_window_type
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   06000018  syscall         6                 ; Set_window_opening_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   53000018  syscall         83                ; Set_window_close_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   50000018  syscall         80                ; Set_window_tail_type
-  07000009  push            0x7             
-  0D010009  push            0x10D             ; 269
+  07000009  push            0x7
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   DC000009  push            0xDC              ; 220
-  05000001  alu             negate          
+  05000001  alu             negate
   96000009  push            0x96              ; 150
-  05000001  alu             negate          
-  6D010018  syscall         365               ; Set_window_width_auto
-  07000009  push            0x7             
+  05000001  alu             negate
+  B7020018  syscall         695               ; Scale_window_from_gift
+  07000009  push            0x7
+  00000009  push            0x0
+  01000009  push            0x1
+  03000018  syscall         3                 ; Set_window_position
+  07000009  push            0x7
   00000018  syscall         0                 ; Open_window
-  1900000A  load_local      [25]            
-  00000006  store_reg                       
-  00000007  cmp_reg_imm                     
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_5  ; → PC 2335
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iPotion}{0x0E} {0x0C}{0xFF}.{0x06}R
-  0D010009  push            0x10D             ; 269
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_5:
-  01000007  cmp_reg_imm     0x1             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_6  ; → PC 2341
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iTent}{0x0E} {0x0C}{0xFF}.{0x06}R
-  0F010009  push            0x10F             ; 271
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_6:
-  02000007  cmp_reg_imm     0x2             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_7  ; → PC 2347
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iGem}{0x0E} {0x0C}{0xFF}.{0x06}R
-  10010009  push            0x110             ; 272
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_7:
-  04000007  cmp_reg_imm     0x4             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_8  ; → PC 2353
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Sora obtained{0x0B}{0x04}{0x0C}{0x04}{iKey}{0x0E} {0x0C}{0xFF}.{0x06}v
-  11010009  push            0x111             ; 273
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_8:
-  05000007  cmp_reg_imm     0x5             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_9  ; → PC 2359
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Donald obtained{0x0B}{0x04}{0x0C}{0x04}{iStaff}{0x0E} {0x0C}{0xFF}.{0x06}v
-  12010009  push            0x112             ; 274
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_9:
-  06000007  cmp_reg_imm     0x6             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_10  ; → PC 2365
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Goofy obtained{0x0B}{0x04}{0x0C}{0x04}{iShield}{0x0E} {0x0C}{0xFF}.{0x06}v
-  13010009  push            0x113             ; 275
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_10:
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}{0x0B}
-;          Empty.{0x06}C
-  14010009  push            0x114             ; 276
-  01000018  syscall         1                 ; Display_message
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11:
-  00000008  dec_reg_idx                     
-  07000009  push            0x7             
+  07000009  push            0x7
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0
+  61010018  syscall         353               ; Play_SE2
+  07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
-  07000009  push            0x7             
+  07000009  push            0x7
   02000018  syscall         2                 ; Close_window
+; Old Claw Marks evidence pickup code
+;  E0000009  push            0xE0              ; 224
+;  84020018  syscall         644               ; Get_item_type
+;  1900000B  store_local     [25]            
+;  E0000009  push            0xE0              ; 224
+;  01000009  push            0x1             
+;  02010018  syscall         258               ; Change_bag_items
+;  E0000009  push            0xE0              ; 224
+;  6C010018  syscall         364               ; Set_item_number_in_message
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  01000009  push            0x1             
+;  04000018  syscall         4                 ; Set_window_size
+;  07000009  push            0x7             
+;  01000009  push            0x1             
+;  05000018  syscall         5                 ; Set_window_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  06000018  syscall         6                 ; Set_window_opening_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  53000018  syscall         83                ; Set_window_close_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  50000018  syscall         80                ; Set_window_tail_type
+;  07000009  push            0x7             
+;  0D010009  push            0x10D             ; 269
+;  DC000009  push            0xDC              ; 220
+;  05000001  alu             negate          
+;  96000009  push            0x96              ; 150
+;  05000001  alu             negate          
+;  6D010018  syscall         365               ; Set_window_width_auto
+;  07000009  push            0x7             
+;  00000018  syscall         0                 ; Open_window
+;  1900000A  load_local      [25]            
+;  00000006  store_reg                       
+;  00000007  cmp_reg_imm                     
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_5  ; → PC 2335
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iPotion}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  0D010009  push            0x10D             ; 269
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_5:
+;  01000007  cmp_reg_imm     0x1             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_6  ; → PC 2341
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iTent}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  0F010009  push            0x10F             ; 271
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_6:
+;  02000007  cmp_reg_imm     0x2             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_7  ; → PC 2347
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iGem}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  10010009  push            0x110             ; 272
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_7:
+;  04000007  cmp_reg_imm     0x4             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_8  ; → PC 2353
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Sora obtained{0x0B}{0x04}{0x0C}{0x04}{iKey}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  11010009  push            0x111             ; 273
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_8:
+;  05000007  cmp_reg_imm     0x5             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_9  ; → PC 2359
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Donald obtained{0x0B}{0x04}{0x0C}{0x04}{iStaff}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  12010009  push            0x112             ; 274
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_9:
+;  06000007  cmp_reg_imm     0x6             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_10  ; → PC 2365
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Goofy obtained{0x0B}{0x04}{0x0C}{0x04}{iShield}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  13010009  push            0x113             ; 275
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11  ; → PC 2368
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_10:
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}{0x0B}
+;;          Empty.{0x06}C
+;  14010009  push            0x114             ; 276
+;  01000018  syscall         1                 ; Display_message
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_21_11:
+;  00000008  dec_reg_idx                     
+;  07000009  push            0x7             
+;  6B000018  syscall         107               ; Wait_message_end_ID
+;  07000009  push            0x7             
+;  02000018  syscall         2                 ; Close_window
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]
   02000009  push            0x2             
   06000001  alu             eq              
@@ -2715,13 +2777,16 @@
 ; ────────────────────────────────────────────────────────────────────────
 
   10000005  yield           0x10            
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_0  ; → PC 2430
   7572001E  read_bit        [0x7275]          ; save_data2[0x6535]
   00000009  push            0x0             
@@ -2735,13 +2800,16 @@
   58020009  push            0x258             ; 600
   13000018  syscall         19                ; Set_char_position
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_0:
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0C000009  push            0xC               ; 12
-  06000001  alu             eq              
-  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
-  0D000009  push            0xD               ; 13
-  06000001  alu             eq              
-  0D000001  alu             or              
+; New: evidence box available in every set (vanilla: only sets 12 and 13)
+  01000009  push            0x1
+; Old set-number check
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0C000009  push            0xC               ; 12
+;  06000001  alu             eq              
+;  000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
+;  0D000009  push            0xD               ; 13
+;  06000001  alu             eq              
+;  0D000001  alu             or              
   ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_1  ; → PC 2439
   ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_0  ; → PC 2430
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_1:
@@ -2839,100 +2907,147 @@
   07000009  push            0x7             
   02000018  syscall         2                 ; Close_window
 @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_4:
-  E1000009  push            0xE1              ; 225
-  84020018  syscall         644               ; Get_item_type
-  1900000B  store_local     [25]            
-  E1000009  push            0xE1              ; 225
-  01000009  push            0x1             
-  02010018  syscall         258               ; Change_bag_items
-  E1000009  push            0xE1              ; 225
-  6C010018  syscall         364               ; Set_item_number_in_message
-  07000009  push            0x7             
-  00000009  push            0x0             
-  01000009  push            0x1             
+; New Stench evidence box reward code (gift table idx 0x1D)
+  1D000009  push            0x1D              ; 29
+  04110011  write_dword     [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  47020018  syscall         583               ; Get_item_from_gift_table
+  07000009  push            0x7
+  00000009  push            0x0
+  01000009  push            0x1
   04000018  syscall         4                 ; Set_window_size
-  07000009  push            0x7             
-  01000009  push            0x1             
+  07000009  push            0x7
+  01000009  push            0x1
   05000018  syscall         5                 ; Set_window_type
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   06000018  syscall         6                 ; Set_window_opening_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   53000018  syscall         83                ; Set_window_close_speed
-  07000009  push            0x7             
-  00000009  push            0x0             
+  07000009  push            0x7
+  00000009  push            0x0
   50000018  syscall         80                ; Set_window_tail_type
-  07000009  push            0x7             
-  0D010009  push            0x10D             ; 269
+  07000009  push            0x7
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   DC000009  push            0xDC              ; 220
-  05000001  alu             negate          
+  05000001  alu             negate
   96000009  push            0x96              ; 150
-  05000001  alu             negate          
-  6D010018  syscall         365               ; Set_window_width_auto
-  07000009  push            0x7             
+  05000001  alu             negate
+  B7020018  syscall         695               ; Scale_window_from_gift
+  07000009  push            0x7
+  00000009  push            0x0
+  01000009  push            0x1
+  03000018  syscall         3                 ; Set_window_position
+  07000009  push            0x7
   00000018  syscall         0                 ; Open_window
-  1900000A  load_local      [25]            
-  00000006  store_reg                       
-  00000007  cmp_reg_imm                     
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_5  ; → PC 2571
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iPotion}{0x0E} {0x0C}{0xFF}.{0x06}R
-  0D010009  push            0x10D             ; 269
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_5:
-  01000007  cmp_reg_imm     0x1             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_6  ; → PC 2577
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iTent}{0x0E} {0x0C}{0xFF}.{0x06}R
-  0F010009  push            0x10F             ; 271
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_6:
-  02000007  cmp_reg_imm     0x2             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_7  ; → PC 2583
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iGem}{0x0E} {0x0C}{0xFF}.{0x06}R
-  10010009  push            0x110             ; 272
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_7:
-  04000007  cmp_reg_imm     0x4             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_8  ; → PC 2589
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Sora obtained{0x0B}{0x04}{0x0C}{0x04}{iKey}{0x0E} {0x0C}{0xFF}.{0x06}v
-  11010009  push            0x111             ; 273
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_8:
-  05000007  cmp_reg_imm     0x5             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_9  ; → PC 2595
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Donald obtained{0x0B}{0x04}{0x0C}{0x04}{iStaff}{0x0E} {0x0C}{0xFF}.{0x06}v
-  12010009  push            0x112             ; 274
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_9:
-  06000007  cmp_reg_imm     0x6             
-  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_10  ; → PC 2601
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}Goofy obtained{0x0B}{0x04}{0x0C}{0x04}{iShield}{0x0E} {0x0C}{0xFF}.{0x06}v
-  13010009  push            0x113             ; 275
-  01000018  syscall         1                 ; Display_message
-  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_10:
-  07000009  push            0x7             
-; Message: {0x08}{0x0A}{0x07}{0x0C}{0x0B}
-;          Empty.{0x06}C
-  14010009  push            0x114             ; 276
-  01000018  syscall         1                 ; Display_message
-@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11:
-  00000008  dec_reg_idx                     
-  07000009  push            0x7             
+  07000009  push            0x7
+  04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
+  5D020018  syscall         605               ; Display_message_from_gift_table
+  08000009  push            0x8
+  08000018  syscall         8                 ; Set_wait_timer
+  1F000009  push            0x1F              ; 31
+  00000009  push            0x0
+  61010018  syscall         353               ; Play_SE2
+  07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
-  07000009  push            0x7             
+  07000009  push            0x7
   02000018  syscall         2                 ; Close_window
+; Old Stench evidence pickup code
+;  E1000009  push            0xE1              ; 225
+;  84020018  syscall         644               ; Get_item_type
+;  1900000B  store_local     [25]            
+;  E1000009  push            0xE1              ; 225
+;  01000009  push            0x1             
+;  02010018  syscall         258               ; Change_bag_items
+;  E1000009  push            0xE1              ; 225
+;  6C010018  syscall         364               ; Set_item_number_in_message
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  01000009  push            0x1             
+;  04000018  syscall         4                 ; Set_window_size
+;  07000009  push            0x7             
+;  01000009  push            0x1             
+;  05000018  syscall         5                 ; Set_window_type
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  06000018  syscall         6                 ; Set_window_opening_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  53000018  syscall         83                ; Set_window_close_speed
+;  07000009  push            0x7             
+;  00000009  push            0x0             
+;  50000018  syscall         80                ; Set_window_tail_type
+;  07000009  push            0x7             
+;  0D010009  push            0x10D             ; 269
+;  DC000009  push            0xDC              ; 220
+;  05000001  alu             negate          
+;  96000009  push            0x96              ; 150
+;  05000001  alu             negate          
+;  6D010018  syscall         365               ; Set_window_width_auto
+;  07000009  push            0x7             
+;  00000018  syscall         0                 ; Open_window
+;  1900000A  load_local      [25]            
+;  00000006  store_reg                       
+;  00000007  cmp_reg_imm                     
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_5  ; → PC 2571
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iPotion}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  0D010009  push            0x10D             ; 269
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_5:
+;  01000007  cmp_reg_imm     0x1             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_6  ; → PC 2577
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iTent}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  0F010009  push            0x10F             ; 271
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_6:
+;  02000007  cmp_reg_imm     0x2             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_7  ; → PC 2583
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Obtained {0x0C}{0x04}{iGem}{0x0E} {0x0C}{0xFF}.{0x06}R
+;  10010009  push            0x110             ; 272
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_7:
+;  04000007  cmp_reg_imm     0x4             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_8  ; → PC 2589
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Sora obtained{0x0B}{0x04}{0x0C}{0x04}{iKey}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  11010009  push            0x111             ; 273
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_8:
+;  05000007  cmp_reg_imm     0x5             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_9  ; → PC 2595
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Donald obtained{0x0B}{0x04}{0x0C}{0x04}{iStaff}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  12010009  push            0x112             ; 274
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_9:
+;  06000007  cmp_reg_imm     0x6             
+;  ????????  beqz            @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_10  ; → PC 2601
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}Goofy obtained{0x0B}{0x04}{0x0C}{0x04}{iShield}{0x0E} {0x0C}{0xFF}.{0x06}v
+;  13010009  push            0x113             ; 275
+;  01000018  syscall         1                 ; Display_message
+;  ????????  jmp             @UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11  ; → PC 2604
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_10:
+;  07000009  push            0x7             
+;; Message: {0x08}{0x0A}{0x07}{0x0C}{0x0B}
+;;          Empty.{0x06}C
+;  14010009  push            0x114             ; 276
+;  01000018  syscall         1                 ; Display_message
+;@UK_aw02_arde_evdl_asm_KGR_0_SCRIPT_22_11:
+;  00000008  dec_reg_idx                     
+;  07000009  push            0x7             
+;  6B000018  syscall         107               ; Wait_message_end_ID
+;  07000009  push            0x7             
+;  02000018  syscall         2                 ; Close_window
   430D000C  read_byte       [0xD43]           ; save_data2[0x3]
   02000009  push            0x2             
   06000001  alu             eq              

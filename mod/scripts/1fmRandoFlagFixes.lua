@@ -161,29 +161,6 @@ function FlagFixes()
         WriteByte(cutsceneFlags + 0xD, 0x6A)
     end
 
-    if ReadByte(cutsceneFlags + 7) < 0x11 and ReadByte(world) == 4 then
-        debugPrint("Section 21")
-        if ReadByte(room) == 4 then
-            local o = 0
-            while ReadInt(evidenceActiveForest+4+o*0x4B0) ~= 0x40013 and ReadInt(evidenceActiveForest+4+o*0x4B0) ~= 0 and o > -5 do
-                o = o-1
-            end
-            if ReadLong(evidenceActiveForest+o*0x4B0) == 0x0004001300008203 then
-                WriteLong(evidenceActiveForest+o*0x4B0, 0)
-                WriteLong(evidenceActiveForest+(o+1)*0x4B0, 0)
-            end
-        elseif ReadByte(room) == 1 then
-            local o = 0
-            while ReadInt(evidenceActiveBizarre+4+o*0x4B0) ~= 0x40013 and ReadInt(evidenceActiveBizarre+4+o*0x4B0) ~= 0 and o > -5 do
-                o = o-1
-            end
-            if ReadLong(evidenceActiveBizarre+o*0x4B0) == 0x0004001300008003 then
-                WriteLong(evidenceActiveBizarre+o*0x4B0, 0)
-                WriteLong(evidenceActiveBizarre+(o+1)*0x4B0, 0)
-            end
-        end
-    end
-
     if ReadByte(world) == 5 then
         debugPrint("Section 22")
         if ReadByte(room) == 8 and ReadByte(sliderProgress) == 1 then

@@ -2043,9 +2043,18 @@ local function build()
             name = "Wonderland Defeat Trickmaster Blizzard Event",
             world = 4,
             gift = 0x0A,
-            address = world_progress_array_address + 0x3,
-            bit = 0,
-            value = 0x2E,
+            checks = {
+                {
+                    address = world_progress_array_address + 0x3,
+                    bit = 0,
+                    value = 0x2E,
+                },
+                {
+                    address = world_flags_address + 0x11E, -- early Cheshire Cat reward (save_data 0x22B)
+                    bit = 0,
+                    value = 0x01,
+                },
+            },
         },
         [2656042] = {
             name = "Wonderland Defeat Trickmaster Ifrit's Horn Event",
@@ -3131,6 +3140,38 @@ local function build()
             gift = 0x93,
             address = world_flags_address + 0x1028,
             bit = 0,
+            value = 0x01,
+        },
+        [2656393] = {
+            name = "Wonderland Footprints Evidence Box",
+            world = 4,
+            gift = 0x1B,
+            address = world_flags_address + 0x1001,
+            bit = 8,
+            value = 0x01,
+        },
+        [2656394] = {
+            name = "Wonderland Claw Marks Evidence Box",
+            world = 4,
+            gift = 0x1C,
+            address = world_flags_address + 0x1001,
+            bit = 7,
+            value = 0x01,
+        },
+        [2656395] = {
+            name = "Wonderland Stench Evidence Box",
+            world = 4,
+            gift = 0x1D,
+            address = world_flags_address + 0x1001,
+            bit = 6,
+            value = 0x01,
+        },
+        [2656396] = {
+            name = "Wonderland Antenna Evidence Box",
+            world = 4,
+            gift = 0x1E,
+            address = world_flags_address + 0x1001,
+            bit = 5,
             value = 0x01,
         },
         [2656387] = {
