@@ -2043,18 +2043,9 @@ local function build()
             name = "Wonderland Defeat Trickmaster Blizzard Event",
             world = 4,
             gift = 0x0A,
-            checks = {
-                {
-                    address = world_progress_array_address + 0x3,
-                    bit = 0,
-                    value = 0x2E,
-                },
-                {
-                    address = world_flags_address + 0x11E, -- early Cheshire Cat reward (save_data 0x22B)
-                    bit = 0,
-                    value = 0x01,
-                },
-            },
+            address = world_progress_array_address + 0x3,
+            bit = 0,
+            value = 0x2E,
         },
         [2656042] = {
             name = "Wonderland Defeat Trickmaster Ifrit's Horn Event",

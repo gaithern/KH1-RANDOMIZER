@@ -23,6 +23,8 @@
 ;   pickups give gift table idx 0x1B-0x1E (Footprints, Claw Marks, Stench, Antenna)
 ; - KGR[3, 4] Script 0: early Cheshire Cat Blizzard reward -> gift table idx 0x0A
 ;   Touched: KGR[0] S5, KGR[0] S21, KGR[0] S22, KGR[3] S0, KGR[4] S0
+; - Claw Marks evidence box pickup: added Exit_event_mode / Remove_invincibility / Make_inoperable (vanilla left that to the Cat scene)
+; - KGR[0] Script 0: early Cheshire Cat Blizzard trigger (Claw Marks in bag) disabled; KGR[2]-[4] Cat scenes are now unreachable
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0x5609  |  KGR 0
@@ -253,7 +255,9 @@
   0902000C  read_byte       [0x209]           ; save_data[0x209]
   01000009  push            0x1             
   06000001  alu             eq              
-  2B02000C  read_byte       [0x22B]           ; save_data[0x22B]
+; New: never start the early Cheshire Cat Blizzard scene; the Blizzard reward is only given after Trickmaster
+  01000009  push            0x1
+;  2B02000C  read_byte       [0x22B]           ; save_data[0x22B]
   00000009  push            0x0             
   06000001  alu             eq              
   0C000001  alu             and             
@@ -2818,6 +2822,15 @@
   5A000018  syscall         90                ; Change_char_color
   1A000018  syscall         26                ; Collision_off
   69000018  syscall         105               ; Char_bg_off
+; New: leave event mode after the pickup (vanilla chained straight into the Cheshire Cat scene here, which did it)
+  70000018  syscall         112               ; Gauge_on
+  72000018  syscall         114               ; Command_display_on
+  00020018  syscall         512               ; Exit_event_mode
+  70000018  syscall         112               ; Gauge_on
+  72000018  syscall         114               ; Command_display_on
+  50020018  syscall         592               ; Remove_invincibility
+  01000015  push_cond       0x1
+  79010018  syscall         377               ; Make_inoperable
   0C000009  push            0xC               ; 12
   08000018  syscall         8                 ; Set_wait_timer
   14000009  push            0x14              ; 20

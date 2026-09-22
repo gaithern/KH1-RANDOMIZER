@@ -20,6 +20,7 @@
 ; - Evidence boxes: set-number gates replaced with push 1 (boxes appear in every set);
 ;   pickups give gift table idx 0x1B-0x1E (Footprints, Claw Marks, Stench, Antenna)
 ;   Touched: KGR[0] S5, KGR[0] S21, KGR[0] S22
+; - Claw Marks evidence box pickup: added Exit_event_mode / Remove_invincibility / Make_inoperable (vanilla left that to the Cat scene)
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0x4A39  |  KGR 0
@@ -2734,6 +2735,15 @@
   5A000018  syscall         90                ; Change_char_color
   1A000018  syscall         26                ; Collision_off
   69000018  syscall         105               ; Char_bg_off
+; New: leave event mode after the pickup (vanilla chained straight into the Cheshire Cat scene here, which did it)
+  70000018  syscall         112               ; Gauge_on
+  72000018  syscall         114               ; Command_display_on
+  00020018  syscall         512               ; Exit_event_mode
+  70000018  syscall         112               ; Gauge_on
+  72000018  syscall         114               ; Command_display_on
+  50020018  syscall         592               ; Remove_invincibility
+  01000015  push_cond       0x1
+  79010018  syscall         377               ; Make_inoperable
   0C000009  push            0xC               ; 12
   08000018  syscall         8                 ; Set_wait_timer
   14000009  push            0x14              ; 20
