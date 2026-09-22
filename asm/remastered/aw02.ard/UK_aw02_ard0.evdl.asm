@@ -2894,11 +2894,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -3209,11 +3205,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -6599,11 +6591,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -6888,11 +6876,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -7180,11 +7164,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -12677,11 +12657,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -12966,11 +12942,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7
@@ -13258,11 +13230,7 @@
   07000009  push            0x7
   04110010  read_dword      [0x1104]          ; save_data2[0x3C4]  (GIFT_TABLE_ITEM)
   5D020018  syscall         605               ; Display_message_from_gift_table
-  08000009  push            0x8
-  08000018  syscall         8                 ; Set_wait_timer
-  1F000009  push            0x1F              ; 31
-  00000009  push            0x0
-  61010018  syscall         353               ; Play_SE2
+; (no second jingle: the vanilla box pickup only plays SE 0x3AB0 when the box opens)
   07000009  push            0x7
   6B000018  syscall         107               ; Wait_message_end_ID
   07000009  push            0x7

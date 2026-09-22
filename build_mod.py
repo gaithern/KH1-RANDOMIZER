@@ -72,7 +72,6 @@ def find_evdl_tools_dir():
 
 sys.path.insert(0, str(find_evdl_tools_dir()))
 import evdl_tool
-import patch_ard_entities
 
 
 def main():
@@ -106,9 +105,6 @@ def main():
             failed.append(str(rel))
         except Exception as e:
             failed.append(f'{rel} ({e})')
-
-    # top-level .ard entity-table patches (cloned entities), see patch_ard_entities.py
-    patch_ard_entities.run(game_data_dir, MOD_DIR)
 
     print(f'\n{built}/{len(asm_files)} file(s) built.')
     if skipped:
