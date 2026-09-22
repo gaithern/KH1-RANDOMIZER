@@ -34,7 +34,6 @@
 ;     - Blue Trinity in Alcove reward changed to use gift table idx 20
 ;   KGR[50] Script 5:
 ;     - Blue Trinity by Moving Boulder reward code changed to use gift table idx 21
-; - KGR[0] Script 4: Lotus Forest -> Bizarre Room (small) exit kept for set >= 13 (was set == 13)
 
 ; ────────────────────────────────────────────────────────────────────────
 ; Script 0  |  11 subscript(s)  |  PC 0  |  file 0x50F1  |  KGR 0
@@ -627,10 +626,7 @@
 @UK_aw05_ard2_evdl_asm_KGR_0_SCRIPT_4_1:
   000A0010  read_dword      [0xA00]           ; runtime?[0xA00]
   0D000009  push            0xD               ; 13
-; New: keep the exit to the right-side-up Bizarre Room (attr 0xE7 on, 0x70 off, group 0x1C) for every set >= 13,
-;      vanilla only did it in set 13 and swapped the door to the sideways room afterwards
-  08000001  alu             ge
-;  06000001  alu             eq              
+  06000001  alu             eq              
   ????????  beqz            @UK_aw05_ard2_evdl_asm_KGR_0_SCRIPT_4_2  ; → PC 565
   70000009  push            0x70              ; 112
   85000018  syscall         133               ; Set_attribute_off
