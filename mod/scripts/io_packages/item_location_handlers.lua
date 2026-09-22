@@ -34,19 +34,6 @@ local function handle_item(item_offset)
     kh1_lua_library.set_stock_at_index(item_offset, kh1_lua_library.get_stock_at_index(item_offset) + 1)
 end
 
-local function write_slides()
-    --[[Handles receiving slide 1, which should always give the player all slides.]]
-    handle_item(217)
-    handle_item(218)
-    handle_item(219)
-    handle_item(220)
-    handle_item(221)
-    handle_item(222)
-    local slides_picked_up_array = {1,1,1,1,1,1}
-    local slides_picked_up_array_address = evidence + 0x3FF
-    WriteArray(slides_picked_up_array_address, slides_picked_up_array)
-end
-
 local function write_shared_ability(shared_ability_value)
     --[[Writes the player's unlocked shared abilities]]
     local can_add_ability = true
@@ -87,17 +74,11 @@ local function write_sora_ability(ability_value)
     kh1_lua_library.give_sora_ability(ability_value)
 end
 
-local SLIDE_1_IDX = 217
-
 local function handle_item_received(received_item_id)
     local kind = items.kind_of(received_item_id)
     local value = items.value_of(received_item_id)
     if kind == "item" then
-        if value == SLIDE_1_IDX then
-            write_slides()
-        else
-            handle_item(value)
-        end
+        handle_item(value)
     elseif kind == "shared_ability" then
         write_shared_ability(value)
     elseif kind == "sora_ability" then

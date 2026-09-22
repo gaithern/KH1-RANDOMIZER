@@ -237,7 +237,7 @@ local items = {
     [214] = { name = "Torn Page 3",             icon = ICON.KEY_ITEM,   sort =  2837, filler = false },
     [215] = { name = "Torn Page 4",             icon = ICON.KEY_ITEM,   sort =  2838, filler = false },
     [216] = { name = "Torn Page 5",             icon = ICON.KEY_ITEM,   sort =  2839, filler = false },
-    [217] = { name = "Slides",                  icon = ICON.KEY_ITEM,   sort =  2840, filler = false },  -- vanilla: Slide 1
+    [217] = { name = "Slide 1",                 icon = ICON.KEY_ITEM,   sort =  2840, filler = false },
     [218] = { name = "Slide 2",                 icon = ICON.KEY_ITEM,   sort =  2841, filler = false },
     [219] = { name = "Slide 3",                 icon = ICON.KEY_ITEM,   sort =  2842, filler = false },
     [220] = { name = "Slide 4",                 icon = ICON.KEY_ITEM,   sort =  2843, filler = false },

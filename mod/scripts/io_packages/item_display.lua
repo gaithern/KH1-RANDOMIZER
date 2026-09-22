@@ -43,6 +43,9 @@ local function name_for_item_id(item_id)
     if items.idx_of(item_id) == PUPPY_IDX then
         return tostring(seed_vars["settings"]["puppy_value"]) .. " Puppies"
     end
+    if items.idx_of(item_id) == 217 and seed_vars["settings"]["slides_bundle"] ~= false then
+        return "Slides"
+    end
     return items.name_for(item_id)
 end
 

@@ -5,14 +5,15 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Handle Special Cases with Key Items"
 local seed_vars = require("seed_vars")
 
 local function handle_slides(stock)
-    if stock[217] > 0 and stock[218] == 0 then
-        WriteByte(inventory + 218-1, 1)
-        WriteByte(inventory + 219-1, 1)
-        WriteByte(inventory + 220-1, 1)
-        WriteByte(inventory + 221-1, 1)
-        WriteByte(inventory + 222-1, 1)
-        local slides_picked_up_array = {1,1,1,1,1,1}
-        WriteArray(evidence + 0x3FF, slides_picked_up_array)
+    if seed_vars["settings"]["slides_bundle"] ~= false and stock[217] > 0 and stock[218] == 0 then
+        for idx = 218, 222 do
+            WriteByte(inventory + idx-1, 1)
+        end
+    end
+    for i = 0, 5 do -- "Obtained Slide N" flags (save_data 0x607-0x60C) follow the bag
+        if stock[217+i] > 0 and ReadByte(evidence + 0x3FF + i) == 0 then
+            WriteByte(evidence + 0x3FF + i, 1)
+        end
     end
 end
 
