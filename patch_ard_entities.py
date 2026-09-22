@@ -59,10 +59,13 @@ def clone_into_set(data: bytearray, set_no: int, clone: dict) -> bytearray:
             for e in range(cnt) if struct.unpack_from('<H', data, sub0abs + 6 + e * REC)[0] == 4}
     if clone['lo'] in used:
         raise ValueError(f"set {set_no}: entity lo id {clone['lo']:#x} already used")
+    idx_used = [data[sub0abs + 4 + e * REC + 0x5B] for e in range(cnt)]
+    assert sorted(idx_used) == list(range(cnt)), f'set {set_no}: +0x5B values are not a 0..{cnt - 1} permutation'
     rec = bytearray(data[src:src + REC])
     struct.pack_into('<H', rec, 0, clone['lo'])
     struct.pack_into('<I', rec, 0x0C, 0)
     struct.pack_into('<fff', rec, 0x1C, *clone['pos'])
+    rec[0x5B] = cnt
     rec[0x68:0x78] = clone['name'].encode().ljust(16, b'\0')
     insert_at = sub0abs + 4 + cnt * REC
 
