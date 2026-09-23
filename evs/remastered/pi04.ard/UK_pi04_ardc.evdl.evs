@@ -1,3 +1,17 @@
+globals {
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    MONSTRO_THROAT_BLUE_TRINITY = bit[0x6DB4];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    GIFT_PI_THROAT_BLUE_TRINITY = 0x13;
+}
+
 kgr 0 {
     entities {
         SORA = 0;
@@ -2355,7 +2369,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (MONSTRO_THROAT_BLUE_TRINITY == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 MONSTRO_THROAT_BLUE_TRINITY = 1;
             }
             MONSTRO_THROAT_BLUE_TRINITY = 1;

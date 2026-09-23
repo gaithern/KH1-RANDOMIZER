@@ -1,3 +1,57 @@
+globals {
+    ALL_SUMMON_GEMS_RETURNED = save_data[0x12F];
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    EARTHSHINE_IN_BAG = save_data[0x41];
+    EARTHSHINE_RETURNED = save_data[0x12B];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    FIREGLOW_IN_BAG = save_data[0x12A];
+    FIREGLOW_RETURNED = save_data[0x12E];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    MAGICIAN_STUDY_ALL_ARTS_ITEMS = save_data[0x138];
+    MAGICIAN_STUDY_ALL_LV1_MAGIC = save_data[0x139];
+    MAGICIAN_STUDY_ALL_LV3_MAGIC = save_data[0x13A];
+    NATURESPARK_IN_BAG = save_data[0x128];
+    NATURESPARK_RETURNED = save_data[0x12C];
+    PREVIOUS_AREA = save_data2[1];
+    PREVIOUS_SET = save_data2[2];
+    PREVIOUS_WORLD = save_data2[0];
+    TRAVERSE_TOWN_PROGRESS = save_data[0x904];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    TRINITY_TUTORIAL_SEEN = save_data[0x110];
+    TRINITY_UNLOCK = save_data2[0x1B];
+    TT_MAGICIAN_STUDY_BLUE_TRINITY = bit[0x6F88];
+    WATERGLEAM_IN_BAG = save_data[0x129];
+    WATERGLEAM_RETURNED = save_data[0x12D];
+    GIFT_TW_MAGICIANS_STUDY_BLUE_TRINITY = 0x3B;
+    GIFT_TW_MAGICIANS_STUDY_EARTHSHINE_EVENT = 0x44;
+    GIFT_TW_MAGICIANS_STUDY_FIREGLOW_EVENT = 0x47;
+    GIFT_TW_MAGICIANS_STUDY_LORD_FORTUNE_EVENT = 0x26;
+    GIFT_TW_MAGICIANS_STUDY_NATURESPARK_EVENT = 0x45;
+    GIFT_TW_MAGICIANS_STUDY_OBTAINED_ALL_ARTS_ITEMS = 0x2F;
+    GIFT_TW_MAGICIANS_STUDY_OBTAINED_ALL_LV1_MAGIC = 0x5C;
+    GIFT_TW_MAGICIANS_STUDY_OBTAINED_ALL_LV3_MAGIC = 0x5D;
+    GIFT_TW_MAGICIANS_STUDY_WATERGLEAM_EVENT = 0x46;
+    ITEM_AERO_ARTS = 0xA4;
+    ITEM_BLIZZARD_ARTS = 0x9F;
+    ITEM_CURE_ARTS = 0xA1;
+    ITEM_EARTHSHINE = 0xD1;
+    ITEM_FIREGLOW = 0xD0;
+    ITEM_FIRE_ARTS = 0x9E;
+    ITEM_GRAVITY_ARTS = 0xA2;
+    ITEM_NATURESPARK = 0xCF;
+    ITEM_OLD_BOOK = 0xBB;
+    ITEM_STOP_ARTS = 0xA3;
+    ITEM_THUNDER_ARTS = 0xA0;
+    ITEM_WATERGLEAM = 0xCE;
+    PO11 = 0xA;
+    WORLD_100_ACRE_WOOD = 6;
+}
+
 kgr 0 {
     entities {
         FGMOTHER = 0x20000;
@@ -4661,7 +4715,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D62] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D62] = 1;
             }
             bit[0x6D62] = 1;

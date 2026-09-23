@@ -1,3 +1,43 @@
+globals {
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DEEP_JUNGLE_PROGRESS = save_data[0x905];
+    DIALOG_STATE = save_data2[3];
+    DJ_CAMP_ETHER_EXPERIMENT = save_data2[0x119];
+    DJ_CAMP_GORILLAS_SAVED = save_data[0x60F];
+    DJ_CAMP_HI_POTION_EXPERIMENT = save_data2[0x11F];
+    DJ_CAMP_HI_POTION_EXPERIMENT_ALT = save_data2[0x11E];
+    DJ_CAMP_REPLICATION_EXPERIMENT = save_data2[0x127];
+    DJ_RECIPE_CARD_110_TAKEN = save_data2[0x110];
+    DJ_RECIPE_CARD_114_TAKEN = save_data2[0x114];
+    DJ_RECIPE_CARD_115_TAKEN = save_data2[0x115];
+    DJ_RECIPE_CARD_11A_TAKEN = save_data2[0x11A];
+    DJ_RECIPE_CARD_11B_TAKEN = save_data2[0x11B];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    SLIDE_1_LOCATION_TAKEN = save_data[0x628];
+    SLIDE_2_LOCATION_TAKEN = save_data[0x629];
+    SLIDE_3_LOCATION_TAKEN = save_data[0x62A];
+    SLIDE_4_LOCATION_TAKEN = save_data[0x62B];
+    SLIDE_5_LOCATION_TAKEN = save_data[0x62C];
+    SLIDE_6_LOCATION_TAKEN = save_data[0x62D];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    GIFT_TZ_CAMP_ETHER_EXPERIMENT = 0x10;
+    GIFT_TZ_CAMP_HI_POTION_EXPERIMENT = 0xF;
+    GIFT_TZ_CAMP_REPLICATION_EXPERIMENT = 0x11;
+    GIFT_TZ_CAMP_SLIDE_1 = 0x1B;
+    GIFT_TZ_CAMP_SLIDE_2 = 0x1C;
+    GIFT_TZ_CAMP_SLIDE_3 = 0x1D;
+    GIFT_TZ_CAMP_SLIDE_4 = 0x1E;
+    GIFT_TZ_CAMP_SLIDE_5 = 0x1F;
+    GIFT_TZ_CAMP_SLIDE_6 = 0x20;
+    ITEM_ETHER = 3;
+    ITEM_POTION = 1;
+}
+
 kgr 0 {
     entities {
         SORA_2 = 0x30000;
@@ -2937,7 +2977,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D95] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D95] = 1;
             }
             bit[0x6D95] = 1;

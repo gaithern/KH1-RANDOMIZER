@@ -1,3 +1,49 @@
+globals {
+    AGRABAH_PROGRESS = save_data[0x908];
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DEEP_JUNGLE_PROGRESS = save_data[0x905];
+    DIALOG_STATE = save_data2[3];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    GREEN_TRINITIES_ACTIVATED = save_data2[0x69];
+    GREEN_TRINITY_LEARNED = bit[0x6ADA];
+    HALLOWEEN_TOWN_PROGRESS = save_data[0x90C];
+    MONSTRO_PROGRESS = save_data[0x909];
+    NEVERLAND_PROGRESS = save_data[0x90D];
+    OC_CLOUD_SONIC_BLADE_EVENT = save_data[0x302];
+    OC_CLOUD_VS_SEPHIROTH_CUTSCENE = save_data[0x3B2];
+    OC_CUP_UNLOCK = save_data2[0x200];
+    OC_ENTRY_PASS_STATE = save_data[0x30E];
+    OC_GATES_GREEN_TRINITY = bit[0x6D83];
+    OC_GATES_PURPLE_JAR_AFTER_HADES = save_data2[0x213];
+    OC_GRAVITY_REWARD_GIVEN = save_data[0x35F];
+    OC_HADES_CUP_UNLOCK = save_data2[0x203];
+    OC_HERCULES_CUP_UNLOCK = save_data2[0x202];
+    OC_PEGASUS_CUP_UNLOCK = save_data2[0x201];
+    OLYMPUS_COLISEUM_PROGRESS = save_data[0x906];
+    PREVIOUS_AREA = save_data2[1];
+    PREVIOUS_SET = save_data2[2];
+    PREVIOUS_WORLD = save_data2[0];
+    RED_TRINITY_LEARNED = bit[0x6AD9];
+    SEPHIROTH_FLAG = save_data[0x36A];
+    STORY_PROGRESS_GLOBAL = save_data[0x900];
+    TRAVERSE_TOWN_PROGRESS = save_data[0x904];
+    TRAVERSE_TOWN_PROGRESS_2 = save_data[0x912];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    WHITE_TRINITIES_ACTIVATED = save_data2[0x6B];
+    WHITE_TRINITY_LEARNED = bit[0x6ADC];
+    WONDERLAND_PROGRESS = save_data[0x907];
+    YELLOW_TRINITY_LEARNED = bit[0x6ADB];
+    GIFT_HE_CLOUD_SONIC_BLADE_EVENT = 0x1E;
+    GIFT_HE_COLISEUM_GATES_ENTRY_PASS_EVENT = 7;
+    GIFT_HE_COLISEUM_GATES_GREEN_TRINITY = 5;
+    GIFT_HE_GATES_PURPLE_JAR_AFTER_DEFEATING_HADES = 4;
+}
+
 kgr 0 {
     entities {
         SORA_2 = 0x30000;
@@ -3969,7 +4015,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -4055,7 +4101,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;
@@ -8683,7 +8729,7 @@ kgr 101 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -8769,7 +8815,7 @@ kgr 101 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;
@@ -13808,7 +13854,7 @@ kgr 152 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -13894,7 +13940,7 @@ kgr 152 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;
@@ -18549,7 +18595,7 @@ kgr 203 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -18635,7 +18681,7 @@ kgr 203 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;
@@ -22635,7 +22681,7 @@ kgr 254 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -22721,7 +22767,7 @@ kgr 254 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;
@@ -26591,7 +26637,7 @@ kgr 305 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D86] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D86] = 1;
             }
             bit[0x6D86] = 1;
@@ -26677,7 +26723,7 @@ kgr 305 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D85] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D85] = 1;
             }
             bit[0x6D85] = 1;

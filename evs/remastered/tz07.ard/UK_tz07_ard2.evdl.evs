@@ -1,3 +1,23 @@
+globals {
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DEEP_JUNGLE_PROGRESS = save_data[0x905];
+    DIALOG_STATE = save_data2[3];
+    DJ_BAMBOO_THICKET_GORILLAS_SAVED = save_data[0x610];
+    DJ_CAMP_GORILLAS_SAVED = save_data[0x60F];
+    DJ_CLIFF_GORILLAS_SAVED = save_data[0x60D];
+    DJ_CLIMBING_TREES_GORILLAS_SAVED = save_data[0x611];
+    DJ_TENT_JANE_SCENE_STATE = save_data[0x606];
+    DJ_TREE_HOUSE_GORILLAS_SAVED = save_data[0x60E];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    GIFT_TZ_CLIMBING_TREES_SAVE_GORILLAS = 0x17;
+}
+
 kgr 0 {
     entities {
         GOLLIRA = 0x20000;
@@ -3261,7 +3281,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (bit[0x6D94] == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 bit[0x6D94] = 1;
             }
             bit[0x6D94] = 1;

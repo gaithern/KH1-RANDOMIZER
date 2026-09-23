@@ -1,3 +1,26 @@
+globals {
+    BLUE_TRINITIES_ACTIVATED = save_data2[0x66];
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    EVENT_POSITION_X = save_data2[0xE];
+    EVENT_POSITION_Y = save_data2[0x10];
+    EVENT_POSITION_Z = save_data2[0x12];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    PREVIOUS_AREA = save_data2[1];
+    PREVIOUS_SET = save_data2[2];
+    TRAVERSE_TOWN_PROGRESS = save_data[0x904];
+    TRINITY_EVENT_PARAM = save_data2[0x18];
+    TRINITY_TUTORIAL_SEEN = save_data[0x110];
+    TRINITY_UNLOCK = save_data2[0x1B];
+    TT_3RD_DISTRICT_BALCONY_POSTCARD = bit[0x7006];
+    TT_3RD_DISTRICT_BLUE_TRINITY = bit[0x6F9B];
+    TW03_BLUE_TRINITY_DONE = bit[0x6D63];
+    GIFT_TW_3RD_DISTRICT_BALCONY_POSTCARD = 0x2E;
+    GIFT_TW_3RD_DISTRICT_BLUE_TRINITY = 0x3A;
+    TW02 = 1;
+}
+
 kgr 0 {
     entities {
         SORA_2 = 0x30000;
@@ -2071,7 +2094,7 @@ kgr 50 {
             White_in(0x10);
             Set_wait_timer(0x10);
             if (TW03_BLUE_TRINITY_DONE == 0) {
-                save_data2.word[0x66] = save_data2.word[0x66] + 1;
+                BLUE_TRINITIES_ACTIVATED.word = BLUE_TRINITIES_ACTIVATED.word + 1;
                 TW03_BLUE_TRINITY_DONE = 1;
             }
             TW03_BLUE_TRINITY_DONE = 1;
