@@ -1,0 +1,2328 @@
+kgr 0 {
+    entities {
+        SORA = 0;
+        PLAYER1 = 1;
+        PLAYER2 = 2;
+        PLAYER6 = 6;
+        SORA_2 = 0x30000;
+        DONALD = 0x30001;
+        GOOFY = 0x30002;
+        ARIEL = 0x30003;
+        MO_D_FISH = 0x40001;
+        MO_FISH = 0x40003;
+        MO_SHLL1_S2_LM1 = 0x4000F;
+        MO_SHLL2_S2_LM1 = 0x40010;
+        MO_SHLL3_S2_LM1 = 0x40011;
+        MO_SHLL5_S2_LM1 = 0x40012;
+        MO_SHLL6_S2_LM1 = 0x40013;
+        MO_SHLL_F2_LM1 = 0x40014;
+        VF_SHLL1_S0_LM1 = 0x50000;
+        VF_SHLL1_S1_LM1 = 0x50001;
+        VF_SHLL2_S0_LM1 = 0x50002;
+        VF_SHLL2_S1_LM1 = 0x50003;
+        VF_SHLL3_S0_LM1 = 0x50004;
+        VF_SHLL3_S1_LM1 = 0x50005;
+        VF_SHLL5_S0_LM1 = 0x50006;
+        VF_SHLL5_S1_LM1 = 0x50007;
+        VF_SHLL6_S0_LM1 = 0x50008;
+        VF_SHLL6_S1_LM1 = 0x50009;
+        MVF_SHLL_F0_LM1 = 0x5000A;
+        MVF_SHLL_F1_LM1 = 0x5000B;
+        MVF_SHLL_L0_LM1 = 0x5000C;
+        MVF_SHLL_L1_LM1 = 0x5000D;
+    }
+
+    thread 0 {
+        init {
+            Disable_all_battle_event_boxes();
+            save_data2.word[0x3E0] = 0;
+            save_data2.word[0x3E2] = 0;
+            save_data2.word[0x3E4] = 0;
+            save_data2.word[0x3E6] = 0;
+            save_data2.word[0x3E8] = 0;
+            save_data2.word[0x3EA] = 0;
+            save_data2.word[0x3EC] = 0;
+            save_data2.word[0x3EE] = 0;
+            save_data2[0x3F0] = 0;
+            save_data2[0x3F1] = 0;
+            save_data2[0x3F2] = 0;
+            save_data2[0x3F3] = 0;
+            save_data2[0x3F4] = 0;
+            save_data2[0x3F5] = 0;
+            save_data2[0x3F6] = 0;
+            save_data2[0x3F7] = 0;
+            save_data2[0x1D] = 0;
+            CURRENT_WORLD = Get_world_number();
+            if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                DIALOG_STATE = 4;
+            }
+            bit[0x6B2E] = 1;
+            bit[0x6B2F] = 0;
+            Pad_ctrl_on();
+            Enter_event_mode();
+            runtime.dword[0xA10] = 0;
+            runtime.dword[0xA14] = 0;
+            runtime.dword[0xA30] = 0;
+            runtime.dword[0xA40] = 0;
+            save_data2[0x1A7] = Get_area_number();
+            if (((save_data2[0x1A7] == LM03) & (bit[0x7732] == 0)) & (bit[0x7736] == 1)) {
+                save_data2[0x1A0] = 0xA;
+                bit[0x7732] = 1;
+            }
+            bit[0x7767] = 0;
+            bit[0x7766] = 0;
+            bit[0x7765] = 0;
+        }
+        main {
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            while (1) {
+            }
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player1 {  // 2
+        init {
+            Set_char_ID(PLAYER1);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player2 {  // 3
+        init {
+            Set_char_ID(PLAYER2);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player6 {  // 4
+        init {
+            Set_char_ID(PLAYER6);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread 5 {
+        init {
+            bit[0x7734] = 1;
+            All_char_ctrl_off();
+            Make_party_invincible();
+            local5 = 0;
+        }
+        main {
+            while (1) {
+                local0 = 0;
+                local1 = 0;
+                local2 = Get_motion_number_actor(sora);
+                if (!(local1 == 0)) goto L1;
+                if ((0 <= local2) & (local2 <= 2)) {
+                    local0 = 1;
+                }
+                if (!((0x7C <= local2) & (local2 <= 0x82))) goto L1;
+                local0 = 1;
+            L1:
+                bit[0x6ACF] = local0;
+            }
+        }
+    }
+
+    thread mo_d_fish {  // 6
+        init {
+            Set_char_ID(MO_D_FISH);
+            runtime.dword[0xA44] = 0x28;
+        }
+        main {
+            while (1) {
+                if (!(runtime.dword[0xA40] == 1)) goto L1;
+                local15 = Get_pad_trigger();
+                if (!(local15 & 2)) goto L1;
+                runtime.dword[0xA40] = 0;
+                save_data2[0x3F1] = 1;
+            L1:
+                if (save_data2[0x3F1] == 1) {
+                    start(sora_2.entry_13, level=5);
+                    start(donald.entry_12, level=5);
+                    start(donald_2.entry_12, level=5);
+                    save_data2[0x1A0] = 3;
+                    Fade_out_SE(0xDF22, 0, 0x20);
+                    Set_wait_timer(0x3D);
+                    Enable_all_battle_event_boxes();
+                    Enable_battle_mode_entry();
+                    All_char_ctrl_on();
+                    Exit_event_mode();
+                    Gauge_on();
+                    Command_display_on();
+                    Remove_invincibility();
+                    Make_inoperable(sora);
+                    save_data2[0x3F1] = 0;
+                }
+                if (!(runtime.dword[0xA30] > 0)) goto L2;
+                runtime.dword[0xA30] = runtime.dword[0xA30] - 1;
+                if (!(runtime.dword[0xA30] == 0)) goto L2;
+                runtime.dword[0xA3C] = 0;
+                runtime.dword[0xA34] = 1;
+                runtime.dword[0xA1C] = save_data2.word[0x1B6];
+                start(mo_fish_2.entry_11, level=5);
+                await(mo_fish_2.entry_11, level=5);
+            L2:
+            }
+        }
+        entry_11 {
+            Pad_ctrl_off();
+            Enter_event_mode();
+            Disable_all_battle_event_boxes();
+            Hold_camera_info();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            PREVIOUS_WORLD = Get_world_number();
+            runtime[0xD00] = PREVIOUS_AREA;
+            PREVIOUS_AREA = Get_area_number();
+            PREVIOUS_SET = Get_set_number();
+            DIALOG_STATE = 2;
+            Close_window(7);
+            Fade_out(0x1E);
+            Set_wait_timer(0x1E);
+            Pad_ctrl_off();
+            Set_wait_timer(1);
+            DIALOG_STATE = 3;
+            bit[0x6B2F] = 1;
+            bit[0x6B2E] = 1;
+            Event_camera_off();
+            Change_area(0xF);
+        }
+    }
+
+    thread mo_d_fish_2 {  // 7
+        init {
+            Set_char_ID(MO_D_FISH);
+            if (save_data2[0x1A0] == 0) {
+                runtime.dword[0xA18] = 1;
+                Set_char_initial_state(0x578, -0x640, 0x6A4);
+                save_data2.word[0x3E0] = 0x578;
+                save_data2.word[0x3E2] = -0x640;
+                save_data2.word[0x3E4] = 0x6A4;
+                save_data2.word[0x1B0] = 0x190;
+                save_data2.word[0x1B2] = -0x5DC;
+                save_data2.word[0x1B4] = 0x76C;
+                save_data2[0x1A5] = 2;
+                save_data2.word[0x1B6] = Get_angle_actor_to_coord(mo_d_fish_2, save_data2.word[0x1B0], save_data2.word[0x1B2], save_data2.word[0x1B4]);
+                save_data2.word[0x1B6] = save_data2.word[0x1B6] - 0xB4;
+                runtime.dword[0xA34] = 1;
+                save_data2[0x1A0] = 1;
+            } else {
+                runtime.dword[0xA18] = save_data2[0x1A5];
+                Set_char_initial_state(save_data2.word[0x1B0], save_data2.word[0x1B2], save_data2.word[0x1B4]);
+                save_data2.word[0x3E0] = save_data2.word[0x1B0];
+                save_data2.word[0x3E2] = save_data2.word[0x1B2];
+                save_data2.word[0x3E4] = save_data2.word[0x1B4];
+                runtime.dword[0xA34] = 2;
+            }
+            if (save_data2[0x1A0] >= 2) {
+                runtime.dword[0xA24] = 0x2D;
+                runtime.dword[0xA38] = 5;
+                runtime.dword[0xA28] = 3;
+            } else {
+                runtime.dword[0xA24] = 0xC;
+                runtime.dword[0xA38] = 0x10;
+                runtime.dword[0xA28] = 0;
+            }
+            runtime.dword[0xA20] = save_data2.word[0x1B6];
+            runtime.dword[0xA1C] = save_data2.word[0x1B6];
+            runtime.dword[0xA3C] = 0;
+        }
+        main {
+            Set_wait_timer(1);
+            while (1) {
+                if (!(runtime.dword[0xA30] == 0)) goto L1;
+                if (runtime.dword[0xA3C] > 0) {
+                    runtime.dword[0xA3C] = runtime.dword[0xA3C] - 1;
+                    runtime.dword[0xA1C] = runtime.dword[0xA20] + (((save_data2.word[0x1B6] - runtime.dword[0xA20]) * (runtime.dword[0xA38] - runtime.dword[0xA3C])) / runtime.dword[0xA38]);
+                }
+                if ((runtime.dword[0xA34] & 1) != 0) {
+                    Move_noturn(runtime.dword[0xA24], save_data2.word[0x1B0], save_data2.word[0x1B2], save_data2.word[0x1B4]);
+                    if ((Push_actor_coord_Y(mo_d_fish_2) - save_data2.word[0x1B2]) > 0x12C) {
+                        if (runtime.dword[0xA24] == 0x2D) {
+                            runtime.dword[0xA28] = 4;
+                        } else {
+                            runtime.dword[0xA28] = 1;
+                        }
+                        goto L2;
+                    }
+                    if ((Push_actor_coord_Y(mo_d_fish_2) - save_data2.word[0x1B2]) < -0x12C) {
+                        if (runtime.dword[0xA24] == 0x2D) {
+                            runtime.dword[0xA28] = 5;
+                        } else {
+                            runtime.dword[0xA28] = 2;
+                        }
+                        goto L2;
+                    }
+                    if (runtime.dword[0xA24] == 0x2D) {
+                        runtime.dword[0xA28] = 3;
+                        goto L2;
+                    }
+                    runtime.dword[0xA28] = 0;
+                L2:
+                    runtime.dword[0xA34] = runtime.dword[0xA34] & 0xFFFFFE;
+                }
+                local11 = GetLength_2(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2), save_data2.word[0x1B0], save_data2.word[0x1B4]);
+                local7 = save_data2.word[0x1B2] - Push_actor_coord_Y(mo_d_fish_2);
+                local17 = 0xA;
+                if (((local11 <= local17) & (-local17 <= local7)) & (local7 <= local17)) {
+                    runtime.dword[0xA18] = save_data2[0x1A5];
+                    runtime.dword[0xA20] = save_data2.word[0x1B6];
+                    runtime.dword[0xA34] = runtime.dword[0xA34] | 2;
+                }
+                if (!((runtime.dword[0xA34] & 2) != 0)) goto L1;
+                local4 = runtime.dword[0xA18] + 1;
+                switch (runtime.dword[0xA18]) {
+                case 0:
+                    save_data2.word[0x1B0] = 0x578;
+                    save_data2.word[0x1B2] = -0x640;
+                    save_data2.word[0x1B4] = 0x6A4;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 1:
+                    save_data2.word[0x1B0] = 0x190;
+                    save_data2.word[0x1B2] = -0x5DC;
+                    save_data2.word[0x1B4] = 0x76C;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 2:
+                    save_data2.word[0x1B0] = -0x299;
+                    save_data2.word[0x1B2] = -0x4B0;
+                    save_data2.word[0x1B4] = 0x578;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 3:
+                    save_data2.word[0x1B0] = -0x4B0;
+                    save_data2.word[0x1B2] = -0x47E;
+                    save_data2.word[0x1B4] = 0x3E8;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 4:
+                    save_data2.word[0x1B0] = -0x5DC;
+                    save_data2.word[0x1B2] = -0x44C;
+                    save_data2.word[0x1B4] = 0xC8;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 5:
+                    if (save_data2[0x1A0] >= 2) {
+                        local4 = 0xF;
+                    }
+                    save_data2.word[0x1B0] = -0x5AA;
+                    save_data2.word[0x1B2] = -0x3E8;
+                    save_data2.word[0x1B4] = -0x2BC;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 6:
+                    save_data2.word[0x1B0] = -0x258;
+                    save_data2.word[0x1B2] = -0x384;
+                    save_data2.word[0x1B4] = -0x92E;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 7:
+                    save_data2.word[0x1B0] = -0x64;
+                    save_data2.word[0x1B2] = -0x352;
+                    save_data2.word[0x1B4] = -0xAF0;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 8:
+                    save_data2.word[0x1B0] = 0x1F4;
+                    save_data2.word[0x1B2] = -0x3B6;
+                    save_data2.word[0x1B4] = -0xA28;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 9:
+                    save_data2.word[0x1B0] = 0x4B0;
+                    save_data2.word[0x1B2] = -0x4B0;
+                    save_data2.word[0x1B4] = -0x5DC;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0xA:
+                    save_data2.word[0x1B0] = 0x7D0;
+                    save_data2.word[0x1B2] = -0x4E2;
+                    save_data2.word[0x1B4] = -0xC8;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0xB:
+                    save_data2.word[0x1B0] = 0x898;
+                    save_data2.word[0x1B2] = -0x528;
+                    save_data2.word[0x1B4] = 0x2EE;
+                    save_data2[0x1A5] = 0;
+                    break;
+                case 0xC:
+                    save_data2.word[0x1B0] = 0x44C;
+                    save_data2.word[0x1B2] = -0x460;
+                    save_data2.word[0x1B4] = -0x578;
+                    save_data2[0x1A5] = 0xA;
+                    break;
+                case 0xF:
+                    save_data2.word[0x1B0] = -0x438;
+                    save_data2.word[0x1B2] = -0x1C2;
+                    save_data2.word[0x1B4] = -0x74E;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x10:
+                    save_data2.word[0x1B0] = -0x1C2;
+                    save_data2.word[0x1B2] = -0x12C;
+                    save_data2.word[0x1B4] = -0x9E7;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x11:
+                    if (save_data2[0x1A0] == 3) {
+                        save_data2.word[0x1B0] = 0x172;
+                        save_data2.word[0x1B2] = -0x258;
+                        save_data2.word[0x1B4] = -0x9B0;
+                        save_data2[0x1A5] = 0xC;
+                    } else {
+                        save_data2.word[0x1B0] = 0x172;
+                        save_data2.word[0x1B2] = -0x12C;
+                        save_data2.word[0x1B4] = -0x9B0;
+                        save_data2[0x1A5] = local4;
+                    }
+                    break;
+                case 0x12:
+                    save_data2.word[0x1B0] = 0x3E8;
+                    save_data2.word[0x1B2] = -0x96;
+                    save_data2.word[0x1B4] = -0x5DC;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x13:
+                    save_data2.word[0x1B0] = 0x708;
+                    save_data2.word[0x1B2] = -0x64;
+                    save_data2.word[0x1B4] = -0x384;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x14:
+                    save_data2.word[0x1B0] = 0x834;
+                    save_data2.word[0x1B2] = -0x64;
+                    save_data2.word[0x1B4] = -0x2BC;
+                    save_data2[0x1A5] = 0x15;
+                    break;
+                case 0x15:
+                    if ((save_data2[0x1A0] == 2) & (runtime.dword[0xA30] == 0)) {
+                        runtime.dword[0xA40] = 0;
+                        start(mo_d_fish.entry_11, level=5);
+                    }
+                    save_data2.word[0x1B0] = 0xF6E;
+                    save_data2.word[0x1B2] = -0x64;
+                    save_data2.word[0x1B4] = 0x12C;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x16:
+                    save_data2.word[0x1B0] = 0x125C;
+                    save_data2.word[0x1B2] = -0x64;
+                    save_data2.word[0x1B4] = 0x1F4;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x17:
+                    save_data2.word[0x1B0] = 0x13BA;
+                    save_data2.word[0x1B2] = -0x96;
+                    save_data2.word[0x1B4] = 0x3E8;
+                    save_data2[0x1A5] = 0x18;
+                    break;
+                case 0x18:
+                    save_data2.word[0x1B0] = 0x13EC;
+                    save_data2.word[0x1B2] = -0xC8;
+                    save_data2.word[0x1B4] = 0x4B0;
+                    save_data2[0x1A5] = 0x19;
+                    break;
+                case 0x19:
+                    if ((save_data2[0x1A0] == 2) & (runtime.dword[0xA30] == 0)) {
+                        save_data2[0x3F1] = 1;
+                    }
+                    save_data2[0x1A0] = 3;
+                    save_data2.word[0x1B0] = 0x1482;
+                    save_data2.word[0x1B2] = -0xC8;
+                    save_data2.word[0x1B4] = 0x960;
+                    save_data2[0x1A5] = 0x1A;
+                    break;
+                case 0x1A:
+                    if (runtime.dword[0xA30] == 0) {
+                        runtime.dword[0xA30] = 0x12C;
+                        Cancel_movement();
+                        start(mo_fish_2.entry_12, level=5);
+                    }
+                    save_data2.word[0x1B0] = 0x13EC;
+                    save_data2.word[0x1B2] = -0xC8;
+                    save_data2.word[0x1B4] = 0x4B0;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x1B:
+                    save_data2.word[0x1B0] = 0x13BA;
+                    save_data2.word[0x1B2] = -0x96;
+                    save_data2.word[0x1B4] = 0x3E8;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x1C:
+                    save_data2.word[0x1B0] = 0x125C;
+                    save_data2.word[0x1B2] = -0x32;
+                    save_data2.word[0x1B4] = 0x1F4;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x1D:
+                    save_data2.word[0x1B0] = 0xD16;
+                    save_data2.word[0x1B2] = -0x96;
+                    save_data2.word[0x1B4] = 0x258;
+                    save_data2[0x1A5] = 0x1E;
+                    break;
+                case 0x1E:
+                    save_data2.word[0x1B0] = 0xB22;
+                    save_data2.word[0x1B2] = 0;
+                    save_data2.word[0x1B4] = 0x44C;
+                    save_data2[0x1A5] = 0x1F;
+                    break;
+                case 0x1F:
+                    save_data2[0x1A0] = 1;
+                    Clear_resident_effect_ID(runtime.dword[0xA44]);
+                    save_data2.word[0x1B0] = 0x4E2;
+                    save_data2.word[0x1B2] = -0x384;
+                    save_data2.word[0x1B4] = 0x76C;
+                    save_data2[0x1A5] = 1;
+                    break;
+                case 0x28:
+                    save_data2.word[0x1B0] = -0x4F6;
+                    save_data2.word[0x1B2] = -0x50;
+                    save_data2.word[0x1B4] = 0x6E;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x29:
+                    save_data2.word[0x1B0] = -0x190;
+                    save_data2.word[0x1B2] = -0x32;
+                    save_data2.word[0x1B4] = 0x190;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x2A:
+                    save_data2.word[0x1B0] = 0x384;
+                    save_data2.word[0x1B2] = 0x64;
+                    save_data2.word[0x1B4] = 0x12C;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x2B:
+                    save_data2.word[0x1B0] = 0x898;
+                    save_data2.word[0x1B2] = 0x32;
+                    save_data2.word[0x1B4] = 0x32;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x2C:
+                    save_data2.word[0x1B0] = 0xBE0;
+                    save_data2.word[0x1B2] = -0x50;
+                    save_data2.word[0x1B4] = 0;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x2D:
+                    save_data2.word[0x1B0] = 0xD34;
+                    save_data2.word[0x1B2] = -0x50;
+                    save_data2.word[0x1B4] = 0x190;
+                    save_data2[0x1A5] = local4;
+                    break;
+                case 0x2E:
+                    save_data2.word[0x1B0] = 0xCD0;
+                    save_data2.word[0x1B2] = -0x32;
+                    save_data2.word[0x1B4] = 0x32F;
+                    save_data2[0x1A5] = 0x1E;
+                    break;
+                }
+                save_data2.word[0x1B6] = Get_angle_actor_to_coord(mo_d_fish_2, save_data2.word[0x1B0], save_data2.word[0x1B2], save_data2.word[0x1B4]);
+                save_data2.word[0x1B6] = save_data2.word[0x1B6] - 0xB4;
+                if ((save_data2.word[0x1B6] - runtime.dword[0xA20]) > 0xB4) {
+                    runtime.dword[0xA20] = runtime.dword[0xA20] + 0x168;
+                    goto L3;
+                }
+                if (!((save_data2.word[0x1B6] - runtime.dword[0xA20]) < -0xB4)) goto L3;
+                runtime.dword[0xA20] = runtime.dword[0xA20] - 0x168;
+            L3:
+                if ((save_data2[0x1A5] < 0xF) & (save_data2[0x1A0] == 3)) {
+                    save_data2[0x1A0] = 1;
+                    Clear_resident_effect_ID(runtime.dword[0xA44]);
+                }
+                if (save_data2[0x1A0] >= 2) {
+                    runtime.dword[0xA24] = 0x2D;
+                    runtime.dword[0xA38] = 5;
+                    runtime.dword[0xA28] = 3;
+                } else {
+                    runtime.dword[0xA24] = 0xC;
+                    runtime.dword[0xA38] = 0x10;
+                    runtime.dword[0xA28] = 0;
+                }
+                runtime.dword[0xA3C] = runtime.dword[0xA38];
+                runtime.dword[0xA34] = 1;
+            L1:
+            }
+        }
+    }
+
+    thread mo_fish {  // 8
+        init {
+            Set_char_ID(MO_FISH);
+            local21 = 0;
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_9 {
+            if (runtime.dword[0xA14] == 1) {
+                bit[0x6ACF] = 0;
+            }
+            if (!(((save_data2[0x1A0] == 1) & ((Push_actor_coord_Y(mo_fish) - 0x15E) <= Push_actor_coord_Y(sora))) & (Push_actor_coord_Y(sora) <= (Push_actor_coord_Y(mo_fish) + 0xFA)))) goto L1;
+            local18 = Get_special_command_count();
+            if (((local18 == -1) & (bit[0x6ACF] == 1)) & (local21 == 0)) {
+                Set_special_command(0x6E, 1);
+            } else {
+                Set_special_command(0x6E, 0);
+            }
+            if (!((local18 == 0x6E) & (local21 == 0))) goto L1;
+            local21 = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            All_char_ctrl_off();
+            Disable_all_battle_event_boxes();
+            Disable_battle_mode_entry();
+            Event_camera_on();
+            Play_SE2(0xDF21, 0);
+            Save_crossfade_image();
+            Start_crossfade(0x10);
+            Set_wait_timer(5);
+            runtime.dword[0xA30] = -1;
+            save_data2[0x1A0] = 2;
+            runtime.dword[0xA24] = 0x2D;
+            runtime.dword[0xA38] = 5;
+            if (runtime.dword[0xA3C] > 0) {
+                runtime.dword[0xA1C] = save_data2.word[0x1B6];
+                runtime.dword[0xA3C] = 0;
+            }
+            if ((save_data2[0x1A7] != 3) & (runtime.dword[0xA18] == 5)) {
+                save_data2[0x1A5] = 0xF;
+            }
+            runtime.dword[0xA34] = runtime.dword[0xA34] | 1;
+            start(mo_fish_2.entry_13, level=5);
+            start(sora_2.entry_12, level=5);
+            start(donald.entry_11, level=5);
+            start(donald_2.entry_11, level=5);
+            Set_wait_timer(1);
+            Restore_camera_default(2, 8);
+            Set_wait_timer(8);
+            Play_SE2(0xDF22, 0);
+            runtime.dword[0xA30] = 0;
+            Event_camera_off();
+            bit[0x7736] = 1;
+            runtime.dword[0xA40] = 1;
+            runtime.dword[0xA4C] = 0;
+            local21 = 0;
+        L1:
+        }
+    }
+
+    thread mo_fish_2 {  // 9
+        init {
+            Set_char_ID(MO_FISH);
+            Set_char_position(save_data2.word[0x3E0], save_data2.word[0x3E2], save_data2.word[0x3E4]);
+            Rotate_char(0, runtime.dword[0xA1C], 0);
+            Change_motion(runtime.dword[0xA28]);
+            local12 = runtime.dword[0xA28];
+        }
+        main {
+            Set_wait_timer(1);
+            while (1) {
+                if (runtime.dword[0xA30] == 0) {
+                    if (local12 != runtime.dword[0xA28]) {
+                        local12 = runtime.dword[0xA28];
+                        Change_motion_interp(local12, 0xA);
+                    }
+                    Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                    Rotate_char(0, runtime.dword[0xA1C], 0);
+                }
+            }
+        }
+        entry_11 {
+            Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+            Rotate_char(0, runtime.dword[0xA1C], 0);
+            Show_char();
+            Collision_on();
+            Enable_targeting();
+            Start_resident_effect(runtime.dword[0xA44]);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(runtime.dword[0xA44], mo_fish_2, 0x17, 0);
+        }
+        entry_12 {
+            Hide_char();
+            Collision_off();
+            Disable_targeting();
+            Clear_resident_effect_ID(runtime.dword[0xA44]);
+        }
+        entry_13 {
+            local12 = runtime.dword[0xA28];
+            Change_motion(local12);
+            Start_resident_effect(runtime.dword[0xA44]);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(runtime.dword[0xA44], mo_fish_2, 0x17, 0);
+            Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+            Rotate_char(0, runtime.dword[0xA1C], 0);
+        }
+    }
+
+    thread sora_2 {  // 10
+        init {
+            Set_char_ID(SORA_2);
+            local1 = 1;
+            local14 = 0;
+        }
+        main {
+            Set_wait_timer(1);
+            while (1) {
+                if ((1 & (save_data2[0x1A0] == 2)) & (runtime.dword[0xA30] == 0)) {
+                    if (local4 != runtime.dword[0xA28]) {
+                        local4 = runtime.dword[0xA28];
+                        switch (local4) {
+                        case 0:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 1:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 2:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        case 3:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 4:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 5:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        }
+                    }
+                    Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                    Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+                }
+            }
+        }
+        entry_11 {
+            Motion_ctrl_off();
+            Change_motion_interp(0xFD, 8);
+            Char_bg_off();
+            Collision_off();
+            Move_char(0x2D, Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+            Set_wait_timer(8);
+            Move_smooth_rot(0x2D, Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+            Set_wait_timer(8);
+        }
+        entry_12 {
+            Motion_ctrl_off();
+            local4 = runtime.dword[0xA28];
+            switch (local4) {
+            case 0:
+                Change_motion(0xFA);
+                break;
+            case 1:
+                Change_motion(0xFB);
+                break;
+            case 2:
+                Change_motion(0xFC);
+                break;
+            case 3:
+                Change_motion(0xFA);
+                break;
+            case 4:
+                Change_motion(0xFB);
+                break;
+            case 5:
+                Change_motion(0xFC);
+                break;
+            }
+            Char_ctrl_off();
+            Make_invincible();
+            Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+            Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+            Char_bg_off();
+            Collision_off();
+        }
+        entry_13 {
+            Motion_change_no_loop(0xFD);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Char_bg_on();
+            Change_motion(0);
+            Set_motion_null_to_char_pos();
+            Collision_on();
+            switch (local14) {
+            case 0:
+                Set_wait_timer(0x1E);
+                break;
+            case 2:
+                Set_wait_timer(0xF);
+                break;
+            case 3:
+                Set_wait_timer(0x1E);
+                break;
+            }
+            Char_ctrl_on();
+            Make_not_invincible();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread donald {  // 11
+        init {
+            local0 = Get_part_from_party(1);
+            local1 = 1;
+            switch (local0) {
+            case 1:
+                Set_char_ID(DONALD);
+                local14 = 1;
+                break;
+            case 2:
+                Set_char_ID(GOOFY);
+                local14 = 2;
+                break;
+            case 6:
+                Set_char_ID(ARIEL);
+                local14 = 3;
+                break;
+            default:
+                local1 = 0;
+                local14 = 0;
+            }
+        }
+        main {
+            Set_wait_timer(1);
+            while (1) {
+                if ((local1 & (save_data2[0x1A0] == 2)) & (runtime.dword[0xA30] == 0)) {
+                    if (local4 != runtime.dword[0xA28]) {
+                        local4 = runtime.dword[0xA28];
+                        switch (local4) {
+                        case 0:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 1:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 2:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        case 3:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 4:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 5:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        }
+                    }
+                    Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                    Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+                }
+            }
+        }
+        entry_11 {
+            local1 = Check_char_on_stage();
+            if (local1) {
+                Motion_ctrl_off();
+                local4 = runtime.dword[0xA28];
+                switch (local4) {
+                case 0:
+                    Change_motion(0xFA);
+                    break;
+                case 1:
+                    Change_motion(0xFB);
+                    break;
+                case 2:
+                    Change_motion(0xFC);
+                    break;
+                case 3:
+                    Change_motion(0xFA);
+                    break;
+                case 4:
+                    Change_motion(0xFB);
+                    break;
+                case 5:
+                    Change_motion(0xFC);
+                    break;
+                }
+                Char_ctrl_off();
+                Make_invincible();
+                Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+                Char_bg_off();
+                Collision_off();
+            }
+        }
+        entry_12 {
+            local1 = Check_char_on_stage();
+            if (local1) {
+                Motion_change_no_loop(0xFD);
+                Set_wait_timer(1);
+                Wait_motion_end();
+                Char_bg_on();
+                Change_motion(0);
+                Set_motion_null_to_char_pos();
+                Collision_on();
+                switch (local14) {
+                case 0:
+                    Set_wait_timer(0x1E);
+                    break;
+                case 2:
+                    Set_wait_timer(0xF);
+                    break;
+                case 3:
+                    Set_wait_timer(0x1E);
+                    break;
+                }
+                Char_ctrl_on();
+                Make_not_invincible();
+                Motion_ctrl_on();
+            }
+        }
+    }
+
+    thread donald_2 {  // 12
+        init {
+            local0 = Get_part_from_party(2);
+            local1 = 1;
+            switch (local0) {
+            case 1:
+                Set_char_ID(DONALD);
+                local14 = 1;
+                break;
+            case 2:
+                Set_char_ID(GOOFY);
+                local14 = 2;
+                break;
+            case 6:
+                Set_char_ID(ARIEL);
+                local14 = 3;
+                break;
+            default:
+                local1 = 0;
+                local14 = 0;
+            }
+        }
+        main {
+            Set_wait_timer(1);
+            while (1) {
+                if ((local1 & (save_data2[0x1A0] == 2)) & (runtime.dword[0xA30] == 0)) {
+                    if (local4 != runtime.dword[0xA28]) {
+                        local4 = runtime.dword[0xA28];
+                        switch (local4) {
+                        case 0:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 1:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 2:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        case 3:
+                            Change_motion_interp(0xFA, 0xA);
+                            break;
+                        case 4:
+                            Change_motion_interp(0xFB, 0xA);
+                            break;
+                        case 5:
+                            Change_motion_interp(0xFC, 0xA);
+                            break;
+                        }
+                    }
+                    Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                    Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+                }
+            }
+        }
+        entry_11 {
+            local1 = Check_char_on_stage();
+            if (local1) {
+                Motion_ctrl_off();
+                local4 = runtime.dword[0xA28];
+                switch (local4) {
+                case 0:
+                    Change_motion(0xFA);
+                    break;
+                case 1:
+                    Change_motion(0xFB);
+                    break;
+                case 2:
+                    Change_motion(0xFC);
+                    break;
+                case 3:
+                    Change_motion(0xFA);
+                    break;
+                case 4:
+                    Change_motion(0xFB);
+                    break;
+                case 5:
+                    Change_motion(0xFC);
+                    break;
+                }
+                Char_ctrl_off();
+                Make_invincible();
+                Set_char_position(Push_actor_coord_X(mo_d_fish_2), Push_actor_coord_Y(mo_d_fish_2), Push_actor_coord_Z(mo_d_fish_2));
+                Turn_char(runtime.dword[0xA1C] + 0xB4, 0);
+                Char_bg_off();
+                Collision_off();
+            }
+        }
+        entry_12 {
+            local1 = Check_char_on_stage();
+            if (local1) {
+                Motion_change_no_loop(0xFD);
+                Set_wait_timer(1);
+                Wait_motion_end();
+                Char_bg_on();
+                Change_motion(0);
+                Set_motion_null_to_char_pos();
+                Collision_on();
+                switch (local14) {
+                case 0:
+                    Set_wait_timer(0x1E);
+                    break;
+                case 2:
+                    Set_wait_timer(0xF);
+                    break;
+                case 3:
+                    Set_wait_timer(0x1E);
+                    break;
+                }
+                Char_ctrl_on();
+                Make_not_invincible();
+                Motion_ctrl_on();
+            }
+        }
+    }
+
+    thread mo_shll1_s2_lm1 {  // 13
+        init {
+            Set_char_ID(MO_SHLL1_S2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(0x14);
+                local13 = Call_cos(0x14);
+                local12 = Push_actor_coord_X(mo_shll1_s2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll1_s2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(0);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 0) {
+                        Start_resident_effect(0xF);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0xF, Push_actor_coord_X(mo_shll1_s2_lm1), Push_actor_coord_Y(mo_shll1_s2_lm1), Push_actor_coord_Z(mo_shll1_s2_lm1));
+                        Change_resident_effect_rotation(0xF, 0, 0x14, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(0, Push_actor_coord_X(mo_shll1_s2_lm1), Push_actor_coord_Y(mo_shll1_s2_lm1), Push_actor_coord_Z(mo_shll1_s2_lm1));
+                    Change_resident_effect_rotation(0, 0, 0xC8, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll1_s2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll1_s2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0xF);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0xF, Push_actor_coord_X(mo_shll1_s2_lm1), Push_actor_coord_Y(mo_shll1_s2_lm1), Push_actor_coord_Z(mo_shll1_s2_lm1));
+                Change_resident_effect_rotation(0xF, 0, 0x14, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0xF);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 0) {
+                        Clear_resident_effect_ID(0xF);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll1_s2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll1_s2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll1_s2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x119, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x119]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            local2 = Get_attack_type_ID();
+            if ((((local0 == 0) & (runtime.dword[0xA14] == 0)) & (0 <= local2)) & (local2 <= 0x2D)) {
+                local0 = 1;
+            }
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0xF;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread mo_shll2_s2_lm1 {  // 14
+        init {
+            Set_char_ID(MO_SHLL2_S2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(-0x2D);
+                local13 = Call_cos(-0x2D);
+                local12 = Push_actor_coord_X(mo_shll2_s2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll2_s2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(1);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 0) {
+                        Start_resident_effect(0x10);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x10, Push_actor_coord_X(mo_shll2_s2_lm1), Push_actor_coord_Y(mo_shll2_s2_lm1), Push_actor_coord_Z(mo_shll2_s2_lm1));
+                        Change_resident_effect_rotation(0x10, 0, -0x2D, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(1, Push_actor_coord_X(mo_shll2_s2_lm1), Push_actor_coord_Y(mo_shll2_s2_lm1), Push_actor_coord_Z(mo_shll2_s2_lm1));
+                    Change_resident_effect_rotation(1, 0, -0x2D + 0xB4, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll2_s2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll2_s2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0x10);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x10, Push_actor_coord_X(mo_shll2_s2_lm1), Push_actor_coord_Y(mo_shll2_s2_lm1), Push_actor_coord_Z(mo_shll2_s2_lm1));
+                Change_resident_effect_rotation(0x10, 0, -0x2D, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0x10);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 0) {
+                        Clear_resident_effect_ID(0x10);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll2_s2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll2_s2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll2_s2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x119, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x119]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            local2 = Get_attack_type_ID();
+            if ((((local0 == 0) & (runtime.dword[0xA14] == 0)) & (0 <= local2)) & (local2 <= 0x2D)) {
+                local0 = 1;
+            }
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0x10;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_PILLAR_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread mo_shll3_s2_lm1 {  // 15
+        init {
+            Set_char_ID(MO_SHLL3_S2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(-5);
+                local13 = Call_cos(-5);
+                local12 = Push_actor_coord_X(mo_shll3_s2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll3_s2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(2);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 0) {
+                        Start_resident_effect(0x11);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x11, Push_actor_coord_X(mo_shll3_s2_lm1), Push_actor_coord_Y(mo_shll3_s2_lm1), Push_actor_coord_Z(mo_shll3_s2_lm1));
+                        Change_resident_effect_rotation(0x11, 0, -5, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(2, Push_actor_coord_X(mo_shll3_s2_lm1), Push_actor_coord_Y(mo_shll3_s2_lm1), Push_actor_coord_Z(mo_shll3_s2_lm1));
+                    Change_resident_effect_rotation(2, 0, -5 + 0xB4, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll3_s2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll3_s2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0x11);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x11, Push_actor_coord_X(mo_shll3_s2_lm1), Push_actor_coord_Y(mo_shll3_s2_lm1), Push_actor_coord_Z(mo_shll3_s2_lm1));
+                Change_resident_effect_rotation(0x11, 0, -5, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0x11);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 0) {
+                        Clear_resident_effect_ID(0x11);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll3_s2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll3_s2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll3_s2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x119, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x119]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            local2 = Get_attack_type_ID();
+            if ((((local0 == 0) & (runtime.dword[0xA14] == 0)) & (0 <= local2)) & (local2 <= 0x2D)) {
+                local0 = 1;
+            }
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0x11;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_WALL_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread mo_shll5_s2_lm1 {  // 16
+        init {
+            Set_char_ID(MO_SHLL5_S2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(-0x87);
+                local13 = Call_cos(-0x87);
+                local12 = Push_actor_coord_X(mo_shll5_s2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll5_s2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(3);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 0) {
+                        Start_resident_effect(0x12);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x12, Push_actor_coord_X(mo_shll5_s2_lm1), Push_actor_coord_Y(mo_shll5_s2_lm1), Push_actor_coord_Z(mo_shll5_s2_lm1));
+                        Change_resident_effect_rotation(0x12, 0, -0x87, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(3, Push_actor_coord_X(mo_shll5_s2_lm1), Push_actor_coord_Y(mo_shll5_s2_lm1), Push_actor_coord_Z(mo_shll5_s2_lm1));
+                    Change_resident_effect_rotation(3, 0, -0x87 + 0xB4, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll5_s2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll5_s2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0x12);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x12, Push_actor_coord_X(mo_shll5_s2_lm1), Push_actor_coord_Y(mo_shll5_s2_lm1), Push_actor_coord_Z(mo_shll5_s2_lm1));
+                Change_resident_effect_rotation(0x12, 0, -0x87, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0x12);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 0) {
+                        Clear_resident_effect_ID(0x12);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll5_s2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll5_s2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll5_s2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x119, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x119]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            local2 = Get_attack_type_ID();
+            if ((((local0 == 0) & (runtime.dword[0xA14] == 0)) & (0 <= local2)) & (local2 <= 0x2D)) {
+                local0 = 1;
+            }
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0x12;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread mo_shll6_s2_lm1 {  // 17
+        init {
+            Set_char_ID(MO_SHLL6_S2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(0xB4);
+                local13 = Call_cos(0xB4);
+                local12 = Push_actor_coord_X(mo_shll6_s2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll6_s2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(4);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 0) {
+                        Start_resident_effect(0x13);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x13, Push_actor_coord_X(mo_shll6_s2_lm1), Push_actor_coord_Y(mo_shll6_s2_lm1), Push_actor_coord_Z(mo_shll6_s2_lm1));
+                        Change_resident_effect_rotation(0x13, 0, 0xB4, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(4, Push_actor_coord_X(mo_shll6_s2_lm1), Push_actor_coord_Y(mo_shll6_s2_lm1), Push_actor_coord_Z(mo_shll6_s2_lm1));
+                    Change_resident_effect_rotation(4, 0, 0x168, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll6_s2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll6_s2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0x13);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x13, Push_actor_coord_X(mo_shll6_s2_lm1), Push_actor_coord_Y(mo_shll6_s2_lm1), Push_actor_coord_Z(mo_shll6_s2_lm1));
+                Change_resident_effect_rotation(0x13, 0, 0xB4, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0x13);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 0) {
+                        Clear_resident_effect_ID(0x13);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll6_s2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll6_s2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll6_s2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x119, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x119]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            local2 = Get_attack_type_ID();
+            if ((((local0 == 0) & (runtime.dword[0xA14] == 0)) & (0 <= local2)) & (local2 <= 0x2D)) {
+                local0 = 1;
+            }
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0x13;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread mo_shll_f2_lm1 {  // 18
+        init {
+            Set_char_ID(MO_SHLL_F2_LM1);
+            Collision_off();
+            Make_not_invincible();
+            local0 = 0;
+            local3 = 0;
+            local16 = 0;
+        }
+        main {
+            while (1) {
+                local1 = 0;
+                local12 = Call_sin(0xB4);
+                local13 = Call_cos(0xB4);
+                local12 = Push_actor_coord_X(mo_shll_f2_lm1) - ((0x78 * local12) / 0x2710);
+                local13 = Push_actor_coord_Z(mo_shll_f2_lm1) - ((0x78 * local13) / 0x2710);
+                if (!(local0 == 1)) goto L1;
+                if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 1)) {
+                    Motion_change_no_loop(1);
+                    Play_SE2(0x52D6, 0);
+                    Start_resident_effect(5);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 0) {
+                        Start_resident_effect(0x14);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x14, Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1), Push_actor_coord_Z(mo_shll_f2_lm1));
+                        Change_resident_effect_rotation(0x14, 0, 0xB4, 0);
+                    } else {
+                        Set_wait_timer(1);
+                    }
+                    Change_resident_effect_coords(5, Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1), Push_actor_coord_Z(mo_shll_f2_lm1));
+                    Change_resident_effect_rotation(5, 0, 0x168, 0);
+                    Make_invincible();
+                    Collision_on();
+                    Set_command_check_range(0);
+                    Set_wait_timer(0x46);
+                    local17 = Random_value(0x64);
+                    if (!((ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 1) & (local16 == 0))) goto L2;
+                    Display_register_value(local17);
+                    if (local17 > 0x5F) {
+                        Scatter_map_gimmick_prizes(0x92, local12, Push_actor_coord_Y(mo_shll_f2_lm1) - 0x14, local13);
+                        local16 = 1;
+                        goto L2;
+                    }
+                    if (!(local17 > 0x3C)) goto L2;
+                    Scatter_map_gimmick_prizes(0x6C, local12, Push_actor_coord_Y(mo_shll_f2_lm1) - 0x14, local13);
+                    local16 = 1;
+                L2:
+                    Set_wait_timer(0xF);
+                    local0 = 3;
+                    local8 = 0;
+                    goto L1;
+                }
+                Motion_change_no_loop(4);
+                Play_SE2(0x52D8, 0);
+                Start_resident_effect(0x14);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x14, Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1), Push_actor_coord_Z(mo_shll_f2_lm1));
+                Change_resident_effect_rotation(0x14, 0, 0xB4, 0);
+                Set_command_check_range(0);
+                Set_wait_timer(0x29);
+                Clear_resident_effect_ID(0x14);
+                Set_command_check_range(0xC8);
+                local0 = 0;
+            L1:
+                if (local0 == 2) {
+                    Set_motion_speed(0x12C, mo_shll_f2_lm1);
+                    Motion_change_no_loop(4);
+                    Play_SE2(0x52D8, 0);
+                    Set_command_check_range(0);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 0) {
+                        Start_resident_effect(0x14);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x14, Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1), Push_actor_coord_Z(mo_shll_f2_lm1));
+                        Change_resident_effect_rotation(0x14, 0, 0xB4, 0);
+                    }
+                    Set_wait_timer(0x15);
+                    Clear_resident_effect_ID(0x14);
+                    Set_motion_speed(0x64, mo_shll_f2_lm1);
+                    Set_command_check_range(0xC8);
+                    local0 = 0;
+                }
+                if (!(local0 == 3)) goto L3;
+                if ((local1 == 1) | (local3 >= 0x15E)) {
+                    local0 = 4;
+                    Wait_motion_end();
+                    Motion_change_no_loop(3);
+                    Play_SE2(0x52D7, 0);
+                    Set_wait_timer(0x30);
+                    if (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 0) {
+                        Clear_resident_effect_ID(0x14);
+                    }
+                    Set_wait_timer(1);
+                    Collision_off();
+                    Make_not_invincible();
+                    Set_command_check_range(0xC8);
+                    local3 = 0;
+                    local0 = 0;
+                    goto L3;
+                }
+                local3 = local3 + 1;
+                runtime.dword[0xA00] = Push_actor_coord_X(mo_shll_f2_lm1) - Push_actor_coord_X(sora);
+                runtime.dword[0xA04] = Push_actor_coord_Y(mo_shll_f2_lm1) - Push_actor_coord_Y(sora);
+                runtime.dword[0xA08] = Push_actor_coord_Z(mo_shll_f2_lm1) - Push_actor_coord_Z(sora);
+                if ((((((-0x1C2 < runtime.dword[0xA00]) & (runtime.dword[0xA00] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA04])) & (runtime.dword[0xA04] < 0x1C2)) & (-0x1C2 < runtime.dword[0xA08])) & (runtime.dword[0xA08] < 0x1C2)) {
+                    local4 = 0;
+                } else {
+                    local4 = 1;
+                }
+                if (!(local4 == 1)) goto L3;
+                local3 = 0x15E;
+            L3:
+            }
+        }
+        on_action {
+            if (runtime.dword[0xA14] == 0) {
+                runtime.dword[0xA14] = 1;
+                Make_operable(sora);
+                Make_invincible_actor(sora);
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x11A, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x11A]);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                runtime.dword[0xA14] = 0;
+            }
+        }
+        on_hit {
+            if (!((local0 == 0) & (runtime.dword[0xA14] == 0))) goto L1;
+            local2 = Get_attack_type_received();
+            if (local2 == 2) {
+                local0 = 1;
+                goto L1;
+            }
+            local2 = Get_attack_type_ID();
+            if (!((0 <= local2) & (local2 <= 0x2D))) goto L1;
+            local0 = 2;
+        L1:
+        }
+        on_touch {
+            if (!(runtime.dword[0xA10] == 0)) goto L1;
+            Make_non_pressable();
+            Display_register_value(local0);
+            local1 = 0;
+            if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 0)) & (local1 == 0))) goto L2;
+            local20 = Get_motion_number_actor(sora);
+            local14 = 0;
+            if ((0 <= local20) & (local20 <= 2)) {
+                local14 = 1;
+            }
+            if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                local14 = 1;
+            }
+            if (!((local14 == 1) & (runtime.dword[0xA14] == 0))) goto L2;
+            runtime.dword[0xA14] = 1;
+            runtime.dword[0xA10] = 1;
+            runtime.dword[0xA0C] = 0x14;
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_UNDERSEA_VALLEY_FIRE_CLAM;
+            ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM = 1;
+            local16 = 1;
+            save_data2[0x26] = 0;
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            start(thread_19.entry_11, level=5);
+        L2:
+            if (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 1) {
+                Make_non_pressable();
+                goto L1;
+            }
+            Make_pressable();
+        L1:
+        }
+    }
+
+    thread 19 {
+        init {
+            runtime.dword[0xA10] = 0;
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            runtime.dword[0xA14] = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            if (save_data2[0x26] == 0) {
+                Clear_resident_effect_ID(runtime.dword[0xA0C]);
+            }
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Make_not_invincible_actor(sora);
+            Make_inoperable(sora);
+            if (save_data2[0x26] != 0) {
+                Set_wait_timer(0x2D);
+                save_data2[0x26] = 0;
+            }
+            runtime.dword[0xA10] = 0;
+            runtime.dword[0xA14] = 0;
+        }
+    }
+
+    thread vf_shll1_s0_lm1 {  // 20
+        init {
+            Set_char_ID(VF_SHLL1_S0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll1_s2_lm1), Push_actor_coord_Y(mo_shll1_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll1_s2_lm1));
+            Set_char_ID(VF_SHLL1_S1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll1_s2_lm1), Push_actor_coord_Y(mo_shll1_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll1_s2_lm1));
+            Set_char_ID(VF_SHLL2_S0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll2_s2_lm1), Push_actor_coord_Y(mo_shll2_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll2_s2_lm1));
+            Set_char_ID(VF_SHLL2_S1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll2_s2_lm1), Push_actor_coord_Y(mo_shll2_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll2_s2_lm1));
+            Set_char_ID(VF_SHLL3_S0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll3_s2_lm1), Push_actor_coord_Y(mo_shll3_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll3_s2_lm1));
+            Set_char_ID(VF_SHLL3_S1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll3_s2_lm1), Push_actor_coord_Y(mo_shll3_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll3_s2_lm1));
+            Set_char_ID(VF_SHLL5_S0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll5_s2_lm1), Push_actor_coord_Y(mo_shll5_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll5_s2_lm1));
+            Set_char_ID(VF_SHLL5_S1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll5_s2_lm1), Push_actor_coord_Y(mo_shll5_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll5_s2_lm1));
+            Set_char_ID(VF_SHLL6_S0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll6_s2_lm1), Push_actor_coord_Y(mo_shll6_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll6_s2_lm1));
+            Set_char_ID(VF_SHLL6_S1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll6_s2_lm1), Push_actor_coord_Y(mo_shll6_s2_lm1) + 0xA, Push_actor_coord_Z(mo_shll6_s2_lm1));
+            Set_char_ID(MVF_SHLL_F0_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1) + 0xA, Push_actor_coord_Z(mo_shll_f2_lm1));
+            Set_char_ID(MVF_SHLL_F1_LM1);
+            Extract_set_BG_color(Push_actor_coord_X(mo_shll_f2_lm1), Push_actor_coord_Y(mo_shll_f2_lm1) + 0xA, Push_actor_coord_Z(mo_shll_f2_lm1));
+            Set_char_ID(MVF_SHLL_L0_LM1);
+            Extract_set_BG_color(-0xC80, -0x600 + 0xA, 0x7A6);
+            Set_char_ID(MVF_SHLL_L1_LM1);
+            Extract_set_BG_color(-0xC80, -0x600 + 0xA, 0x7A6);
+        }
+    }
+
+    thread 21 {
+        init {
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            while (1) {
+                if (!(DIALOG_STATE != 4)) goto L1;
+                local18 = 0;
+                save_data2[0x1D] = 0;
+                if (!(local18 == 0)) goto L2;
+                local20 = GetLength_2(-0xEE2, -0x4BA, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x1E0) & (Push_actor_coord_Y2(0) <= (-0x4E2 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x4E2 + -0x7D00)))) goto L2;
+                local18 = 1;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L2:
+                if (!(local18 == 0)) goto L3;
+                local20 = GetLength_2(-0x5EA, 0x6B3, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xDC) & (Push_actor_coord_Y2(0) <= (-0x7A8 + 0xFA))) & (Push_actor_coord_Y2(0) > (-0x7A8 + -0xC8)))) goto L3;
+                local18 = 2;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L3:
+                if (!(local18 == 0)) goto L4;
+                local20 = GetLength_2(0x707, 0x397, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= (-0x216 + 0x12C))) & (Push_actor_coord_Y2(0) > (-0x216 + -0xFA)))) goto L4;
+                local18 = 3;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L4:
+                if (!(local18 == 0)) goto L5;
+                local20 = GetLength_2(0xBD8, 0x3DF, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= 0x130)) & (Push_actor_coord_Y2(0) > (4 + -0xFA)))) goto L5;
+                local18 = 4;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L5:
+                if (!(local18 == 0)) goto L6;
+                local20 = GetLength_2(0x78E, -0x32E, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= (-0xE8 + 0x12C))) & (Push_actor_coord_Y2(0) > (-0xE8 + -0xFA)))) goto L6;
+                local18 = 5;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L6:
+                if (!(local18 == 0)) goto L7;
+                local20 = GetLength_2(0x68A, -0x987, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= (-0x400 + 0x12C))) & (Push_actor_coord_Y2(0) > (-0x400 + -0xFA)))) goto L7;
+                local18 = 6;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L7:
+                if (!(local18 == 0)) goto L8;
+                local20 = GetLength_2(0, -0x4D2, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xC8) & (Push_actor_coord_Y2(0) <= (-0x156 + 0xFA))) & (Push_actor_coord_Y2(0) > (-0x156 + -0xC8)))) goto L8;
+                local18 = 8;
+                local23 = bit[0x7735];
+                save_data2[0x1D] = bit[0x7735];
+            L8:
+                if (((save_data2[0x1D] == 1) & (local23 == 0)) & (local19 == 1)) {
+                    local19 = 0;
+                    local23 = 1;
+                }
+                if ((local18 != 0) & (local19 == 0)) {
+                    local19 = 1;
+                    DIALOG_STATE = 1;
+                    Set_window_size(7, 6, 0);
+                    Set_window_type(7, 0);
+                    Set_window_opening_speed(7, 0);
+                    Set_window_close_speed(7, 0);
+                    Set_window_tail_type(7, 0);
+                    Set_window_position(7, 0, 0x96);
+                    Close_window(7);
+                    switch (local18) {
+                    case 1:
+                        local24 = messages[0x11B];
+                        local25 = -1;
+                        break;
+                    case 2:
+                        local24 = messages[0x11C];
+                        local25 = -1;
+                        break;
+                    case 3:
+                        local24 = messages[0x11D];
+                        local25 = -1;
+                        break;
+                    case 4:
+                        local24 = messages[0x11E];
+                        local25 = -1;
+                        break;
+                    case 5:
+                        local24 = messages[0x11F];
+                        local25 = -1;
+                        break;
+                    case 6:
+                        local24 = messages[0x120];
+                        local25 = -1;
+                        break;
+                    case 8:
+                        local24 = -1;
+                        local25 = messages[0x122];
+                        break;
+                    default:
+                        local24 = -1;
+                        local25 = -1;
+                    }
+                    if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                        Open_window_no_close(7);
+                        Display_message(7, local24);
+                        goto L9;
+                    }
+                    if (!((save_data2[0x1D] == 1) & (local25 != -1))) goto L9;
+                    Open_window_no_close(7);
+                    Display_message(7, local25);
+                L9:
+                    goto L10;
+                }
+                if (!((local18 == 0) & (local19 == 1))) goto L10;
+                if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 0) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 1) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                DIALOG_STATE = 0;
+                local19 = 0;
+            L10:
+                if (!(DIALOG_STATE == 3)) goto L1;
+                local19 = 0;
+            L1:
+            }
+        }
+    }
+}

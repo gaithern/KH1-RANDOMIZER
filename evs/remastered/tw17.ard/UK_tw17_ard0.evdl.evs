@@ -1,0 +1,5317 @@
+kgr 0 {
+    entities {
+        PONGO = 0x20000;
+        PERDITA = 0x20001;
+        DALMATIANS1 = 0x20002;
+        DALMATIANS10 = 0x20003;
+        DALMATIANS11 = 0x20004;
+        DALMATIANS12 = 0x20005;
+        DALMATIANS13 = 0x20006;
+        DALMATIANS14 = 0x20007;
+        DALMATIANS15 = 0x20008;
+        DALMATIANS16 = 0x20009;
+        DALMATIANS17 = 0x2000A;
+        DALMATIANS18 = 0x2000B;
+        DALMATIANS19 = 0x2000C;
+        DALMATIANS2 = 0x2000D;
+        DALMATIANS20 = 0x2000E;
+        DALMATIANS21 = 0x2000F;
+        DALMATIANS3 = 0x20014;
+        DALMATIANS4 = 0x20015;
+        DALMATIANS5 = 0x20016;
+        DALMATIANS6 = 0x20017;
+        DALMATIANS7 = 0x20018;
+        DALMATIANS8 = 0x20019;
+        DALMATIANS9 = 0x2001A;
+        SORA_2 = 0x30000;
+        MO_17_PRESENT = 0x40005;
+    }
+
+    thread 0 {
+        init {
+            Disable_all_battle_event_boxes();
+            save_data2.word[0x3E0] = 0;
+            save_data2.word[0x3E2] = 0;
+            save_data2.word[0x3E4] = 0;
+            save_data2.word[0x3E6] = 0;
+            save_data2.word[0x3E8] = 0;
+            save_data2.word[0x3EA] = 0;
+            save_data2.word[0x3EC] = 0;
+            save_data2.word[0x3EE] = 0;
+            save_data2[0x3F0] = 0;
+            save_data2[0x3F1] = 0;
+            save_data2[0x3F2] = 0;
+            save_data2[0x3F3] = 0;
+            save_data2[0x3F4] = 0;
+            save_data2[0x3F5] = 0;
+            save_data2[0x3F6] = 0;
+            save_data2[0x3F7] = 0;
+            save_data2[0x1D] = 0;
+            CURRENT_WORLD = Get_world_number();
+            if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                DIALOG_STATE = 4;
+            }
+            bit[0x6B2E] = 1;
+            bit[0x6B2F] = 0;
+            Pad_ctrl_on();
+            Enter_event_mode();
+            Command_display_off();
+        }
+        main {
+            if (((PREVIOUS_AREA == TW02) & (PREVIOUS_SET == 3)) & (save_data[0x11E] != 0)) {
+                Load_BGM_on_map_change();
+                Restore_BGM();
+                Wait_restore_music();
+            }
+            Gauge_off();
+            Command_display_off();
+            local0 = Get_dalmatians_collected();
+            if ((local0 > 0) & (save_data[0x230] == 0)) {
+                save_data[0x230] = 1;
+                Trigger_event(1);
+            }
+            if ((local0 > 0x59) & (PUPPIES_RETURNED_90 == 0)) {
+                PUPPIES_RETURNED_90 = 1;
+                PUPPIES_RETURNED_80 = 1;
+                PUPPIES_RETURNED_70 = 1;
+                PUPPIES_RETURNED_60 = 1;
+                PUPPIES_RETURNED_50 = 1;
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x4F) & (PUPPIES_RETURNED_80 == 0)) {
+                PUPPIES_RETURNED_80 = 1;
+                PUPPIES_RETURNED_70 = 1;
+                PUPPIES_RETURNED_60 = 1;
+                PUPPIES_RETURNED_50 = 1;
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x45) & (PUPPIES_RETURNED_70 == 0)) {
+                PUPPIES_RETURNED_70 = 1;
+                PUPPIES_RETURNED_60 = 1;
+                PUPPIES_RETURNED_50 = 1;
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x3B) & (PUPPIES_RETURNED_60 == 0)) {
+                PUPPIES_RETURNED_60 = 1;
+                PUPPIES_RETURNED_50 = 1;
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x31) & (PUPPIES_RETURNED_50 == 0)) {
+                PUPPIES_RETURNED_50 = 1;
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x27) & (PUPPIES_RETURNED_40 == 0)) {
+                PUPPIES_RETURNED_40 = 1;
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x1D) & (PUPPIES_RETURNED_30 == 0)) {
+                PUPPIES_RETURNED_30 = 1;
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x13) & (PUPPIES_RETURNED_20 == 0)) {
+                PUPPIES_RETURNED_20 = 1;
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 9) & (PUPPIES_RETURNED_10 == 0)) {
+                PUPPIES_RETURNED_10 = 1;
+                Trigger_event(2);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if ((local0 > 0x62) & (PUPPIES_RETURNED_99 == 0)) {
+                PUPPIES_RETURNED_99 = 1;
+                Trigger_event(3);
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            if (PUPPY_REWARD_PENDING == 1) {
+                start(thread_25.entry_11, level=6);
+                await(thread_25.entry_11, level=6);
+            }
+            start(pongo.entry_11, level=5);
+            start(perdita.entry_11, level=5);
+            local0 = Check_dalmatian(3);
+            if (local0 == 1) {
+                start(thread_4.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x12);
+            if (local0 == 1) {
+                start(thread_5.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x13);
+            if (local0 == 1) {
+                start(thread_6.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x17);
+            if (local0 == 1) {
+                start(thread_7.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x14);
+            if (local0 == 1) {
+                start(thread_8.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x15);
+            if (local0 == 1) {
+                start(thread_9.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x16);
+            if (local0 == 1) {
+                start(thread_10.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x21);
+            if (local0 == 1) {
+                start(thread_11.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x22);
+            if (local0 == 1) {
+                start(thread_12.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x2A);
+            if (local0 == 1) {
+                start(thread_13.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x23);
+            if (local0 == 1) {
+                start(thread_14.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x24);
+            if (local0 == 1) {
+                start(thread_15.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x33);
+            if (local0 == 1) {
+                start(thread_16.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x35);
+            if (local0 == 1) {
+                start(thread_17.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x3E);
+            if (local0 == 1) {
+                start(thread_18.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x44);
+            if (local0 == 1) {
+                start(thread_19.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x4E);
+            if (local0 == 1) {
+                start(thread_20.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x54);
+            if (local0 == 1) {
+                start(thread_21.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x5C);
+            if (local0 == 1) {
+                start(thread_22.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(4);
+            if (local0 == 1) {
+                start(thread_23.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(5);
+            if (local0 == 1) {
+                start(thread_24.entry_11, level=5);
+                Set_wait_timer(1);
+            }
+            await(pongo.entry_11, level=5);
+            await(perdita.entry_11, level=5);
+            local0 = Check_dalmatian(3);
+            if (local0 == 1) {
+                await(thread_4.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x12);
+            if (local0 == 1) {
+                await(thread_5.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x13);
+            if (local0 == 1) {
+                await(thread_6.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x17);
+            if (local0 == 1) {
+                await(thread_7.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x14);
+            if (local0 == 1) {
+                await(thread_8.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x15);
+            if (local0 == 1) {
+                await(thread_9.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x16);
+            if (local0 == 1) {
+                await(thread_10.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x21);
+            if (local0 == 1) {
+                await(thread_11.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x22);
+            if (local0 == 1) {
+                await(thread_12.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x2A);
+            if (local0 == 1) {
+                await(thread_13.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x23);
+            if (local0 == 1) {
+                await(thread_14.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x24);
+            if (local0 == 1) {
+                await(thread_15.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x33);
+            if (local0 == 1) {
+                await(thread_16.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x35);
+            if (local0 == 1) {
+                await(thread_17.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x3E);
+            if (local0 == 1) {
+                await(thread_18.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x44);
+            if (local0 == 1) {
+                await(thread_19.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x4E);
+            if (local0 == 1) {
+                await(thread_20.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x54);
+            if (local0 == 1) {
+                await(thread_21.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(0x5C);
+            if (local0 == 1) {
+                await(thread_22.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(4);
+            if (local0 == 1) {
+                await(thread_23.entry_11, level=5);
+            }
+            local0 = Check_dalmatian(5);
+            if (local0 == 1) {
+                await(thread_24.entry_11, level=5);
+            }
+            local0 = Get_dalmatians_collected();
+            if (local0 > 0) {
+                start(pongo.entry_12, level=5);
+                start(perdita.entry_12, level=5);
+            } else {
+                start(pongo.entry_13, level=5);
+                start(perdita.entry_13, level=5);
+            }
+            local0 = Check_dalmatian(3);
+            if (local0 == 1) {
+                start(thread_4.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x12);
+            if (local0 == 1) {
+                start(thread_5.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x13);
+            if (local0 == 1) {
+                start(thread_6.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x17);
+            if (local0 == 1) {
+                start(thread_7.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x14);
+            if (local0 == 1) {
+                start(thread_8.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x15);
+            if (local0 == 1) {
+                start(thread_9.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x16);
+            if (local0 == 1) {
+                start(thread_10.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x21);
+            if (local0 == 1) {
+                start(thread_11.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x22);
+            if (local0 == 1) {
+                start(thread_12.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x2A);
+            if (local0 == 1) {
+                start(thread_13.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x23);
+            if (local0 == 1) {
+                start(thread_14.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x24);
+            if (local0 == 1) {
+                start(thread_15.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x33);
+            if (local0 == 1) {
+                start(thread_16.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x35);
+            if (local0 == 1) {
+                start(thread_17.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x3E);
+            if (local0 == 1) {
+                start(thread_18.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x44);
+            if (local0 == 1) {
+                start(thread_19.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x4E);
+            if (local0 == 1) {
+                start(thread_20.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x54);
+            if (local0 == 1) {
+                start(thread_21.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(0x5C);
+            if (local0 == 1) {
+                start(thread_22.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(4);
+            if (local0 == 1) {
+                start(thread_23.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            local0 = Check_dalmatian(5);
+            if (local0 == 1) {
+                start(thread_24.entry_12, level=5);
+                Set_wait_timer(1);
+            }
+            Set_wait_timer(0xA);
+            Command_display_off();
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Command_display_off();
+            Exit_event_mode();
+            Force_event_pose();
+            Command_display_off();
+            DIALOG_STATE = 0;
+            All_char_ctrl_off();
+            Set_wait_timer(2);
+            All_char_ctrl_on();
+            local0 = Get_dalmatians_collected();
+            if ((local0 == 0) & (save_data[0x246] == 0)) {
+                Make_operable(sora);
+                Event_camera_on();
+                Set_window_position(0, 0, -0x64);
+                Set_window_size(0, 0xD, 3);
+                Set_window_type(0, 1);
+                Set_window_opening_speed(0, 2);
+                Set_window_close_speed(0, 2);
+                Set_window_tail_type(0, 0);
+                Open_window(0);
+                Display_message(0, messages[0]="{0x0A 00 00 00}{0x07 0C 00}{0x0B 00 05 00}The 99 puppies were lost amid the{lf}{0x0B 00 05 00}chaos of their world's destruction.{lf}{0x0B 00 05 00}Find them in various worlds.");
+                save_data[0x246] = 1;
+                Wait_message_end();
+                Event_camera_off();
+                Make_inoperable(sora);
+            }
+            local0 = Get_dalmatians_collected();
+            if (local0 > 0) {
+                await(pongo.entry_12, level=5);
+                await(perdita.entry_12, level=5);
+            } else {
+                await(pongo.entry_13, level=5);
+                await(perdita.entry_13, level=5);
+            }
+            local0 = Check_dalmatian(3);
+            if (local0 == 1) {
+                await(thread_4.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x12);
+            if (local0 == 1) {
+                await(thread_5.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x13);
+            if (local0 == 1) {
+                await(thread_6.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x17);
+            if (local0 == 1) {
+                await(thread_7.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x14);
+            if (local0 == 1) {
+                await(thread_8.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x15);
+            if (local0 == 1) {
+                await(thread_9.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x16);
+            if (local0 == 1) {
+                await(thread_10.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x21);
+            if (local0 == 1) {
+                await(thread_11.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x22);
+            if (local0 == 1) {
+                await(thread_12.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x2A);
+            if (local0 == 1) {
+                await(thread_13.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x23);
+            if (local0 == 1) {
+                await(thread_14.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x24);
+            if (local0 == 1) {
+                await(thread_15.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x33);
+            if (local0 == 1) {
+                await(thread_16.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x35);
+            if (local0 == 1) {
+                await(thread_17.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x3E);
+            if (local0 == 1) {
+                await(thread_18.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x44);
+            if (local0 == 1) {
+                await(thread_19.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x4E);
+            if (local0 == 1) {
+                await(thread_20.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x54);
+            if (local0 == 1) {
+                await(thread_21.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(0x5C);
+            if (local0 == 1) {
+                await(thread_22.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(4);
+            if (local0 == 1) {
+                await(thread_23.entry_12, level=5);
+            }
+            local0 = Check_dalmatian(5);
+            if (!(local0 == 1)) goto L1;
+            await(thread_24.entry_12, level=5);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA_2);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread pongo {  // 2
+        init {
+            Set_char_ID(PONGO);
+            Set_char_position(0x884, 0, -0x18D);
+            Turn_char(0x160, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_position(0x884, 0, -0x18D);
+            Turn_char(0x160, 0);
+            Motion_ctrl_off();
+            Change_motion(0xC8);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC8);
+                Set_wait_timer(0x3C);
+            }
+        }
+        entry_13 {
+            while (1) {
+                Change_motion(0xCA);
+                Set_wait_timer(0x28);
+            }
+        }
+        entry_14 {
+            Change_motion(0xC8);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread perdita {  // 3
+        init {
+            Set_char_ID(PERDITA);
+            Set_char_position(0x857, 0, -0x17F);
+            Turn_char(0x148, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Motion_ctrl_off();
+            Set_char_position(0x857, 0, -0x17F);
+            Turn_char(0x148, 0);
+        }
+        entry_12 {
+            while (1) {
+                Motion_ctrl_off();
+                Change_motion_frame(0xCA, 0, 0x2D);
+                Play_partial_motion(0x2D, 0x50, 0);
+                Set_wait_timer(0x23);
+            }
+        }
+        entry_13 {
+            while (1) {
+                Change_motion(0xCF);
+                Set_wait_timer(0x2E);
+            }
+        }
+        entry_14 {
+            Change_motion(0xC8);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 4 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS1);
+            Set_char_ID(DALMATIANS1);
+            Set_char_position(0x81D, 0, -0x164);
+            Turn_char(0x64, 0);
+            Start_texture_animation(thread_4, 0x44D, 0);
+            Start_texture_animation(thread_4, 0x45A, 0);
+            Start_texture_animation(thread_4, 0x448, 0);
+            Start_texture_animation(thread_4, 0, 0);
+            Start_texture_animation(thread_4, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x294);
+                Change_motion(0xCB);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x46);
+                Set_wait_timer(0x12C);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x14A);
+                Change_motion_frame(0xCB, 0, 0x46);
+                Set_wait_timer(0x1E);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Char_bg_on();
+            Show_char();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 5 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS2);
+            Set_char_ID(DALMATIANS2);
+            Set_char_position(0x775, -0xA8, 0x169);
+            Turn_char(0x1A, 0);
+            Start_texture_animation(thread_5, 0x44E, 0);
+            Start_texture_animation(thread_5, 0x45B, 0);
+            Start_texture_animation(thread_5, 0x448, 0);
+            Start_texture_animation(thread_5, 0, 0);
+            Start_texture_animation(thread_5, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x258);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 6 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS3);
+            Set_char_ID(DALMATIANS3);
+            Set_char_position(0x7A9, -0xA8, 0x196);
+            Turn_char(0xF2, 0);
+            Start_texture_animation(thread_6, 0x454, 0);
+            Start_texture_animation(thread_6, 0x461, 0);
+            Start_texture_animation(thread_6, 0x448, 0);
+            Start_texture_animation(thread_6, 0, 0);
+            Start_texture_animation(thread_6, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Set_char_position(0x7A9, -0xA8, 0x196);
+            Turn_char(0xF2, 0);
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x258);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x10E);
+                Change_motion(0xD1);
+                Start_texture_animation(thread_6, 0xA, 0);
+                Set_wait_timer(0x5A);
+                Start_texture_animation(thread_6, 0, 0);
+                Start_texture_animation(thread_6, 0xC, 0);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 7 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS4);
+            Set_char_ID(DALMATIANS4);
+            Set_char_position(0x736, 0, 0x135);
+            Turn_char(0x38, 0);
+            Start_texture_animation(thread_7, 0x44E, 0);
+            Start_texture_animation(thread_7, 0x45B, 0);
+            Start_texture_animation(thread_7, 0x449, 0);
+            Start_texture_animation(thread_7, 0, 0);
+            Start_texture_animation(thread_7, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_on();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xD4, 0, 0x1E);
+                Play_partial_motion(0x1E, 0x4A, 0);
+                Set_wait_timer(0x2C);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Show_char_shadow();
+            Collision_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 8 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS5);
+            Set_char_ID(DALMATIANS5);
+            Set_char_position(0x76B, -8, 0xB6);
+            Turn_char(0x86, 0);
+            Start_texture_animation(thread_8, 0x44F, 0);
+            Start_texture_animation(thread_8, 0x45C, 0);
+            Start_texture_animation(thread_8, 0x448, 0);
+            Start_texture_animation(thread_8, 0, 0);
+            Start_texture_animation(thread_8, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Start_texture_animation(thread_8, 0xA, 0);
+                Change_motion_frame(0xCF, 0, 0x32);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x3C);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 9 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS6);
+            Set_char_ID(DALMATIANS6);
+            Set_char_position(0xA3F, -0x27, 0x56);
+            Turn_char(0x25, 0);
+            Start_texture_animation(thread_9, 0x454, 0);
+            Start_texture_animation(thread_9, 0x461, 0);
+            Start_texture_animation(thread_9, 0x449, 0);
+            Start_texture_animation(thread_9, 0, 0);
+            Start_texture_animation(thread_9, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Start_texture_animation(thread_9, 0xA, 0);
+                Change_motion_frame(0xCF, 0, 0x32);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x3C);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 10 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS7);
+            Set_char_ID(DALMATIANS7);
+            Set_char_position(0xA30, -0x27, 0);
+            Turn_char(0xFC, 0);
+            Start_texture_animation(thread_10, 0x458, 0);
+            Start_texture_animation(thread_10, 0x465, 0);
+            Start_texture_animation(thread_10, 0x44B, 0);
+            Start_texture_animation(thread_10, 0, 0);
+            Start_texture_animation(thread_10, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCD, 0, 0x30);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x16);
+                Set_wait_timer(0x1B8);
+                Start_texture_animation(thread_10, 0xA, 0);
+                Change_motion(0xCE);
+                Set_wait_timer(0x64);
+                Start_texture_animation(thread_10, 0, 0);
+                Start_texture_animation(thread_10, 0xC, 0);
+                Change_motion_frame(0xCD, 0, 0x46);
+                Set_wait_timer(0x32);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+                Set_wait_timer(0x14A);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+                Change_motion(0xCD);
+                Set_wait_timer(0x30);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 11 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS8);
+            Set_char_ID(DALMATIANS8);
+            Set_char_position(0xA36, -0x27, -0x24);
+            Turn_char(0x12B, 0);
+            Start_texture_animation(thread_11, 0x451, 0);
+            Start_texture_animation(thread_11, 0x45E, 0);
+            Start_texture_animation(thread_11, 0x448, 0);
+            Start_texture_animation(thread_11, 0, 0);
+            Start_texture_animation(thread_11, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x294);
+                Change_motion(0xCB);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x46);
+                Set_wait_timer(0x12C);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x14A);
+                Change_motion_frame(0xCB, 0, 0x46);
+                Set_wait_timer(0x1E);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 12 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS9);
+            Set_char_ID(DALMATIANS9);
+            Set_char_position(0xA09, 0, -0x11);
+            Turn_char(0x58, 0);
+            Start_texture_animation(thread_12, 0x44F, 0);
+            Start_texture_animation(thread_12, 0x45C, 0);
+            Start_texture_animation(thread_12, 0x449, 0);
+            Start_texture_animation(thread_12, 0, 0);
+            Start_texture_animation(thread_12, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xD4, 0, 0x1E);
+                Play_partial_motion(0x1E, 0x4A, 0);
+                Set_wait_timer(0x2C);
+                Set_wait_timer(0x1B8);
+                Change_motion_frame(0xD4, 0, 0x4A);
+                Set_wait_timer(0x1A);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Set_wait_timer(0x12C);
+                Change_motion(0xD4);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 13 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS10);
+            Set_char_ID(DALMATIANS10);
+            Set_char_position(0x972, 0, 0x15);
+            Turn_char(0x112, 0);
+            Start_texture_animation(thread_13, 0x452, 0);
+            Start_texture_animation(thread_13, 0x45F, 0);
+            Start_texture_animation(thread_13, 0x448, 0);
+            Start_texture_animation(thread_13, 0, 0);
+            Start_texture_animation(thread_13, 0xC, 0);
+            Change_char_color(0xAA, 0xAA, 0xAA, 0x80, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Start_texture_animation(thread_13, 0xA, 0);
+                Change_motion_frame(0xCF, 0, 0x32);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x3C);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 14 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS11);
+            Set_char_ID(DALMATIANS11);
+            Set_char_position(0x9DB, 0, 0x1C6);
+            Turn_char(0xC7, 0);
+            Start_texture_animation(thread_14, 0x453, 0);
+            Start_texture_animation(thread_14, 0x460, 0);
+            Start_texture_animation(thread_14, 0x448, 0);
+            Start_texture_animation(thread_14, 0, 0);
+            Start_texture_animation(thread_14, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xCA);
+                Set_wait_timer(0x24);
+                Change_motion(0xD3);
+                Start_texture_animation(thread_14, 0xA, 0);
+                Set_wait_timer(0x44);
+                Start_texture_animation(thread_14, 0, 0);
+                Start_texture_animation(thread_14, 0xC, 0);
+                Change_motion_frame(0xCD, 0, 0x30);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x16);
+                Change_motion_frame(0xCD, 0, 0x46);
+                Set_wait_timer(0x32);
+                Change_motion_frame(0xCB, 0, 0x46);
+                Set_wait_timer(0x1E);
+                Change_motion(0xC9);
+                Set_wait_timer(0x258);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 15 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS12);
+            Set_char_ID(DALMATIANS12);
+            Set_char_position(0x882, -0x4A, -0x20B);
+            Turn_char(0x159, 0);
+            Start_texture_animation(thread_15, 0x451, 0);
+            Start_texture_animation(thread_15, 0x45E, 0);
+            Start_texture_animation(thread_15, 0x449, 0);
+            Start_texture_animation(thread_15, 0, 0);
+            Start_texture_animation(thread_15, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x5A);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x258);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x5A);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 16 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS13);
+            Set_char_ID(DALMATIANS13);
+            Set_char_position(0x862, -0x4A, -0x20B);
+            Turn_char(0x15, 0);
+            Start_texture_animation(thread_16, 0x453, 0);
+            Start_texture_animation(thread_16, 0x460, 0);
+            Start_texture_animation(thread_16, 0x449, 0);
+            Start_texture_animation(thread_16, 0, 0);
+            Start_texture_animation(thread_16, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x46);
+                Set_wait_timer(0x1E);
+                Change_motion(0xC9);
+                Set_wait_timer(0x12C);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0xF0);
+                Change_motion(0xCB);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x46);
+                Set_wait_timer(0x5A);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 17 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS14);
+            Set_char_ID(DALMATIANS14);
+            Set_char_position(0xA84, -0x68, -0x124);
+            Turn_char(0x152, 0);
+            Start_texture_animation(thread_17, 0x450, 0);
+            Start_texture_animation(thread_17, 0x45D, 0);
+            Start_texture_animation(thread_17, 0x448, 0);
+            Start_texture_animation(thread_17, 0, 0);
+            Start_texture_animation(thread_17, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x14A);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x276);
+                Change_motion(0xD1);
+                Start_texture_animation(thread_17, 0xA, 0);
+                Set_wait_timer(0x5A);
+                Start_texture_animation(thread_17, 0, 0);
+                Start_texture_animation(thread_17, 0xC, 0);
+                Change_motion(0xCA);
+                Set_wait_timer(0x24);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 18 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS15);
+            Set_char_ID(DALMATIANS15);
+            Set_char_position(0x88C, 0, 0x191);
+            Turn_char(0, 0);
+            Start_texture_animation(thread_18, 0x452, 0);
+            Start_texture_animation(thread_18, 0x45F, 0);
+            Start_texture_animation(thread_18, 0x449, 0);
+            Start_texture_animation(thread_18, 0, 0);
+            Start_texture_animation(thread_18, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x168);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xCA);
+                Set_wait_timer(0x24);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 19 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS16);
+            Set_char_ID(DALMATIANS16);
+            Set_char_position(0x8FF, 0, 0x8F);
+            Turn_char(0x161, 0);
+            Start_texture_animation(thread_19, 0x459, 0);
+            Start_texture_animation(thread_19, 0x466, 0);
+            Start_texture_animation(thread_19, 0x44C, 0);
+            Start_texture_animation(thread_19, 0x436, 0);
+            Start_texture_animation(thread_19, 0x43E, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0xB4);
+                Change_motion(0xCC);
+                Set_wait_timer(0x5A);
+                Change_motion(0xCD);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x46);
+                Set_wait_timer(0xE6);
+                Set_wait_timer(0xE6);
+                Change_motion(0xCF);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x50);
+                Start_texture_animation(thread_19, 0x43D, 0);
+                Set_wait_timer(0x12C);
+                Start_texture_animation(thread_19, 0x436, 0);
+                Start_texture_animation(thread_19, 0x43E, 0);
+                Change_motion_frame(0xCF, 0, 0x50);
+                Set_wait_timer(0x1E);
+                Change_motion_frame(0xCD, 0, 0x46);
+                Set_wait_timer(0x32);
+                Change_motion_frame(0xCB, 0, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x3C);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 20 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS17);
+            Set_char_ID(DALMATIANS17);
+            Set_char_position(0x8DD, 0, 0x9B);
+            Turn_char(0x49, 0);
+            Start_texture_animation(thread_20, 0x450, 0);
+            Start_texture_animation(thread_20, 0x45D, 0);
+            Start_texture_animation(thread_20, 0x449, 0);
+            Start_texture_animation(thread_20, 0, 0);
+            Start_texture_animation(thread_20, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xCD, 0, 0x30);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x6E);
+                Change_motion(0xCE);
+                Start_texture_animation(thread_20, 0xA, 0);
+                Set_wait_timer(0x64);
+                Start_texture_animation(thread_20, 0, 0);
+                Start_texture_animation(thread_20, 0xC, 0);
+                Change_motion(0xCF);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x50);
+                Start_texture_animation(thread_20, 0xA, 0);
+                Set_wait_timer(0x258);
+                Set_wait_timer(0x258);
+                Start_texture_animation(thread_20, 0, 0);
+                Start_texture_animation(thread_20, 0xC, 0);
+                Change_motion_frame(0xCF, 0, 0x50);
+                Set_wait_timer(0x1E);
+                Change_motion_frame(0xCD, 0, 0x30);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x16);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 21 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS18);
+            Set_char_ID(DALMATIANS18);
+            Set_char_position(0xA66, 0, -0xFA);
+            Turn_char(0x7F, 0);
+            Start_texture_animation(thread_21, 0x44D, 0);
+            Start_texture_animation(thread_21, 0x45A, 0);
+            Start_texture_animation(thread_21, 0x449, 0);
+            Start_texture_animation(thread_21, 0, 0);
+            Start_texture_animation(thread_21, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x5A);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 22 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS19);
+            Set_char_ID(DALMATIANS19);
+            Set_char_position(0x8A8, -0x49, -0x20C);
+            Turn_char(0xAE, 0);
+            Start_texture_animation(thread_22, 0x44E, 0);
+            Start_texture_animation(thread_22, 0x45B, 0);
+            Start_texture_animation(thread_22, 0x448, 0);
+            Start_texture_animation(thread_22, 0, 0);
+            Start_texture_animation(thread_22, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_off();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xD4, 0, 0x1E);
+                Play_partial_motion(0x1E, 0x4A, 0);
+                Set_wait_timer(0x2C);
+                Set_wait_timer(0x370);
+                Change_motion_frame(0xD4, 0, 0x4A);
+                Set_wait_timer(0x1A);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Set_wait_timer(0x12C);
+                Change_motion(0xD4);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 23 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS20);
+            Set_char_ID(DALMATIANS20);
+            Set_char_position(0x841, 0, -0x154);
+            Turn_char(0x8C, 0);
+            Start_texture_animation(thread_23, 0x457, 0);
+            Start_texture_animation(thread_23, 0x464, 0);
+            Start_texture_animation(thread_23, 0x44A, 0);
+            Start_texture_animation(thread_23, 0x424, 0);
+            Start_texture_animation(thread_23, 0x42C, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion(0xC9);
+                Set_wait_timer(0x258);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xCA);
+                Set_wait_timer(0x24);
+                Change_motion(0xC9);
+                Set_wait_timer(0x3C);
+                Change_motion(0xD0);
+                Set_wait_timer(0x3C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x1E);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 24 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Display_model(DALMATIANS21);
+            Set_char_ID(DALMATIANS21);
+            Set_char_position(0x8A3, 0, -0x189);
+            Turn_char(0x2E, 0);
+            Start_texture_animation(thread_24, 0, 0);
+            Start_texture_animation(thread_24, 0xC, 0);
+            Hide_feel_icon();
+            Disable_targeting();
+            Collision_on();
+            Char_bg_off();
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Change_motion(0xC8);
+        }
+        entry_12 {
+            while (1) {
+                Change_motion_frame(0xC9, 0, 0x30);
+                Play_partial_motion(0x30, 0x46, 0);
+                Set_wait_timer(0x16);
+                Set_wait_timer(0x16);
+                Set_wait_timer(0x16);
+                Set_wait_timer(0x16);
+                Start_texture_animation(thread_24, 0xA, 0);
+                Change_motion(0xCA);
+                Play_partial_motion(0x32, 0x50, 0);
+                Set_wait_timer(0x50);
+                Set_wait_timer(0x12C);
+                Start_texture_animation(thread_24, 0, 0);
+                Start_texture_animation(thread_24, 0xC, 0);
+                Change_motion_frame(0xCA, 0, 0x50);
+                Set_wait_timer(0x1E);
+                Change_motion_frame(0xC9, 0x14, 0x46);
+                Set_wait_timer(0x32);
+                Change_motion_frame(0xCB, 0x14, 0x28);
+                Play_partial_motion(0x28, 0x46, 0);
+                Set_wait_timer(0x12C);
+                Change_motion(0xC9);
+                Set_wait_timer(0x46);
+            }
+        }
+        entry_13 {
+            Change_motion(0);
+            Collision_on();
+            Show_char_shadow();
+            Char_bg_on();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread 25 {
+        main {
+            while (1) {
+            }
+        }
+        entry_6 {
+            Make_operable(sora);
+            local0 = Get_dalmatians_collected();
+            if (!((local0 >= 0xA) & (PUPPIES_10_REWARD_GIVEN == 0))) goto L1;
+            PUPPIES_10_REWARD_GIVEN = 1;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_10_PUPPIES;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L1;
+            DIALOG_STATE = 3;
+        L1:
+            if (!((local0 >= 0x14) & (PUPPIES_20_REWARD_GIVEN == 0))) goto L2;
+            PUPPIES_20_REWARD_GIVEN = 1;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_20_PUPPIES;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L2;
+            DIALOG_STATE = 3;
+        L2:
+            if (!((local0 >= 0x1E) & (PUPPIES_30_REWARD_GIVEN == 0))) goto L3;
+            PUPPIES_30_REWARD_GIVEN = 1;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_30_PUPPIES;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L3;
+            DIALOG_STATE = 3;
+        L3:
+            if ((local0 >= 0x28) & (PUPPIES_40_REWARD_GIVEN == 0)) {
+                PUPPIES_40_REWARD_GIVEN = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                local22 = Check_shared_ability_taken();
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TW_PIANO_ROOM_RETURN_40_PUPPIES);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Get_item_from_gift_table(GIFT_TW_PIANO_ROOM_RETURN_40_PUPPIES);
+            }
+            if ((local0 >= 0x32) & (PUPPIES_50_REWARD_GIVEN == 0)) {
+                PUPPIES_50_REWARD_GIVEN = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_50_PUPPIES_REWARD_1;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                __store_reg(0, TORN_PAGES_AVAILABLE);
+                if (__set_ge(0)) {
+                    TORN_PAGES_AVAILABLE = TORN_PAGES_AVAILABLE + 1;
+                } else {
+                    TORN_PAGES_AVAILABLE = 1;
+                }
+                __dec_reg_idx(0);
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                local22 = Check_shared_ability_taken();
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TW_PIANO_ROOM_RETURN_50_PUPPIES_REWARD_2);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Get_item_from_gift_table(GIFT_TW_PIANO_ROOM_RETURN_50_PUPPIES_REWARD_2);
+            }
+            if ((local0 >= 0x3C) & (PUPPIES_60_REWARD_GIVEN == 0)) {
+                PUPPIES_60_REWARD_GIVEN = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                local22 = Check_shared_ability_taken();
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TW_PIANO_ROOM_RETURN_60_PUPPIES);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Get_item_from_gift_table(GIFT_TW_PIANO_ROOM_RETURN_60_PUPPIES);
+            }
+            if ((local0 >= 0x46) & (PUPPIES_70_REWARD_GIVEN == 0)) {
+                PUPPIES_70_REWARD_GIVEN = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                local22 = Check_shared_ability_taken();
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TW_PIANO_ROOM_RETURN_70_PUPPIES);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Get_item_from_gift_table(GIFT_TW_PIANO_ROOM_RETURN_70_PUPPIES);
+            }
+            if (!((local0 >= 0x50) & (PUPPIES_80_REWARD_GIVEN == 0))) goto L4;
+            PUPPIES_80_REWARD_GIVEN = 1;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_80_PUPPIES;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L4;
+            DIALOG_STATE = 3;
+        L4:
+            if ((local0 >= 0x5A) & (PUPPIES_90_REWARD_GIVEN == 0)) {
+                PUPPIES_90_REWARD_GIVEN = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 0xF, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                local22 = Check_shared_ability_taken();
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TW_PIANO_ROOM_RETURN_90_PUPPIES);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                Get_item_from_gift_table(GIFT_TW_PIANO_ROOM_RETURN_90_PUPPIES);
+            }
+            if (!((local0 >= 0x63) & (PUPPIES_99_REWARD_GIVEN == 0))) goto L5;
+            PUPPIES_99_REWARD_GIVEN = 1;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_99_PUPPIES_REWARD_1;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            Set_window_size(7, 0xF, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message(7, messages[0xB2]="{0x08}{0x0A 00 00 00}{0x07 0C 00}Gift from Pongo and Perdita.{0x05 0F 00}{0x06 1E 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            GIFT_TABLE_ITEM.dword = GIFT_TW_PIANO_ROOM_RETURN_99_PUPPIES_REWARD_2;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L5;
+            DIALOG_STATE = 3;
+        L5:
+            Make_inoperable(sora);
+            PUPPY_REWARD_PENDING = 0;
+            Discard_object_data(MO_17_PRESENT);
+        }
+        entry_11 {
+            Set_char_ID(MO_17_PRESENT);
+            local0 = Check_char_on_stage();
+            if (local0 == 0) {
+                Display_model(MO_17_PRESENT);
+                Set_char_ID(MO_17_PRESENT);
+            }
+            PUPPY_REWARD_PENDING = 1;
+            Set_char_position(0x93E, 0, -0x12D);
+        }
+        entry_12 {
+            Discard_object_data(MO_17_PRESENT);
+        }
+    }
+
+    thread 26 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread 27 {
+        init {
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            while (1) {
+                if (!(DIALOG_STATE != 4)) goto L1;
+                local18 = 0;
+                save_data2[0x1D] = 0;
+                if (!(local18 == 0)) goto L2;
+                local20 = GetLength_2(0x70D, -0xF8, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x80) & (Push_actor_coord_Y2(0) <= 0x64)) & (Push_actor_coord_Y2(0) > (0 + -0x12C)))) goto L2;
+                local18 = 1;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L2:
+                if (!(local18 == 0)) goto L3;
+                local20 = GetLength_2(0x9A3, -0x1F4, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xA0) & (Push_actor_coord_Y2(0) <= (-5 + 0x64))) & (Push_actor_coord_Y2(0) > (-5 + -0x12C)))) goto L3;
+                local18 = 2;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L3:
+                if (((save_data2[0x1D] == 1) & (local23 == 0)) & (local19 == 1)) {
+                    local19 = 0;
+                    local23 = 1;
+                }
+                if ((local18 != 0) & (local19 == 0)) {
+                    local19 = 1;
+                    DIALOG_STATE = 1;
+                    Set_window_size(7, 6, 0);
+                    Set_window_type(7, 0);
+                    Set_window_opening_speed(7, 0);
+                    Set_window_close_speed(7, 0);
+                    Set_window_tail_type(7, 0);
+                    Set_window_position(7, 0, 0x96);
+                    Close_window(7);
+                    switch (local18) {
+                    case 1:
+                        local24 = messages[0x31]="{0x08}{0x0A 00 00 00}Living Room";
+                        local25 = -1;
+                        break;
+                    case 2:
+                        local24 = messages[0x32]="{0x08}{0x0A 00 00 00}Second District";
+                        local25 = -1;
+                        break;
+                    default:
+                        local24 = -1;
+                        local25 = -1;
+                    }
+                    if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                        Open_window_no_close(7);
+                        Display_message(7, local24);
+                        goto L4;
+                    }
+                    if (!((save_data2[0x1D] == 1) & (local25 != -1))) goto L4;
+                    Open_window_no_close(7);
+                    Display_message(7, local25);
+                L4:
+                    goto L5;
+                }
+                if (!((local18 == 0) & (local19 == 1))) goto L5;
+                if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 0) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 1) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                DIALOG_STATE = 0;
+                local19 = 0;
+            L5:
+                if (!(DIALOG_STATE == 3)) goto L1;
+                local19 = 0;
+            L1:
+            }
+        }
+    }
+}
+
+kgr 1 {
+    entities {
+        PONGO = 0x20000;
+        PERDITA = 0x20001;
+        DALMATIANS2 = 0x2000D;
+        SORA_2 = 0x30000;
+    }
+
+    thread 0 {
+        init {
+            Enter_event_mode();
+            Event_camera_on();
+        }
+        main {
+            All_char_ctrl_off();
+            Load_event_SE(0xD, 0x1C);
+            Wait_event_SE_load();
+            Load_event_motion(1, 0x1D);
+            Wait_file_load(1);
+            Load_event_motion(2, 0x10C);
+            Wait_file_load(2);
+            Change_BGM_volume(1, 0x32, 0x28);
+            Widescreen_on_quick();
+            start(sora.entry_11, level=5);
+            Play_camera_motion(0);
+            Play_SE2(0x3EF8, 0);
+            Play_SE2(0x3EF9, 0);
+            Fade_in(0xA);
+            start(pongo.entry_11, level=5);
+            start(perdita.entry_11, level=5);
+            start(dalmatians2.entry_11, level=5);
+            Set_wait_timer(0x43);
+            Play_camera_motion(1);
+            start(pongo.entry_12, level=5);
+            start(perdita.entry_12, level=5);
+            start(dalmatians2.entry_12, level=5);
+            Set_wait_timer(0x50);
+            Save_crossfade_image();
+            Start_crossfade(0xA);
+            Play_camera_motion(2);
+            Play_SE2(0x3EFA, 0);
+            Play_SE2(0x3EFB, 0);
+            start(pongo.entry_13, level=5);
+            start(perdita.entry_13, level=5);
+            start(dalmatians2.entry_13, level=5);
+            Set_wait_timer(0x5A);
+            Fade_out(0x1E);
+            Set_wait_timer(0x1E);
+            Widescreen_off();
+            start(sora.entry_12, level=5);
+            start(pongo.entry_14, level=5);
+            start(perdita.entry_14, level=5);
+            start(dalmatians2.entry_14, level=5);
+            Set_wait_timer(1);
+            Change_BGM_volume(1, 0x64, 0x28);
+            await(sora.entry_12, level=5);
+            await(pongo.entry_14, level=5);
+            await(perdita.entry_14, level=5);
+            await(dalmatians2.entry_14, level=5);
+            Restore_SE();
+            Add_char_to_dictionary(0x17);
+            Add_char_to_dictionary(0x18);
+            Add_char_to_dictionary(0x19);
+            Restore_camera(0, 0, 1);
+            Set_wait_timer(1);
+            Event_camera_off();
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA_2);
+            Char_ctrl_off();
+            Collision_off();
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Hide_char();
+            Hide_char_shadow();
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Collision_on();
+        }
+    }
+
+    thread pongo {  // 2
+        init {
+            Set_char_ID(PONGO);
+            Set_char_position(0x884, 0, -0x126);
+            Turn_char(0x139, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(2, 0);
+            Change_motion(0xC8);
+            Set_wait_timer(0x34);
+            Change_motion_interp(0xC8, 0x14);
+        }
+        entry_12 {
+            Set_char_position(0x876, 0, -0x122);
+            Turn_char(0x131, 0);
+            Motion_change_no_loop(0xC9);
+            Set_wait_timer(0x32);
+            Set_motion_speed(0x1E, pongo);
+            Set_wait_timer(0x14);
+        }
+        entry_13 {
+            Set_motion_speed(0x64, pongo);
+            Set_char_position(0x871, 0, -0x1B5);
+            Turn_char(0x152, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x64);
+        }
+        entry_14 {
+            Set_battle_motion();
+            Change_motion(0xC8);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread perdita {  // 3
+        init {
+            Set_char_ID(PERDITA);
+            Set_char_position(0x80D, 0, -0x135);
+            Turn_char(0x27, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(2, 1);
+            Change_motion(0xC8);
+            Set_wait_timer(0xF);
+            Change_motion_interp(0xC9, 0x14);
+            Set_wait_timer(0x2F);
+        }
+        entry_12 {
+            Motion_change_no_loop_frame(0xC9, 0, 0x28);
+            Set_char_position(0x802, 0, -0x136);
+            Turn_char(0x32, 0);
+            Set_wait_timer(0xA);
+            Set_motion_speed(0x1E, perdita);
+            Set_wait_timer(0x5A);
+        }
+        entry_13 {
+            Set_motion_speed(0x64, perdita);
+            Set_char_position(0x839, 0, -0x190);
+            Turn_char(0x1F, 0);
+            Change_motion_frame(0xCA, 0, 0x2D);
+            Play_partial_motion(0x2D, 0x50, 0);
+            Set_wait_timer(0x64);
+        }
+        entry_14 {
+            Set_battle_motion();
+            Change_motion(0xC8);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread dalmatians2 {  // 4
+        init {
+            Display_model(DALMATIANS2);
+            Set_char_ID(DALMATIANS2);
+            Set_char_position(0x8AC, 0, -0x70);
+            Turn_char(0xA0, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xC8);
+            Move_char(2, 0x847, 0, -0xF0);
+            Turn_char(0xA0, 0);
+            Set_wait_timer(0x29);
+            Change_motion_interp(0xC9, 0xA);
+            Set_wait_timer(0xD);
+        }
+        entry_12 {
+            Set_char_position(0x843, 0, -0xF1);
+            Turn_char(0xE9, 0);
+        }
+        entry_13 {
+            Set_char_position(0x853, 0, -0x163);
+            Turn_char(0xD9, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Set_wait_timer(0x24);
+            Change_motion_interp(0xC9, 0x1E);
+        }
+        entry_14 {
+            Set_battle_motion();
+            Change_motion(0xC9);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS2);
+        }
+    }
+}
+
+kgr 2 {
+    entities {
+        PONGO = 0x20000;
+        PERDITA = 0x20001;
+        DALMATIANS1 = 0x20002;
+        DALMATIANS2 = 0x2000D;
+        DALMATIANS3 = 0x20014;
+        DALMATIANS4 = 0x20015;
+        DALMATIANS5 = 0x20016;
+        DALMATIANS6 = 0x20017;
+        DALMATIANS7 = 0x20018;
+        SORA_2 = 0x30000;
+        MO_17_PRESENT = 0x40005;
+    }
+
+    thread 0 {
+        init {
+            All_char_ctrl_off();
+            Enter_event_mode();
+            Event_camera_on();
+        }
+        main {
+            Load_event_SE(0xD, 0x1D);
+            Wait_event_SE_load();
+            Load_event_motion(1, 0x1D);
+            Wait_file_load(1);
+            Load_event_motion(2, 0x10C);
+            Wait_file_load(2);
+            Change_BGM_volume(1, 0x32, 0x28);
+            Widescreen_on_quick();
+            start(sora.entry_11, level=5);
+            Play_camera_motion(3);
+            Play_SE2(0x3EFC, 0);
+            Fade_in(0xA);
+            start(dalmatians1.entry_11, level=5);
+            start(dalmatians2.entry_11, level=5);
+            start(dalmatians3.entry_11, level=5);
+            start(dalmatians4.entry_11, level=5);
+            start(dalmatians5.entry_11, level=5);
+            start(dalmatians6.entry_11, level=5);
+            start(dalmatians7.entry_11, level=5);
+            start(pongo.entry_11, level=5);
+            start(perdita.entry_11, level=5);
+            Set_wait_timer(0x6B);
+            Play_camera_motion(4);
+            Play_SE2(0x3EFD, 0);
+            start(pongo.entry_12, level=5);
+            Set_wait_timer(0x46);
+            Play_camera_motion(5);
+            Play_SE2(0x3EFE, 0);
+            start(pongo.entry_13, level=5);
+            start(mo_17_present.entry_11, level=5);
+            Set_wait_timer(0x1E);
+            start(perdita.entry_12, level=5);
+            Set_wait_timer(0x14);
+            Play_camera_motion(6);
+            Play_SE2(0x3EFF, 0);
+            start(pongo.entry_14, level=5);
+            Set_wait_timer(0x3C);
+            Play_camera_motion(7);
+            Play_SE2(0x3F00, 0);
+            start(mo_17_present.entry_12, level=5);
+            start(dalmatians1.entry_12, level=5);
+            start(dalmatians3.entry_12, level=5);
+            start(dalmatians6.entry_12, level=5);
+            start(dalmatians7.entry_12, level=5);
+            start(pongo.entry_15, level=5);
+            start(perdita.entry_13, level=5);
+            Set_wait_timer(0x5A);
+            await(dalmatians1.entry_12, level=5);
+            Fade_out(0x1E);
+            Set_wait_timer(0x1E);
+            Widescreen_off();
+            start(mo_17_present.entry_13, level=5);
+            start(sora.entry_12, level=5);
+            start(dalmatians1.entry_13, level=5);
+            start(dalmatians2.entry_12, level=5);
+            start(dalmatians3.entry_13, level=5);
+            start(dalmatians4.entry_12, level=5);
+            start(dalmatians5.entry_12, level=5);
+            start(dalmatians6.entry_13, level=5);
+            start(dalmatians7.entry_13, level=5);
+            start(pongo.entry_16, level=5);
+            start(perdita.entry_14, level=5);
+            Set_wait_timer(1);
+            Change_BGM_volume(1, 0x64, 0x28);
+            await(mo_17_present.entry_13, level=5);
+            await(sora.entry_12, level=5);
+            await(pongo.entry_16, level=5);
+            await(perdita.entry_14, level=5);
+            await(dalmatians1.entry_13, level=5);
+            await(dalmatians2.entry_12, level=5);
+            await(dalmatians3.entry_13, level=5);
+            await(dalmatians4.entry_12, level=5);
+            await(dalmatians5.entry_12, level=5);
+            await(dalmatians6.entry_13, level=5);
+            await(dalmatians7.entry_13, level=5);
+            Restore_SE();
+            Restore_camera(0, 0, 1);
+            Set_wait_timer(1);
+            Event_camera_off();
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA_2);
+            Char_ctrl_off();
+            Collision_off();
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Hide_char();
+            Hide_char_shadow();
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Collision_on();
+        }
+    }
+
+    thread pongo {  // 2
+        init {
+            Set_char_ID(PONGO);
+            Set_char_position(0x8C7, 0, -0xB7);
+            Turn_char(0x82, 0);
+            Start_texture_animation(pongo, 0xC, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Hide_char();
+            Hide_char_shadow();
+            Char_bg_off();
+            Set_char_position(0x886, 0, -0x55);
+            Turn_char(0x78, 0);
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Char_bg_off();
+            Collision_off();
+            Set_event_motion(2, 0);
+            Change_motion(0xCB);
+            Set_char_position(0x8C7, 0, -0xB7);
+            Move_char(1, 0x90F, 0, -0xF3);
+            Set_wait_timer(0x32);
+            Change_motion_interp(0xCC, 0x14);
+            Set_wait_timer(0xA);
+        }
+        entry_13 {
+            Cancel_movement();
+            Motion_change_no_loop_frame(0xCC, 0, 0xF);
+            Set_wait_timer(0x32);
+        }
+        entry_14 {
+            Set_char_position(0x919, 0, -0xF3);
+            Set_wait_timer(0x14);
+            Change_motion_interp(0xC8, 0x14);
+            Set_wait_timer(0x64);
+        }
+        entry_15 {
+            Set_char_position(0x8F0, 0, -0x119);
+            Turn_char(0x65, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x28);
+        }
+        entry_16 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+        }
+    }
+
+    thread perdita {  // 3
+        init {
+            Set_char_ID(PERDITA);
+            Set_char_position(0x8FC, 0, -0x95);
+            Turn_char(0x82, 0);
+            Start_texture_animation(perdita, 0xC, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Hide_char();
+            Hide_char_shadow();
+            Char_bg_off();
+            Set_char_position(0x8FC, 0, -0x95);
+            Turn_char(0x82, 0);
+        }
+        entry_12 {
+            Set_event_motion(2, 1);
+            Change_motion(0xCB);
+            Set_char_position(0x8FC, 0, -0x95);
+            Turn_char(0x82, 0);
+            Move_char(1, 0x94A, 0, -0xDA);
+            Set_wait_timer(0x14);
+            Show_char();
+            Show_char_shadow();
+            Wait_move_done();
+            Change_motion_interp(0xC8, 0x14);
+            Set_wait_timer(0xA);
+        }
+        entry_13 {
+            Set_char_position(0x92B, 0, -0x108);
+            Turn_char(0x99, 0);
+            Change_motion_frame(0xCA, 0, 0x14);
+            Set_wait_timer(0x2D);
+            Play_partial_motion(0x2D, 0x50, 0);
+            Set_wait_timer(0xA);
+        }
+        entry_14 {
+            Set_battle_motion();
+            Change_motion(0);
+            Char_bg_on();
+            Collision_on();
+            Show_char();
+        }
+    }
+
+    thread dalmatians1 {  // 4
+        init {
+            Display_model(DALMATIANS1);
+            Set_char_ID(DALMATIANS1);
+            Set_char_position(0x902, 0, -0x101);
+            Turn_char(0xA0, 0);
+            Start_texture_animation(dalmatians1, 0x44D, 0);
+            Start_texture_animation(dalmatians1, 0x45A, 0);
+            Start_texture_animation(dalmatians1, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Hide_char();
+            Hide_char_shadow();
+            Char_bg_off();
+            Set_char_position(0x902, 0, -0x101);
+            Turn_char(0x78, 0);
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Change_char_color(0xB1, 0xB1, 0xB1, 0x80, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+            Set_char_position(0x91E, 0, -0x151);
+            Turn_char(0x32, 0);
+            Set_wait_timer(0xA);
+            Change_motion_interp(0xD2, 0x14);
+            Move_slow(0xF, 0x924, 0, -0x148);
+            Set_wait_timer(0x1E);
+            Cancel_movement();
+            Change_motion_interp(0xD0, 0x14);
+            Set_wait_timer(0x3C);
+            Change_motion_interp(0xC9, 0x14);
+            Set_wait_timer(0x1E);
+        }
+        entry_13 {
+            Set_battle_motion();
+            Change_motion(0);
+            Restore_char_color();
+            Show_char();
+            Show_char_shadow();
+            Char_bg_on();
+            Collision_on();
+            Show_char();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS1);
+        }
+    }
+
+    thread dalmatians2 {  // 5
+        init {
+            Display_model(DALMATIANS2);
+            Set_char_ID(DALMATIANS2);
+            Set_char_position(0x7D7, 0, -0xCE);
+            Turn_char(0x1E, 0);
+            Start_texture_animation(dalmatians2, 0x44E, 0);
+            Start_texture_animation(dalmatians2, 0x45B, 0);
+            Start_texture_animation(dalmatians2, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xC8);
+            Set_char_position(0x7D7, 0, -0xCE);
+            Move_char(2, 0x80F, 0, 0xBF);
+            Turn_char(0x1E, 0);
+            Wait_move_done();
+            Change_motion_interp(0xC9, 0xA);
+            Set_wait_timer(5);
+        }
+        entry_12 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS2);
+        }
+    }
+
+    thread dalmatians3 {  // 6
+        init {
+            Display_model(DALMATIANS3);
+            Set_char_ID(DALMATIANS3);
+            Set_char_position(0x7D7, 0, 0x7E);
+            Turn_char(0x5A, 0);
+            Start_texture_animation(dalmatians3, 0x454, 0);
+            Start_texture_animation(dalmatians3, 0x461, 0);
+            Start_texture_animation(dalmatians3, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xCA);
+            Set_char_position(0x7D7, 0, 0x7E);
+            Set_wait_timer(0x46);
+        }
+        entry_12 {
+            Change_motion(0xD4);
+        }
+        entry_13 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS3);
+        }
+    }
+
+    thread dalmatians4 {  // 7
+        init {
+            Display_model(DALMATIANS4);
+            Set_char_ID(DALMATIANS4);
+            Set_char_position(0x82F, 0, 0x91);
+            Turn_char(0xFE, 0);
+            Start_texture_animation(dalmatians4, 0x44E, 0);
+            Start_texture_animation(dalmatians4, 0x45B, 0);
+            Start_texture_animation(dalmatians4, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xD0);
+            Set_char_position(0x82F, 0, 0x91);
+            Turn_char(0xFE, 0);
+            Set_wait_timer(0x46);
+        }
+        entry_12 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS4);
+        }
+    }
+
+    thread dalmatians5 {  // 8
+        init {
+            Display_model(DALMATIANS5);
+            Set_char_ID(DALMATIANS5);
+            Set_char_position(0x7B7, 0, 0x104);
+            Turn_char(0, 0);
+            Start_texture_animation(dalmatians5, 0x44F, 0);
+            Start_texture_animation(dalmatians5, 0x45C, 0);
+            Start_texture_animation(dalmatians5, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Start_texture_animation(dalmatians5, 0xA, 0);
+            Change_motion_frame(0xCF, 0, 0x32);
+            Play_partial_motion(0x32, 0x50, 0);
+            Set_char_position(0x7B7, 0, 0x104);
+            Set_wait_timer(0x46);
+        }
+        entry_12 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS5);
+        }
+    }
+
+    thread dalmatians6 {  // 9
+        init {
+            Display_model(DALMATIANS6);
+            Set_char_ID(DALMATIANS6);
+            Set_char_position(0x7D9, 0, 0x11F);
+            Turn_char(0x104, 0);
+            Start_texture_animation(dalmatians6, 0x454, 0);
+            Start_texture_animation(dalmatians6, 0x461, 0);
+            Start_texture_animation(dalmatians6, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_char_position(0x7D9, 0, 0x11F);
+            Set_event_motion(1, 0);
+            Change_motion(0xCE);
+            Start_texture_animation(dalmatians6, 0xA, 0);
+            Set_wait_timer(0x64);
+            Change_motion_interp(0xCF, 0x14);
+        }
+        entry_12 {
+            Start_texture_animation(dalmatians6, 0, 0);
+            Start_texture_animation(dalmatians6, 0xC, 0);
+            Change_motion_interp(0xCF, 0x14);
+            Play_partial_motion(0x32, 0x50, 0);
+        }
+        entry_13 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS6);
+        }
+    }
+
+    thread dalmatians7 {  // 10
+        init {
+            Display_model(DALMATIANS7);
+            Set_char_ID(DALMATIANS7);
+            Set_char_position(0x894, 0, 0xD7);
+            Turn_char(0xF0, 0);
+            Start_texture_animation(dalmatians7, 0x451, 0);
+            Start_texture_animation(dalmatians7, 0x45E, 0);
+            Start_texture_animation(dalmatians7, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Set_event_motion(1, 0);
+            Start_texture_animation(dalmatians7, 0xA, 0);
+            Change_motion(0xD1);
+            Set_char_position(0x851, 0, 0xD9);
+            Turn_char(0xF0, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians7, 0, 0);
+            Start_texture_animation(dalmatians7, 0xC, 0);
+            Change_motion_interp(0xCB, 0x14);
+            Play_partial_motion(0x28, 0x46, 0);
+        }
+        entry_12 {
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0x14, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+        }
+        entry_13 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS7);
+        }
+    }
+
+    thread mo_17_present {  // 11
+        init {
+            Set_char_ID(MO_17_PRESENT);
+            local0 = Check_char_on_stage();
+            if (local0 == 0) {
+                Display_model(MO_17_PRESENT);
+                Set_char_ID(MO_17_PRESENT);
+            }
+            Hide_char();
+            Hide_char_shadow();
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Show_char();
+            Show_char_shadow();
+            Motion_change_no_loop_frame(3, 0, 0xF);
+            Set_char_position(0x90B, 0, -0x109);
+            Turn_char(0x78, 0);
+            Set_wait_timer(0x32);
+        }
+        entry_12 {
+            Set_char_position(0x93E, 0, -0x12D);
+            Turn_char(0x84, 0);
+            Change_motion(2);
+        }
+        entry_13 {
+            local0 = Check_char_on_stage();
+            if (local0 == 1) {
+                Discard_object_data(MO_17_PRESENT);
+            }
+        }
+    }
+}
+
+kgr 3 {
+    entities {
+        PONGO = 0x20000;
+        PERDITA = 0x20001;
+        DALMATIANS1 = 0x20002;
+        DALMATIANS10 = 0x20003;
+        DALMATIANS11 = 0x20004;
+        DALMATIANS12 = 0x20005;
+        DALMATIANS13 = 0x20006;
+        DALMATIANS14 = 0x20007;
+        DALMATIANS15 = 0x20008;
+        DALMATIANS16 = 0x20009;
+        DALMATIANS17 = 0x2000A;
+        DALMATIANS18 = 0x2000B;
+        DALMATIANS19 = 0x2000C;
+        DALMATIANS2 = 0x2000D;
+        DALMATIANS20 = 0x2000E;
+        DALMATIANS21 = 0x2000F;
+        DALMATIANS22 = 0x20010;
+        DALMATIANS23 = 0x20011;
+        DALMATIANS24 = 0x20012;
+        DALMATIANS25 = 0x20013;
+        DALMATIANS3 = 0x20014;
+        DALMATIANS4 = 0x20015;
+        DALMATIANS5 = 0x20016;
+        DALMATIANS6 = 0x20017;
+        DALMATIANS7 = 0x20018;
+        DALMATIANS8 = 0x20019;
+        DALMATIANS9 = 0x2001A;
+        SORA_2 = 0x30000;
+    }
+
+    thread 0 {
+        init {
+            All_char_ctrl_off();
+            Enter_event_mode();
+            Event_camera_on();
+        }
+        main {
+            Change_BGM_volume(1, 0, 0x1D);
+            Load_event_SE(0xD, 0x1E);
+            Wait_event_SE_load();
+            Load_event_motion(1, 0x1D);
+            Wait_file_load(1);
+            Load_event_motion(2, 0x10C);
+            Wait_file_load(2);
+            Load_waveform(1, 0xAA);
+            Wait_waveform_load();
+            Load_BGM(1, 0xAA);
+            Wait_BGM_load();
+            Widescreen_on();
+            Play_BGM(1);
+            start(sora.entry_11, level=5);
+            start(pongo.entry_11, level=5);
+            start(perdita.entry_11, level=5);
+            Set_wait_timer(1);
+            await(sora.entry_11, level=5);
+            await(pongo.entry_11, level=5);
+            await(perdita.entry_11, level=5);
+            Play_camera_motion(8);
+            Play_SE2(0x3F01, 0);
+            Fade_in(0xA);
+            start(dalmatians1.entry_11, level=5);
+            start(dalmatians2.entry_11, level=5);
+            start(dalmatians3.entry_11, level=5);
+            start(dalmatians4.entry_11, level=5);
+            start(dalmatians5.entry_11, level=5);
+            start(dalmatians6.entry_11, level=5);
+            start(dalmatians7.entry_11, level=5);
+            start(dalmatians8.entry_11, level=5);
+            start(dalmatians9.entry_11, level=5);
+            start(dalmatians10.entry_11, level=5);
+            start(dalmatians11.entry_11, level=5);
+            Set_wait_timer(0x50);
+            Save_crossfade_image();
+            Start_crossfade(0x28);
+            Set_wait_timer(5);
+            Play_camera_motion(9);
+            Play_SE2(0x3F02, 0);
+            start(dalmatians12.entry_11, level=5);
+            start(dalmatians13.entry_11, level=5);
+            start(dalmatians14.entry_11, level=5);
+            start(dalmatians15.entry_11, level=5);
+            start(dalmatians16.entry_11, level=5);
+            start(dalmatians17.entry_11, level=5);
+            start(dalmatians18.entry_11, level=5);
+            start(dalmatians19.entry_11, level=5);
+            start(dalmatians20.entry_11, level=5);
+            start(dalmatians22.entry_11, level=5);
+            start(dalmatians23.entry_11, level=5);
+            start(dalmatians24.entry_11, level=5);
+            start(dalmatians25.entry_11, level=5);
+            Set_wait_timer(0x76);
+            Play_camera_motion(0xA);
+            Play_SE2(0x3F03, 0);
+            start(pongo.entry_12, level=5);
+            start(perdita.entry_12, level=5);
+            start(dalmatians1.entry_12, level=5);
+            start(dalmatians2.entry_12, level=5);
+            Set_wait_timer(0x2B);
+            start(dalmatians1.entry_13, level=5);
+            start(dalmatians2.entry_13, level=5);
+            Set_wait_timer(3);
+            Play_camera_motion(0xB);
+            Play_SE2(0x3F04, 0);
+            start(dalmatians3.entry_12, level=5);
+            start(dalmatians4.entry_12, level=5);
+            start(dalmatians5.entry_12, level=5);
+            start(dalmatians6.entry_12, level=5);
+            start(dalmatians7.entry_12, level=5);
+            start(dalmatians8.entry_12, level=5);
+            start(dalmatians9.entry_12, level=5);
+            start(dalmatians10.entry_12, level=5);
+            start(dalmatians11.entry_12, level=5);
+            start(dalmatians12.entry_12, level=5);
+            start(dalmatians13.entry_12, level=5);
+            start(dalmatians14.entry_12, level=5);
+            start(dalmatians15.entry_12, level=5);
+            start(dalmatians16.entry_12, level=5);
+            start(dalmatians17.entry_12, level=5);
+            start(dalmatians18.entry_12, level=5);
+            start(dalmatians19.entry_12, level=5);
+            start(dalmatians20.entry_12, level=5);
+            start(dalmatians21.entry_11, level=5);
+            start(dalmatians22.entry_12, level=5);
+            start(dalmatians23.entry_12, level=5);
+            start(dalmatians24.entry_12, level=5);
+            start(dalmatians25.entry_12, level=5);
+            start(dalmatians3.entry_12, level=5);
+            start(dalmatians4.entry_12, level=5);
+            start(dalmatians5.entry_12, level=5);
+            start(dalmatians6.entry_12, level=5);
+            start(dalmatians7.entry_12, level=5);
+            start(dalmatians8.entry_12, level=5);
+            start(dalmatians9.entry_12, level=5);
+            start(dalmatians10.entry_12, level=5);
+            start(dalmatians11.entry_12, level=5);
+            start(dalmatians12.entry_12, level=5);
+            start(dalmatians13.entry_12, level=5);
+            start(dalmatians14.entry_12, level=5);
+            start(dalmatians15.entry_12, level=5);
+            start(dalmatians16.entry_12, level=5);
+            start(dalmatians17.entry_12, level=5);
+            start(dalmatians18.entry_12, level=5);
+            start(dalmatians19.entry_12, level=5);
+            start(dalmatians20.entry_12, level=5);
+            start(dalmatians21.entry_11, level=5);
+            start(dalmatians22.entry_12, level=5);
+            start(dalmatians23.entry_12, level=5);
+            start(dalmatians24.entry_12, level=5);
+            start(dalmatians25.entry_12, level=5);
+            Set_wait_timer(0x152);
+            Play_camera_motion(0xC);
+            Play_SE2(0x3F05, 0);
+            start(sora.entry_12, level=5);
+            start(dalmatians1.entry_14, level=5);
+            start(dalmatians2.entry_14, level=5);
+            start(dalmatians3.entry_13, level=5);
+            start(dalmatians4.entry_13, level=5);
+            start(dalmatians5.entry_13, level=5);
+            start(dalmatians6.entry_13, level=5);
+            start(dalmatians7.entry_13, level=5);
+            start(dalmatians8.entry_13, level=5);
+            start(dalmatians9.entry_13, level=5);
+            start(dalmatians10.entry_13, level=5);
+            start(dalmatians11.entry_13, level=5);
+            start(dalmatians12.entry_13, level=5);
+            start(dalmatians13.entry_13, level=5);
+            start(dalmatians14.entry_13, level=5);
+            start(dalmatians15.entry_13, level=5);
+            start(dalmatians16.entry_13, level=5);
+            start(dalmatians17.entry_13, level=5);
+            start(dalmatians18.entry_13, level=5);
+            start(dalmatians19.entry_13, level=5);
+            start(dalmatians20.entry_13, level=5);
+            start(dalmatians21.entry_12, level=5);
+            start(dalmatians22.entry_13, level=5);
+            start(dalmatians23.entry_13, level=5);
+            start(dalmatians24.entry_13, level=5);
+            start(dalmatians25.entry_13, level=5);
+            start(dalmatians3.entry_13, level=5);
+            start(dalmatians4.entry_13, level=5);
+            start(dalmatians5.entry_13, level=5);
+            start(dalmatians6.entry_13, level=5);
+            start(dalmatians7.entry_13, level=5);
+            start(dalmatians8.entry_13, level=5);
+            start(dalmatians9.entry_13, level=5);
+            start(dalmatians10.entry_13, level=5);
+            start(dalmatians11.entry_13, level=5);
+            start(dalmatians12.entry_13, level=5);
+            start(dalmatians13.entry_13, level=5);
+            start(dalmatians14.entry_13, level=5);
+            start(dalmatians15.entry_13, level=5);
+            start(dalmatians16.entry_13, level=5);
+            start(dalmatians17.entry_13, level=5);
+            start(dalmatians18.entry_13, level=5);
+            start(dalmatians19.entry_13, level=5);
+            start(dalmatians20.entry_13, level=5);
+            start(dalmatians21.entry_12, level=5);
+            start(dalmatians22.entry_13, level=5);
+            start(dalmatians23.entry_13, level=5);
+            start(dalmatians24.entry_13, level=5);
+            start(dalmatians25.entry_13, level=5);
+            await(sora.entry_12, level=5);
+            Wait_event_camera_end();
+            Play_camera_motion(0xD);
+            start(pongo.entry_16, level=5);
+            start(perdita.entry_14, level=5);
+            start(dalmatians1.entry_15, level=5);
+            start(dalmatians2.entry_15, level=5);
+            start(dalmatians3.entry_14, level=5);
+            start(dalmatians4.entry_14, level=5);
+            start(dalmatians5.entry_14, level=5);
+            start(dalmatians6.entry_14, level=5);
+            start(dalmatians7.entry_14, level=5);
+            start(dalmatians8.entry_14, level=5);
+            start(dalmatians9.entry_14, level=5);
+            start(dalmatians10.entry_14, level=5);
+            start(dalmatians11.entry_14, level=5);
+            Set_wait_timer(1);
+            start(dalmatians12.entry_14, level=5);
+            start(dalmatians13.entry_14, level=5);
+            start(dalmatians14.entry_14, level=5);
+            start(dalmatians15.entry_14, level=5);
+            start(dalmatians16.entry_14, level=5);
+            start(dalmatians17.entry_14, level=5);
+            start(dalmatians18.entry_14, level=5);
+            start(dalmatians19.entry_14, level=5);
+            start(dalmatians20.entry_14, level=5);
+            start(dalmatians21.entry_13, level=5);
+            start(dalmatians22.entry_14, level=5);
+            start(dalmatians23.entry_14, level=5);
+            start(dalmatians24.entry_14, level=5);
+            start(dalmatians25.entry_14, level=5);
+            Set_wait_timer(0xB9);
+            Fade_out(0x14);
+            Change_BGM_volume(1, 0, 0x1E);
+            await(pongo.entry_16, level=5);
+            await(perdita.entry_14, level=5);
+            Set_wait_timer(0x1E);
+            start(sora.entry_13, level=5);
+            start(pongo.entry_17, level=5);
+            start(perdita.entry_15, level=5);
+            start(dalmatians1.entry_16, level=5);
+            start(dalmatians2.entry_16, level=5);
+            start(dalmatians3.entry_15, level=5);
+            start(dalmatians4.entry_15, level=5);
+            start(dalmatians5.entry_15, level=5);
+            start(dalmatians6.entry_15, level=5);
+            start(dalmatians7.entry_15, level=5);
+            start(dalmatians8.entry_15, level=5);
+            start(dalmatians9.entry_15, level=5);
+            start(dalmatians10.entry_15, level=5);
+            start(dalmatians11.entry_15, level=5);
+            start(dalmatians12.entry_15, level=5);
+            start(dalmatians13.entry_15, level=5);
+            start(dalmatians14.entry_15, level=5);
+            start(dalmatians15.entry_15, level=5);
+            start(dalmatians16.entry_15, level=5);
+            start(dalmatians17.entry_15, level=5);
+            start(dalmatians18.entry_15, level=5);
+            start(dalmatians19.entry_15, level=5);
+            start(dalmatians20.entry_15, level=5);
+            start(dalmatians21.entry_14, level=5);
+            start(dalmatians22.entry_15, level=5);
+            start(dalmatians23.entry_15, level=5);
+            start(dalmatians24.entry_15, level=5);
+            start(dalmatians25.entry_15, level=5);
+            await(sora.entry_13, level=5);
+            await(pongo.entry_17, level=5);
+            await(perdita.entry_15, level=5);
+            await(dalmatians1.entry_16, level=5);
+            await(dalmatians2.entry_16, level=5);
+            await(dalmatians3.entry_15, level=5);
+            await(dalmatians4.entry_15, level=5);
+            await(dalmatians5.entry_15, level=5);
+            await(dalmatians6.entry_15, level=5);
+            await(dalmatians7.entry_15, level=5);
+            await(dalmatians8.entry_15, level=5);
+            await(dalmatians9.entry_15, level=5);
+            await(dalmatians10.entry_15, level=5);
+            await(dalmatians11.entry_15, level=5);
+            await(dalmatians12.entry_15, level=5);
+            await(dalmatians13.entry_15, level=5);
+            await(dalmatians14.entry_15, level=5);
+            await(dalmatians15.entry_15, level=5);
+            await(dalmatians16.entry_15, level=5);
+            await(dalmatians17.entry_15, level=5);
+            await(dalmatians18.entry_15, level=5);
+            await(dalmatians19.entry_15, level=5);
+            await(dalmatians20.entry_15, level=5);
+            await(dalmatians21.entry_14, level=5);
+            await(dalmatians22.entry_15, level=5);
+            await(dalmatians23.entry_15, level=5);
+            await(dalmatians24.entry_15, level=5);
+            await(dalmatians25.entry_15, level=5);
+            Set_wait_timer(0xA);
+            Widescreen_off();
+            Restore_BGM();
+            Wait_restore_music();
+            Restore_SE();
+            Restore_camera(0, 0, 1);
+            Set_wait_timer(1);
+            Event_camera_off();
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA_2);
+            Set_char_position(0x7D4, 0, -0x112);
+            Turn_char(0x2D, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Collision_off();
+            Hide_char();
+            Hide_char_shadow();
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Set_event_motion(2, 3);
+            Change_motion(0xC9);
+            Play_partial_motion(0x38, 0x44, 0);
+        }
+        entry_13 {
+            Motion_ctrl_on();
+            Char_bg_on();
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+        }
+    }
+
+    thread pongo {  // 2
+        init {
+            Set_char_ID(PONGO);
+            Set_char_position(0x8FE, 0, -0x166);
+            Turn_char(0x28, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Hide_char();
+            Hide_char_shadow();
+            Char_bg_off();
+            Set_char_position(0x8FE, 0, -0x166);
+            Turn_char(0x28, 0);
+            Set_event_motion(2, 0);
+            Change_motion(0xCA);
+        }
+        entry_12 {
+            Set_char_position(0x8FE, 0, -0x166);
+            Turn_char(0x28, 0);
+            Show_char();
+            Show_char_shadow();
+            Set_wait_timer(5);
+            Change_motion_interp(0xCD, 0x14);
+            Set_wait_timer(0x32);
+        }
+        entry_16 {
+            Set_char_position(0x874, 0, -0x1D0);
+            Turn_char(0x159, 0);
+            Motion_change_no_loop(0xCE);
+            Set_wait_timer(0xC8);
+            Change_motion_interp(0xCA, 0x32);
+        }
+        entry_17 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread perdita {  // 3
+        init {
+            Set_char_ID(PERDITA);
+            Set_char_position(0x917, 0, -0x118);
+            Turn_char(0x154, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Hide_char();
+            Hide_char_shadow();
+            Char_bg_off();
+            Set_char_position(0x917, 0, -0x118);
+            Turn_char(0x154, 0);
+            Set_event_motion(2, 1);
+            Change_motion(0xCA);
+        }
+        entry_12 {
+            Show_char();
+            Show_char_shadow();
+            Set_char_position(0x917, 0, -0x118);
+            Turn_char(0x154, 0);
+            Change_motion(0xCD);
+            Set_wait_timer(0x14);
+            Set_motion_speed(0x46, perdita);
+        }
+        entry_14 {
+            Set_char_position(0x841, 0, -0x1AE);
+            Turn_char(0x1A, 0);
+            Motion_change_no_loop(0xCE);
+            Set_wait_timer(0xD7);
+            Change_motion_frame(0xCA, 0, 0x2D);
+            Play_partial_motion(0x2D, 0x50, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Set_motion_speed(0x64, perdita);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+        }
+    }
+
+    thread dalmatians1 {  // 4
+        init {
+            Display_model(DALMATIANS1);
+            Set_char_ID(DALMATIANS1);
+            Char_bg_off();
+            Start_texture_animation(dalmatians1, 0x44D, 0);
+            Start_texture_animation(dalmatians1, 0x45A, 0);
+            Start_texture_animation(dalmatians1, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7D2, -0xA8, 0x191);
+            Turn_char(0xD0, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xCB);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Set_char_position(0xAB0, 0, 0x8C);
+            Turn_char(0, 0);
+        }
+        entry_13 {
+            Change_motion(0xC8);
+            Move_noturn(2, 0xA67, 0, 0xF7);
+            Set_wait_timer(0x12);
+            Turn_char(0xFA, 0x1E);
+            Set_wait_timer(0x12);
+            Move_noturn(3, 0x988, 0, 0xC6);
+            Set_wait_timer(0x17);
+            Turn_char(0xBE, 0x13);
+            Set_wait_timer(0xD);
+            Move_noturn(3, 0x9CE, 0, 0x1C);
+            Turn_char(0xC8, 0x19);
+            Set_wait_timer(0x26);
+            Move_char(3, 0x92A, 0, -0xA);
+            Turn_char(0xAA, 0x24);
+            Set_wait_timer(0xA);
+            Change_char_color(0xAA, 0xAA, 0xAA, 0x80, 6);
+            Set_wait_timer(0x1E);
+            Move_char(3, 0x8DD, 0, -0xF0);
+            Turn_char(0xB4, 0x14);
+            Set_wait_timer(0x14);
+            Color_change_no_invalidate_floor(0xD6, 0xD6, 0xD6, 0x80, 6);
+            Wait_move_done();
+        }
+        entry_14 {
+            Color_change_no_invalidate_floor(0xD0, 0xD0, 0xD0, 0x80, 6);
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x80B, 0, -0x6F);
+            Turn_char(0xB8, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xC8);
+            Move_char(1, 0x7F8, 0, -0x93);
+            Set_wait_timer(0x1E);
+            Cancel_movement();
+            Change_motion_interp(0xC9, 0x14);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x854, -0x4A, -0x213);
+            Turn_char(0x167, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_16 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS1);
+        }
+    }
+
+    thread dalmatians2 {  // 5
+        init {
+            Display_model(DALMATIANS2);
+            Set_char_ID(DALMATIANS2);
+            Char_bg_off();
+            Start_texture_animation(dalmatians2, 0x44E, 0);
+            Start_texture_animation(dalmatians2, 0x45B, 0);
+            Start_texture_animation(dalmatians2, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7AC, -0xA8, 0x19C);
+            Turn_char(0x8F, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+        }
+        entry_12 {
+            Set_char_position(0xAE2, 0, 0x5A);
+            Turn_char(0, 0);
+        }
+        entry_13 {
+            Change_motion(0xC9);
+            Set_wait_timer(5);
+            Change_motion(0xC8);
+            Move_char(2, 0xA8F, 0, 0x1C2);
+            Set_wait_timer(1);
+            Set_wait_timer(1);
+            Set_wait_timer(0x28);
+            Move_char(3, 0x9BA, 0, 0xE4);
+            Set_wait_timer(0x2A);
+            Move_noturn(2, 0x8BA, 0, 0x52);
+            Turn_char(0xBE, 0x14);
+            Set_wait_timer(0x2D);
+            Move_char(3, 0x8DD, 0, -0x12C);
+            Wait_move_done();
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x82E, 0, -0xA8);
+            Turn_char(0xDA, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0xF0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_15 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x888, 0, -0x1A7);
+            Turn_char(0xDE, 0);
+            Change_motion_frame(0xCF, 0, 0x32);
+            Play_partial_motion(0x32, 0x50, 0);
+            Start_texture_animation(dalmatians2, 0xA, 0);
+            Set_wait_timer(0x1E);
+            Start_texture_animation(dalmatians2, 0, 0);
+            Start_texture_animation(dalmatians2, 0xC, 0);
+        }
+        entry_16 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS2);
+        }
+    }
+
+    thread dalmatians3 {  // 6
+        init {
+            Display_model(DALMATIANS3);
+            Set_char_ID(DALMATIANS3);
+            Char_bg_off();
+            Start_texture_animation(dalmatians3, 0x454, 0);
+            Start_texture_animation(dalmatians3, 0x461, 0);
+            Start_texture_animation(dalmatians3, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x76A, -0xA8, 0x177);
+            Turn_char(0x7D, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x8BB, 0, 0x11E);
+            Turn_char(0x11E, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x869, 0, -0xD5);
+            Turn_char(0x114, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0xA);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x840, 0, -0xE9);
+            Set_wait_timer(0x2D);
+            Cancel_movement();
+            Change_motion_interp(0xC9, 0x1E);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x855, 0, -0x1B5);
+            Turn_char(0x136, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS3);
+        }
+    }
+
+    thread dalmatians4 {  // 7
+        init {
+            Display_model(DALMATIANS4);
+            Set_char_ID(DALMATIANS4);
+            Char_bg_off();
+            Start_texture_animation(dalmatians4, 0x44E, 0);
+            Start_texture_animation(dalmatians4, 0x45B, 0);
+            Start_texture_animation(dalmatians4, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7D1, -0x52, 0x16D);
+            Turn_char(0xC6, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x8EB, 0, 0xC6);
+            Turn_char(0x11E, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x82C, 0, -0x13A);
+            Turn_char(0x119, 0);
+            Change_motion(0xC8);
+            Move_char(1, 0x82C, 0, -0x116);
+            Set_wait_timer(0x1E);
+            Cancel_movement();
+            Change_motion_interp(0xC9, 0x14);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCB);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x64);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x819, 0, -0x17E);
+            Turn_char(0x7C, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCD);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS4);
+        }
+    }
+
+    thread dalmatians5 {  // 8
+        init {
+            Display_model(DALMATIANS5);
+            Set_char_ID(DALMATIANS5);
+            Char_bg_off();
+            Start_texture_animation(dalmatians5, 0x44F, 0);
+            Start_texture_animation(dalmatians5, 0x45C, 0);
+            Start_texture_animation(dalmatians5, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7BF, -0x2B, 0x145);
+            Turn_char(0xCB, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCB, 0, 0x46);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x923, 0, 0x42);
+            Turn_char(0xC8, 0);
+            Set_wait_timer(0xE6);
+            Change_motion(0xC8);
+            Move_char(1, 0x8B0, 0, -0xAD);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Set_char_position(0x7CA, 0, -0x96);
+            Turn_char(0xBA, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0xF0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x862, 0, -0x178);
+            Turn_char(0x9F, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS5);
+        }
+    }
+
+    thread dalmatians6 {  // 9
+        init {
+            Display_model(DALMATIANS6);
+            Set_char_ID(DALMATIANS6);
+            Char_bg_off();
+            Start_texture_animation(dalmatians6, 0x454, 0);
+            Start_texture_animation(dalmatians6, 0x461, 0);
+            Start_texture_animation(dalmatians6, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7AD, -0x30, 0x12B);
+            Turn_char(0, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xD4, 0, 0x1E);
+            Play_partial_motion(0x1E, 0x4A, 0);
+            Set_wait_timer(0x2C);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x890, 0, -0x3C);
+            Turn_char(0x5E, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x8A5, 0, -0x7C);
+            Turn_char(0xF1, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(5);
+            Change_motion(0xC8);
+            Move_char(1, 0x85B, 0, -0xB8);
+            Set_wait_timer(0x28);
+            Cancel_movement();
+            Change_motion_interp(0xC9, 3);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x87F, -0x4A, -0x1F1);
+            Turn_char(0xE6, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS6);
+        }
+    }
+
+    thread dalmatians7 {  // 10
+        init {
+            Display_model(DALMATIANS7);
+            Set_char_ID(DALMATIANS7);
+            Char_bg_off();
+            Start_texture_animation(dalmatians7, 0x458, 0);
+            Start_texture_animation(dalmatians7, 0x465, 0);
+            Start_texture_animation(dalmatians7, 0x44B, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x765, -0xA8, 0x143);
+            Turn_char(0xA, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x980, 0, 0x88);
+            Turn_char(0x135, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x849, 0, -0x112);
+            Turn_char(0x110, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x78);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8AB, 0, -0x1BA);
+            Turn_char(0xCE, 0);
+            Change_motion(0xCB);
+            Set_wait_timer(0x28);
+            Change_motion(0xCD);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS7);
+        }
+    }
+
+    thread dalmatians8 {  // 11
+        init {
+            Display_model(DALMATIANS8);
+            Set_char_ID(DALMATIANS8);
+            Char_bg_off();
+            Start_texture_animation(dalmatians8, 0x451, 0);
+            Start_texture_animation(dalmatians8, 0x45E, 0);
+            Start_texture_animation(dalmatians8, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x79D, -0xA8, 0x18E);
+            Turn_char(0xB4, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x89D, 0, 0xDF);
+            Turn_char(0xCF, 0);
+            Set_wait_timer(0xC8);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Set_wait_timer(0x24);
+            Change_motion(0xC8);
+            Move_char(1, 0x84E, 0, 0x57);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Set_char_position(0x7E6, 0, -0x5B);
+            Turn_char(0xC4, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x3C);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x849, 0, -0x188);
+            Turn_char(0xCC, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x3C);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS8);
+        }
+    }
+
+    thread dalmatians9 {  // 12
+        init {
+            Display_model(DALMATIANS9);
+            Set_char_ID(DALMATIANS9);
+            Char_bg_off();
+            Start_texture_animation(dalmatians9, 0x44F, 0);
+            Start_texture_animation(dalmatians9, 0x45C, 0);
+            Start_texture_animation(dalmatians9, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x7A9, -0x54, 0x14E);
+            Turn_char(0x2D, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Set_wait_timer(0x3C);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x93E, 0, 0xA2);
+            Turn_char(0x63, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion_frame(0xCB, 0, 0x46);
+            Set_wait_timer(0x1E);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x782, 0, -0x52);
+            Turn_char(0x9F, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(1);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x79A, 0, -0x75);
+            Set_wait_timer(0x37);
+            Cancel_movement();
+            Change_motion_interp(0xC9, 0xA);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8B6, 0, -0x15F);
+            Turn_char(0xDA, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians10, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians10, 0, 0);
+            Start_texture_animation(dalmatians10, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS9);
+        }
+    }
+
+    thread dalmatians10 {  // 13
+        init {
+            Display_model(DALMATIANS10);
+            Set_char_ID(DALMATIANS10);
+            Char_bg_off();
+            Start_texture_animation(dalmatians10, 0x452, 0);
+            Start_texture_animation(dalmatians10, 0x45F, 0);
+            Start_texture_animation(dalmatians10, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x750, -0xA8, 0x170);
+            Turn_char(0x77, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x809, 0, 0x8C);
+            Turn_char(0xBF, 0);
+            Set_wait_timer(0xC8);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Set_wait_timer(0x3C);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x7FE, 0, 0x4F);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Set_char_position(0x7C3, 0, -0x55);
+            Turn_char(0xB0, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x1E);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCA);
+            Set_wait_timer(0x1E);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_14 {
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x803, -0x4A, -0x1FA);
+            Turn_char(0xB0, 0);
+            Change_motion_frame(0xD4, 0, 0x1E);
+            Play_partial_motion(0x1E, 0x4A, 0);
+            Set_wait_timer(0x2C);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS10);
+        }
+    }
+
+    thread dalmatians11 {  // 14
+        init {
+            Display_model(DALMATIANS11);
+            Set_char_ID(DALMATIANS11);
+            Char_bg_off();
+            Start_texture_animation(dalmatians11, 0x453, 0);
+            Start_texture_animation(dalmatians11, 0x460, 0);
+            Start_texture_animation(dalmatians11, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0x769, -0xA8, 0x15D);
+            Turn_char(0x45, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x829, 0, 0x60);
+            Turn_char(0xA9, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x104);
+            Change_motion_frame(0xCB, 0, 0x46);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x83C, 0, 0x1F);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x811, 0, -0x55);
+            Turn_char(0xCF, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x24);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x811, 0, -0x55);
+            Turn_char(0xC5, 0);
+            Change_motion(0xD3);
+            Set_wait_timer(0x24);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS11);
+        }
+    }
+
+    thread dalmatians12 {  // 15
+        init {
+            Display_model(DALMATIANS12);
+            Set_char_ID(DALMATIANS12);
+            Char_bg_off();
+            Start_texture_animation(dalmatians12, 0x451, 0);
+            Start_texture_animation(dalmatians12, 0x45E, 0);
+            Start_texture_animation(dalmatians12, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA4C, -0x29, -0x63);
+            Turn_char(0x13F, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x95E, 0, -0x96);
+            Turn_char(0xA9, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x898, 0, -0xA4);
+            Turn_char(0xF8, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8D7, 0, -0x195);
+            Turn_char(0xF2, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS12);
+        }
+    }
+
+    thread dalmatians13 {  // 16
+        init {
+            Display_model(DALMATIANS13);
+            Set_char_ID(DALMATIANS13);
+            Char_bg_off();
+            Start_texture_animation(dalmatians13, 0x453, 0);
+            Start_texture_animation(dalmatians13, 0x460, 0);
+            Start_texture_animation(dalmatians13, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA4B, -0x29, -0x3C);
+            Turn_char(0xA5, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians13, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians13, 0, 0);
+            Start_texture_animation(dalmatians13, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x9A0, 0, -0x22);
+            Turn_char(0x76, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x84B, 0, -0xA5);
+            Turn_char(0xDF, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x7F6, 0, -0x1CC);
+            Turn_char(0x65, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS13);
+        }
+    }
+
+    thread dalmatians14 {  // 17
+        init {
+            Display_model(DALMATIANS14);
+            Set_char_ID(DALMATIANS14);
+            Char_bg_off();
+            Start_texture_animation(dalmatians14, 0x450, 0);
+            Start_texture_animation(dalmatians14, 0x45D, 0);
+            Start_texture_animation(dalmatians14, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA03, 0, -0x5A);
+            Turn_char(0x56, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xD4);
+            Play_partial_motion(0x1E, 0x4A, 0);
+            Set_wait_timer(0x2C);
+            Set_wait_timer(0x2C);
+            Set_wait_timer(0x2C);
+            Change_motion_frame(0xD4, 0, 0x4A);
+        }
+        entry_12 {
+            Change_motion(0xC9);
+            Set_char_position(0x9B5, 0, 0x137);
+            Turn_char(0x38, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x791, 0, -0xE4);
+            Turn_char(0x7F, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(1);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x7A2, 0, -0xDC);
+            Set_wait_timer(0xF);
+            Cancel_movement();
+            Change_motion(0xCB);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x46);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x844, 0, -0x137);
+            Turn_char(0xA5, 0);
+            Change_motion(0xCD);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x46);
+            Start_texture_animation(dalmatians14, 0xA, 0);
+            Change_motion(0xCE);
+            Set_wait_timer(0x64);
+            Start_texture_animation(dalmatians14, 0, 0);
+            Start_texture_animation(dalmatians14, 0xC, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS14);
+        }
+    }
+
+    thread dalmatians15 {  // 18
+        init {
+            Display_model(DALMATIANS15);
+            Set_char_ID(DALMATIANS15);
+            Char_bg_off();
+            Start_texture_animation(dalmatians15, 0x452, 0);
+            Start_texture_animation(dalmatians15, 0x45F, 0);
+            Start_texture_animation(dalmatians15, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA2D, -0x29, -0x2A);
+            Turn_char(0xE2, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Set_char_position(0xA2E, -0x29, 0x31);
+            Turn_char(0xFE, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x872, 0, -0xDD);
+            Turn_char(0x107, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x80E, 0, -0x159);
+            Turn_char(0x4B, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS15);
+        }
+    }
+
+    thread dalmatians16 {  // 19
+        init {
+            Display_model(DALMATIANS16);
+            Set_char_ID(DALMATIANS16);
+            Char_bg_off();
+            Start_texture_animation(dalmatians16, 0x459, 0);
+            Start_texture_animation(dalmatians16, 0x466, 0);
+            Start_texture_animation(dalmatians16, 0x44C, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA44, -0x29, -0x21);
+            Turn_char(0x14F, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xCA);
+            Set_wait_timer(0x24);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_12 {
+            Set_char_position(0xA0E, 0, 0x30);
+            Turn_char(0x125, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x840, 0, -0x66);
+            Turn_char(0xC9, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x88B, 0, -0xEC);
+            Turn_char(0x7B, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS16);
+        }
+    }
+
+    thread dalmatians17 {  // 20
+        init {
+            Display_model(DALMATIANS17);
+            Set_char_ID(DALMATIANS17);
+            Char_bg_off();
+            Start_texture_animation(dalmatians17, 0x450, 0);
+            Start_texture_animation(dalmatians17, 0x45D, 0);
+            Start_texture_animation(dalmatians17, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA09, 0, -0x30);
+            Turn_char(0x75, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians17, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians17, 0, 0);
+            Start_texture_animation(dalmatians17, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Set_char_position(0xA22, 0, 0x88);
+            Turn_char(0xDA, 0);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians17, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians17, 0, 0);
+            Start_texture_animation(dalmatians17, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x839, 0, -0x3D);
+            Turn_char(0xC3, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8C0, 0, -0xFF);
+            Turn_char(0x105, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS17);
+        }
+    }
+
+    thread dalmatians18 {  // 21
+        init {
+            Display_model(DALMATIANS18);
+            Set_char_ID(DALMATIANS18);
+            Char_bg_off();
+            Start_texture_animation(dalmatians18, 0x44D, 0);
+            Start_texture_animation(dalmatians18, 0x45A, 0);
+            Start_texture_animation(dalmatians18, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA47, -0x29, 7);
+            Turn_char(0x54, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCF, 0, 0x32);
+            Play_partial_motion(0x32, 0x50, 0);
+            Start_texture_animation(dalmatians18, 0xA, 0);
+            Set_wait_timer(0x1E);
+            Start_texture_animation(dalmatians18, 0, 0);
+            Start_texture_animation(dalmatians18, 0xC, 0);
+            Change_motion_frame(0xCF, 0, 0x50);
+            Set_wait_timer(0x14);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_12 {
+            Set_char_position(0xA30, -0x4E, 0x81);
+            Turn_char(0x108, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+            Set_wait_timer(0x16);
+            Start_texture_animation(dalmatians18, 0xA, 0);
+            Change_motion(0xCE);
+            Set_wait_timer(0x64);
+            Start_texture_animation(dalmatians18, 0, 0);
+            Start_texture_animation(dalmatians18, 0xC, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x888, 0, -0x147);
+            Turn_char(0x13C, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x888, 0, -0x14C);
+            Turn_char(0x140, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS18);
+        }
+    }
+
+    thread dalmatians19 {  // 22
+        init {
+            Display_model(DALMATIANS19);
+            Set_char_ID(DALMATIANS19);
+            Char_bg_off();
+            Start_texture_animation(dalmatians19, 0x44E, 0);
+            Start_texture_animation(dalmatians19, 0x45B, 0);
+            Start_texture_animation(dalmatians19, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA46, -0x29, 0x1F);
+            Turn_char(0x6D, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xCF);
+            Play_partial_motion(0x32, 0x50, 0);
+            Set_wait_timer(0x50);
+            Start_texture_animation(dalmatians19, 0xA, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Start_texture_animation(dalmatians19, 0, 0);
+            Start_texture_animation(dalmatians19, 0xC, 0);
+            Change_motion_frame(0xCF, 0, 0x50);
+            Set_wait_timer(0x14);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_12 {
+            Set_char_position(0xA48, -0x29, 0x5F);
+            Turn_char(0x2E, 0);
+            Set_event_motion(1, 0);
+            Start_texture_animation(dalmatians19, 0xA, 0);
+            Set_wait_timer(0x1E);
+            Change_motion_frame(0xCD, 0, 0x46);
+            Set_wait_timer(0x32);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x78F, 0, -0xB0);
+            Turn_char(0x7C, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x3C);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x3C);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x7E2, 0, -0x15F);
+            Turn_char(0x7C, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS19);
+        }
+    }
+
+    thread dalmatians20 {  // 23
+        init {
+            Display_model(DALMATIANS20);
+            Set_char_ID(DALMATIANS20);
+            Char_bg_off();
+            Start_texture_animation(dalmatians20, 0x457, 0);
+            Start_texture_animation(dalmatians20, 0x464, 0);
+            Start_texture_animation(dalmatians20, 0x44A, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA48, -0x29, 0x5F);
+            Turn_char(0x2E, 0);
+            Set_event_motion(1, 0);
+            Start_texture_animation(dalmatians20, 0xA, 0);
+            Change_motion_frame(0xCF, 0, 0x32);
+            Play_partial_motion(0x32, 0x50, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Set_char_position(0xA90, -0x37, 0x16E);
+            Turn_char(0x2E, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x861, 0, -0x153);
+            Turn_char(0x12F, 0);
+            Start_texture_animation(dalmatians20, 0, 0);
+            Start_texture_animation(dalmatians20, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xC9);
+            Set_wait_timer(0x50);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x861, 0, -0x151);
+            Turn_char(0x15D, 0);
+        }
+        entry_15 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS20);
+        }
+    }
+
+    thread dalmatians21 {  // 24
+        init {
+            Display_model(DALMATIANS21);
+            Set_char_ID(DALMATIANS21);
+            Char_bg_off();
+            Set_char_position(0x8F6, 0, -0x67);
+            Turn_char(0xD7, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Collision_off();
+            Char_bg_off();
+            Set_event_motion(2, 2);
+            Start_texture_animation(dalmatians21, 0xA, 0);
+            Change_motion_frame(0xCA, 0, 0x32);
+            Play_partial_motion(0x32, 0x50, 0);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Start_texture_animation(dalmatians21, 0, 0);
+            Start_texture_animation(dalmatians21, 0xC, 0);
+            Change_motion_frame(0xCA, 0, 0x50);
+            Set_wait_timer(0x1E);
+            Change_motion_frame(0xC9, 0x14, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_12 {
+            Hide_char_shadow();
+            Set_char_position(0x7FB, 0, -0xEA);
+            Turn_char(0xE9, 0);
+            Change_motion(0xC8);
+            Set_wait_timer(0x64);
+            Change_motion(0xCB);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x1E);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x7FB, 0, -0xEA);
+            Turn_char(0xE4, 0);
+        }
+        entry_14 {
+            Set_battle_motion();
+            Change_motion(0);
+            Collision_on();
+            Show_char();
+            Show_char_shadow();
+            Motion_ctrl_on();
+            Set_wait_timer(1);
+            Discard_object_data(DALMATIANS21);
+        }
+    }
+
+    thread dalmatians22 {  // 25
+        init {
+            Display_model(DALMATIANS22);
+            Set_char_ID(DALMATIANS22);
+            Char_bg_off();
+            Start_texture_animation(dalmatians22, 0x452, 0);
+            Start_texture_animation(dalmatians22, 0x45F, 0);
+            Start_texture_animation(dalmatians22, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA0E, 0, 0x30);
+            Turn_char(0x125, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians22, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians22, 0, 0);
+            Start_texture_animation(dalmatians22, 0xC, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Motion_change_no_loop(0xCD);
+            Set_wait_timer(0x64);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+        }
+        entry_12 {
+            Set_char_position(0x86A, 0, 0x5B);
+            Turn_char(0xA0, 0);
+        }
+        entry_13 {
+            Hide_char_shadow();
+            Set_char_position(0x83A, 0, -0x14D);
+            Turn_char(0x131, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x821, 0, -0x116);
+            Turn_char(0x12C, 0);
+        }
+        entry_15 {
+            Discard_object_data(DALMATIANS22);
+        }
+    }
+
+    thread dalmatians23 {  // 26
+        init {
+            Display_model(DALMATIANS23);
+            Set_char_ID(DALMATIANS23);
+            Char_bg_off();
+            Start_texture_animation(dalmatians23, 0x454, 0);
+            Start_texture_animation(dalmatians23, 0x461, 0);
+            Start_texture_animation(dalmatians23, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA2E, -0x29, 0x31);
+            Turn_char(0xFE, 0);
+            Set_event_motion(1, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD1);
+            Start_texture_animation(dalmatians23, 0xA, 0);
+            Set_wait_timer(0x5A);
+            Start_texture_animation(dalmatians23, 0, 0);
+            Start_texture_animation(dalmatians23, 0xC, 0);
+        }
+        entry_12 {
+            Set_char_position(0x88A, 0, 0x6C);
+            Turn_char(0xC6, 0);
+            Change_motion(0xC9);
+            Set_wait_timer(0xC8);
+            Change_motion(0xC8);
+            Move_char(1, 0x87F, 0, 0x2E);
+            Set_wait_timer(0x23);
+            Cancel_movement();
+            Change_motion(0xD3);
+            Set_wait_timer(0x44);
+            Change_motion_frame(0xCD, 0x30, 0x46);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Set_char_position(0x872, 0, -0x116);
+            Turn_char(0x118, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x863, 0, -0x116);
+            Turn_char(0x115, 0);
+        }
+        entry_15 {
+            Discard_object_data(DALMATIANS23);
+        }
+    }
+
+    thread dalmatians24 {  // 27
+        init {
+            Display_model(DALMATIANS24);
+            Set_char_ID(DALMATIANS24);
+            Char_bg_off();
+            Start_texture_animation(dalmatians24, 0x44F, 0);
+            Start_texture_animation(dalmatians24, 0x45C, 0);
+            Start_texture_animation(dalmatians24, 0x449, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA31, -0x50, 0x7A);
+            Turn_char(0x108, 0);
+            Set_event_motion(1, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+            Set_wait_timer(0x16);
+            Start_texture_animation(dalmatians24, 0xA, 0);
+            Change_motion(0xCE);
+            Set_wait_timer(0x64);
+            Start_texture_animation(dalmatians24, 0, 0);
+            Start_texture_animation(dalmatians24, 0xC, 0);
+            Change_motion_frame(0xCD, 0, 0x30);
+            Play_partial_motion(0x30, 0x46, 0);
+            Set_wait_timer(0x16);
+        }
+        entry_12 {
+            Change_char_color(0xB1, 0xB1, 0xB1, 0x80, 0);
+            Set_char_position(0x96A, 0, -0x3B);
+            Turn_char(0xED, 0);
+        }
+        entry_13 {
+            Restore_char_color();
+            Hide_char_shadow();
+            Set_char_position(0x8AA, 0, -0xC1);
+            Turn_char(0x115, 0);
+        }
+        entry_14 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8E5, 0, -0x139);
+            Turn_char(0x112, 0);
+        }
+        entry_15 {
+            Discard_object_data(DALMATIANS24);
+        }
+    }
+
+    thread dalmatians25 {  // 28
+        init {
+            Display_model(DALMATIANS25);
+            Set_char_ID(DALMATIANS25);
+            Char_bg_off();
+            Start_texture_animation(dalmatians25, 0x44D, 0);
+            Start_texture_animation(dalmatians25, 0x45A, 0);
+            Start_texture_animation(dalmatians25, 0x448, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Motion_ctrl_off();
+            Char_bg_off();
+            Show_char();
+            Show_char_shadow();
+            Collision_off();
+            Set_char_position(0xA22, 0, 0x88);
+            Turn_char(0xDA, 0);
+        }
+        entry_12 {
+            Set_char_position(0x8C3, 0, 0x22);
+            Turn_char(0xCD, 0);
+            Change_motion_frame(0xCB, 0, 0x28);
+            Play_partial_motion(0x28, 0x46, 0);
+            Set_wait_timer(0x96);
+            Change_motion(0xCC);
+            Set_wait_timer(0x5A);
+            Change_motion_frame(0xCB, 0, 0x46);
+            Set_wait_timer(0x1E);
+            Change_motion(0xD0);
+            Set_wait_timer(0x3C);
+            Change_motion(0xD2);
+            Move_slow(0x19, 0x8C0, 0, -0x4C);
+        }
+        entry_13 {
+            Cancel_movement();
+            Hide_char_shadow();
+            Set_char_position(0x8D8, 0, -0x6A);
+            Turn_char(0xDC, 0);
+        }
+        entry_14 {
+            Hide_char_shadow();
+            Change_motion(0xC9);
+            Set_char_position(0x8FF, 0, -0x1B8);
+            Turn_char(0xDF, 0);
+        }
+        entry_15 {
+            Discard_object_data(DALMATIANS25);
+        }
+    }
+}

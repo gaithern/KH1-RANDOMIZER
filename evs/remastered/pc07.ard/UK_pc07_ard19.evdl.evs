@@ -1,0 +1,3166 @@
+kgr 0 {
+    entities {
+        SORA = 0;
+        PLAYER1 = 1;
+        PLAYER2 = 2;
+        PLAYER9 = 9;
+        MO_DAIRI09 = 0x40000;
+        MO_DAIRI10 = 0x40001;
+        MO_SWITCH2_PC07 = 0x40003;
+        MO_SWITCH3_PC07 = 0x40004;
+        MO_SWITCH4_PC07 = 0x40005;
+        MO_DAIRI1_PC07 = 0x40013;
+        MO_DAIRI2_PC07 = 0x40014;
+        MO_DAIRI3_PC07 = 0x40015;
+        F_GIMMICK1_PC07 = 0x50000;
+        F_GIMMICK2_PC07 = 0x50001;
+        F_GIMMICK3_PC07 = 0x50002;
+        F_GIMMICK4_PC07 = 0x50003;
+        F_GIMMICK5_PC07 = 0x50004;
+        MVF_TORO11_PC07 = 0x50007;
+        MVF_TORO12_PC07 = 0x50008;
+        MVF_TORO13_PC07 = 0x50009;
+        MVF_TORO21_PC07 = 0x5000A;
+        MVF_TORO22_PC07 = 0x5000B;
+        MVF_TORO23_PC07 = 0x5000C;
+        MVF_TORO31_PC07 = 0x5000D;
+        MVF_TORO32_PC07 = 0x5000E;
+        MVF_TORO33_PC07 = 0x5000F;
+        MVF_TORO41_PC07 = 0x50010;
+        MVF_TORO42_PC07 = 0x50011;
+        MVF_TORO43_PC07 = 0x50012;
+        VF_FFLOOR1_PC07 = 0x50013;
+    }
+
+    thread 0 {
+        init {
+            if (((bit[0x7EB7] == 1) | (bit[0x7EB6] == 1)) | (bit[0x7EB5] == 1)) {
+                Disable_all_battle_event_boxes();
+                save_data2.word[0x3E0] = 0;
+                save_data2.word[0x3E2] = 0;
+                save_data2.word[0x3E4] = 0;
+                save_data2.word[0x3E6] = 0;
+                save_data2.word[0x3E8] = 0;
+                save_data2.word[0x3EA] = 0;
+                save_data2.word[0x3EC] = 0;
+                save_data2.word[0x3EE] = 0;
+                save_data2[0x3F0] = 0;
+                save_data2[0x3F1] = 0;
+                save_data2[0x3F2] = 0;
+                save_data2[0x3F3] = 0;
+                save_data2[0x3F4] = 0;
+                save_data2[0x3F5] = 0;
+                save_data2[0x3F6] = 0;
+                save_data2[0x3F7] = 0;
+                DIALOG_STATE = 4;
+                local7 = 0x141;
+                Display_register_value(local7);
+            } else {
+                Disable_all_battle_event_boxes();
+                save_data2.word[0x3E0] = 0;
+                save_data2.word[0x3E2] = 0;
+                save_data2.word[0x3E4] = 0;
+                save_data2.word[0x3E6] = 0;
+                save_data2.word[0x3E8] = 0;
+                save_data2.word[0x3EA] = 0;
+                save_data2.word[0x3EC] = 0;
+                save_data2.word[0x3EE] = 0;
+                save_data2[0x3F0] = 0;
+                save_data2[0x3F1] = 0;
+                save_data2[0x3F2] = 0;
+                save_data2[0x3F3] = 0;
+                save_data2[0x3F4] = 0;
+                save_data2[0x3F5] = 0;
+                save_data2[0x3F6] = 0;
+                save_data2[0x3F7] = 0;
+                save_data2[0x1D] = 0;
+                CURRENT_WORLD = Get_world_number();
+                if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                    DIALOG_STATE = 4;
+                }
+                bit[0x6B2E] = 1;
+                bit[0x6B2F] = 0;
+                Pad_ctrl_on();
+                Enter_event_mode();
+                local7 = 0x7B;
+                Display_register_value(local7);
+            }
+        }
+        main {
+            if (((bit[0x7EB7] == 1) | (bit[0x7EB6] == 1)) | (bit[0x7EB5] == 1)) {
+                Pad_ctrl_off();
+                Disable_all_battle_event_boxes();
+                local8 = 0x141;
+                Display_register_value(local8);
+                goto L1;
+            }
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            local8 = 0x7B;
+            Display_register_value(local8);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Make_invincible();
+            Collision_off();
+            Char_bg_off();
+            Make_non_pressable();
+            Motion_ctrl_off();
+            Move_noturn(0x20, 0x45B, -0x258, -0xF);
+            Set_wait_timer(1);
+            Wait_move_done();
+            Cancel_movement();
+            Motion_ctrl_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Make_not_invincible();
+            Collision_on();
+            Make_pressable();
+        }
+        entry_12 {
+            Char_ctrl_off();
+            Make_invincible();
+            Collision_off();
+            Char_bg_off();
+            Make_non_pressable();
+            Motion_ctrl_off();
+            Move_noturn(0x20, 0x2D6, 0, 0);
+            Set_wait_timer(1);
+            Wait_move_done();
+            Cancel_movement();
+            Motion_ctrl_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Make_not_invincible();
+            Collision_on();
+            Make_pressable();
+        }
+        entry_13 {
+            Char_ctrl_off();
+            Make_invincible();
+            Collision_off();
+            Char_bg_off();
+            Make_non_pressable();
+            Motion_ctrl_off();
+            Change_motion(0);
+            Turn_char(runtime.dword[0xA44], 0);
+            Set_char_initial_state(runtime.dword[0xA38], runtime.dword[0xA3C], runtime.dword[0xA40]);
+        }
+        entry_14 {
+            Change_char_color(0xFF, 0xFF, 0xFF, 0, 0xC);
+            Set_wait_timer(0xC);
+            Hide_char();
+        }
+        entry_15 {
+            Motion_ctrl_on();
+            Char_bg_on();
+            Char_ctrl_on();
+            Make_not_invincible();
+            Collision_on();
+            Make_pressable();
+        }
+        entry_16 {
+            Turn_char(runtime.dword[0xA44], 0);
+            Set_char_initial_state(runtime.dword[0xA38], runtime.dword[0xA3C], runtime.dword[0xA40]);
+            Set_wait_timer(1);
+            Show_char();
+            Set_BG_color_to_drawing(0xC);
+            Set_wait_timer(0xC);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+        entry_17 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(0, 0, -0x4A6);
+        }
+        entry_18 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(-0x168, -0x708, -0x64);
+        }
+        entry_19 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(0x14A, -0x708, -0x64);
+        }
+    }
+
+    thread player1 {  // 2
+        init {
+            Set_char_ID(PLAYER1);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player2 {  // 3
+        init {
+            Set_char_ID(PLAYER2);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player9 {  // 4
+        init {
+            Set_char_ID(PLAYER9);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread 5 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+            Close_window(7);
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            runtime.dword[0xA68] = Get_set_number();
+            if (runtime.dword[0xA68] == 0xC) {
+            }
+        }
+        main {
+            if (!(bit[0x7EB7] == 1)) goto L1;
+            Enter_event_mode();
+            Event_camera_on();
+            Stop_SE(0xDF91, 0);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            if (bit[0x7EA3] == 0) {
+                Set_wait_timer(1);
+                bit[0x7EB7] = 0;
+                bit[0x7EB6] = 0;
+                bit[0x7EB5] = 0;
+                start(sora.entry_18, level=5);
+                start(thread_32.entry_17, level=5);
+                start(thread_33.entry_17, level=5);
+                await(sora.entry_18, level=5);
+                await(thread_32.entry_17, level=5);
+                await(thread_33.entry_17, level=5);
+                Restore_camera(0xB4, 0, 1);
+                Set_wait_timer(1);
+                Event_camera_off();
+                Fade_in(8);
+                Set_wait_timer(8);
+                Command_display_on();
+                Gauge_on();
+                Pad_ctrl_on();
+                All_char_ctrl_on();
+                Remove_invincibility();
+                Exit_event_mode();
+                DIALOG_STATE = 0;
+                Enable_all_battle_event_boxes();
+                goto L1;
+            }
+            Set_wait_timer(1);
+            bit[0x7EB7] = 0;
+            bit[0x7EB6] = 0;
+            bit[0x7EB5] = 0;
+            start(sora.entry_19, level=5);
+            start(thread_32.entry_18, level=5);
+            start(thread_33.entry_18, level=5);
+            await(sora.entry_19, level=5);
+            await(thread_32.entry_18, level=5);
+            await(thread_33.entry_18, level=5);
+            Restore_camera(0xB4, 0, 1);
+            Set_wait_timer(1);
+            Event_camera_off();
+            Fade_in(8);
+            Set_wait_timer(8);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+        L1:
+            if ((bit[0x7EB6] == 1) | (bit[0x7EB5] == 1)) {
+                Enter_event_mode();
+                Event_camera_on();
+                Stop_SE(0xDF91, 0);
+                start(thread_32.entry_11, level=5);
+                start(thread_33.entry_11, level=5);
+                await(thread_32.entry_11, level=5);
+                await(thread_33.entry_11, level=5);
+                Set_wait_timer(1);
+                bit[0x7EB7] = 0;
+                bit[0x7EB6] = 0;
+                bit[0x7EB5] = 0;
+                start(sora.entry_17, level=5);
+                start(thread_32.entry_16, level=5);
+                start(thread_33.entry_16, level=5);
+                await(sora.entry_17, level=5);
+                await(thread_32.entry_16, level=5);
+                await(thread_33.entry_16, level=5);
+                Restore_camera(0xB4, 0, 1);
+                Set_wait_timer(1);
+                Event_camera_off();
+                Fade_in(8);
+                Set_wait_timer(8);
+                Command_display_on();
+                Gauge_on();
+                Pad_ctrl_on();
+                All_char_ctrl_on();
+                Remove_invincibility();
+                Exit_event_mode();
+                DIALOG_STATE = 0;
+                Enable_all_battle_event_boxes();
+            }
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            DIALOG_STATE = 3;
+            while (1) {
+            }
+        }
+    }
+
+    thread 6 {
+        init {
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            while (1) {
+                if (!(DIALOG_STATE != 4)) goto L1;
+                local18 = 0;
+                save_data2[0x1D] = 0;
+                if (!(local18 == 0)) goto L2;
+                local20 = GetLength_2(0x64, 0x4B0, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0x578)) & (Push_actor_coord_Y2(0) > (0x514 + -0x190)))) goto L2;
+                local18 = 1;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L2:
+                if (!(local18 == 0)) goto L3;
+                local20 = GetLength_2(0, -0x6A4, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0x2BC)) & (Push_actor_coord_Y2(0) > (0x258 + -0x190)))) goto L3;
+                local18 = 2;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L3:
+                if (!(local18 == 0)) goto L4;
+                local20 = GetLength_2(-0x6A4, 0, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0x2BC)) & (Push_actor_coord_Y2(0) > (0x258 + -0x190)))) goto L4;
+                local18 = 3;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L4:
+                if (!(local18 == 0)) goto L5;
+                local20 = GetLength_2(0x64, 0x2BC, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0x2BC)) & (Push_actor_coord_Y2(0) > (0x258 + -0x190)))) goto L5;
+                local18 = 4;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L5:
+                if (!(local18 == 0)) goto L6;
+                local20 = GetLength_2(0, -0x6A4, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0x64)) & (Push_actor_coord_Y2(0) > (0 + -0x190)))) goto L6;
+                local18 = 5;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L6:
+                if (!(local18 == 0)) goto L7;
+                local20 = GetLength_2(0x6A4, 0x64, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= 0xC8)) & (Push_actor_coord_Y2(0) > (0x64 + -0x190)))) goto L7;
+                local18 = 6;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L7:
+                if (!(local18 == 0)) goto L8;
+                local20 = GetLength_2(0x578, -0x44C, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x258 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x258 + -0x190)))) goto L8;
+                local18 = 7;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L8:
+                if (!(local18 == 0)) goto L9;
+                local20 = GetLength_2(0, -0x6A4, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x44C + 0x64))) & (Push_actor_coord_Y2(0) > (-0x44C + -0x190)))) goto L9;
+                local18 = 8;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L9:
+                if (!(local18 == 0)) goto L10;
+                local20 = GetLength_2(0x6A4, 0, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x4B0 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x4B0 + -0x190)))) goto L10;
+                local18 = 9;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L10:
+                if (!(local18 == 0)) goto L11;
+                local20 = GetLength_2(-0x6A4, 0, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x4B0 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x4B0 + -0x190)))) goto L11;
+                local18 = 0xA;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L11:
+                if (!(local18 == 0)) goto L12;
+                local20 = GetLength_2(0x41A, -0x5AA, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x708 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x708 + -0x190)))) goto L12;
+                local18 = 0xB;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L12:
+                if (!(local18 == 0)) goto L13;
+                local20 = GetLength_2(-0x41A, -0x5AA, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x708 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x708 + -0x190)))) goto L13;
+                local18 = 0xC;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L13:
+                if (!(local18 == 0)) goto L14;
+                local20 = GetLength_2(-0x41A, 0x5AA, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x708 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x708 + -0x190)))) goto L14;
+                local18 = 0xD;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L14:
+                if (!(local18 == 0)) goto L15;
+                local20 = GetLength_2(0x514, 0x4B0, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0x12C) & (Push_actor_coord_Y2(0) <= (-0x708 + 0x64))) & (Push_actor_coord_Y2(0) > (-0x708 + -0x190)))) goto L15;
+                local18 = 0xE;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L15:
+                if (((save_data2[0x1D] == 1) & (local23 == 0)) & (local19 == 1)) {
+                    local19 = 0;
+                    local23 = 1;
+                }
+                if ((local18 != 0) & (local19 == 0)) {
+                    local19 = 1;
+                    DIALOG_STATE = 1;
+                    Set_window_size(7, 6, 0);
+                    Set_window_type(7, 0);
+                    Set_window_opening_speed(7, 0);
+                    Set_window_close_speed(7, 0);
+                    Set_window_tail_type(7, 0);
+                    Set_window_position(7, 0, 0x96);
+                    Close_window(7);
+                    switch (local18) {
+                    case 1:
+                        local24 = messages[0x37]="{0x08}{0x0A 00 00 00}Waterway";
+                        local25 = -1;
+                        break;
+                    case 2:
+                        local24 = messages[0x33]="{0x08}{0x0A 00 00 00}Entrance Hall";
+                        local25 = -1;
+                        break;
+                    case 3:
+                        local24 = messages[0x3B]="{0x08}{0x0A 00 00 00}Castle Gates";
+                        local25 = -1;
+                        break;
+                    case 4:
+                        local24 = messages[0x3A]="{0x08}{0x0A 00 00 00}Waterway";
+                        local25 = -1;
+                        break;
+                    case 5:
+                        local24 = messages[0x34]="{0x08}{0x0A 00 00 00}Library";
+                        local25 = -1;
+                        break;
+                    case 6:
+                        local24 = messages[0x35]="{0x08}{0x0A 00 00 00}Great Crest";
+                        local25 = -1;
+                        break;
+                    case 7:
+                        local24 = messages[0x35]="{0x08}{0x0A 00 00 00}Great Crest";
+                        local25 = -1;
+                        break;
+                    case 8:
+                        local24 = messages[0x36]="{0x08}{0x0A 00 00 00}High Tower";
+                        local25 = -1;
+                        break;
+                    case 9:
+                        local24 = messages[0x36]="{0x08}{0x0A 00 00 00}High Tower";
+                        local25 = -1;
+                        break;
+                    case 0xA:
+                        local24 = messages[0x36]="{0x08}{0x0A 00 00 00}High Tower";
+                        local25 = -1;
+                        break;
+                    case 0xB:
+                        local24 = messages[0x36]="{0x08}{0x0A 00 00 00}High Tower";
+                        local25 = -1;
+                        break;
+                    case 0xC:
+                        local24 = messages[0x38]="{0x08}{0x0A 00 00 00}Castle Chapel";
+                        local25 = -1;
+                        break;
+                    case 0xD:
+                        local24 = messages[0x38]="{0x08}{0x0A 00 00 00}Castle Chapel";
+                        local25 = -1;
+                        break;
+                    case 0xE:
+                        local24 = messages[0x39]="{0x08}{0x0A 00 00 00}Grand Hall";
+                        local25 = -1;
+                        break;
+                    default:
+                        local24 = -1;
+                        local25 = -1;
+                    }
+                    if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                        Open_window_no_close(7);
+                        Display_message(7, local24);
+                        goto L16;
+                    }
+                    if (!((save_data2[0x1D] == 1) & (local25 != -1))) goto L16;
+                    Open_window_no_close(7);
+                    Display_message(7, local25);
+                L16:
+                    goto L17;
+                }
+                if (!((local18 == 0) & (local19 == 1))) goto L17;
+                if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 0) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 1) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                DIALOG_STATE = 0;
+                local19 = 0;
+            L17:
+                if (!(DIALOG_STATE == 3)) goto L1;
+                local19 = 0;
+            L1:
+            }
+        }
+    }
+
+    thread mo_dairi09 {  // 7
+        init {
+            Set_char_ID(MO_DAIRI09);
+            Get_MAPOBJ_BG_color();
+            local0 = 0;
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA7C], mo_dairi09, sora);
+                if (runtime.dword[0xA7C] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(3);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(3, Push_actor_coord_X(mo_dairi09), Push_actor_coord_Y(mo_dairi09) - 0x96, Push_actor_coord_Z(mo_dairi09));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(3);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            start(mvf_toro31_pc07.entry_13, level=5);
+            start(mvf_toro32_pc07.entry_13, level=5);
+            start(mvf_toro33_pc07.entry_13, level=5);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            Clear_resident_effect_ID(3);
+            Start_resident_effect(5);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(5, Push_actor_coord_X(mo_dairi09), Push_actor_coord_Y(mo_dairi09) - 0x96, Push_actor_coord_Z(mo_dairi09));
+            Play_SE2(0xDEFF, 0);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            await(mvf_toro31_pc07.entry_13, level=5);
+            await(mvf_toro32_pc07.entry_13, level=5);
+            await(mvf_toro33_pc07.entry_13, level=5);
+            runtime.dword[0xA38] = 0x3E8;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = -0x5A;
+            runtime.dword[0xA48] = 0x460;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = -0x64;
+            runtime.dword[0xA54] = -0x5A;
+            runtime.dword[0xA58] = 0x460;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = 0x64;
+            runtime.dword[0xA64] = -0x5A;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Event_camera_on();
+            Set_camera_focus_position(0x293, -0x4A, -0x25E);
+            Rotate_camera(-1, 0xA, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = 0x2EE;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x244;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = -0x96;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = 0x244;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = 0x78;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro21_pc07, 0, 0);
+            Play_SE2(0xDF91, 0);
+            start(mvf_toro31_pc07.entry_12, level=5);
+            start(mvf_toro32_pc07.entry_12, level=5);
+            start(mvf_toro33_pc07.entry_12, level=5);
+            Move_camera_focus(0x2D, 0x1DE, -0x28E, -0x199);
+            Move_camera_rotation(0x2D, -1, 0x2F, 0);
+            Move_camera_distance(0x2D, 0x190);
+            Move_camera_fov(0x2D, 0x35);
+            await(mvf_toro31_pc07.entry_12, level=5);
+            await(mvf_toro32_pc07.entry_12, level=5);
+            await(mvf_toro33_pc07.entry_12, level=5);
+            Set_wait_timer(8);
+            Stop_SE(0xDF91, 0);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            Clear_resident_effect_ID(0);
+            runtime.dword[0xA38] = 0x41A;
+            runtime.dword[0xA3C] = -0x258;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x46A;
+            runtime.dword[0xA4C] = -0x258;
+            runtime.dword[0xA50] = 0x50;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = 0x492;
+            runtime.dword[0xA5C] = -0x258;
+            runtime.dword[0xA60] = 0x64;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Restore_camera_default(0, 1);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            Set_wait_timer(8);
+            start(sora.entry_15, level=5);
+            start(thread_32.entry_14, level=5);
+            start(thread_33.entry_14, level=5);
+            await(sora.entry_15, level=5);
+            await(thread_32.entry_14, level=5);
+            await(thread_33.entry_14, level=5);
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
+    }
+
+    thread mvf_toro31_pc07 {  // 8
+        init {
+            Set_char_ID(MVF_TORO31_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(0x3E8, -0x258, 0);
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            MOVE_NOTURN(0xF, 0x249, -0x258, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_12 {
+            MOVE_NOTURN(0x2D, 0x249, -0x258, 0);
+            Set_wait_timer(0x2D);
+        }
+        entry_13 {
+            MOVE_NOTURN(0xF, 0x249, 0, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_14 {
+            MOVE_NOTURN(0x2D, 0x249, 0, 0);
+            Set_wait_timer(0x2D);
+        }
+    }
+
+    thread mvf_toro32_pc07 {  // 9
+        init {
+            Set_char_ID(MVF_TORO32_PC07);
+            Extract_set_BG_color(0x3E8, -0x258, 0);
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            MOVE_NOTURN(0xF, 0x249, -0x258, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_12 {
+            MOVE_NOTURN(0x2D, 0x249, -0x258, 0);
+            Set_wait_timer(0x2D);
+        }
+        entry_13 {
+            MOVE_NOTURN(0xF, 0x249, 0, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_14 {
+            MOVE_NOTURN(0x2D, 0x249, 0, 0);
+            Set_wait_timer(0x2D);
+        }
+    }
+
+    thread mvf_toro33_pc07 {  // 10
+        init {
+            Set_char_ID(MVF_TORO33_PC07);
+            Extract_set_BG_color(0x3E8, -0x258, 0);
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            MOVE_NOTURN(0xF, 0x249, -0x258, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_12 {
+            MOVE_NOTURN(0x2D, 0x249, -0x258, 0);
+            Set_wait_timer(0x2D);
+        }
+        entry_13 {
+            MOVE_NOTURN(0xF, 0x249, 0, 0);
+            Set_wait_timer(0xF);
+        }
+        entry_14 {
+            MOVE_NOTURN(0x2D, 0x249, 0, 0);
+            Set_wait_timer(0x2D);
+        }
+    }
+
+    thread mo_dairi10 {  // 11
+        init {
+            Set_char_ID(MO_DAIRI10);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA80], mo_dairi10, sora);
+                if (runtime.dword[0xA80] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(0x10);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x10, Push_actor_coord_X(mo_dairi10), Push_actor_coord_Y(mo_dairi10) - 0x96, Push_actor_coord_Z(mo_dairi10));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(0x10);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            start(mvf_toro31_pc07.entry_11, level=5);
+            start(mvf_toro32_pc07.entry_11, level=5);
+            start(mvf_toro33_pc07.entry_11, level=5);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            Clear_resident_effect_ID(3);
+            Start_resident_effect(5);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(5, Push_actor_coord_X(mo_dairi10), Push_actor_coord_Y(mo_dairi10) - 0x96, Push_actor_coord_Z(mo_dairi10));
+            Play_SE2(0xDEFF, 0);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            runtime.dword[0xA38] = 0x3E8;
+            runtime.dword[0xA3C] = -0x258;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x460;
+            runtime.dword[0xA4C] = -0x258;
+            runtime.dword[0xA50] = -0x64;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = 0x460;
+            runtime.dword[0xA5C] = -0x258;
+            runtime.dword[0xA60] = 0x64;
+            runtime.dword[0xA64] = 0;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Event_camera_on();
+            Set_camera_focus_position(0x2A5, -0x346, 0x11A);
+            Rotate_camera(-0x25, -0xC9, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = 0x2EE;
+            runtime.dword[0xA3C] = -0x258;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x244;
+            runtime.dword[0xA4C] = -0x258;
+            runtime.dword[0xA50] = -0x96;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = 0x244;
+            runtime.dword[0xA5C] = -0x258;
+            runtime.dword[0xA60] = 0x78;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Set_wait_timer(8);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro21_pc07, 0, 0);
+            Play_SE2(0xDF91, 0);
+            start(mvf_toro31_pc07.entry_14, level=5);
+            start(mvf_toro32_pc07.entry_14, level=5);
+            start(mvf_toro33_pc07.entry_14, level=5);
+            Move_camera_focus(0x2D, 0x2BF, -0x9B, 0xCD);
+            Move_camera_rotation(0x2D, -0x26, -0xD5, 0);
+            Move_camera_distance(0x2D, 0x190);
+            Move_camera_fov(0x2D, 0x35);
+            await(mvf_toro31_pc07.entry_14, level=5);
+            await(mvf_toro32_pc07.entry_14, level=5);
+            await(mvf_toro33_pc07.entry_14, level=5);
+            Set_wait_timer(8);
+            Stop_SE(0xDF91, 0);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            Clear_resident_effect_ID(0);
+            runtime.dword[0xA38] = 0x41A;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = 0;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x46A;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = 0x50;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = 0x492;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = 0x64;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Restore_camera_default(0, 1);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            Set_wait_timer(8);
+            start(sora.entry_15, level=5);
+            start(thread_32.entry_14, level=5);
+            start(thread_33.entry_14, level=5);
+            await(sora.entry_15, level=5);
+            await(thread_32.entry_14, level=5);
+            await(thread_33.entry_14, level=5);
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
+    }
+
+    thread mo_dairi1_pc07 {  // 12
+        init {
+            Set_char_ID(MO_DAIRI1_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA84], mo_dairi1_pc07, sora);
+                if (runtime.dword[0xA84] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(3);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(3, Push_actor_coord_X(mo_dairi1_pc07), Push_actor_coord_Y(mo_dairi1_pc07) - 0x96, Push_actor_coord_Z(mo_dairi1_pc07));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(3);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Clear_resident_effect_ID(3);
+            Start_resident_effect(5);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(5, Push_actor_coord_X(mo_dairi1_pc07), Push_actor_coord_Y(mo_dairi1_pc07) - 0x96, Push_actor_coord_Z(mo_dairi1_pc07));
+            Play_SE2(0xDEFF, 0);
+            Set_wait_timer(8);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            runtime.dword[0xA38] = 0x3E8;
+            runtime.dword[0xA3C] = 0x4B0;
+            runtime.dword[0xA40] = -0x64;
+            runtime.dword[0xA44] = -0x5A;
+            runtime.dword[0xA48] = 0x438;
+            runtime.dword[0xA4C] = 0x4B0;
+            runtime.dword[0xA50] = 0x32;
+            runtime.dword[0xA54] = -0x5A;
+            runtime.dword[0xA58] = 0x474;
+            runtime.dword[0xA5C] = 0x4B0;
+            runtime.dword[0xA60] = -0xA0;
+            runtime.dword[0xA64] = -0x5A;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Event_camera_on();
+            Set_camera_focus_position(0x304, 0x422, 0xEF);
+            Rotate_camera(7, -0xB2, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro21_pc07, 0, 0);
+            if (runtime.dword[0xA78] == 1) {
+                Play_SE2(0xDF91, 0);
+                Message_to_battle_script(MVF_TORO21_PC07, 0x34);
+                Message_to_battle_script(MVF_TORO22_PC07, 0x34);
+                Message_to_battle_script(MVF_TORO23_PC07, 0x34);
+                Set_wait_timer(0x70);
+            }
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = 0x23F;
+            runtime.dword[0xA3C] = 0x4B0;
+            runtime.dword[0xA40] = 0x32;
+            runtime.dword[0xA44] = 0xB4;
+            runtime.dword[0xA48] = 0x1FE;
+            runtime.dword[0xA4C] = 0x4B0;
+            runtime.dword[0xA50] = -0x82;
+            runtime.dword[0xA54] = 0xB4;
+            runtime.dword[0xA58] = 0x168;
+            runtime.dword[0xA5C] = 0x4BA;
+            runtime.dword[0xA60] = 0x50;
+            runtime.dword[0xA64] = 0xB4;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Set_wait_timer(0x14);
+            Move_camera_focus(0x78, 0x1D3, 0x236, 0x70);
+            Move_camera_rotation(0x78, -3, -0xB2, 0);
+            Move_camera_distance(0x78, 0x190);
+            Move_camera_fov(0x78, 0x35);
+            if (runtime.dword[0xA78] == 0) {
+                Play_SE2(0xDF91, 0);
+            }
+            Message_to_battle_script(MVF_TORO21_PC07, 0x35);
+            Message_to_battle_script(MVF_TORO22_PC07, 0x35);
+            Message_to_battle_script(MVF_TORO23_PC07, 0x35);
+            Set_wait_timer(0x78);
+            Stop_SE(0xDF91, 0);
+            Clear_resident_effect_ID(0);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = -0x14;
+            runtime.dword[0xA3C] = 0x258;
+            runtime.dword[0xA40] = -0x4CE;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x5A;
+            runtime.dword[0xA4C] = 0x258;
+            runtime.dword[0xA50] = -0x474;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = -0x8C;
+            runtime.dword[0xA5C] = 0x258;
+            runtime.dword[0xA60] = -0x474;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            runtime.dword[0xA78] = 0;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Restore_camera_default(0, 1);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            Set_wait_timer(8);
+            start(sora.entry_15, level=5);
+            start(thread_32.entry_14, level=5);
+            start(thread_33.entry_14, level=5);
+            await(sora.entry_15, level=5);
+            await(thread_32.entry_14, level=5);
+            await(thread_33.entry_14, level=5);
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
+    }
+
+    thread mo_dairi2_pc07 {  // 13
+        init {
+            Set_char_ID(MO_DAIRI2_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+            runtime.dword[0xA78] = 1;
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA88], mo_dairi2_pc07, sora);
+                if (runtime.dword[0xA88] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(0x11);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(0x11, Push_actor_coord_X(mo_dairi2_pc07), Push_actor_coord_Y(mo_dairi2_pc07) - 0x96, Push_actor_coord_Z(mo_dairi2_pc07));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(0x11);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Clear_resident_effect_ID(0x11);
+            Start_resident_effect(0x17);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(0x17, Push_actor_coord_X(mo_dairi2_pc07), Push_actor_coord_Y(mo_dairi2_pc07) - 0x96, Push_actor_coord_Z(mo_dairi2_pc07));
+            Play_SE2(0xDEFF, 0);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            runtime.dword[0xA38] = 0;
+            runtime.dword[0xA3C] = 0x258;
+            runtime.dword[0xA40] = -0x3E8;
+            runtime.dword[0xA44] = -0x5A;
+            runtime.dword[0xA48] = 0x50;
+            runtime.dword[0xA4C] = 0x258;
+            runtime.dword[0xA50] = -0x49C;
+            runtime.dword[0xA54] = -0x5A;
+            runtime.dword[0xA58] = -0x78;
+            runtime.dword[0xA5C] = 0x258;
+            runtime.dword[0xA60] = -0x488;
+            runtime.dword[0xA64] = -0x5A;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Event_camera_on();
+            Set_camera_focus_position(-0x17D, 0x14C, -0x284);
+            Rotate_camera(-0x25, 0x5C, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro21_pc07, 0, 0);
+            runtime.dword[0xA38] = 0x14;
+            runtime.dword[0xA3C] = 0x258;
+            runtime.dword[0xA40] = -0x186;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x78;
+            runtime.dword[0xA4C] = 0x258;
+            runtime.dword[0xA50] = -0x230;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = -0x78;
+            runtime.dword[0xA5C] = 0x258;
+            runtime.dword[0xA60] = -0x230;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Set_wait_timer(8);
+            Clear_resident_effect_ID(0x17);
+            Play_SE2(0xDF91, 0);
+            if (bit[0x7EAF] == 0) {
+                Message_to_battle_script(MVF_TORO21_PC07, 0x34);
+                Message_to_battle_script(MVF_TORO22_PC07, 0x34);
+                Message_to_battle_script(MVF_TORO23_PC07, 0x34);
+                Move_camera_focus(0x78, 0x1D7, 0x1D2, -0xD5);
+                Move_camera_rotation(0x78, -0x3D, 0x5D, 0);
+                Move_camera_distance(0x78, 0x190);
+                Move_camera_fov(0x78, 0x35);
+                Set_wait_timer(0x78);
+                Stop_SE(0xDF91, 0);
+                Clear_resident_effect_ID(0);
+                Play_SE2(0xDF00, 0);
+                start(sora.entry_14, level=5);
+                start(thread_32.entry_13, level=5);
+                start(thread_33.entry_13, level=5);
+                await(sora.entry_14, level=5);
+                await(thread_32.entry_13, level=5);
+                await(thread_33.entry_13, level=5);
+                runtime.dword[0xA78] = 0;
+                runtime.dword[0xA38] = 0x4A6;
+                runtime.dword[0xA3C] = 0x4B0;
+                runtime.dword[0xA40] = -0x32;
+                runtime.dword[0xA44] = 0x5A;
+                runtime.dword[0xA48] = 0x438;
+                runtime.dword[0xA4C] = 0x4B0;
+                runtime.dword[0xA50] = -0x8C;
+                runtime.dword[0xA54] = 0x5A;
+                runtime.dword[0xA58] = 0x438;
+                runtime.dword[0xA5C] = 0x4B0;
+                runtime.dword[0xA60] = 0x1E;
+                runtime.dword[0xA64] = 0x5A;
+                start(sora.entry_16, level=5);
+                start(thread_32.entry_15, level=5);
+                start(thread_33.entry_15, level=5);
+                await(sora.entry_16, level=5);
+                await(thread_32.entry_15, level=5);
+                await(thread_33.entry_15, level=5);
+            } else {
+                Message_to_battle_script(MVF_TORO21_PC07, 0x32);
+                Message_to_battle_script(MVF_TORO22_PC07, 0x32);
+                Message_to_battle_script(MVF_TORO23_PC07, 0x32);
+                Move_camera_focus(0xA0, -0x2A7, -0x288, -0x154);
+                Move_camera_rotation(0xA0, -0x28, 0x2B, 0);
+                Move_camera_distance(0xA0, 0x190);
+                Move_camera_fov(0xA0, 0x35);
+                Set_wait_timer(0xA0);
+                Stop_SE(0xDF91, 0);
+                Clear_resident_effect_ID(0);
+                Play_SE2(0xDF00, 0);
+                start(sora.entry_14, level=5);
+                start(thread_32.entry_13, level=5);
+                start(thread_33.entry_13, level=5);
+                await(sora.entry_14, level=5);
+                await(thread_32.entry_13, level=5);
+                await(thread_33.entry_13, level=5);
+                runtime.dword[0xA38] = -0x96;
+                runtime.dword[0xA3C] = 0;
+                runtime.dword[0xA40] = 0x44C;
+                runtime.dword[0xA44] = 0;
+                runtime.dword[0xA48] = -0x64;
+                runtime.dword[0xA4C] = 0;
+                runtime.dword[0xA50] = 0x41A;
+                runtime.dword[0xA54] = 0;
+                runtime.dword[0xA58] = -0x12C;
+                runtime.dword[0xA5C] = 0;
+                runtime.dword[0xA60] = 0x41A;
+                runtime.dword[0xA64] = 0;
+                start(sora.entry_16, level=5);
+                start(thread_32.entry_15, level=5);
+                start(thread_33.entry_15, level=5);
+                await(sora.entry_16, level=5);
+                await(thread_32.entry_15, level=5);
+                await(thread_33.entry_15, level=5);
+            }
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Restore_camera_default(0, 1);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            Set_wait_timer(8);
+            start(sora.entry_15, level=5);
+            start(thread_32.entry_14, level=5);
+            start(thread_33.entry_14, level=5);
+            await(sora.entry_15, level=5);
+            await(thread_32.entry_14, level=5);
+            await(thread_33.entry_14, level=5);
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
+    }
+
+    thread mo_switch3_pc07 {  // 14
+        init {
+            Set_char_ID(MO_SWITCH3_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            if (bit[0x7EAF] == 0) {
+                Start_resident_effect(0xC);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0xC, Push_actor_coord_X(mo_switch3_pc07), Push_actor_coord_Y(mo_switch3_pc07) - 0x96, Push_actor_coord_Z(mo_switch3_pc07));
+                goto L1;
+            }
+            Start_resident_effect(0x12);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(0x12, Push_actor_coord_X(mo_switch3_pc07), Push_actor_coord_Y(mo_switch3_pc07) - 0x96, Push_actor_coord_Z(mo_switch3_pc07));
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFBE, 2);
+            if (bit[0x7EAF] == 0) {
+                Clear_resident_effect_ID(0xC);
+                Start_resident_effect(0x12);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x12, Push_actor_coord_X(mo_switch3_pc07), Push_actor_coord_Y(mo_switch3_pc07) - 0x96, Push_actor_coord_Z(mo_switch3_pc07));
+                bit[0x7EAF] = 1;
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x3D, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x3D]="{0x08}{0x0A 00 00 00}{0x07 16 00}To upper level.{0x05 14 00}{0x06 19 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                goto L1;
+            }
+            Clear_resident_effect_ID(0x12);
+            Start_resident_effect(0xC);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(0xC, Push_actor_coord_X(mo_switch3_pc07), Push_actor_coord_Y(mo_switch3_pc07) - 0x96, Push_actor_coord_Z(mo_switch3_pc07));
+            bit[0x7EAF] = 0;
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 8, 2);
+            Set_window_type(7, 6);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_wait_timer(1);
+            Set_window_width_auto(7, 0x3C, -0xDC, -0x96);
+            Open_window(7);
+            Display_message(7, messages[0x3C]="{0x08}{0x0A 00 00 00}{0x07 16 00}To lower level.{0x05 14 00}{0x06 19 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L1;
+            DIALOG_STATE = 3;
+        L1:
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_switch2_pc07 {  // 15
+        init {
+            Set_char_ID(MO_SWITCH2_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA8C], mo_switch2_pc07, sora);
+                if (runtime.dword[0xA8C] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(3);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(3, Push_actor_coord_X(mo_switch2_pc07), Push_actor_coord_Y(mo_switch2_pc07) - 0x96, Push_actor_coord_Z(mo_switch2_pc07));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(3);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Clear_resident_effect_ID(3);
+            Start_resident_effect(5);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(5, Push_actor_coord_X(mo_switch2_pc07), Push_actor_coord_Y(mo_switch2_pc07) - 0x96, Push_actor_coord_Z(mo_switch2_pc07));
+            Play_SE2(0xDEFF, 0);
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            runtime.dword[0xA38] = -0x78;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = 0x3E8;
+            runtime.dword[0xA44] = 0xB4;
+            runtime.dword[0xA48] = -0x8C;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = 0x4BA;
+            runtime.dword[0xA54] = 0xB4;
+            runtime.dword[0xA58] = -0x136;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = 0x460;
+            runtime.dword[0xA64] = 0xB4;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Event_camera_on();
+            Set_camera_focus_position(-0x289, -0x170, 0x5E);
+            Rotate_camera(-0x13, 0x39, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = 0x14;
+            runtime.dword[0xA3C] = -0xA;
+            runtime.dword[0xA40] = 0x1A4;
+            runtime.dword[0xA44] = 0xB4;
+            runtime.dword[0xA48] = -0x8C;
+            runtime.dword[0xA4C] = -0xA;
+            runtime.dword[0xA50] = 0x244;
+            runtime.dword[0xA54] = 0xB4;
+            runtime.dword[0xA58] = 0x6E;
+            runtime.dword[0xA5C] = -0xA;
+            runtime.dword[0xA60] = 0x244;
+            runtime.dword[0xA64] = 0xB4;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro21_pc07, 0, 0);
+            Move_camera_focus(0x96, -0x242, 0x105, -0x1DD);
+            Move_camera_rotation(0x96, -0x33, 0x6F, 0);
+            Move_camera_distance(0x96, 0x190);
+            Move_camera_fov(0x96, 0x35);
+            Play_SE2(0xDF91, 0);
+            Message_to_battle_script(MVF_TORO21_PC07, 0x33);
+            Message_to_battle_script(MVF_TORO22_PC07, 0x33);
+            Message_to_battle_script(MVF_TORO23_PC07, 0x33);
+            Set_wait_timer(0x96);
+            Stop_SE(0xDF91, 0);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            Clear_resident_effect_ID(0);
+            runtime.dword[0xA38] = -0x14;
+            runtime.dword[0xA3C] = 0x258;
+            runtime.dword[0xA40] = -0x4CE;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x5A;
+            runtime.dword[0xA4C] = 0x258;
+            runtime.dword[0xA50] = -0x474;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = -0x8C;
+            runtime.dword[0xA5C] = 0x258;
+            runtime.dword[0xA60] = -0x474;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Restore_camera_default(0, 1);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            Set_wait_timer(8);
+            start(sora.entry_15, level=5);
+            start(thread_32.entry_14, level=5);
+            start(thread_33.entry_14, level=5);
+            await(sora.entry_15, level=5);
+            await(thread_32.entry_14, level=5);
+            await(thread_33.entry_14, level=5);
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
+    }
+
+    thread mo_dairi3_pc07 {  // 16
+        init {
+            Set_char_ID(MO_DAIRI3_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA90], mo_dairi3_pc07, sora);
+                if (runtime.dword[0xA90] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(3);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(3, Push_actor_coord_X(mo_dairi3_pc07), Push_actor_coord_Y(mo_dairi3_pc07) - 0x96, Push_actor_coord_Z(mo_dairi3_pc07));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(3);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            All_char_ctrl_off();
+            Make_party_invincible();
+            Gauge_off();
+            Disable_all_battle_event_boxes();
+            Pad_ctrl_off();
+            Disable_menu_display();
+            Erase_all_map_objects();
+            Clear_resident_effect_ID(3);
+            Start_resident_effect(5);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(5, Push_actor_coord_X(mo_dairi3_pc07), Push_actor_coord_Y(mo_dairi3_pc07) - 0x96, Push_actor_coord_Z(mo_dairi3_pc07));
+            Play_SE2(0xDEFF, 0);
+            Set_wait_timer(0x10);
+            Enter_event_mode();
+            Event_camera_on();
+            Hold_camera_info();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            PREVIOUS_WORLD = Get_world_number();
+            runtime[0xD00] = PREVIOUS_AREA;
+            PREVIOUS_AREA = Get_area_number();
+            PREVIOUS_SET = Get_set_number();
+            DIALOG_STATE = 2;
+            Close_window(7);
+            local1 = Check_map_changeable(0);
+            if (!local1) goto L1;
+            Pad_ctrl_off();
+            Set_wait_timer(1);
+            if (!(7 != -1)) goto L1;
+            Load_next_map_texture(7);
+        L1:
+            start(thread_32.entry_11, level=5);
+            start(thread_33.entry_11, level=5);
+            await(thread_32.entry_11, level=5);
+            await(thread_33.entry_11, level=5);
+            runtime.dword[0xA38] = 0;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = -0x3E8;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x64;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = -0x47E;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = -0x64;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = -0x47E;
+            runtime.dword[0xA64] = 0;
+            local1 = Check_map_changeable(0);
+            if (local1) {
+                Save_crossfade_image();
+            }
+            Set_camera_focus_position(0x129, -0xBA, -0x432);
+            Rotate_camera(0xB, -0x3D, 0);
+            Set_camera_distance(0x190);
+            Set_camera_fov(0x35);
+            if (local1) {
+                Start_crossfade(8);
+            }
+            start(sora.entry_13, level=5);
+            start(thread_32.entry_12, level=5);
+            start(thread_33.entry_12, level=5);
+            Set_wait_timer(0x10);
+            await(sora.entry_13, level=5);
+            await(thread_32.entry_12, level=5);
+            await(thread_33.entry_12, level=5);
+            Play_SE2(0xDF00, 0);
+            start(sora.entry_14, level=5);
+            start(thread_32.entry_13, level=5);
+            start(thread_33.entry_13, level=5);
+            await(sora.entry_14, level=5);
+            await(thread_32.entry_13, level=5);
+            await(thread_33.entry_13, level=5);
+            runtime.dword[0xA38] = 0;
+            runtime.dword[0xA3C] = 0;
+            runtime.dword[0xA40] = -0x186;
+            runtime.dword[0xA44] = 0;
+            runtime.dword[0xA48] = 0x82;
+            runtime.dword[0xA4C] = 0;
+            runtime.dword[0xA50] = -0x244;
+            runtime.dword[0xA54] = 0;
+            runtime.dword[0xA58] = -0x82;
+            runtime.dword[0xA5C] = 0;
+            runtime.dword[0xA60] = -0x244;
+            runtime.dword[0xA64] = 0;
+            start(sora.entry_16, level=5);
+            start(thread_32.entry_15, level=5);
+            start(thread_33.entry_15, level=5);
+            await(sora.entry_16, level=5);
+            await(thread_32.entry_15, level=5);
+            await(thread_33.entry_15, level=5);
+            Clear_resident_effect_ID(5);
+            Start_resident_effect(0);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(0, mvf_toro41_pc07, 0, 0);
+            Play_SE2(0xDF91, 0);
+            Message_to_battle_script(MVF_TORO41_PC07, 0x32);
+            Message_to_battle_script(MVF_TORO42_PC07, 0x32);
+            Message_to_battle_script(MVF_TORO43_PC07, 0x32);
+            Set_wait_timer(0x96);
+            bit[0x7EB7] = 1;
+            Fade_out(0x14);
+            Set_wait_timer(0x14);
+            Pad_ctrl_off();
+            Set_wait_timer(1);
+            DIALOG_STATE = 3;
+            bit[0x6B2F] = 1;
+            bit[0x6B2E] = 1;
+            Event_camera_off();
+            Change_area(7);
+        }
+    }
+
+    thread mvf_toro21_pc07 {  // 17
+        init {
+            Set_char_ID(MVF_TORO21_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(0, 0x226, -0x3E8);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread mvf_toro41_pc07 {  // 18
+        init {
+            Set_char_ID(MVF_TORO41_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(0, -0x32, -0x3E8);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_position(-0x640, -0x29E, 0);
+        }
+    }
+
+    thread mvf_toro42_pc07 {  // 19
+        init {
+            Set_char_ID(MVF_TORO42_PC07);
+            Extract_set_BG_color(0, -0x32, -0x3E8);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_position(-0x640, -0x29E, 0);
+        }
+    }
+
+    thread mvf_toro43_pc07 {  // 20
+        init {
+            Set_char_ID(MVF_TORO43_PC07);
+            Extract_set_BG_color(0, -0x32, -0x3E8);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_position(-0x640, -0x29E, 0);
+        }
+    }
+
+    thread mo_switch1_pc07 [11] asm {  // 21
+        read_dword 0xA68
+        push 0xA
+        alu ne
+        beqz L4480
+    L4480:
+        push 0x40002
+        syscall Set_char_ID
+        syscall Get_MAPOBJ_BG_color
+        read_bit 0x7EA3
+        push 1
+        alu eq
+        beqz L4493
+        push 0x1F4
+        push 0x708
+        alu negate
+        push 0x64
+        alu negate
+        syscall Set_char_position
+    L4493:
+        yield 0x10
+        syscall Get_MAPOBJ_BG_color
+    L4495:
+        read_dword 0xA68
+        push 0xA
+        alu ne
+        beqz L4541
+        read_dword 0xA94
+        push_cond 0x15
+        push_cond 1
+        syscall Get_actor_distance_3axis
+        read_dword 0xA94
+        push 0x1F4
+        alu lt
+        beqz L4531
+        syscall Enable_targeting
+        load_local 0
+        push 0
+        alu eq
+        beqz L4530
+        push 3
+        syscall Start_resident_effect
+        push 1
+        syscall Set_wait_timer
+        push 3
+        push_cond 0x15
+        syscall Push_actor_coord_X
+        push_cond 0x15
+        syscall Push_actor_coord_Y
+        push 0x96
+        alu sub
+        push_cond 0x15
+        syscall Push_actor_coord_Z
+        syscall Change_resident_effect_coords
+        push 1
+        store_local 0
+        push 1
+        syscall Set_wait_timer
+    L4530:
+        jmp L4540
+    L4531:
+        syscall Disable_targeting
+        load_local 0
+        beqz L4540
+        push 3
+        syscall Clear_resident_effect_ID
+        push 0
+        store_local 0
+        push 1
+        syscall Set_wait_timer
+    L4540:
+        jmp L4495
+    L4541:
+        yield 0x10
+        yield 0x10
+        syscall Enter_event_mode
+        syscall Gauge_off
+        syscall Command_display_off
+        push_cond 1
+        syscall Make_operable
+        syscall Make_party_invincible
+        syscall Enter_event_mode
+        syscall Command_display_off
+        syscall Gauge_off
+        push 1
+        syscall Set_wait_timer
+        read_bit 0x7EA3
+        push 0
+        alu eq
+        beqz L4834
+        syscall All_char_ctrl_off
+        syscall Make_party_invincible
+        syscall Gauge_off
+        syscall Disable_all_battle_event_boxes
+        syscall Pad_ctrl_off
+        syscall Disable_menu_display
+        syscall Erase_all_map_objects
+        push 3
+        syscall Clear_resident_effect_ID
+        push 5
+        syscall Start_resident_effect
+        push 1
+        syscall Set_wait_timer
+        push 5
+        push_cond 0x15
+        syscall Push_actor_coord_X
+        push_cond 0x15
+        syscall Push_actor_coord_Y
+        push 0x96
+        alu sub
+        push_cond 0x15
+        syscall Push_actor_coord_Z
+        syscall Change_resident_effect_coords
+        push 0xDEFF
+        push 0
+        syscall Play_SE2
+        push 0x10
+        syscall Set_wait_timer
+        push 0
+        syscall Check_map_changeable
+        syscall Enter_event_mode
+        syscall Event_camera_on
+        syscall Hold_camera_info
+        push_cond 1
+        syscall Make_operable
+        syscall Make_party_invincible
+        syscall Enter_event_mode
+        syscall Command_display_off
+        syscall Gauge_off
+        push 1
+        syscall Set_wait_timer
+        syscall Get_world_number
+        write_byte 0xD40
+        read_byte 0xD41
+        write_byte 0xD00
+        syscall Get_area_number
+        write_byte 0xD41
+        syscall Get_set_number
+        write_byte 0xD42
+        push 2
+        write_byte 0xD43
+        push 7
+        syscall Close_window
+        push 0
+        syscall Check_map_changeable
+        store_local 1
+        load_local 1
+        beqz L4626
+        syscall Pad_ctrl_off
+        push 1
+        syscall Set_wait_timer
+        push 0xE
+        push 1
+        alu negate
+        alu ne
+        beqz L4626
+        push 0xE
+        syscall Load_next_map_texture
+    L4626:
+        push 5
+        push_cond 0x20
+        init_call 0xB
+        push 5
+        push_cond 0x21
+        init_call 0xB
+        push 5
+        push_cond 0x20
+        await_call 0xB
+        push 5
+        push_cond 0x21
+        await_call 0xB
+        push 0x258
+        alu negate
+        write_dword 0xA38
+        push 0x708
+        alu negate
+        write_dword 0xA3C
+        push 0
+        write_dword 0xA40
+        push 0x5A
+        alu negate
+        write_dword 0xA44
+        push 0x190
+        alu negate
+        write_dword 0xA48
+        push 0x708
+        alu negate
+        write_dword 0xA4C
+        push 0x14
+        alu negate
+        write_dword 0xA50
+        push 0x5A
+        alu negate
+        write_dword 0xA54
+        push 0x1E0
+        alu negate
+        write_dword 0xA58
+        push 0x708
+        alu negate
+        write_dword 0xA5C
+        push 0x82
+        alu negate
+        write_dword 0xA60
+        push 0x5A
+        alu negate
+        write_dword 0xA64
+        push 0
+        syscall Check_map_changeable
+        store_local 1
+        load_local 1
+        beqz L4679
+        syscall Save_crossfade_image
+    L4679:
+        push 0x2E0
+        alu negate
+        push 0x76E
+        alu negate
+        push 0x199
+        syscall Set_camera_focus_position
+        push 0x12
+        alu negate
+        push 0xA2
+        alu negate
+        push 0
+        syscall Rotate_camera
+        push 0x1F4
+        syscall Set_camera_distance
+        push 0x35
+        syscall Set_camera_fov
+        load_local 1
+        beqz L4699
+        push 8
+        syscall Start_crossfade
+    L4699:
+        push 5
+        push_cond 1
+        init_call 0xD
+        push 5
+        push_cond 0x20
+        init_call 0xC
+        push 5
+        push_cond 0x21
+        init_call 0xC
+        push 0x10
+        syscall Set_wait_timer
+        push 5
+        push_cond 1
+        await_call 0xD
+        push 5
+        push_cond 0x20
+        await_call 0xC
+        push 5
+        push_cond 0x21
+        await_call 0xC
+        push 0xDF00
+        push 0
+        syscall Play_SE2
+        push 5
+        push_cond 1
+        init_call 0xE
+        push 5
+        push_cond 0x20
+        init_call 0xD
+        push 5
+        push_cond 0x21
+        init_call 0xD
+        push 5
+        push_cond 1
+        await_call 0xE
+        push 5
+        push_cond 0x20
+        await_call 0xD
+        push 5
+        push_cond 0x21
+        await_call 0xD
+        push 0x44C
+        alu negate
+        write_dword 0xA38
+        push 0x708
+        alu negate
+        write_dword 0xA3C
+        push 0
+        write_dword 0xA40
+        push 0x5A
+        alu negate
+        write_dword 0xA44
+        push 0x384
+        alu negate
+        write_dword 0xA48
+        push 0x708
+        alu negate
+        write_dword 0xA4C
+        push 0x64
+        write_dword 0xA50
+        push 0x5A
+        alu negate
+        write_dword 0xA54
+        push 0x384
+        alu negate
+        write_dword 0xA58
+        push 0x708
+        alu negate
+        write_dword 0xA5C
+        push 0x64
+        alu negate
+        write_dword 0xA60
+        push 0x5A
+        alu negate
+        write_dword 0xA64
+        push 5
+        push_cond 1
+        init_call 0x10
+        push 5
+        push_cond 0x20
+        init_call 0xF
+        push 5
+        push_cond 0x21
+        init_call 0xF
+        push 5
+        push_cond 1
+        await_call 0x10
+        push 5
+        push_cond 0x20
+        await_call 0xF
+        push 5
+        push_cond 0x21
+        await_call 0xF
+        push 5
+        syscall Clear_resident_effect_ID
+        push 0
+        syscall Start_resident_effect
+        push 1
+        syscall Set_wait_timer
+        push 0
+        push_cond 0x12
+        push 0
+        push 0
+        syscall Set_resident_effect_location_bone
+        push 0xDF91
+        push 0
+        syscall Play_SE2
+        push 0x50007
+        push 0x32
+        syscall Message_to_battle_script
+        push 0x50008
+        push 0x32
+        syscall Message_to_battle_script
+        push 0x50009
+        push 0x32
+        syscall Message_to_battle_script
+        push 1
+        write_bit 0x7EB6
+        push 0x1E
+        syscall Fade_out
+        push 0x1E
+        syscall Set_wait_timer
+        syscall Pad_ctrl_off
+        push 1
+        syscall Set_wait_timer
+        push 3
+        write_byte 0xD43
+        push 1
+        write_bit 0x6B2F
+        push 1
+        write_bit 0x6B2E
+        syscall Event_camera_off
+        push 0xE
+        syscall Change_area
+        jmp L5093
+    L4834:
+        syscall All_char_ctrl_off
+        syscall Make_party_invincible
+        syscall Gauge_off
+        syscall Disable_all_battle_event_boxes
+        syscall Pad_ctrl_off
+        syscall Disable_menu_display
+        syscall Erase_all_map_objects
+        push 3
+        syscall Clear_resident_effect_ID
+        push 5
+        syscall Start_resident_effect
+        push 1
+        syscall Set_wait_timer
+        push 5
+        push_cond 0x15
+        syscall Push_actor_coord_X
+        push_cond 0x15
+        syscall Push_actor_coord_Y
+        push 0x96
+        alu sub
+        push_cond 0x15
+        syscall Push_actor_coord_Z
+        syscall Change_resident_effect_coords
+        push 0xDEFF
+        push 0
+        syscall Play_SE2
+        push 0x10
+        syscall Set_wait_timer
+        push 0
+        syscall Check_map_changeable
+        syscall Enter_event_mode
+        syscall Event_camera_on
+        syscall Hold_camera_info
+        push_cond 1
+        syscall Make_operable
+        syscall Make_party_invincible
+        syscall Enter_event_mode
+        syscall Command_display_off
+        syscall Gauge_off
+        push 1
+        syscall Set_wait_timer
+        syscall Get_world_number
+        write_byte 0xD40
+        read_byte 0xD41
+        write_byte 0xD00
+        syscall Get_area_number
+        write_byte 0xD41
+        syscall Get_set_number
+        write_byte 0xD42
+        push 2
+        write_byte 0xD43
+        push 7
+        syscall Close_window
+        push 0
+        syscall Check_map_changeable
+        store_local 1
+        load_local 1
+        beqz L4902
+        syscall Pad_ctrl_off
+        push 1
+        syscall Set_wait_timer
+        push 0xF
+        push 1
+        alu negate
+        alu ne
+        beqz L4902
+        push 0xF
+        syscall Load_next_map_texture
+    L4902:
+        push 5
+        push_cond 0x20
+        init_call 0xB
+        push 5
+        push_cond 0x21
+        init_call 0xB
+        push 5
+        push_cond 0x20
+        await_call 0xB
+        push 5
+        push_cond 0x21
+        await_call 0xB
+        push 0x258
+        write_dword 0xA38
+        push 0x708
+        alu negate
+        write_dword 0xA3C
+        push 0
+        write_dword 0xA40
+        push 0x5A
+        write_dword 0xA44
+        push 0x190
+        write_dword 0xA48
+        push 0x708
+        alu negate
+        write_dword 0xA4C
+        push 0x14
+        write_dword 0xA50
+        push 0x5A
+        write_dword 0xA54
+        push 0x1E0
+        write_dword 0xA58
+        push 0x708
+        alu negate
+        write_dword 0xA5C
+        push 0x82
+        write_dword 0xA60
+        push 0x5A
+        write_dword 0xA64
+        push 0
+        syscall Check_map_changeable
+        store_local 1
+        load_local 1
+        beqz L4947
+        syscall Save_crossfade_image
+    L4947:
+        push 0x29B
+        push 0x768
+        alu negate
+        push 0xA5
+        syscall Set_camera_focus_position
+        push 0x22
+        alu negate
+        push 0x88
+        push 0
+        syscall Rotate_camera
+        push 0x1F4
+        syscall Set_camera_distance
+        push 0x35
+        syscall Set_camera_fov
+        push 5
+        push_cond 1
+        init_call 0xD
+        push 5
+        push_cond 0x20
+        init_call 0xC
+        push 5
+        push_cond 0x21
+        init_call 0xC
+        load_local 1
+        beqz L4974
+        push 8
+        syscall Start_crossfade
+    L4974:
+        push 0x10
+        syscall Set_wait_timer
+        push 5
+        push_cond 1
+        await_call 0xD
+        push 5
+        push_cond 0x20
+        await_call 0xC
+        push 5
+        push_cond 0x21
+        await_call 0xC
+        push 0xDF00
+        push 0
+        syscall Play_SE2
+        push 5
+        push_cond 1
+        init_call 0xE
+        push 5
+        push_cond 0x20
+        init_call 0xD
+        push 5
+        push_cond 0x21
+        init_call 0xD
+        push 5
+        push_cond 1
+        await_call 0xE
+        push 5
+        push_cond 0x20
+        await_call 0xD
+        push 5
+        push_cond 0x21
+        await_call 0xD
+        push 0x44C
+        write_dword 0xA38
+        push 0x708
+        alu negate
+        write_dword 0xA3C
+        push 0
+        write_dword 0xA40
+        push 0x5A
+        write_dword 0xA44
+        push 0x384
+        write_dword 0xA48
+        push 0x708
+        alu negate
+        write_dword 0xA4C
+        push 0x64
+        write_dword 0xA50
+        push 0x5A
+        write_dword 0xA54
+        push 0x384
+        write_dword 0xA58
+        push 0x708
+        alu negate
+        write_dword 0xA5C
+        push 0x64
+        alu negate
+        write_dword 0xA60
+        push 0x5A
+        write_dword 0xA64
+        push 5
+        push_cond 1
+        init_call 0x10
+        push 5
+        push_cond 0x20
+        init_call 0xF
+        push 5
+        push_cond 0x21
+        init_call 0xF
+        push 5
+        push_cond 1
+        await_call 0x10
+        push 5
+        push_cond 0x20
+        await_call 0xF
+        push 5
+        push_cond 0x21
+        await_call 0xF
+        push 5
+        syscall Clear_resident_effect_ID
+        push 0
+        syscall Start_resident_effect
+        push 1
+        syscall Set_wait_timer
+        push 0
+        push_cond 0x12
+        push 0
+        push 0
+        syscall Set_resident_effect_location_bone
+        push 0xDF91
+        push 0
+        syscall Play_SE2
+        push 0x50007
+        push 0x33
+        syscall Message_to_battle_script
+        push 0x50008
+        push 0x33
+        syscall Message_to_battle_script
+        push 0x50009
+        push 0x33
+        syscall Message_to_battle_script
+        push 1
+        write_bit 0x7EB5
+        push 0x1E
+        syscall Fade_out
+        push 0x1E
+        syscall Set_wait_timer
+        syscall Pad_ctrl_off
+        push 1
+        syscall Set_wait_timer
+        push 3
+        write_byte 0xD43
+        push 1
+        write_bit 0x6B2F
+        push 1
+        write_bit 0x6B2E
+        syscall Event_camera_off
+        push 0xF
+        syscall Change_area
+    L5093:
+        syscall Gauge_on
+        syscall Command_display_on
+        syscall Exit_event_mode
+        syscall Gauge_on
+        syscall Command_display_on
+        syscall Remove_invincibility
+        push_cond 1
+        syscall Make_inoperable
+        syscall Event_camera_off
+        syscall Exit_event_mode
+        yield 0x10
+        yield 0x10
+        yield 0x10
+        yield 0x10
+        yield 0x10
+        yield 0x10
+        yield 0x10
+        yield 0x10
+    }
+
+    thread mvf_toro11_pc07 {  // 22
+        init {
+            Set_char_ID(MVF_TORO11_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(-0x64, -0x73A, 0x15E);
+            if (bit[0x7EA3] == 1) {
+                Set_char_position(0x3F7, -0x708, 0);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread mvf_toro12_pc07 {  // 23
+        init {
+            Set_char_ID(MVF_TORO12_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(-0x64, -0x73A, 0x15E);
+            if (bit[0x7EA3] == 1) {
+                Set_char_position(0x3F7, -0x708, 0);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread mvf_toro13_pc07 {  // 24
+        init {
+            Set_char_ID(MVF_TORO13_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(-0x64, -0x73A, 0x15E);
+            if (bit[0x7EA3] == 1) {
+                Set_char_position(0x3F7, -0x708, 0);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread mo_switch4_pc07 {  // 25
+        init {
+            Set_char_ID(MO_SWITCH4_PC07);
+            Get_MAPOBJ_BG_color();
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+        }
+        main {
+            if (!(HB_LIFT_STOP_WATERWAY_NODE == 0)) goto L1;
+            Start_resident_effect(0xB);
+            Set_wait_timer(1);
+            Change_resident_effect_coords(0xB, Push_actor_coord_X(mo_switch4_pc07), Push_actor_coord_Y(mo_switch4_pc07) - 0x96, Push_actor_coord_Z(mo_switch4_pc07));
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+        on_action {
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            if (HB_LIFT_STOP_WATERWAY_NODE == 0) {
+                Clear_resident_effect_ID(0xB);
+                Start_resident_effect(0x17);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0x17, Push_actor_coord_X(mo_switch4_pc07), Push_actor_coord_Y(mo_switch4_pc07) - 0x96, Push_actor_coord_Z(mo_switch4_pc07));
+                Play_SE2(0xDEFF, 0);
+                Set_wait_timer(0x18);
+                GIFT_TABLE_ITEM.dword = GIFT_PC_LIFT_STOP_FROM_WATERWAY_EXAMINE_NODE;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                Set_wait_timer(8);
+                Clear_resident_effect_ID(0x17);
+                Stop_SE(0xDEFF, 0);
+                HB_LIFT_STOP_WATERWAY_NODE = 1;
+                goto L1;
+            }
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 8, 2);
+            Set_window_type(7, 6);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_wait_timer(1);
+            Set_window_width_auto(7, 6, -0xDC, -0x96);
+            Open_window(7);
+            Display_message(7, messages[6]="{0x08}{0x0A 00 00 00}{0x07 16 00}No response.{0x06 2D 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (!(DIALOG_STATE == 2)) goto L1;
+            DIALOG_STATE = 3;
+        L1:
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread f_gimmick1_pc07 {  // 26
+        init {
+            local21 = 0;
+            local21 = Get_treasure_flag(0x1AB);
+            if (local21) {
+                Discard_object_data(F_GIMMICK1_PC07);
+            } else {
+                Set_char_ID(F_GIMMICK1_PC07);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                local11 = Push_actor_coord_X(f_gimmick1_pc07);
+                local12 = Push_actor_coord_Y(f_gimmick1_pc07);
+                local13 = Push_actor_coord_Z(f_gimmick1_pc07);
+                Extract_set_BG_color(local11 + 0x64, local12 + 0x64, local13 + 0x64);
+                local0 = 0;
+                local1 = 0;
+                local2 = 0;
+                local6 = 0;
+            }
+        }
+        main {
+            while (local21 == 0) {
+                if (((local0 == 1) & (local2 == 0)) & (local6 == 8)) {
+                    MOVE_NOTURN(0x3B, 0x12C, -0x735, -0x96);
+                    Set_wait_timer(0x3C);
+                    local2 = 1;
+                }
+                local0 = 0;
+                local6 = 0;
+            }
+        }
+        on_hit {
+            Collision_off();
+            Make_invincible();
+            if (local0 == 0) {
+                local6 = Get_attack_type_received();
+                Display_register_value(local6);
+                local0 = 1;
+            }
+            Make_not_invincible();
+            Collision_on();
+        }
+    }
+
+    thread f_gimmick2_pc07 {  // 27
+        init {
+            local21 = 0;
+            local21 = Get_treasure_flag(0x1AC);
+            if (local21) {
+                Discard_object_data(F_GIMMICK2_PC07);
+            } else {
+                Set_char_ID(F_GIMMICK2_PC07);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                local11 = Push_actor_coord_X(f_gimmick2_pc07);
+                local12 = Push_actor_coord_Y(f_gimmick2_pc07);
+                local13 = Push_actor_coord_Z(f_gimmick2_pc07);
+                Extract_set_BG_color(local11 + 0x64, local12 + 0x64, local13 + 0x64);
+                local0 = 0;
+                local1 = 0;
+                local2 = 0;
+                local6 = 0;
+            }
+        }
+        main {
+            while (local21 == 0) {
+                if (((local0 == 1) & (local2 == 0)) & (local6 == 8)) {
+                    MOVE_NOTURN(0x3B, -0x12C, -0x735, 0x96);
+                    Set_wait_timer(0x3C);
+                    local2 = 1;
+                }
+                local0 = 0;
+                local6 = 0;
+            }
+        }
+        on_hit {
+            Collision_off();
+            Make_invincible();
+            if (local0 == 0) {
+                local6 = Get_attack_type_received();
+                Display_register_value(local6);
+                local0 = 1;
+            }
+            Make_not_invincible();
+            Collision_on();
+        }
+    }
+
+    thread f_gimmick3_pc07 {  // 28
+        init {
+            local21 = 0;
+            local21 = Get_treasure_flag(0x1AD);
+            if (local21) {
+                Discard_object_data(F_GIMMICK3_PC07);
+            } else {
+                Set_char_ID(F_GIMMICK3_PC07);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                local11 = Push_actor_coord_X(f_gimmick3_pc07);
+                local12 = Push_actor_coord_Y(f_gimmick3_pc07);
+                local13 = Push_actor_coord_Z(f_gimmick3_pc07);
+                Extract_set_BG_color(local11 + 0x64, local12 + 0x64, local13 + 0x64);
+                local0 = 0;
+                local1 = 0;
+                local2 = 0;
+                local6 = 0;
+            }
+        }
+        main {
+            while (local21 == 0) {
+                if (((local0 == 1) & (local2 == 0)) & (local6 == 8)) {
+                    MOVE_NOTURN(0x3B, 0, -0x4DD, -0x320);
+                    Set_wait_timer(0x3C);
+                    local2 = 1;
+                }
+                local0 = 0;
+                local6 = 0;
+            }
+        }
+        on_hit {
+            Collision_off();
+            Make_invincible();
+            if (local0 == 0) {
+                local6 = Get_attack_type_received();
+                Display_register_value(local6);
+                local0 = 1;
+            }
+            Make_not_invincible();
+            Collision_on();
+        }
+    }
+
+    thread f_gimmick4_pc07 {  // 29
+        init {
+            local21 = 0;
+            local21 = Get_treasure_flag(0x1AE);
+            if (local21) {
+                Discard_object_data(F_GIMMICK4_PC07);
+            } else {
+                Set_char_ID(F_GIMMICK4_PC07);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                local11 = Push_actor_coord_X(f_gimmick4_pc07);
+                local12 = Push_actor_coord_Y(f_gimmick4_pc07);
+                local13 = Push_actor_coord_Z(f_gimmick4_pc07);
+                Extract_set_BG_color(local11 + 0x64, local12 + 0x64, local13 + 0x64);
+                local0 = 0;
+                local1 = 0;
+                local2 = 0;
+                local6 = 0;
+            }
+        }
+        main {
+            while (local21 == 0) {
+                if (((local0 == 1) & (local2 == 0)) & (local6 == 8)) {
+                    MOVE_NOTURN(0x3B, -0x384, -0x2D, -0x384);
+                    Set_wait_timer(0x3C);
+                    local2 = 1;
+                }
+                local0 = 0;
+                local6 = 0;
+            }
+        }
+        on_hit {
+            Collision_off();
+            Make_invincible();
+            if (local0 == 0) {
+                local6 = Get_attack_type_received();
+                Display_register_value(local6);
+                local0 = 1;
+            }
+            Make_not_invincible();
+            Collision_on();
+        }
+    }
+
+    thread f_gimmick5_pc07 {  // 30
+        init {
+            local21 = 0;
+            local21 = Get_treasure_flag(0x1AF);
+            if (local21) {
+                Discard_object_data(F_GIMMICK5_PC07);
+            } else {
+                Set_char_ID(F_GIMMICK5_PC07);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                local11 = Push_actor_coord_X(f_gimmick5_pc07);
+                local12 = Push_actor_coord_Y(f_gimmick5_pc07);
+                local13 = Push_actor_coord_Z(f_gimmick5_pc07);
+                Extract_set_BG_color(local11 + 0x64, local12 + 0x64, local13 + 0x64);
+                local0 = 0;
+                local1 = 0;
+                local2 = 0;
+                local6 = 0;
+            }
+        }
+        main {
+            while (local21 == 0) {
+                if (((local0 == 1) & (local2 == 0)) & (local6 == 8)) {
+                    MOVE_NOTURN(0x3B, -0x44C, -0x2D, 0x258);
+                    Set_wait_timer(0x3C);
+                    local2 = 1;
+                }
+                local0 = 0;
+                local6 = 0;
+            }
+        }
+        on_hit {
+            Collision_off();
+            Make_invincible();
+            if (local0 == 0) {
+                local6 = Get_attack_type_received();
+                Display_register_value(local6);
+                local0 = 1;
+            }
+            Make_not_invincible();
+            Collision_on();
+        }
+    }
+
+    thread 31 {
+        init {
+            runtime.dword[0xA6C] = 0;
+            runtime.dword[0xA70] = 0;
+        }
+        main {
+            while (1) {
+                runtime.dword[0xA6C] = Get_part_from_party(1);
+                runtime.dword[0xA70] = Get_part_from_party(2);
+                if ((runtime.dword[0xA6C] == 1) | (runtime.dword[0xA70] == 1)) {
+                    bit[0x7E87] = 1;
+                } else {
+                    bit[0x7E87] = 0;
+                }
+                if ((runtime.dword[0xA6C] == 2) | (runtime.dword[0xA70] == 2)) {
+                    bit[0x7E86] = 1;
+                } else {
+                    bit[0x7E86] = 0;
+                }
+                if ((runtime.dword[0xA6C] == 9) | (runtime.dword[0xA70] == 9)) {
+                    bit[0x7E85] = 1;
+                    runtime.dword[0xA74] = 1;
+                } else {
+                    bit[0x7E85] = 0;
+                    runtime.dword[0xA74] = 0;
+                }
+            }
+        }
+    }
+
+    thread 32 {
+        init {
+            local0 = 0;
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            local0 = 0;
+            if (runtime.dword[0xA6C] == 1) {
+                Set_char_ID(PLAYER1);
+                local0 = 1;
+            }
+            if (runtime.dword[0xA6C] == 2) {
+                Set_char_ID(PLAYER2);
+                local0 = 1;
+            }
+            if (runtime.dword[0xA6C] == 9) {
+                Set_char_ID(PLAYER9);
+                local0 = 1;
+            }
+        }
+        entry_12 {
+            if (local0) {
+                Char_ctrl_off();
+                Make_invincible();
+                Collision_off();
+                Char_bg_off();
+                Make_non_pressable();
+                Motion_ctrl_off();
+                Change_motion(0);
+                Turn_char(runtime.dword[0xA54], 0);
+                Set_char_initial_state(runtime.dword[0xA48], runtime.dword[0xA4C], runtime.dword[0xA50]);
+            }
+        }
+        entry_13 {
+            if (local0) {
+                Char_ctrl_off();
+                Make_invincible();
+                Collision_off();
+                Char_bg_off();
+                Make_non_pressable();
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0xC);
+                Set_wait_timer(0xC);
+                Hide_char();
+            }
+        }
+        entry_14 {
+            if (local0) {
+                Motion_ctrl_on();
+                Char_bg_on();
+                Char_ctrl_on();
+                Make_not_invincible();
+                Collision_on();
+                Make_pressable();
+            }
+        }
+        entry_15 {
+            Turn_char(runtime.dword[0xA54], 0);
+            Set_char_initial_state(runtime.dword[0xA48], runtime.dword[0xA4C], runtime.dword[0xA50]);
+            Set_wait_timer(1);
+            Show_char();
+            Set_BG_color_to_drawing(0xC);
+            Set_wait_timer(0xC);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+        entry_16 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(-0x46, 0, -0x424);
+        }
+        entry_17 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(-0x1AE, -0x708, 0x1E);
+        }
+        entry_18 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(0x1E0, -0x708, -0x78);
+        }
+    }
+
+    thread 33 {
+        init {
+            local0 = 0;
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            local0 = 0;
+            if (runtime.dword[0xA70] == 1) {
+                Set_char_ID(PLAYER1);
+                local0 = 1;
+            }
+            if (runtime.dword[0xA70] == 2) {
+                Set_char_ID(PLAYER2);
+                local0 = 1;
+            }
+            if (runtime.dword[0xA70] == 9) {
+                Set_char_ID(PLAYER9);
+                local0 = 1;
+            }
+        }
+        entry_12 {
+            if (local0) {
+                Char_ctrl_off();
+                Make_invincible();
+                Collision_off();
+                Char_bg_off();
+                Make_non_pressable();
+                Motion_ctrl_off();
+                Change_motion(0);
+                Turn_char(runtime.dword[0xA64], 0);
+                Set_char_initial_state(runtime.dword[0xA58], runtime.dword[0xA5C], runtime.dword[0xA60]);
+            }
+        }
+        entry_13 {
+            if (local0) {
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0xC);
+                Set_wait_timer(0xC);
+                Hide_char();
+            }
+        }
+        entry_14 {
+            if (local0) {
+                Motion_ctrl_on();
+                Char_bg_on();
+                Char_ctrl_on();
+                Make_not_invincible();
+                Collision_on();
+                Make_pressable();
+            }
+        }
+        entry_15 {
+            Turn_char(runtime.dword[0xA64], 0);
+            Set_char_initial_state(runtime.dword[0xA58], runtime.dword[0xA5C], runtime.dword[0xA60]);
+            Set_wait_timer(1);
+            Show_char();
+            Set_BG_color_to_drawing(0xC);
+            Set_wait_timer(0xC);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+        entry_16 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(0x50, 0, -0x3F2);
+        }
+        entry_17 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(-0x1EA, -0x708, -0x78);
+        }
+        entry_18 {
+            Turn_char(0xB4, 0);
+            Set_char_initial_state(0x1A4, -0x708, 0x32);
+        }
+    }
+
+    thread 34 {
+        main {
+            while (1) {
+                runtime.dword[0xA98] = Push_actor_coord_Y(sora);
+                runtime.dword[0xA9C] = Push_actor_coord_X(sora);
+                runtime.dword[0xAA0] = Push_actor_coord_Z(sora);
+            }
+        }
+    }
+
+    thread 35 {
+        main {
+            while (1) {
+                local1 = Check_map_changeable(0);
+                if (((((((-0x64 < runtime.dword[0xA9C]) & (runtime.dword[0xA9C] < 0xDC)) & (0x244 < runtime.dword[0xAA0])) & (runtime.dword[0xAA0] < 0x384)) & (0x258 < runtime.dword[0xA98])) & (runtime.dword[0xA98] < 0x28A)) & local1) {
+                    Command_display_off();
+                    Gauge_off();
+                    Disable_all_battle_event_boxes();
+                    Erase_all_map_objects();
+                    Enter_event_mode();
+                    Pad_ctrl_off();
+                    Disable_menu_display();
+                    Event_camera_on();
+                    start(thread_32.entry_11, level=5);
+                    start(thread_33.entry_11, level=5);
+                    await(thread_32.entry_11, level=5);
+                    await(thread_33.entry_11, level=5);
+                    Hold_camera_info();
+                    Make_operable(sora);
+                    Make_party_invincible();
+                    Enter_event_mode();
+                    Command_display_off();
+                    Gauge_off();
+                    Set_wait_timer(1);
+                    PREVIOUS_WORLD = Get_world_number();
+                    runtime[0xD00] = PREVIOUS_AREA;
+                    PREVIOUS_AREA = Get_area_number();
+                    PREVIOUS_SET = Get_set_number();
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                    local1 = Check_map_changeable(0);
+                    if (!local1) goto L1;
+                    Pad_ctrl_off();
+                    Set_wait_timer(1);
+                    if (!(0x2F != -1)) goto L1;
+                    Load_next_map_texture(0x2F);
+                L1:
+                    runtime.dword[0xA38] = 0xA5;
+                    runtime.dword[0xA3C] = 0x264;
+                    runtime.dword[0xA40] = 0x2BC;
+                    runtime.dword[0xA44] = 0x5A;
+                    runtime.dword[0xA48] = 0x23;
+                    runtime.dword[0xA4C] = 0x264;
+                    runtime.dword[0xA50] = 0x302;
+                    runtime.dword[0xA54] = 0x5A;
+                    runtime.dword[0xA58] = 0x23;
+                    runtime.dword[0xA5C] = 0x264;
+                    runtime.dword[0xA60] = 0x280;
+                    runtime.dword[0xA64] = 0x5A;
+                    local1 = Check_map_changeable(0);
+                    if (local1) {
+                        Save_crossfade_image();
+                    }
+                    Set_camera_focus_position(0x10B, 0x1C9, 0x2AA);
+                    Rotate_camera(-0xA, -0x3E, 0);
+                    Set_camera_distance(0x190);
+                    Set_camera_fov(0x35);
+                    if (local1) {
+                        Start_crossfade(8);
+                    }
+                    start(sora.entry_13, level=5);
+                    start(thread_32.entry_12, level=5);
+                    start(thread_33.entry_12, level=5);
+                    Set_wait_timer(8);
+                    await(sora.entry_13, level=5);
+                    await(thread_32.entry_12, level=5);
+                    await(thread_33.entry_12, level=5);
+                    Play_SE2(0xDF86, 0);
+                    start(vf_ffloor1_pc07.entry_11, level=5);
+                    Set_wait_timer(0x16);
+                    Fade_out(0xF);
+                    Set_wait_timer(0xF);
+                    Pad_ctrl_off();
+                    Set_wait_timer(1);
+                    DIALOG_STATE = 3;
+                    bit[0x6B2F] = 1;
+                    bit[0x6B2E] = 1;
+                    Event_camera_off();
+                    Change_area(0x2F);
+                }
+            }
+        }
+    }
+
+    thread vf_ffloor1_pc07 {  // 36
+        init {
+            Set_char_ID(VF_FFLOOR1_PC07);
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Extract_set_BG_color(-0xC8, 0x226, 0x2BC);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            MOVE_NOTURN(0x5A, 0x5A, 0x4B0, 0x2C6);
+        }
+    }
+}
