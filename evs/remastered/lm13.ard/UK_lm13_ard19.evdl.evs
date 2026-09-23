@@ -2,6 +2,8 @@ globals {
     ATLANTICA_PROGRESS = save_data[0x90A];
     CURRENT_WORLD = save_data2[0x1C];
     DIALOG_STATE = save_data2[3];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    GIFT_LM_URSULAS_LAIR_USE_FIRE_ON_URCHIN_CHEST = 6;
 }
 
 kgr 0 {
@@ -26,6 +28,7 @@ kgr 0 {
         MO_GRSS23_LM4 = 0x4000E;
         MO_GRSS24_LM4 = 0x4000F;
         MO_GRSS25_LM4 = 0x40010;
+        MO_TBOX_LM4 = 0x40011;
         MO_UNI1_LM4 = 0x40013;
         MO_UNI2_LM4 = 0x40014;
     }
@@ -286,377 +289,151 @@ kgr 0 {
         }
     }
 
-    thread mo_tbox_lm4 [12] asm {  // 8
-        push 0x102
-        syscall Get_treasure_flag
-        store_local 5
-        load_local 5
-        push 0
-        alu eq
-        beqz L544
-        push 0x40011
-        syscall Set_char_ID
-        read_bit 0x7733
-        push 1
-        alu eq
-        beqz L535
-        push 0x12DE
-        read_byte 0xEED
-        push 2
-        alu mul
-        alu add
-        push 0x340
-        alu negate
-        push 0x23F0
-        read_byte 0xEEF
-        push 2
-        alu mul
-        alu add
-        syscall Set_char_position
-        push 0
-        push 0
-        syscall Change_char_color_from_map_table
-        syscall Show_char
-        syscall Make_non_pressable
-        push 2
-        store_local 0xC
-        jmp L543
-    L535:
-        syscall Char_bg_off
-        syscall Collision_off
-        syscall Disable_targeting
-        syscall Make_non_pressable
-        push 0
-        syscall Set_special_command_range
-        push 0
-        store_local 0xC
-    L543:
-        jmp L546
-    L544:
-        push 0x40011
-        syscall Discard_object_data
-    L546:
-        yield 0x10
-    L547:
-        load_local 5
-        push 0
-        alu eq
-        beqz L588
-        load_local 0xC
-        push 1
-        alu eq
-        beqz L587
-        syscall Get_char_action
-        store_local 6
-        load_local 6
-        push 0
-        alu eq
-        beqz L587
-        push_cond 8
-        syscall Push_actor_coord_X
-        push 0x12DE
-        alu sub
-        push 2
-        alu div
-        write_byte 0xEED
-        push_cond 8
-        syscall Push_actor_coord_Y
-        push 0x384
-        alu add
-        push 2
-        alu div
-        write_byte 0xEEE
-        push_cond 8
-        syscall Push_actor_coord_Z
-        push 0x23F0
-        alu sub
-        push 2
-        alu div
-        write_byte 0xEEF
-        syscall Enable_targeting
-        push 0x96
-        syscall Set_special_command_range
-        push 2
-        store_local 0xC
-    L587:
-        jmp L547
-    L588:
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        load_local 5
-        push 0
-        alu eq
-        beqz L634
-        push_cond 8
-        push_cond 1
-        syscall Get_angle_between_actors
-        store_local 3
-        load_local 3
-        push 0xB4
-        alu sub
-        push 0x168
-        alu add
-        push 0x168
-        alu mod
-        push 0xB4
-        alu sub
-        store_local 3
-        push_cond 1
-        syscall Push_actor_coord_Y
-        push_cond 8
-        syscall Push_actor_coord_Y
-        alu sub
-        store_local 4
-        push 0x32
-        alu negate
-        load_local 4
-        alu lt
-        load_local 4
-        push 0x3C
-        alu lt
-        alu and
-        beqz L632
-        push 1
-        store_local 2
-        jmp L634
-    L632:
-        push 0
-        store_local 2
-    L634:
-        read_dword 0xA14
-        push 1
-        alu eq
-        beqz L640
-        push 0
-        write_bit 0x6ACF
-    L640:
-        load_local 5
-        push 0
-        alu eq
-        load_local 2
-        push 1
-        alu eq
-        alu and
-        load_local 0xC
-        push 2
-        alu eq
-        alu and
-        beqz L836
-        syscall Get_special_command_count
-        store_local 0x12
-        load_local 0x12
-        push 1
-        alu negate
-        alu eq
-        read_bit 0x6ACF
-        push 1
-        alu eq
-        alu and
-        load_local 0x15
-        push 0
-        alu eq
-        alu and
-        beqz L671
-        push 0x55
-        push 1
-        syscall Set_special_command
-        jmp L674
-    L671:
-        push 0x55
-        push 0
-        syscall Set_special_command
-    L674:
-        load_local 0x12
-        push 0x55
-        alu eq
-        load_local 0x15
-        push 0
-        alu eq
-        alu and
-        beqz L836
-        push 1
-        store_local 0x15
-        push_cond 1
-        syscall Make_operable
-        push_cond 1
-        syscall Make_invincible_actor
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        write_dword 0xA14
-        syscall Disable_targeting
-        push 0
-        syscall Set_special_command_range
-        syscall Gauge_off
-        syscall Command_display_off
-        push 5
-        push_cond 1
-        init_call 0xB
-        push 5
-        push_cond 1
-        await_call 0xB
-        push 0
-        push 0
-        write_byte 0xD66
-        push 0
-        syscall Erase_OBJ_effect
-        push 1
-        syscall Motion_change_no_loop
-        push 6
-        syscall Set_wait_timer
-        push 1
-        syscall Play_OBJ_effect
-        push 0x102
-        push 1
-        syscall Set_treasure_flag
-        jmp L721
-        push 1
-        write_byte 0xD66
-    L721:
-        read_byte 0xD43
-        push 1
-        alu eq
-        beqz L729
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-    L729:
-        push 6
-        write_dword 0x1104
-        read_dword 0x1104
-        syscall Get_item_from_gift_table
-        push 7
-        push 0
-        push 1
-        syscall Set_window_size
-        push 7
-        push 1
-        syscall Set_window_type
-        push 7
-        push 0
-        syscall Set_window_opening_speed
-        push 7
-        push 0
-        syscall Set_window_close_speed
-        push 7
-        push 0
-        syscall Set_window_tail_type
-        push 7
-        read_dword 0x1104
-        push 0xDC
-        alu negate
-        push 0x96
-        alu negate
-        syscall Scale_window_from_gift
-        push 7
-        syscall Open_window
-        push 7
-        read_dword 0x1104
-        syscall Display_message_from_gift_table
-        push 8
-        syscall Set_wait_timer
-        push 0x1F
-        push 0
-        syscall Play_SE2
-        push 7
-        syscall Wait_message_end_ID
-        push 7
-        syscall Close_window
-        read_byte 0xD43
-        push 2
-        alu eq
-        beqz L776
-        push 3
-        write_byte 0xD43
-    L776:
-        read_byte 0xD66
-        push 0
-        alu eq
-        beqz L808
-        push 0xFF
-        push 0xFF
-        push 0xFF
-        push 0
-        push 0x18
-        syscall Change_char_color
-        syscall Collision_off
-        push 0x10
-        syscall Set_wait_timer
-        push 1
-        syscall Erase_OBJ_effect
-        push 5
-        push_cond 1
-        init_call 0xC
-        push 1
-        store_local 5
-        push 8
-        syscall Set_wait_timer
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        push_cond 1
-        syscall Make_not_invincible_actor
-        push_cond 1
-        syscall Make_inoperable
-        push 0x40011
-        syscall Discard_object_data
-        jmp L824
-    L808:
-        push 5
-        push_cond 1
-        init_call 0xC
-        push 5
-        push_cond 1
-        await_call 0xC
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        push_cond 1
-        syscall Make_not_invincible_actor
-        push_cond 1
-        syscall Make_inoperable
-        syscall Enable_targeting
-        push 0x96
-        syscall Set_special_command_range
-    L824:
-        push 0
-        write_byte 0xD66
-        load_local 5
-        push 1
-        alu eq
-        beqz L832
-        push 0
-        store_local 0xC
-    L832:
-        push 0
-        write_dword 0xA14
-        push 0
-        store_local 0x15
-    L836:
-        yield 0x10
-        yield 0x10
-        load_local 5
-        push 0
-        alu eq
-        beqz L850
-        push 0
-        push 0
-        syscall Change_char_color_from_map_table
-        syscall Show_char
-        syscall Char_bg_on
-        syscall Collision_on
-        push 1
-        store_local 0xC
-    L850:
-        yield 0x10
+    thread mo_tbox_lm4 {  // 8
+        init {
+            local5 = Get_treasure_flag(0x102);
+            if (local5 == 0) {
+                Set_char_ID(MO_TBOX_LM4);
+                if (bit[0x7733] == 1) {
+                    Set_char_position(0x12DE + (save_data2[0x1AD] * 2), -0x340, 0x23F0 + (save_data2[0x1AF] * 2));
+                    Change_char_color_from_map_table(0, 0);
+                    Show_char();
+                    Make_non_pressable();
+                    local12 = 2;
+                } else {
+                    Char_bg_off();
+                    Collision_off();
+                    Disable_targeting();
+                    Make_non_pressable();
+                    Set_special_command_range(0);
+                    local12 = 0;
+                }
+            } else {
+                Discard_object_data(MO_TBOX_LM4);
+            }
+        }
+        main {
+            while (local5 == 0) {
+                if (!(local12 == 1)) goto L1;
+                local6 = Get_char_action();
+                if (!(local6 == 0)) goto L1;
+                save_data2[0x1AD] = (Push_actor_coord_X(mo_tbox_lm4) - 0x12DE) / 2;
+                save_data2[0x1AE] = (Push_actor_coord_Y(mo_tbox_lm4) + 0x384) / 2;
+                save_data2[0x1AF] = (Push_actor_coord_Z(mo_tbox_lm4) - 0x23F0) / 2;
+                Enable_targeting();
+                Set_special_command_range(0x96);
+                local12 = 2;
+            L1:
+            }
+        }
+        entry_9 {
+            if (!(local5 == 0)) goto L1;
+            local3 = Get_angle_between_actors(mo_tbox_lm4, sora);
+            local3 = (((local3 - 0xB4) + 0x168) % 0x168) - 0xB4;
+            local4 = Push_actor_coord_Y(sora) - Push_actor_coord_Y(mo_tbox_lm4);
+            if ((-0x32 < local4) & (local4 < 0x3C)) {
+                local2 = 1;
+                goto L1;
+            }
+            local2 = 0;
+        L1:
+            if (runtime.dword[0xA14] == 1) {
+                bit[0x6ACF] = 0;
+            }
+            if (!(((local5 == 0) & (local2 == 1)) & (local12 == 2))) goto L2;
+            local18 = Get_special_command_count();
+            if (((local18 == -1) & (bit[0x6ACF] == 1)) & (local21 == 0)) {
+                Set_special_command(0x55, 1);
+            } else {
+                Set_special_command(0x55, 0);
+            }
+            if (!((local18 == 0x55) & (local21 == 0))) goto L2;
+            local21 = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            runtime.dword[0xA14] = 1;
+            Disable_targeting();
+            Set_special_command_range(0);
+            Gauge_off();
+            Command_display_off();
+            start(sora.entry_11, level=5);
+            await(sora.entry_11, level=5);
+            __push(0);
+            save_data2[0x26] = 0;
+            Erase_OBJ_effect(0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(6);
+            Play_OBJ_effect(1);
+            Set_treasure_flag(0x102, 1);
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            GIFT_TABLE_ITEM.dword = GIFT_LM_URSULAS_LAIR_USE_FIRE_ON_URCHIN_CHEST;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            if (save_data2[0x26] == 0) {
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0x18);
+                Collision_off();
+                Set_wait_timer(0x10);
+                Erase_OBJ_effect(1);
+                start(sora.entry_12, level=5);
+                local5 = 1;
+                Set_wait_timer(8);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Discard_object_data(MO_TBOX_LM4);
+            } else {
+                start(sora.entry_12, level=5);
+                await(sora.entry_12, level=5);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Enable_targeting();
+                Set_special_command_range(0x96);
+            }
+            save_data2[0x26] = 0;
+            if (local5 == 1) {
+                local12 = 0;
+            }
+            runtime.dword[0xA14] = 0;
+            local21 = 0;
+        L2:
+        }
+        entry_11 {
+            if (local5 == 0) {
+                Change_char_color_from_map_table(0, 0);
+                Show_char();
+                Char_bg_on();
+                Collision_on();
+                local12 = 1;
+            }
+        }
     }
 
     thread mo_uni1_lm4 {  // 9

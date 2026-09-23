@@ -2647,193 +2647,93 @@ kgr 0 {
         }
     }
 
-    thread mo_tbox_00 [14] asm {  // 23
-        push 0x40017
-        syscall Set_char_ID
-        push 0x891
-        alu negate
-        push 0x7D
-        alu negate
-        push 0x6DE
-        alu negate
-        syscall Set_char_position
-        read_bit 0x6F81
-        push 1
-        alu eq
-        read_byte 0xB04
-        push 4
-        alu lt
-        alu or
-        beqz L5963
-        syscall Hide_char
-        syscall Collision_off
-        syscall Disable_targeting
-        push 0
-        syscall Set_command_check_range
-        jmp L5965
-    L5963:
-        push 0xC8
-        syscall Set_command_check_range
-    L5965:
-        yield 0x10
-        read_bit 0x6F81
-        push 1
-        alu eq
-        read_byte 0xB04
-        push 4
-        alu lt
-        alu or
-        beqz L5979
-        syscall Hide_char
-        syscall Collision_off
-        syscall Disable_targeting
-        push 0
-        syscall Set_command_check_range
-    L5979:
-        push 0
-        store_local 0
-    L5981:
-        push 1
-        beqz L6005
-        read_bit 0x6F81
-        store_local 6
-        read_bit 0x6F81
-        push 0
-        alu eq
-        read_byte 0xB04
-        push 4
-        alu ge
-        alu and
-        load_local 0
-        push 0
-        alu eq
-        alu and
-        beqz L6004
-        push 1
-        store_local 0
-        syscall Show_char
-        syscall Collision_on
-        syscall Enable_targeting
-        push 0xC8
-        syscall Set_command_check_range
-    L6004:
-        jmp L5981
-    L6005:
-        yield 0x10
-        yield 0x10
-        push_cond 1
-        read_byte 0xBC
-        syscall Make_operable
-        syscall Make_party_invincible
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        syscall Set_wait_timer
-        read_byte 0xD43
-        push 1
-        alu eq
-        beqz L6024
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-    L6024:
-        push 7
-        push 8
-        push 2
-        syscall Set_window_size
-        push 7
-        push 6
-        syscall Set_window_type
-        push 7
-        push 0
-        syscall Set_window_opening_speed
-        push 7
-        push 0
-        syscall Set_window_close_speed
-        push 7
-        push 0
-        syscall Set_window_tail_type
-        push 1
-        syscall Set_wait_timer
-        push 7
-        push 0x398
-        push 0xDC
-        alu negate
-        push 0x96
-        alu negate
-        syscall Set_window_width_auto
-        push 7
-        syscall Open_window
-        push 7
-        push 0x398
-        syscall Display_message
-        push 7
-        syscall Wait_message_end_ID
-        push 7
-        syscall Close_window
-        read_byte 0xD43
-        push 2
-        alu eq
-        beqz L6064
-        push 3
-        write_byte 0xD43
-    L6064:
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        syscall Remove_invincibility
-        push_cond 1
-        read_byte 0xBC
-        syscall Make_inoperable
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        read_bit 0x6F81
-        push 0
-        alu eq
-        beqz L6084
-        syscall Show_char
-    L6084:
-        yield 0x10
-        load_local 7
-        syscall Display_register_value
-        push 1
-        syscall Motion_change_no_loop
-        push 1
-        syscall Set_wait_timer
-        push 0x1E
-        push 0
-        syscall Play_SE2
-        syscall Wait_motion_end
-        yield 0x10
-        load_local 6
-        syscall Display_register_value
-        syscall Collision_off
-        syscall Disable_targeting
-        push 0
-        syscall Set_command_check_range
-        push 1
-        syscall Set_wait_timer
-        push 0x80
-        push 0x80
-        push 0x80
-        push 0
-        push 0xF
-        syscall Change_char_color
-        push 0xF
-        syscall Set_wait_timer
-        syscall Hide_char
-        push_cond 0x17
-        read_byte 0xBC
-        syscall Discard_object_data
-        yield 0x10
+    thread mo_tbox_00 {  // 23
+        init {
+            Set_char_ID(MO_TBOX_00);
+            Set_char_position(-0x891, -0x7D, -0x6DE);
+            if ((bit[0x6F81] == 1) | (TRAVERSE_TOWN_PROGRESS < 4)) {
+                Hide_char();
+                Collision_off();
+                Disable_targeting();
+                Set_command_check_range(0);
+            } else {
+                Set_command_check_range(0xC8);
+            }
+        }
+        main {
+            if ((bit[0x6F81] == 1) | (TRAVERSE_TOWN_PROGRESS < 4)) {
+                Hide_char();
+                Collision_off();
+                Disable_targeting();
+                Set_command_check_range(0);
+            }
+            local0 = 0;
+            while (1) {
+                local6 = bit[0x6F81];
+                if (((bit[0x6F81] == 0) & (TRAVERSE_TOWN_PROGRESS >= 4)) & (local0 == 0)) {
+                    local0 = 1;
+                    Show_char();
+                    Collision_on();
+                    Enable_targeting();
+                    Set_command_check_range(0xC8);
+                }
+            }
+        }
+        on_action {
+            Make_operable(sora, save_data[0xBC]);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            Set_window_size(7, 8, 2);
+            Set_window_type(7, 6);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Set_wait_timer(1);
+            Set_window_width_auto(7, 0x398, -0xDC, -0x96);
+            Open_window(7);
+            Display_message(7, messages[0x398]="{0x0A 00 00 00}It will not open.{lf}There must be some secret{lf}to opening it.{0x06 2D 00}");
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora, save_data[0xBC]);
+        }
+        entry_11 {
+            if (bit[0x6F81] == 0) {
+                Show_char();
+            }
+        }
+        entry_12 {
+            Display_register_value(local7);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Play_SE2(0x1E, 0);
+            Wait_motion_end();
+        }
+        entry_13 {
+            Display_register_value(local6);
+            Collision_off();
+            Disable_targeting();
+            Set_command_check_range(0);
+            Set_wait_timer(1);
+            Change_char_color(0x80, 0x80, 0x80, 0, 0xF);
+            Set_wait_timer(0xF);
+            Hide_char();
+            __push(mo_tbox_00);
+            Discard_object_data(save_data[0xBC]);
+        }
     }
 
     thread mo_candle_0 {  // 24

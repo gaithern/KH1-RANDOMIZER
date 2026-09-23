@@ -7,6 +7,8 @@ globals {
     PREVIOUS_SET = save_data2[2];
     PREVIOUS_WORLD = save_data2[0];
     TORN_PAGES_AVAILABLE = save_data[0x800];
+    GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST = 4;
+    GIFT_LM_SUNKEN_SHIP_IN_FLIPPED_BOAT_CHEST = 0;
     GIFT_LM_SUNKEN_SHIP_SEABED_CHEST = 1;
 }
 
@@ -24,6 +26,7 @@ kgr 0 {
         MO_TARU1_LM3 = 0x40008;
         MO_TARU2_LM3 = 0x40009;
         MO_TARU3_LM3 = 0x4000A;
+        MO_TBOX1_LM3 = 0x4000B;
         MO_TBOX4_LM3 = 0x4000C;
         MVF_DR_CAVE_LM3 = 0x50000;
     }
@@ -348,331 +351,135 @@ kgr 0 {
         }
     }
 
-    thread mo_tbox1_lm3 [11] asm {  // 8
-        push 0xFC
-        syscall Get_treasure_flag
-        store_local 5
-        push 0x168
-        store_local 0
-        push 0x4000B
-        store_local 0xE
-        load_local 5
-        push 0
-        alu eq
-        beqz L638
-        push 0x4000B
-        syscall Set_char_ID
-        push 1
-        push 0
-        syscall Change_char_color_from_map_table
-        syscall Make_non_pressable
-        jmp L640
-    L638:
-        push 0x4000B
-        syscall Discard_object_data
-    L640:
-        yield 0x10
-    L641:
-        load_local 5
-        push 0
-        alu eq
-        beqz L646
-        jmp L641
-    L646:
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        load_local 5
-        push 0
-        alu eq
-        beqz L708
-        load_local 0
-        push 0x168
-        alu eq
-        beqz L665
-        push 0
-        store_local 3
-        jmp L679
-    L665:
-        push_cond 8
-        push_cond 1
-        syscall Get_angle_between_actors
-        store_local 3
-        load_local 3
-        push 0x168
-        alu sub
-        push 0x168
-        alu add
-        push 0x168
-        alu mod
-        push 0xB4
-        alu sub
-        store_local 3
-    L679:
-        push_cond 1
-        syscall Push_actor_coord_Y
-        push_cond 8
-        syscall Push_actor_coord_Y
-        alu sub
-        store_local 4
-        push 0x5A
-        alu negate
-        load_local 3
-        alu le
-        load_local 3
-        push 0x5A
-        alu le
-        alu and
-        push 0x3C
-        alu negate
-        load_local 4
-        alu lt
-        alu and
-        load_local 4
-        push 0x50
-        alu lt
-        alu and
-        beqz L706
-        push 1
-        store_local 2
-        jmp L708
-    L706:
-        push 0
-        store_local 2
-    L708:
-        read_dword 0xA14
-        push 1
-        alu eq
-        beqz L714
-        push 0
-        write_bit 0x6ACF
-    L714:
-        load_local 5
-        push 0
-        alu eq
-        load_local 2
-        push 1
-        alu eq
-        alu and
-        beqz L922
-        syscall Get_special_command_count
-        store_local 0x12
-        load_local 0x12
-        push 1
-        alu negate
-        alu eq
-        read_bit 0x6ACF
-        push 1
-        alu eq
-        alu and
-        load_local 0x15
-        push 0
-        alu eq
-        alu and
-        beqz L741
-        push 0x55
-        push 1
-        syscall Set_special_command
-        jmp L744
-    L741:
-        push 0x55
-        push 0
-        syscall Set_special_command
-    L744:
-        load_local 0x12
-        push 0x55
-        alu eq
-        load_local 0x15
-        push 0
-        alu eq
-        alu and
-        beqz L922
-        push 1
-        store_local 0x15
-        push_cond 1
-        syscall Make_operable
-        push_cond 1
-        syscall Make_invincible_actor
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        write_dword 0xA14
-        push 4
-        write_dword 0x1104
-        read_dword 0x1104
-        push 0xD4
-        alu eq
-        beqz L781
-        read_byte 0x800
-        store_reg 0
-        set_ge 0
-        beqz L778
-        read_byte 0x800
-        push 1
-        alu add
-        write_byte 0x800
-        jmp L780
-    L778:
-        push 1
-        write_byte 0x800
-    L780:
-        dec_reg_idx 0
-    L781:
-        syscall Disable_targeting
-        push 0
-        syscall Set_special_command_range
-        syscall Gauge_off
-        syscall Command_display_off
-        push 5
-        push_cond 1
-        init_call 0xD
-        push 5
-        push_cond 1
-        await_call 0xD
-        push 0
-        write_word 0x1102
-        push 0
-        push 4
-        write_dword 0x1104
-        push 0
-        write_byte 0xD66
-        push 0
-        syscall Erase_OBJ_effect
-        push 1
-        syscall Motion_change_no_loop
-        push 6
-        syscall Set_wait_timer
-        push 1
-        syscall Play_OBJ_effect
-        push 0xFC
-        push 1
-        syscall Set_treasure_flag
-        jmp L813
-        push 1
-        write_byte 0xD66
-    L813:
-        read_byte 0xD43
-        push 1
-        alu eq
-        beqz L821
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-    L821:
-        push 0
-        write_dword 0x1104
-        read_dword 0x1104
-        syscall Get_item_from_gift_table
-        push 7
-        push 0
-        push 1
-        syscall Set_window_size
-        push 7
-        push 1
-        syscall Set_window_type
-        push 7
-        push 0
-        syscall Set_window_opening_speed
-        push 7
-        push 0
-        syscall Set_window_close_speed
-        push 7
-        push 0
-        syscall Set_window_tail_type
-        push 7
-        read_dword 0x1104
-        push 0xDC
-        alu negate
-        push 0x96
-        alu negate
-        syscall Scale_window_from_gift
-        push 7
-        syscall Open_window
-        push 7
-        read_dword 0x1104
-        syscall Display_message_from_gift_table
-        push 8
-        syscall Set_wait_timer
-        push 0x1F
-        push 0
-        syscall Play_SE2
-        push 7
-        syscall Wait_message_end_ID
-        push 7
-        syscall Close_window
-        read_byte 0xD43
-        push 2
-        alu eq
-        beqz L868
-        push 3
-        write_byte 0xD43
-    L868:
-        read_byte 0xD66
-        push 0
-        alu eq
-        beqz L900
-        push 0xFF
-        push 0xFF
-        push 0xFF
-        push 0
-        push 0x18
-        syscall Change_char_color
-        syscall Collision_off
-        push 0x10
-        syscall Set_wait_timer
-        push 1
-        syscall Erase_OBJ_effect
-        push 5
-        push_cond 1
-        init_call 0xE
-        push 1
-        store_local 5
-        push 8
-        syscall Set_wait_timer
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        push_cond 1
-        syscall Make_not_invincible_actor
-        push_cond 1
-        syscall Make_inoperable
-        push 0x4000B
-        syscall Discard_object_data
-        jmp L916
-    L900:
-        push 5
-        push_cond 1
-        init_call 0xE
-        push 5
-        push_cond 1
-        await_call 0xE
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        push_cond 1
-        syscall Make_not_invincible_actor
-        push_cond 1
-        syscall Make_inoperable
-        syscall Enable_targeting
-        push 0x96
-        syscall Set_special_command_range
-    L916:
-        push 0
-        write_byte 0xD66
-        push 0
-        write_dword 0xA14
-        push 0
-        store_local 0x15
-    L922:
-        yield 0x10
-        yield 0x10
+    thread mo_tbox1_lm3 {  // 8
+        init {
+            local5 = Get_treasure_flag(0xFC);
+            local0 = 0x168;
+            local14 = 0x4000B;
+            if (local5 == 0) {
+                Set_char_ID(MO_TBOX1_LM3);
+                Change_char_color_from_map_table(1, 0);
+                Make_non_pressable();
+            } else {
+                Discard_object_data(MO_TBOX1_LM3);
+            }
+        }
+        main {
+            while (local5 == 0) {
+            }
+        }
+        entry_9 {
+            if (!(local5 == 0)) goto L1;
+            if (local0 == 0x168) {
+                local3 = 0;
+            } else {
+                local3 = Get_angle_between_actors(mo_tbox1_lm3, sora);
+                local3 = (((local3 - 0x168) + 0x168) % 0x168) - 0xB4;
+            }
+            local4 = Push_actor_coord_Y(sora) - Push_actor_coord_Y(mo_tbox1_lm3);
+            if ((((-0x5A <= local3) & (local3 <= 0x5A)) & (-0x3C < local4)) & (local4 < 0x50)) {
+                local2 = 1;
+                goto L1;
+            }
+            local2 = 0;
+        L1:
+            if (runtime.dword[0xA14] == 1) {
+                bit[0x6ACF] = 0;
+            }
+            if (!((local5 == 0) & (local2 == 1))) goto L2;
+            local18 = Get_special_command_count();
+            if (((local18 == -1) & (bit[0x6ACF] == 1)) & (local21 == 0)) {
+                Set_special_command(0x55, 1);
+            } else {
+                Set_special_command(0x55, 0);
+            }
+            if (!((local18 == 0x55) & (local21 == 0))) goto L2;
+            local21 = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            runtime.dword[0xA14] = 1;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST;
+            if (GIFT_TABLE_ITEM.dword == 0xD4) {
+                __store_reg(0, TORN_PAGES_AVAILABLE);
+                if (__set_ge(0)) {
+                    TORN_PAGES_AVAILABLE = TORN_PAGES_AVAILABLE + 1;
+                } else {
+                    TORN_PAGES_AVAILABLE = 1;
+                }
+                __dec_reg_idx(0);
+            }
+            Disable_targeting();
+            Set_special_command_range(0);
+            Gauge_off();
+            Command_display_off();
+            start(sora.entry_13, level=5);
+            await(sora.entry_13, level=5);
+            save_data2.word[0x3C2] = 0;
+            __push(0);
+            GIFT_TABLE_ITEM.dword = GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST;
+            save_data2[0x26] = 0;
+            Erase_OBJ_effect(0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(6);
+            Play_OBJ_effect(1);
+            Set_treasure_flag(0xFC, 1);
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            GIFT_TABLE_ITEM.dword = GIFT_LM_SUNKEN_SHIP_IN_FLIPPED_BOAT_CHEST;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            if (save_data2[0x26] == 0) {
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0x18);
+                Collision_off();
+                Set_wait_timer(0x10);
+                Erase_OBJ_effect(1);
+                start(sora.entry_14, level=5);
+                local5 = 1;
+                Set_wait_timer(8);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Discard_object_data(MO_TBOX1_LM3);
+            } else {
+                start(sora.entry_14, level=5);
+                await(sora.entry_14, level=5);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Enable_targeting();
+                Set_special_command_range(0x96);
+            }
+            save_data2[0x26] = 0;
+            runtime.dword[0xA14] = 0;
+            local21 = 0;
+        L2:
+        }
     }
 
     thread mo_tbox4_lm3 {  // 9

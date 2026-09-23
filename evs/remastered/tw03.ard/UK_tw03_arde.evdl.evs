@@ -35,6 +35,7 @@ kgr 0 {
         MO_DR_3TW9_CHK = 0x4000D;
         O_TW03_TRI_BLU0 = 0x4000E;
         MO_VOLT = 0x4000F;
+        MO_3_KEY = 0x40010;
         MO_TW03_HAGAKI = 0x40012;
     }
 
@@ -660,152 +661,71 @@ kgr 0 {
         }
     }
 
-    thread mo_3_key [11] asm {  // 14
-        push 0x40010
-        syscall Set_char_ID
-        read_bit 0x6F86
-        push 0
-        alu eq
-        beqz L1606
-        push 0x53C
-        push 0x28
-        op0 0
-        push 0xDC
-        syscall Set_char_position
-        push 0xB4
-        syscall Set_command_check_range
-        jmp L1609
-    L1606:
-        push 0
-        syscall Set_command_check_range
-        syscall Disable_targeting
-    L1609:
-        syscall Get_set_number
-        store_local 0
-        load_local 0
-        push 2
-        alu eq
-        beqz L1618
-        push 0
-        syscall Set_command_check_range
-        syscall Disable_targeting
-    L1618:
-        yield 0x10
-    L1619:
-        push 1
-        beqz L1622
-        jmp L1619
-    L1622:
-        yield 0x10
-        yield 0x10
-        push_cond 1
-        syscall Make_operable
-        syscall Make_party_invincible
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        syscall Set_wait_timer
-        read_byte 0xB04
-        push 0x23
-        alu lt
-        beqz L1685
-        read_byte 0xD43
-        push 1
-        alu eq
-        beqz L1644
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-    L1644:
-        push 7
-        push 8
-        push 2
-        syscall Set_window_size
-        push 7
-        push 6
-        syscall Set_window_type
-        push 7
-        push 0
-        syscall Set_window_opening_speed
-        push 7
-        push 0
-        syscall Set_window_close_speed
-        push 7
-        push 0
-        syscall Set_window_tail_type
-        push 1
-        syscall Set_wait_timer
-        push 7
-        push 0x399
-        push 0xDC
-        alu negate
-        push 0x96
-        alu negate
-        syscall Set_window_width_auto
-        push 7
-        syscall Open_window
-        push 7
-        push 0x399
-        syscall Display_message
-        push 7
-        syscall Wait_message_end_ID
-        push 7
-        syscall Close_window
-        read_byte 0xD43
-        push 2
-        alu eq
-        beqz L1684
-        push 3
-        write_byte 0xD43
-    L1684:
-        jmp L1714
-    L1685:
-        read_bit 0x6F86
-        push 0
-        alu eq
-        beqz L1714
-        syscall Event_camera_on
-        push 0x535
-        push 0x8D
-        alu negate
-        push 0x156
-        syscall Set_camera_focus_position
-        push 0x3AD
-        push 0x41
-        alu negate
-        push 0x13B
-        syscall Set_camera_position
-        push 0xDF73
-        push 0
-        syscall Play_SE2
-        push 6
-        push_cond 0xF
-        init_call 0xB
-        push 0
-        syscall Set_command_check_range
-        push 1
-        write_bit 0x6F86
-        push 6
-        push_cond 0xF
-        await_call 0xB
-        syscall Event_camera_off
-    L1714:
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        syscall Remove_invincibility
-        push_cond 1
-        syscall Make_inoperable
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
+    thread mo_3_key {  // 14
+        init {
+            Set_char_ID(MO_3_KEY);
+            if (bit[0x6F86] == 0) {
+                Set_char_position(0x53C, 0x28, __nop(0xDC));
+                Set_command_check_range(0xB4);
+            } else {
+                Set_command_check_range(0);
+                Disable_targeting();
+            }
+            local0 = Get_set_number();
+            if (local0 == 2) {
+                Set_command_check_range(0);
+                Disable_targeting();
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            if (TRAVERSE_TOWN_PROGRESS < 0x23) {
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                Set_window_size(7, 8, 2);
+                Set_window_type(7, 6);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_wait_timer(1);
+                Set_window_width_auto(7, 0x399, -0xDC, -0x96);
+                Open_window(7);
+                Display_message(7, messages[0x399]="{0x08}{0x0A 00 00 00}{lf}Looks like it's locked.{0x06 3C 00}");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                goto L1;
+            }
+            if (!(bit[0x6F86] == 0)) goto L1;
+            Event_camera_on();
+            Set_camera_focus_position(0x535, -0x8D, 0x156);
+            Set_camera_position(0x3AD, -0x41, 0x13B);
+            Play_SE2(0xDF73, 0);
+            start(mo_dr_3tw1.entry_11, level=6);
+            Set_command_check_range(0);
+            bit[0x6F86] = 1;
+            await(mo_dr_3tw1.entry_11, level=6);
+            Event_camera_off();
+        L1:
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
     }
 
     thread mo_dr_3tw1 {  // 15
