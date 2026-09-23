@@ -24,12 +24,8 @@ function debugPrint(input)
 end
 
 function FlagFixes()
-    if ReadByte(world) == 0 and ReadByte(room) == 0 and ReadByte(cutsceneFlags + 1) == 0xA then
+    if ReadByte(world) == 0 and ReadByte(room) == 0 and ReadByte(cutsceneFlags + 1) == 0xD then
         debugPrint("Section 1")
-        WriteByte(cutsceneFlags + 1, 0xD)
-        WriteByte(warpType1, 7)
-        WriteByte(warpType2, 6)
-        WriteByte(warpTrigger, 2)
         WriteLong(instantGummiFix, 0) -- Fixes InstantGummi
     end
 

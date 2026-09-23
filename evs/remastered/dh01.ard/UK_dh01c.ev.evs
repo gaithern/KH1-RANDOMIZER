@@ -1,10 +1,13 @@
 globals {
     DIALOG_STATE = save_data2[3];
     DIVE_TO_THE_HEART_PROGRESS = save_data[0x901];
+    DIVE_TO_THE_HEART_WEAPON_CHOSEN = save_data[0x100];
+    DIVE_TO_THE_HEART_WEAPON_GIVEN_UP = save_data[0x101];
     PREVIOUS_AREA = save_data2[1];
     PREVIOUS_SET = save_data2[2];
     PREVIOUS_WORLD = save_data2[0];
     STORY_PROGRESS_GLOBAL = save_data[0x900];
+    ITEM_KINGDOM_KEY = 0x51;
 }
 
 kgr 0 {
@@ -198,6 +201,7 @@ kgr 0 {
                     runtime[0xC81] = 1;
                 }
                 if (DIVE_TO_THE_HEART_PROGRESS == 0xA) {
+                    DIVE_TO_THE_HEART_PROGRESS = 0xD;
                     Hold_camera_info();
                     Make_operable(sora);
                     Make_party_invincible();
@@ -211,7 +215,6 @@ kgr 0 {
                     PREVIOUS_SET = Get_set_number();
                     DIALOG_STATE = 2;
                     Close_window(7);
-                    Trigger_event(6);
                     Pad_ctrl_off();
                     Enter_event_mode();
                     Fade_out(0x1E);
@@ -220,7 +223,7 @@ kgr 0 {
                     bit[0x6B2F] = 1;
                     bit[0x6B2E] = 1;
                     Event_camera_off();
-                    Change_area(1);
+                    Go_to_world_map();
                 }
             }
         }
@@ -249,7 +252,7 @@ kgr 0 {
                 if (!(DIVE_TO_THE_HEART_PROGRESS < 0xA)) goto L1;
                 switch (runtime.dword[0x900]) {
                 case 0x64:
-                    if (save_data[0x100] != 0) {
+                    if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 0) {
                         All_char_ctrl_off();
                         Fade_out(0xA);
                         Set_wait_timer(0xF);
@@ -258,7 +261,7 @@ kgr 0 {
                     }
                     break;
                 case 0x65:
-                    if (save_data[0x100] != 1) {
+                    if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 1) {
                         All_char_ctrl_off();
                         Fade_out(0xA);
                         Set_wait_timer(0xF);
@@ -267,7 +270,7 @@ kgr 0 {
                     }
                     break;
                 case 0x66:
-                    if (save_data[0x100] != 2) {
+                    if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 2) {
                         All_char_ctrl_off();
                         Fade_out(0xA);
                         Set_wait_timer(0xF);
@@ -1064,7 +1067,7 @@ kgr 4 {
 
     thread 0 {
         init {
-            save_data[0x100] = 0;
+            DIVE_TO_THE_HEART_WEAPON_CHOSEN = 0;
             runtime.dword[0x904] = 0;
         }
         main {
@@ -1133,7 +1136,7 @@ kgr 4 {
                 Play_camera_motion_local_rot(0x19, sora);
                 Play_SE2(0x4EFD, 0);
                 await(thread_10.entry_18, level=6);
-                save_data[0x100] = 0;
+                DIVE_TO_THE_HEART_WEAPON_CHOSEN = 0;
                 DIVE_TO_THE_HEART_PROGRESS = 7;
                 Write_set_number_from_table(0);
                 break;
@@ -1180,7 +1183,7 @@ kgr 4 {
                 Play_camera_motion_local_rot(0x19, sora);
                 Play_SE2(0x4EFD, 0);
                 await(thread_10.entry_18, level=6);
-                save_data[0x100] = 1;
+                DIVE_TO_THE_HEART_WEAPON_CHOSEN = 1;
                 DIVE_TO_THE_HEART_PROGRESS = 7;
                 Write_set_number_from_table(1);
                 break;
@@ -1225,7 +1228,7 @@ kgr 4 {
                 Play_camera_motion_local_rot(0x19, sora);
                 Play_SE2(0x4EFD, 0);
                 await(thread_10.entry_18, level=6);
-                save_data[0x100] = 2;
+                DIVE_TO_THE_HEART_WEAPON_CHOSEN = 2;
                 DIVE_TO_THE_HEART_PROGRESS = 7;
                 Write_set_number_from_table(0);
                 break;
@@ -1697,10 +1700,17 @@ kgr 5 {
         MO_DUMMY_3 = 0x40002;
     }
 
+    names {
+        ABILITY_PATH = runtime.dword[0x90C];
+        DREAM_STAT_BONUS = runtime.dword[0x908];
+        DREAM_WEAPON = runtime.dword[0x910];
+        FORM_CONFIRMED = runtime.dword[0x904];
+    }
+
     thread 0 {
         init {
             runtime.dword[0x900] = 0;
-            runtime.dword[0x904] = 0;
+            FORM_CONFIRMED = 0;
         }
         main {
             start(thread_1.entry_11, level=6);
@@ -1727,7 +1737,7 @@ kgr 5 {
                 End_resident_effect_loop(1);
                 Play_camera_motion(0x1E);
                 Play_SE2(0x4EFE, 0);
-                if (save_data[0x100] != 2) {
+                if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 2) {
                     start(wand.entry_12, level=6);
                 }
                 start(sorah.entry_11, level=6);
@@ -1743,7 +1753,7 @@ kgr 5 {
                 End_resident_effect_loop(2);
                 Play_camera_motion(0x1F);
                 Play_SE2(0x4EFE, 0);
-                if (save_data[0x100] != 0) {
+                if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 0) {
                     start(sword.entry_12, level=6);
                 }
                 start(sorah.entry_12, level=6);
@@ -1775,19 +1785,19 @@ kgr 5 {
                 Play_SE2(0x4EFF, 0);
                 switch (runtime[0xC84]) {
                 case 0x64:
-                    save_data[0x101] = 0;
+                    DIVE_TO_THE_HEART_WEAPON_GIVEN_UP = 0;
                     start(sword.entry_14, level=6);
                     start(sword.entry_12, level=6);
                     await(sword.entry_12, level=6);
                     break;
                 case 0x65:
-                    save_data[0x101] = 1;
+                    DIVE_TO_THE_HEART_WEAPON_GIVEN_UP = 1;
                     start(shield.entry_14, level=6);
                     start(shield.entry_12, level=6);
                     await(shield.entry_12, level=6);
                     break;
                 case 0x66:
-                    save_data[0x101] = 2;
+                    DIVE_TO_THE_HEART_WEAPON_GIVEN_UP = 2;
                     start(wand.entry_14, level=6);
                     start(wand.entry_12, level=6);
                     await(wand.entry_12, level=6);
@@ -1824,51 +1834,51 @@ kgr 5 {
                 }
                 start(thread_10.entry_23, level=6);
                 await(thread_10.entry_23, level=6);
-                switch (runtime.dword[0x904]) {
+                switch (FORM_CONFIRMED) {
                 case 1:
                     Fade_out(0xA);
                     Set_wait_timer(0xA);
-                    switch (save_data[0x100]) {
+                    switch (DIVE_TO_THE_HEART_WEAPON_CHOSEN) {
                     case 0:
-                        switch (save_data[0x101]) {
+                        switch (DIVE_TO_THE_HEART_WEAPON_GIVEN_UP) {
                         case 1:
-                            runtime.dword[0x908] = 0;
+                            DREAM_STAT_BONUS = 0;
                             break;
                         case 2:
-                            runtime.dword[0x908] = 1;
+                            DREAM_STAT_BONUS = 1;
                             break;
                         }
-                        runtime.dword[0x90C] = 0;
-                        runtime.dword[0x910] = 0x52;
+                        ABILITY_PATH = 0;
+                        DREAM_WEAPON = 0x52;
                         break;
                     case 1:
-                        switch (save_data[0x101]) {
+                        switch (DIVE_TO_THE_HEART_WEAPON_GIVEN_UP) {
                         case 0:
-                            runtime.dword[0x908] = 2;
+                            DREAM_STAT_BONUS = 2;
                             break;
                         case 2:
-                            runtime.dword[0x908] = 3;
+                            DREAM_STAT_BONUS = 3;
                             break;
                         }
-                        runtime.dword[0x90C] = 1;
-                        runtime.dword[0x910] = 0x53;
+                        ABILITY_PATH = 1;
+                        DREAM_WEAPON = 0x53;
                         break;
                     case 2:
-                        switch (save_data[0x101]) {
+                        switch (DIVE_TO_THE_HEART_WEAPON_GIVEN_UP) {
                         case 0:
-                            runtime.dword[0x908] = 4;
+                            DREAM_STAT_BONUS = 4;
                             break;
                         case 1:
-                            runtime.dword[0x908] = 5;
+                            DREAM_STAT_BONUS = 5;
                             break;
                         }
-                        runtime.dword[0x90C] = 2;
-                        runtime.dword[0x910] = 0x54;
+                        ABILITY_PATH = 2;
+                        DREAM_WEAPON = 0x54;
                         break;
                     }
-                    Change_sora_parameters(runtime.dword[0x908]);
-                    Set_growth_type_1(runtime.dword[0x90C]);
-                    Change_weapon(runtime.dword[0x910]);
+                    Change_sora_parameters(DREAM_STAT_BONUS);
+                    Set_growth_type_1(ABILITY_PATH);
+                    Change_weapon(ITEM_KINGDOM_KEY);
                     DIVE_TO_THE_HEART_PROGRESS = 0xA;
                     start(sword.entry_12, level=6);
                     start(shield.entry_12, level=6);
@@ -1883,7 +1893,7 @@ kgr 5 {
                     start(thread_10.entry_24, level=6);
                     await(thread_10.entry_24, level=6);
                     DIVE_TO_THE_HEART_PROGRESS = 4;
-                    switch (save_data[0x100]) {
+                    switch (DIVE_TO_THE_HEART_WEAPON_CHOSEN) {
                     case 0:
                         Start_resident_effect(1);
                         Set_wait_timer(1);
@@ -1931,8 +1941,8 @@ kgr 5 {
                     start(shield.entry_13, level=6);
                     start(wand.entry_13, level=6);
                     Set_wait_timer(0x32);
-                    save_data[0x100] = 0;
-                    save_data[0x101] = 0;
+                    DIVE_TO_THE_HEART_WEAPON_CHOSEN = 0;
+                    DIVE_TO_THE_HEART_WEAPON_GIVEN_UP = 0;
                     Restore_SE();
                     start(sora.entry_15, level=6);
                     await(sora.entry_15, level=6);
@@ -1949,7 +1959,7 @@ kgr 5 {
                     Change_resident_effect_scale(1, 0x96, 0x64, 0x96);
                     start(sora.entry_12, level=6);
                     start(sword.entry_14, level=6);
-                    if (save_data[0x100] != 2) {
+                    if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 2) {
                         start(wand.entry_13, level=6);
                     }
                     break;
@@ -1959,7 +1969,7 @@ kgr 5 {
                     Change_resident_effect_scale(2, 0x96, 0x64, 0x96);
                     start(sora.entry_13, level=6);
                     start(shield.entry_14, level=6);
-                    if (save_data[0x100] != 0) {
+                    if (DIVE_TO_THE_HEART_WEAPON_CHOSEN != 0) {
                         start(sword.entry_13, level=6);
                     }
                     break;
@@ -2354,7 +2364,7 @@ kgr 5 {
             Set_window_tail_rotation(3, 0x5A);
             Open_window(3);
             Display_message(3, messages[0x10]="{0x07 0E 00}{0x0A 00 00 01}      Yes.{lf}      Maybe not.");
-            Enter_selection_mode(3, 1, 2, runtime.dword[0x904]);
+            Enter_selection_mode(3, 1, 2, FORM_CONFIRMED);
             Wait_selection();
         }
         entry_24 {
