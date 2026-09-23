@@ -17,6 +17,7 @@ kgr 0 {
         PLAYER9 = 9;
         MO_DAIRI09 = 0x40000;
         MO_DAIRI10 = 0x40001;
+        MO_SWITCH1_PC07 = 0x40002;
         MO_SWITCH2_PC07 = 0x40003;
         MO_SWITCH3_PC07 = 0x40004;
         MO_SWITCH4_PC07 = 0x40005;
@@ -1883,657 +1884,288 @@ kgr 0 {
         }
     }
 
-    thread mo_switch1_pc07 [11] asm {  // 21
-        read_dword 0xA68
-        push 0xA
-        alu ne
-        beqz L4480
-    L4480:
-        push 0x40002
-        syscall Set_char_ID
-        syscall Get_MAPOBJ_BG_color
-        read_bit 0x7EA3
-        push 1
-        alu eq
-        beqz L4493
-        push 0x1F4
-        push 0x708
-        alu negate
-        push 0x64
-        alu negate
-        syscall Set_char_position
-    L4493:
-        yield 0x10
-        syscall Get_MAPOBJ_BG_color
-    L4495:
-        read_dword 0xA68
-        push 0xA
-        alu ne
-        beqz L4541
-        read_dword 0xA94
-        push_cond 0x15
-        push_cond 1
-        syscall Get_actor_distance_3axis
-        read_dword 0xA94
-        push 0x1F4
-        alu lt
-        beqz L4531
-        syscall Enable_targeting
-        load_local 0
-        push 0
-        alu eq
-        beqz L4530
-        push 3
-        syscall Start_resident_effect
-        push 1
-        syscall Set_wait_timer
-        push 3
-        push_cond 0x15
-        syscall Push_actor_coord_X
-        push_cond 0x15
-        syscall Push_actor_coord_Y
-        push 0x96
-        alu sub
-        push_cond 0x15
-        syscall Push_actor_coord_Z
-        syscall Change_resident_effect_coords
-        push 1
-        store_local 0
-        push 1
-        syscall Set_wait_timer
-    L4530:
-        jmp L4540
-    L4531:
-        syscall Disable_targeting
-        load_local 0
-        beqz L4540
-        push 3
-        syscall Clear_resident_effect_ID
-        push 0
-        store_local 0
-        push 1
-        syscall Set_wait_timer
-    L4540:
-        jmp L4495
-    L4541:
-        yield 0x10
-        yield 0x10
-        syscall Enter_event_mode
-        syscall Gauge_off
-        syscall Command_display_off
-        push_cond 1
-        syscall Make_operable
-        syscall Make_party_invincible
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        syscall Set_wait_timer
-        read_bit 0x7EA3
-        push 0
-        alu eq
-        beqz L4834
-        syscall All_char_ctrl_off
-        syscall Make_party_invincible
-        syscall Gauge_off
-        syscall Disable_all_battle_event_boxes
-        syscall Pad_ctrl_off
-        syscall Disable_menu_display
-        syscall Erase_all_map_objects
-        push 3
-        syscall Clear_resident_effect_ID
-        push 5
-        syscall Start_resident_effect
-        push 1
-        syscall Set_wait_timer
-        push 5
-        push_cond 0x15
-        syscall Push_actor_coord_X
-        push_cond 0x15
-        syscall Push_actor_coord_Y
-        push 0x96
-        alu sub
-        push_cond 0x15
-        syscall Push_actor_coord_Z
-        syscall Change_resident_effect_coords
-        push 0xDEFF
-        push 0
-        syscall Play_SE2
-        push 0x10
-        syscall Set_wait_timer
-        push 0
-        syscall Check_map_changeable
-        syscall Enter_event_mode
-        syscall Event_camera_on
-        syscall Hold_camera_info
-        push_cond 1
-        syscall Make_operable
-        syscall Make_party_invincible
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        syscall Set_wait_timer
-        syscall Get_world_number
-        write_byte 0xD40
-        read_byte 0xD41
-        write_byte 0xD00
-        syscall Get_area_number
-        write_byte 0xD41
-        syscall Get_set_number
-        write_byte 0xD42
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-        push 0
-        syscall Check_map_changeable
-        store_local 1
-        load_local 1
-        beqz L4626
-        syscall Pad_ctrl_off
-        push 1
-        syscall Set_wait_timer
-        push 0xE
-        push 1
-        alu negate
-        alu ne
-        beqz L4626
-        push 0xE
-        syscall Load_next_map_texture
-    L4626:
-        push 5
-        push_cond 0x20
-        init_call 0xB
-        push 5
-        push_cond 0x21
-        init_call 0xB
-        push 5
-        push_cond 0x20
-        await_call 0xB
-        push 5
-        push_cond 0x21
-        await_call 0xB
-        push 0x258
-        alu negate
-        write_dword 0xA38
-        push 0x708
-        alu negate
-        write_dword 0xA3C
-        push 0
-        write_dword 0xA40
-        push 0x5A
-        alu negate
-        write_dword 0xA44
-        push 0x190
-        alu negate
-        write_dword 0xA48
-        push 0x708
-        alu negate
-        write_dword 0xA4C
-        push 0x14
-        alu negate
-        write_dword 0xA50
-        push 0x5A
-        alu negate
-        write_dword 0xA54
-        push 0x1E0
-        alu negate
-        write_dword 0xA58
-        push 0x708
-        alu negate
-        write_dword 0xA5C
-        push 0x82
-        alu negate
-        write_dword 0xA60
-        push 0x5A
-        alu negate
-        write_dword 0xA64
-        push 0
-        syscall Check_map_changeable
-        store_local 1
-        load_local 1
-        beqz L4679
-        syscall Save_crossfade_image
-    L4679:
-        push 0x2E0
-        alu negate
-        push 0x76E
-        alu negate
-        push 0x199
-        syscall Set_camera_focus_position
-        push 0x12
-        alu negate
-        push 0xA2
-        alu negate
-        push 0
-        syscall Rotate_camera
-        push 0x1F4
-        syscall Set_camera_distance
-        push 0x35
-        syscall Set_camera_fov
-        load_local 1
-        beqz L4699
-        push 8
-        syscall Start_crossfade
-    L4699:
-        push 5
-        push_cond 1
-        init_call 0xD
-        push 5
-        push_cond 0x20
-        init_call 0xC
-        push 5
-        push_cond 0x21
-        init_call 0xC
-        push 0x10
-        syscall Set_wait_timer
-        push 5
-        push_cond 1
-        await_call 0xD
-        push 5
-        push_cond 0x20
-        await_call 0xC
-        push 5
-        push_cond 0x21
-        await_call 0xC
-        push 0xDF00
-        push 0
-        syscall Play_SE2
-        push 5
-        push_cond 1
-        init_call 0xE
-        push 5
-        push_cond 0x20
-        init_call 0xD
-        push 5
-        push_cond 0x21
-        init_call 0xD
-        push 5
-        push_cond 1
-        await_call 0xE
-        push 5
-        push_cond 0x20
-        await_call 0xD
-        push 5
-        push_cond 0x21
-        await_call 0xD
-        push 0x44C
-        alu negate
-        write_dword 0xA38
-        push 0x708
-        alu negate
-        write_dword 0xA3C
-        push 0
-        write_dword 0xA40
-        push 0x5A
-        alu negate
-        write_dword 0xA44
-        push 0x384
-        alu negate
-        write_dword 0xA48
-        push 0x708
-        alu negate
-        write_dword 0xA4C
-        push 0x64
-        write_dword 0xA50
-        push 0x5A
-        alu negate
-        write_dword 0xA54
-        push 0x384
-        alu negate
-        write_dword 0xA58
-        push 0x708
-        alu negate
-        write_dword 0xA5C
-        push 0x64
-        alu negate
-        write_dword 0xA60
-        push 0x5A
-        alu negate
-        write_dword 0xA64
-        push 5
-        push_cond 1
-        init_call 0x10
-        push 5
-        push_cond 0x20
-        init_call 0xF
-        push 5
-        push_cond 0x21
-        init_call 0xF
-        push 5
-        push_cond 1
-        await_call 0x10
-        push 5
-        push_cond 0x20
-        await_call 0xF
-        push 5
-        push_cond 0x21
-        await_call 0xF
-        push 5
-        syscall Clear_resident_effect_ID
-        push 0
-        syscall Start_resident_effect
-        push 1
-        syscall Set_wait_timer
-        push 0
-        push_cond 0x12
-        push 0
-        push 0
-        syscall Set_resident_effect_location_bone
-        push 0xDF91
-        push 0
-        syscall Play_SE2
-        push 0x50007
-        push 0x32
-        syscall Message_to_battle_script
-        push 0x50008
-        push 0x32
-        syscall Message_to_battle_script
-        push 0x50009
-        push 0x32
-        syscall Message_to_battle_script
-        push 1
-        write_bit 0x7EB6
-        push 0x1E
-        syscall Fade_out
-        push 0x1E
-        syscall Set_wait_timer
-        syscall Pad_ctrl_off
-        push 1
-        syscall Set_wait_timer
-        push 3
-        write_byte 0xD43
-        push 1
-        write_bit 0x6B2F
-        push 1
-        write_bit 0x6B2E
-        syscall Event_camera_off
-        push 0xE
-        syscall Change_area
-        jmp L5093
-    L4834:
-        syscall All_char_ctrl_off
-        syscall Make_party_invincible
-        syscall Gauge_off
-        syscall Disable_all_battle_event_boxes
-        syscall Pad_ctrl_off
-        syscall Disable_menu_display
-        syscall Erase_all_map_objects
-        push 3
-        syscall Clear_resident_effect_ID
-        push 5
-        syscall Start_resident_effect
-        push 1
-        syscall Set_wait_timer
-        push 5
-        push_cond 0x15
-        syscall Push_actor_coord_X
-        push_cond 0x15
-        syscall Push_actor_coord_Y
-        push 0x96
-        alu sub
-        push_cond 0x15
-        syscall Push_actor_coord_Z
-        syscall Change_resident_effect_coords
-        push 0xDEFF
-        push 0
-        syscall Play_SE2
-        push 0x10
-        syscall Set_wait_timer
-        push 0
-        syscall Check_map_changeable
-        syscall Enter_event_mode
-        syscall Event_camera_on
-        syscall Hold_camera_info
-        push_cond 1
-        syscall Make_operable
-        syscall Make_party_invincible
-        syscall Enter_event_mode
-        syscall Command_display_off
-        syscall Gauge_off
-        push 1
-        syscall Set_wait_timer
-        syscall Get_world_number
-        write_byte 0xD40
-        read_byte 0xD41
-        write_byte 0xD00
-        syscall Get_area_number
-        write_byte 0xD41
-        syscall Get_set_number
-        write_byte 0xD42
-        push 2
-        write_byte 0xD43
-        push 7
-        syscall Close_window
-        push 0
-        syscall Check_map_changeable
-        store_local 1
-        load_local 1
-        beqz L4902
-        syscall Pad_ctrl_off
-        push 1
-        syscall Set_wait_timer
-        push 0xF
-        push 1
-        alu negate
-        alu ne
-        beqz L4902
-        push 0xF
-        syscall Load_next_map_texture
-    L4902:
-        push 5
-        push_cond 0x20
-        init_call 0xB
-        push 5
-        push_cond 0x21
-        init_call 0xB
-        push 5
-        push_cond 0x20
-        await_call 0xB
-        push 5
-        push_cond 0x21
-        await_call 0xB
-        push 0x258
-        write_dword 0xA38
-        push 0x708
-        alu negate
-        write_dword 0xA3C
-        push 0
-        write_dword 0xA40
-        push 0x5A
-        write_dword 0xA44
-        push 0x190
-        write_dword 0xA48
-        push 0x708
-        alu negate
-        write_dword 0xA4C
-        push 0x14
-        write_dword 0xA50
-        push 0x5A
-        write_dword 0xA54
-        push 0x1E0
-        write_dword 0xA58
-        push 0x708
-        alu negate
-        write_dword 0xA5C
-        push 0x82
-        write_dword 0xA60
-        push 0x5A
-        write_dword 0xA64
-        push 0
-        syscall Check_map_changeable
-        store_local 1
-        load_local 1
-        beqz L4947
-        syscall Save_crossfade_image
-    L4947:
-        push 0x29B
-        push 0x768
-        alu negate
-        push 0xA5
-        syscall Set_camera_focus_position
-        push 0x22
-        alu negate
-        push 0x88
-        push 0
-        syscall Rotate_camera
-        push 0x1F4
-        syscall Set_camera_distance
-        push 0x35
-        syscall Set_camera_fov
-        push 5
-        push_cond 1
-        init_call 0xD
-        push 5
-        push_cond 0x20
-        init_call 0xC
-        push 5
-        push_cond 0x21
-        init_call 0xC
-        load_local 1
-        beqz L4974
-        push 8
-        syscall Start_crossfade
-    L4974:
-        push 0x10
-        syscall Set_wait_timer
-        push 5
-        push_cond 1
-        await_call 0xD
-        push 5
-        push_cond 0x20
-        await_call 0xC
-        push 5
-        push_cond 0x21
-        await_call 0xC
-        push 0xDF00
-        push 0
-        syscall Play_SE2
-        push 5
-        push_cond 1
-        init_call 0xE
-        push 5
-        push_cond 0x20
-        init_call 0xD
-        push 5
-        push_cond 0x21
-        init_call 0xD
-        push 5
-        push_cond 1
-        await_call 0xE
-        push 5
-        push_cond 0x20
-        await_call 0xD
-        push 5
-        push_cond 0x21
-        await_call 0xD
-        push 0x44C
-        write_dword 0xA38
-        push 0x708
-        alu negate
-        write_dword 0xA3C
-        push 0
-        write_dword 0xA40
-        push 0x5A
-        write_dword 0xA44
-        push 0x384
-        write_dword 0xA48
-        push 0x708
-        alu negate
-        write_dword 0xA4C
-        push 0x64
-        write_dword 0xA50
-        push 0x5A
-        write_dword 0xA54
-        push 0x384
-        write_dword 0xA58
-        push 0x708
-        alu negate
-        write_dword 0xA5C
-        push 0x64
-        alu negate
-        write_dword 0xA60
-        push 0x5A
-        write_dword 0xA64
-        push 5
-        push_cond 1
-        init_call 0x10
-        push 5
-        push_cond 0x20
-        init_call 0xF
-        push 5
-        push_cond 0x21
-        init_call 0xF
-        push 5
-        push_cond 1
-        await_call 0x10
-        push 5
-        push_cond 0x20
-        await_call 0xF
-        push 5
-        push_cond 0x21
-        await_call 0xF
-        push 5
-        syscall Clear_resident_effect_ID
-        push 0
-        syscall Start_resident_effect
-        push 1
-        syscall Set_wait_timer
-        push 0
-        push_cond 0x12
-        push 0
-        push 0
-        syscall Set_resident_effect_location_bone
-        push 0xDF91
-        push 0
-        syscall Play_SE2
-        push 0x50007
-        push 0x33
-        syscall Message_to_battle_script
-        push 0x50008
-        push 0x33
-        syscall Message_to_battle_script
-        push 0x50009
-        push 0x33
-        syscall Message_to_battle_script
-        push 1
-        write_bit 0x7EB5
-        push 0x1E
-        syscall Fade_out
-        push 0x1E
-        syscall Set_wait_timer
-        syscall Pad_ctrl_off
-        push 1
-        syscall Set_wait_timer
-        push 3
-        write_byte 0xD43
-        push 1
-        write_bit 0x6B2F
-        push 1
-        write_bit 0x6B2E
-        syscall Event_camera_off
-        push 0xF
-        syscall Change_area
-    L5093:
-        syscall Gauge_on
-        syscall Command_display_on
-        syscall Exit_event_mode
-        syscall Gauge_on
-        syscall Command_display_on
-        syscall Remove_invincibility
-        push_cond 1
-        syscall Make_inoperable
-        syscall Event_camera_off
-        syscall Exit_event_mode
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
+    thread mo_switch1_pc07 {  // 21
+        init {
+            if (runtime.dword[0xA68] != 0xA) {
+            }
+            Set_char_ID(MO_SWITCH1_PC07);
+            Get_MAPOBJ_BG_color();
+            if (bit[0x7EA3] == 1) {
+                Set_char_position(0x1F4, -0x708, -0x64);
+            }
+        }
+        main {
+            Get_MAPOBJ_BG_color();
+            while (runtime.dword[0xA68] != 0xA) {
+                Get_actor_distance_3axis(runtime.dword[0xA94], mo_switch1_pc07, sora);
+                if (runtime.dword[0xA94] < 0x1F4) {
+                    Enable_targeting();
+                    if (local0 == 0) {
+                        Start_resident_effect(3);
+                        Set_wait_timer(1);
+                        Change_resident_effect_coords(3, Push_actor_coord_X(mo_switch1_pc07), Push_actor_coord_Y(mo_switch1_pc07) - 0x96, Push_actor_coord_Z(mo_switch1_pc07));
+                        local0 = 1;
+                        Set_wait_timer(1);
+                    }
+                    goto L1;
+                }
+                Disable_targeting();
+                if (!local0) goto L1;
+                Clear_resident_effect_ID(3);
+                local0 = 0;
+                Set_wait_timer(1);
+            L1:
+            }
+        }
+        on_action {
+            Enter_event_mode();
+            Gauge_off();
+            Command_display_off();
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            if (bit[0x7EA3] == 0) {
+                All_char_ctrl_off();
+                Make_party_invincible();
+                Gauge_off();
+                Disable_all_battle_event_boxes();
+                Pad_ctrl_off();
+                Disable_menu_display();
+                Erase_all_map_objects();
+                Clear_resident_effect_ID(3);
+                Start_resident_effect(5);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(5, Push_actor_coord_X(mo_switch1_pc07), Push_actor_coord_Y(mo_switch1_pc07) - 0x96, Push_actor_coord_Z(mo_switch1_pc07));
+                Play_SE2(0xDEFF, 0);
+                Set_wait_timer(0x10);
+                Check_map_changeable(0);
+                Enter_event_mode();
+                Event_camera_on();
+                Hold_camera_info();
+                Make_operable(sora);
+                Make_party_invincible();
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                Set_wait_timer(1);
+                PREVIOUS_WORLD = Get_world_number();
+                runtime[0xD00] = PREVIOUS_AREA;
+                PREVIOUS_AREA = Get_area_number();
+                PREVIOUS_SET = Get_set_number();
+                DIALOG_STATE = 2;
+                Close_window(7);
+                local1 = Check_map_changeable(0);
+                if (!local1) goto L1;
+                Pad_ctrl_off();
+                Set_wait_timer(1);
+                if (!(0xE != -1)) goto L1;
+                Load_next_map_texture(0xE);
+            L1:
+                start(thread_32.entry_11, level=5);
+                start(thread_33.entry_11, level=5);
+                await(thread_32.entry_11, level=5);
+                await(thread_33.entry_11, level=5);
+                runtime.dword[0xA38] = -0x258;
+                runtime.dword[0xA3C] = -0x708;
+                runtime.dword[0xA40] = 0;
+                runtime.dword[0xA44] = -0x5A;
+                runtime.dword[0xA48] = -0x190;
+                runtime.dword[0xA4C] = -0x708;
+                runtime.dword[0xA50] = -0x14;
+                runtime.dword[0xA54] = -0x5A;
+                runtime.dword[0xA58] = -0x1E0;
+                runtime.dword[0xA5C] = -0x708;
+                runtime.dword[0xA60] = -0x82;
+                runtime.dword[0xA64] = -0x5A;
+                local1 = Check_map_changeable(0);
+                if (local1) {
+                    Save_crossfade_image();
+                }
+                Set_camera_focus_position(-0x2E0, -0x76E, 0x199);
+                Rotate_camera(-0x12, -0xA2, 0);
+                Set_camera_distance(0x1F4);
+                Set_camera_fov(0x35);
+                if (local1) {
+                    Start_crossfade(8);
+                }
+                start(sora.entry_13, level=5);
+                start(thread_32.entry_12, level=5);
+                start(thread_33.entry_12, level=5);
+                Set_wait_timer(0x10);
+                await(sora.entry_13, level=5);
+                await(thread_32.entry_12, level=5);
+                await(thread_33.entry_12, level=5);
+                Play_SE2(0xDF00, 0);
+                start(sora.entry_14, level=5);
+                start(thread_32.entry_13, level=5);
+                start(thread_33.entry_13, level=5);
+                await(sora.entry_14, level=5);
+                await(thread_32.entry_13, level=5);
+                await(thread_33.entry_13, level=5);
+                runtime.dword[0xA38] = -0x44C;
+                runtime.dword[0xA3C] = -0x708;
+                runtime.dword[0xA40] = 0;
+                runtime.dword[0xA44] = -0x5A;
+                runtime.dword[0xA48] = -0x384;
+                runtime.dword[0xA4C] = -0x708;
+                runtime.dword[0xA50] = 0x64;
+                runtime.dword[0xA54] = -0x5A;
+                runtime.dword[0xA58] = -0x384;
+                runtime.dword[0xA5C] = -0x708;
+                runtime.dword[0xA60] = -0x64;
+                runtime.dword[0xA64] = -0x5A;
+                start(sora.entry_16, level=5);
+                start(thread_32.entry_15, level=5);
+                start(thread_33.entry_15, level=5);
+                await(sora.entry_16, level=5);
+                await(thread_32.entry_15, level=5);
+                await(thread_33.entry_15, level=5);
+                Clear_resident_effect_ID(5);
+                Start_resident_effect(0);
+                Set_wait_timer(1);
+                Set_resident_effect_location_bone(0, mvf_toro41_pc07, 0, 0);
+                Play_SE2(0xDF91, 0);
+                Message_to_battle_script(MVF_TORO11_PC07, 0x32);
+                Message_to_battle_script(MVF_TORO12_PC07, 0x32);
+                Message_to_battle_script(MVF_TORO13_PC07, 0x32);
+                bit[0x7EB6] = 1;
+                Fade_out(0x1E);
+                Set_wait_timer(0x1E);
+                Pad_ctrl_off();
+                Set_wait_timer(1);
+                DIALOG_STATE = 3;
+                bit[0x6B2F] = 1;
+                bit[0x6B2E] = 1;
+                Event_camera_off();
+                Change_area(0xE);
+            } else {
+                All_char_ctrl_off();
+                Make_party_invincible();
+                Gauge_off();
+                Disable_all_battle_event_boxes();
+                Pad_ctrl_off();
+                Disable_menu_display();
+                Erase_all_map_objects();
+                Clear_resident_effect_ID(3);
+                Start_resident_effect(5);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(5, Push_actor_coord_X(mo_switch1_pc07), Push_actor_coord_Y(mo_switch1_pc07) - 0x96, Push_actor_coord_Z(mo_switch1_pc07));
+                Play_SE2(0xDEFF, 0);
+                Set_wait_timer(0x10);
+                Check_map_changeable(0);
+                Enter_event_mode();
+                Event_camera_on();
+                Hold_camera_info();
+                Make_operable(sora);
+                Make_party_invincible();
+                Enter_event_mode();
+                Command_display_off();
+                Gauge_off();
+                Set_wait_timer(1);
+                PREVIOUS_WORLD = Get_world_number();
+                runtime[0xD00] = PREVIOUS_AREA;
+                PREVIOUS_AREA = Get_area_number();
+                PREVIOUS_SET = Get_set_number();
+                DIALOG_STATE = 2;
+                Close_window(7);
+                local1 = Check_map_changeable(0);
+                if (!local1) goto L2;
+                Pad_ctrl_off();
+                Set_wait_timer(1);
+                if (!(0xF != -1)) goto L2;
+                Load_next_map_texture(0xF);
+            L2:
+                start(thread_32.entry_11, level=5);
+                start(thread_33.entry_11, level=5);
+                await(thread_32.entry_11, level=5);
+                await(thread_33.entry_11, level=5);
+                runtime.dword[0xA38] = 0x258;
+                runtime.dword[0xA3C] = -0x708;
+                runtime.dword[0xA40] = 0;
+                runtime.dword[0xA44] = 0x5A;
+                runtime.dword[0xA48] = 0x190;
+                runtime.dword[0xA4C] = -0x708;
+                runtime.dword[0xA50] = 0x14;
+                runtime.dword[0xA54] = 0x5A;
+                runtime.dword[0xA58] = 0x1E0;
+                runtime.dword[0xA5C] = -0x708;
+                runtime.dword[0xA60] = 0x82;
+                runtime.dword[0xA64] = 0x5A;
+                local1 = Check_map_changeable(0);
+                if (local1) {
+                    Save_crossfade_image();
+                }
+                Set_camera_focus_position(0x29B, -0x768, 0xA5);
+                Rotate_camera(-0x22, 0x88, 0);
+                Set_camera_distance(0x1F4);
+                Set_camera_fov(0x35);
+                start(sora.entry_13, level=5);
+                start(thread_32.entry_12, level=5);
+                start(thread_33.entry_12, level=5);
+                if (local1) {
+                    Start_crossfade(8);
+                }
+                Set_wait_timer(0x10);
+                await(sora.entry_13, level=5);
+                await(thread_32.entry_12, level=5);
+                await(thread_33.entry_12, level=5);
+                Play_SE2(0xDF00, 0);
+                start(sora.entry_14, level=5);
+                start(thread_32.entry_13, level=5);
+                start(thread_33.entry_13, level=5);
+                await(sora.entry_14, level=5);
+                await(thread_32.entry_13, level=5);
+                await(thread_33.entry_13, level=5);
+                runtime.dword[0xA38] = 0x44C;
+                runtime.dword[0xA3C] = -0x708;
+                runtime.dword[0xA40] = 0;
+                runtime.dword[0xA44] = 0x5A;
+                runtime.dword[0xA48] = 0x384;
+                runtime.dword[0xA4C] = -0x708;
+                runtime.dword[0xA50] = 0x64;
+                runtime.dword[0xA54] = 0x5A;
+                runtime.dword[0xA58] = 0x384;
+                runtime.dword[0xA5C] = -0x708;
+                runtime.dword[0xA60] = -0x64;
+                runtime.dword[0xA64] = 0x5A;
+                start(sora.entry_16, level=5);
+                start(thread_32.entry_15, level=5);
+                start(thread_33.entry_15, level=5);
+                await(sora.entry_16, level=5);
+                await(thread_32.entry_15, level=5);
+                await(thread_33.entry_15, level=5);
+                Clear_resident_effect_ID(5);
+                Start_resident_effect(0);
+                Set_wait_timer(1);
+                Set_resident_effect_location_bone(0, mvf_toro41_pc07, 0, 0);
+                Play_SE2(0xDF91, 0);
+                Message_to_battle_script(MVF_TORO11_PC07, 0x33);
+                Message_to_battle_script(MVF_TORO12_PC07, 0x33);
+                Message_to_battle_script(MVF_TORO13_PC07, 0x33);
+                bit[0x7EB5] = 1;
+                Fade_out(0x1E);
+                Set_wait_timer(0x1E);
+                Pad_ctrl_off();
+                Set_wait_timer(1);
+                DIALOG_STATE = 3;
+                bit[0x6B2F] = 1;
+                bit[0x6B2E] = 1;
+                Event_camera_off();
+                Change_area(0xF);
+            }
+            Gauge_on();
+            Command_display_on();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+            Event_camera_off();
+            Exit_event_mode();
+        }
     }
 
     thread mvf_toro11_pc07 {  // 22

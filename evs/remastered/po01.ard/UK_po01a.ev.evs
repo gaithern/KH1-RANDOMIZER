@@ -20,6 +20,7 @@ globals {
 kgr 0 {
     entities {
         POOH = 0x20000;
+        TIGER = 0x20001;
         PIG = 0x20002;
         IYO = 0x20003;
         RABIT = 0x20004;
@@ -518,51 +519,31 @@ kgr 0 {
         }
     }
 
-    thread tiger [11] asm {  // 6
-        syscall Ground_sound_off
-        push 0x20001
-        syscall Set_char_ID
-        yield 0x10
-        syscall Hide_char
-        syscall Disable_targeting
-        syscall Collision_off
-        syscall Hide_char_shadow
-        push 0
-        syscall Set_command_speak_range
-        syscall Make_invincible
-        syscall Ground_sound_on
-    L889:
-        push 1
-        beqz L892
-        jmp L889
-    L892:
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        syscall Collision_off
-        push 0x803FFF
-        syscall Clear_valid_key_input
-        push 0x2D
-        syscall Fade_out
-        push 6
-        push 1
-        push 0
-        syscall Write_set_number
-        push 0x2D
-        syscall Set_wait_timer
-        push 0
-        syscall Check_map_changeable
-        push 6
-        push 1
-        push 0
-        syscall Change_map
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
-        yield 0x10
+    thread tiger {  // 6
+        init {
+            Ground_sound_off();
+            Set_char_ID(TIGER);
+        }
+        main {
+            Hide_char();
+            Disable_targeting();
+            Collision_off();
+            Hide_char_shadow();
+            Set_command_speak_range(0);
+            Make_invincible();
+            Ground_sound_on();
+            while (1) {
+            }
+        }
+        on_touch {
+            Collision_off();
+            Clear_valid_key_input(0x803FFF);
+            Fade_out(0x2D);
+            Write_set_number(6, 1, 0);
+            Set_wait_timer(0x2D);
+            Check_map_changeable(0);
+            Change_map(6, 1, 0);
+        }
     }
 
     thread rabit {  // 7
