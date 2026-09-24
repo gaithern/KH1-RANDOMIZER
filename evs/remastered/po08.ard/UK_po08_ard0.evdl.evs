@@ -14,6 +14,7 @@ globals {
     POOH_RARE_NUT_5_STATE = save_data[0x806];
     POOH_RARE_NUT_REWARD_PENDING = save_data[0x807];
     POOH_TIGGER_BOUNCE_WON = save_data[0x818];
+    SKIP_100_ACRE_WOOD_MINIGAMES = save_data[0x4F];
     GIFT_PO_BOUNCING_SPOT_BREAK_LOG = 0xA;
     GIFT_PO_BOUNCING_SPOT_FALL_THROUGH_TOP_OF_TREE_NEXT_TO_POOH = 0xB;
     GIFT_PO_BOUNCING_SPOT_TURN_IN_RARE_NUT_1 = 1;
@@ -2646,31 +2647,39 @@ kgr 0 {
                     runtime.dword[0x980] = 1;
                     save_data[0x81B] = 1;
                 }
-                Show_minigame_info(9, save_data.dword[0x830]);
-                Set_minigame_played_flag(0xD);
-                Set_max_counter(0x14);
-                Start_timer_up(0);
-                start(thread_0.entry_12, level=6);
-                start(thread_3.entry_11, level=6);
-                Change_camera_sora_distance(0, 0x320);
-                Set_wait_timer(1);
-                Set_camera_fov(0x35);
-                Gauge_on();
-                Command_display_on();
-                Event_camera_off();
-                Exit_event_mode();
-                Make_inoperable(sora);
-                while (runtime.dword[0x938] != 2) {
-                    if (runtime.dword[0x938] == 0) {
-                        local0 = 0x1518;
-                        runtime.dword[0x984] = Stop_timer();
-                        goto L2;
+                if (SKIP_100_ACRE_WOOD_MINIGAMES == 1) {
+                    runtime.dword[0x918] = 0x14;
+                    POOH_AREA_5_PROGRESS.word = 4;
+                    Make_operable(sora);
+                    runtime.dword[0x938] = 0;
+                    runtime.dword[0x964] = 0x6FF;
+                } else {
+                    Show_minigame_info(9, save_data.dword[0x830]);
+                    Set_minigame_played_flag(0xD);
+                    Set_max_counter(0x14);
+                    Start_timer_up(0);
+                    start(thread_0.entry_12, level=6);
+                    start(thread_3.entry_11, level=6);
+                    Change_camera_sora_distance(0, 0x320);
+                    Set_wait_timer(1);
+                    Set_camera_fov(0x35);
+                    Gauge_on();
+                    Command_display_on();
+                    Event_camera_off();
+                    Exit_event_mode();
+                    Make_inoperable(sora);
+                    while (runtime.dword[0x938] != 2) {
+                        if (runtime.dword[0x938] == 0) {
+                            local0 = 0x1518;
+                            runtime.dword[0x984] = Stop_timer();
+                            goto L2;
+                        }
                     }
+                    Make_operable(sora);
+                    runtime.dword[0x938] = 0;
+                    runtime.dword[0x984] = Stop_timer();
+                    runtime.dword[0x964] = Stop_timer();
                 }
-                Make_operable(sora);
-                runtime.dword[0x938] = 0;
-                runtime.dword[0x984] = Stop_timer();
-                runtime.dword[0x964] = Stop_timer();
                 Set_wait_timer(1);
                 if ((save_data.dword[0x830] == 0) | (runtime.dword[0x964] < save_data.dword[0x830])) {
                     save_data.dword[0x830] = runtime.dword[0x964];
