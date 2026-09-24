@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-build_mod.py — reassemble every .asm file under asm/ against the pristine
-game files and write the patched result into mod/.
+build_mod.py — reassemble every .asm file under asm/ (and every .evs file
+under evs/) against the pristine game files and write the patched result
+into mod/. When a script has both, evs/<rel>.evs wins over asm/<rel>.asm.
 
 Each asm/<rel>.asm maps to:
   - the original binary at <game_data>/<rel> (.asm suffix stripped)
@@ -41,6 +42,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
 
 ROOT = Path(__file__).parent
 ASM_DIR = ROOT / 'asm'
+EVS_DIR = ROOT / 'evs'
 MOD_DIR = ROOT / 'mod'
 DEFAULT_GAME_DATA = 'C:/OpenKH/OpenKHEGS/data/kh1'
 DEFAULT_EVDL_TOOLS_DIR = Path(r'C:\Users\gaith\Documents\GitHub\KH1-EVDL-TOOLS')
@@ -70,8 +72,11 @@ def find_evdl_tools_dir():
         print(f'evdl_tool.py not found at {path}', file=sys.stderr)
 
 
-sys.path.insert(0, str(find_evdl_tools_dir()))
+EVDL_TOOLS_DIR = find_evdl_tools_dir()
+sys.path.insert(0, str(EVDL_TOOLS_DIR))
 import evdl_tool
+sys.path.insert(0, str(EVDL_TOOLS_DIR / 'evs'))
+import build as evs_build
 
 
 def main():
@@ -85,13 +90,14 @@ def main():
         print(f'Error: game data directory not found: {game_data_dir}', file=sys.stderr)
         sys.exit(1)
 
-    asm_files = sorted(ASM_DIR.rglob('*.asm'))
+    sources = {p.relative_to(ASM_DIR).with_suffix(''): p for p in ASM_DIR.rglob('*.asm')}
+    sources.update({p.relative_to(EVS_DIR).with_suffix(''): p for p in EVS_DIR.rglob('*.evs')})
     built = 0
+    from_evs = 0
     skipped = []
     failed = []
 
-    for asm_path in asm_files:
-        rel = asm_path.relative_to(ASM_DIR).with_suffix('')  # strip trailing .asm
+    for rel, src_path in sorted(sources.items()):
         orig_path = game_data_dir / rel
         mod_path = MOD_DIR / rel
         if not orig_path.exists():
@@ -99,14 +105,19 @@ def main():
             continue
         try:
             mod_path.parent.mkdir(parents=True, exist_ok=True)
-            evdl_tool.cmd_asm(str(asm_path), str(mod_path), orig_bin_override=str(orig_path))
+            if src_path.suffix == '.evs':
+                for binl in evs_build.build_file(src_path, orig_path, mod_path):
+                    print(f'  {rel}: new message strings written to {binl}')
+                from_evs += 1
+            else:
+                evdl_tool.cmd_asm(str(src_path), str(mod_path), orig_bin_override=str(orig_path))
             built += 1
         except SystemExit:
             failed.append(str(rel))
         except Exception as e:
             failed.append(f'{rel} ({e})')
 
-    print(f'\n{built}/{len(asm_files)} file(s) built.')
+    print(f'\n{built}/{len(sources)} file(s) built ({from_evs} from evs/, {built - from_evs} from asm/).')
     if skipped:
         print(f'\n{len(skipped)} skipped (no original binary found):')
         for s in skipped:

@@ -1,0 +1,568 @@
+globals {
+    ATLANTICA_PROGRESS = save_data[0x90A];
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    TORN_PAGES_AVAILABLE = save_data[0x800];
+    GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST = 4;
+    GIFT_LM_SUNKEN_SHIP_IN_FLIPPED_BOAT_CHEST = 0;
+    GIFT_LM_SUNKEN_SHIP_SEABED_CHEST = 1;
+    ITEM_MYTHRIL_SHARD = 0xFD;
+}
+
+kgr 0 {
+    entities {
+        SORA_2 = 0x30000;
+        MO_DR_CAVE_LM3 = 0x40000;
+        MO_SBOX1_LM3 = 0x40004;
+        MO_SBOX2_LM3 = 0x40005;
+        MO_SBOX3_LM3 = 0x40006;
+        MO_SW_DR_LM3 = 0x40007;
+        MO_TARU1_LM3 = 0x40008;
+        MO_TARU2_LM3 = 0x40009;
+        MO_TARU3_LM3 = 0x4000A;
+        MO_TBOX1_LM3 = 0x4000B;
+        MO_TBOX4_LM3 = 0x4000C;
+        MVF_DR_CAVE_LM3 = 0x50000;
+    }
+
+    thread 0 {
+        init {
+            Disable_all_battle_event_boxes();
+            save_data2.word[0x3E0] = 0;
+            save_data2.word[0x3E2] = 0;
+            save_data2.word[0x3E4] = 0;
+            save_data2.word[0x3E6] = 0;
+            save_data2.word[0x3E8] = 0;
+            save_data2.word[0x3EA] = 0;
+            save_data2.word[0x3EC] = 0;
+            save_data2.word[0x3EE] = 0;
+            save_data2[0x3F0] = 0;
+            save_data2[0x3F1] = 0;
+            save_data2[0x3F2] = 0;
+            save_data2[0x3F3] = 0;
+            save_data2[0x3F4] = 0;
+            save_data2[0x3F5] = 0;
+            save_data2[0x3F6] = 0;
+            save_data2[0x3F7] = 0;
+            save_data2[0x1D] = 0;
+            CURRENT_WORLD = Get_world_number();
+            if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                DIALOG_STATE = 4;
+            }
+            bit[0x6B2E] = 1;
+            bit[0x6B2F] = 0;
+            Pad_ctrl_on();
+            Enter_event_mode();
+            runtime.dword[0xA10] = 0;
+            runtime.dword[0xA14] = 0;
+        }
+        main {
+            Group_display_off(2);
+            Discard_object_data(MO_DR_CAVE_LM3);
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            while (1) {
+            }
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA_2);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Make_invincible();
+            Make_non_pressable();
+            Motion_ctrl_off();
+            Disable_battle_mode_entry();
+            Motion_change_no_loop(0x800A6);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Change_motion_interp(0, 4);
+            Set_wait_timer(4);
+            Motion_ctrl_on();
+        }
+        entry_12 {
+            Enable_battle_mode_entry();
+            Motion_ctrl_on();
+            Char_ctrl_on();
+            Make_not_invincible();
+            Make_pressable();
+        }
+    }
+
+    thread mo_sw_dr_lm3 {  // 2
+        init {
+            Set_char_ID(MO_SW_DR_LM3);
+            Set_special_command_range(0);
+        }
+        main {
+            Motion_change_no_loop(0);
+            while (1) {
+            }
+        }
+    }
+
+    thread 3 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+            save_data2[0x1A0] = 0;
+            Set_attribute_on(0x64);
+            Set_attribute_off(0x65);
+            if (bit[0x7737]) {
+                Set_attribute_off(0x78);
+            }
+        }
+        main {
+            while (1) {
+                local2 = 0;
+                local20 = Get_motion_number_actor(sora);
+                if ((0 <= local20) & (local20 <= 2)) {
+                    local2 = 1;
+                }
+                if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
+                    local2 = 1;
+                }
+                local19 = 0;
+                if (local19 == 0) {
+                    bit[0x6ACF] = local2;
+                } else {
+                    bit[0x6ACF] = 0;
+                }
+            }
+        }
+    }
+
+    thread mo_tbox1_lm3 {  // 4
+        init {
+            local5 = Get_treasure_flag(0xFC);
+            local0 = 0x168;
+            local14 = 0x4000B;
+            if (local5 == 0) {
+                Set_char_ID(MO_TBOX1_LM3);
+                Change_char_color_from_map_table(1, 0);
+                Make_non_pressable();
+            } else {
+                Discard_object_data(MO_TBOX1_LM3);
+            }
+        }
+        main {
+            while (local5 == 0) {
+            }
+        }
+        entry_9 {
+            if (!(local5 == 0)) goto L1;
+            if (local0 == 0x168) {
+                local3 = 0;
+            } else {
+                local3 = Get_angle_between_actors(mo_tbox1_lm3, sora);
+                local3 = (((local3 - 0x168) + 0x168) % 0x168) - 0xB4;
+            }
+            local4 = Push_actor_coord_Y(sora) - Push_actor_coord_Y(mo_tbox1_lm3);
+            if ((((-0x5A <= local3) & (local3 <= 0x5A)) & (-0x3C < local4)) & (local4 < 0x50)) {
+                local2 = 1;
+                goto L1;
+            }
+            local2 = 0;
+        L1:
+            if (runtime.dword[0xA14] == 1) {
+                bit[0x6ACF] = 0;
+            }
+            if (!((local5 == 0) & (local2 == 1))) goto L2;
+            local18 = Get_special_command_count();
+            if (((local18 == -1) & (bit[0x6ACF] == 1)) & (local21 == 0)) {
+                Set_special_command(0x55, 1);
+            } else {
+                Set_special_command(0x55, 0);
+            }
+            if (!((local18 == 0x55) & (local21 == 0))) goto L2;
+            local21 = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            runtime.dword[0xA14] = 1;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST;
+            if (GIFT_TABLE_ITEM.dword == 0xD4) {
+                __store_reg(0, TORN_PAGES_AVAILABLE);
+                if (__set_ge(0)) {
+                    TORN_PAGES_AVAILABLE = TORN_PAGES_AVAILABLE + 1;
+                } else {
+                    TORN_PAGES_AVAILABLE = 1;
+                }
+                __dec_reg_idx(0);
+            }
+            Disable_targeting();
+            Set_special_command_range(0);
+            Gauge_off();
+            Command_display_off();
+            start(sora.entry_11, level=5);
+            await(sora.entry_11, level=5);
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = GIFT_LM_ARIELS_GROTTO_MIDDLE_CHEST;
+            save_data2[0x26] = 0;
+            Erase_OBJ_effect(0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(6);
+            Play_OBJ_effect(1);
+            Set_treasure_flag(0xFC, 1);
+            goto L3;
+            save_data2[0x26] = 1;
+        L3:
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            GIFT_TABLE_ITEM.dword = GIFT_LM_SUNKEN_SHIP_IN_FLIPPED_BOAT_CHEST;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            if (save_data2[0x26] == 0) {
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0x18);
+                Collision_off();
+                Set_wait_timer(0x10);
+                Erase_OBJ_effect(1);
+                start(sora.entry_12, level=5);
+                local5 = 1;
+                Set_wait_timer(8);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Discard_object_data(MO_TBOX1_LM3);
+            } else {
+                start(sora.entry_12, level=5);
+                await(sora.entry_12, level=5);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Enable_targeting();
+                Set_special_command_range(0x96);
+            }
+            save_data2[0x26] = 0;
+            runtime.dword[0xA14] = 0;
+            local21 = 0;
+        L2:
+        }
+    }
+
+    thread mo_tbox4_lm3 {  // 5
+        init {
+            local5 = Get_treasure_flag(0xFD);
+            local0 = 0x168;
+            local14 = 0x4000C;
+            if (local5 == 0) {
+                Set_char_ID(MO_TBOX4_LM3);
+                Change_char_color_from_map_table(0, 0);
+                Make_non_pressable();
+            } else {
+                Discard_object_data(MO_TBOX4_LM3);
+            }
+        }
+        main {
+            while (local5 == 0) {
+            }
+        }
+        entry_9 {
+            if (!(local5 == 0)) goto L1;
+            if (local0 == 0x168) {
+                local3 = 0;
+            } else {
+                local3 = Get_angle_between_actors(mo_tbox4_lm3, sora);
+                local3 = (((local3 - 0x168) + 0x168) % 0x168) - 0xB4;
+            }
+            local4 = Push_actor_coord_Y(sora) - Push_actor_coord_Y(mo_tbox4_lm3);
+            if ((((-0x5A <= local3) & (local3 <= 0x5A)) & (-0x3C < local4)) & (local4 < 0x50)) {
+                local2 = 1;
+                goto L1;
+            }
+            local2 = 0;
+        L1:
+            if (runtime.dword[0xA14] == 1) {
+                bit[0x6ACF] = 0;
+            }
+            if (!((local5 == 0) & (local2 == 1))) goto L2;
+            local18 = Get_special_command_count();
+            if (((local18 == -1) & (bit[0x6ACF] == 1)) & (local21 == 0)) {
+                Set_special_command(0x55, 1);
+            } else {
+                Set_special_command(0x55, 0);
+            }
+            if (!((local18 == 0x55) & (local21 == 0))) goto L2;
+            local21 = 1;
+            Make_operable(sora);
+            Make_invincible_actor(sora);
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            runtime.dword[0xA14] = 1;
+            GIFT_TABLE_ITEM.dword = 0xFD;
+            if (GIFT_TABLE_ITEM.dword == 0xD4) {
+                __store_reg(0, TORN_PAGES_AVAILABLE);
+                if (__set_ge(0)) {
+                    TORN_PAGES_AVAILABLE = TORN_PAGES_AVAILABLE + 1;
+                } else {
+                    TORN_PAGES_AVAILABLE = 1;
+                }
+                __dec_reg_idx(0);
+            }
+            Disable_targeting();
+            Set_special_command_range(0);
+            Gauge_off();
+            Command_display_off();
+            start(sora.entry_11, level=5);
+            await(sora.entry_11, level=5);
+            save_data2.word[0x3C2] = 0;
+            GIFT_TABLE_ITEM.dword = 0xFD;
+            local6 = Check_bag_item_count_only(ITEM_MYTHRIL_SHARD);
+            if (local6 < 0x63) {
+                save_data2[0x26] = 0;
+                Erase_OBJ_effect(0);
+                Motion_change_no_loop(1);
+                Set_wait_timer(6);
+                Play_OBJ_effect(1);
+                Set_treasure_flag(0xFD, 1);
+            } else {
+                save_data2[0x26] = 1;
+            }
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            GIFT_TABLE_ITEM.dword = GIFT_LM_SUNKEN_SHIP_SEABED_CHEST;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            if (save_data2[0x26] == 0) {
+                Change_char_color(0xFF, 0xFF, 0xFF, 0, 0x18);
+                Collision_off();
+                Set_wait_timer(0x10);
+                Erase_OBJ_effect(1);
+                start(sora.entry_12, level=5);
+                local5 = 1;
+                Set_wait_timer(8);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Discard_object_data(MO_TBOX4_LM3);
+            } else {
+                start(sora.entry_12, level=5);
+                await(sora.entry_12, level=5);
+                Exit_event_mode();
+                Gauge_on();
+                Command_display_on();
+                Make_not_invincible_actor(sora);
+                Make_inoperable(sora);
+                Enable_targeting();
+                Set_special_command_range(0x96);
+            }
+            save_data2[0x26] = 0;
+            runtime.dword[0xA14] = 0;
+            local21 = 0;
+        L2:
+        }
+    }
+
+    thread mvf_dr_cave_lm3 {  // 6
+        init {
+            if (ATLANTICA_PROGRESS < 0x49) {
+                Set_char_ID(MVF_DR_CAVE_LM3);
+                Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+                Extract_set_BG_color(0, 0, 0x708);
+            }
+            Set_char_ID(MO_SBOX1_LM3);
+            Change_char_color_from_map_table(1, 0);
+            Set_char_ID(MO_SBOX2_LM3);
+            Change_char_color_from_map_table(1, 0);
+            Set_char_ID(MO_SBOX3_LM3);
+            Change_char_color_from_map_table(1, 0);
+            Set_char_ID(MO_TARU1_LM3);
+            Change_char_color_from_map_table(1, 0);
+            Set_char_ID(MO_TARU2_LM3);
+            Change_char_color_from_map_table(1, 0);
+            Set_char_ID(MO_TARU3_LM3);
+            Change_char_color_from_map_table(1, 0);
+        }
+    }
+
+    thread 7 {
+        init {
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            while (1) {
+                if (!(DIALOG_STATE != 4)) goto L1;
+                local18 = 0;
+                save_data2[0x1D] = 0;
+                if (!(local18 == 0)) goto L2;
+                local20 = GetLength_2(0x686, -0xA28, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= (-0x57F + 0x12C))) & (Push_actor_coord_Y2(0) > (-0x57F + -0xFA)))) goto L2;
+                local18 = 1;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L2:
+                if (!(local18 == 0)) goto L3;
+                local20 = GetLength_2(-0x7F0, -0xED, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xE6) & (Push_actor_coord_Y2(0) <= (-0xF2 + 0x12C))) & (Push_actor_coord_Y2(0) > (-0xF2 + -0xFA)))) goto L3;
+                local18 = 2;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L3:
+                if (!(local18 == 0)) goto L4;
+                local20 = GetLength_2(-0xA, 0x956, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xFA) & (Push_actor_coord_Y2(0) <= (-0x190 + 0x190))) & (Push_actor_coord_Y2(0) > (-0x190 + -0x12C)))) goto L4;
+                local18 = 3;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L4:
+                if (!(local18 == 0)) goto L5;
+                local20 = GetLength_2(0x168, 0x5A, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xB4) & (Push_actor_coord_Y2(0) <= (-0x31B + 0xC8))) & (Push_actor_coord_Y2(0) > (-0x31B + -0x96)))) goto L5;
+                local18 = 4;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L5:
+                if (!(local18 == 0)) goto L6;
+                local20 = GetLength_2(-0x145, 0x116, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xB4) & (Push_actor_coord_Y2(0) <= (-0x30D + 0x96))) & (Push_actor_coord_Y2(0) > (-0x30D + -0x82)))) goto L6;
+                local18 = 5;
+                local23 = 0;
+                save_data2[0x1D] = 0;
+            L6:
+                if (!(local18 == 0)) goto L7;
+                local20 = GetLength_2(-0x163, -0x40B, Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(((local20 < 0xC8) & (Push_actor_coord_Y2(0) <= (-0x36D + 0x82))) & (Push_actor_coord_Y2(0) > (-0x36D + -0x82)))) goto L7;
+                local18 = 6;
+                local23 = bit[0x7737];
+                save_data2[0x1D] = bit[0x7737];
+            L7:
+                if (((save_data2[0x1D] == 1) & (local23 == 0)) & (local19 == 1)) {
+                    local19 = 0;
+                    local23 = 1;
+                }
+                if ((local18 != 0) & (local19 == 0)) {
+                    local19 = 1;
+                    DIALOG_STATE = 1;
+                    Set_window_size(7, 6, 0);
+                    Set_window_type(7, 0);
+                    Set_window_opening_speed(7, 0);
+                    Set_window_close_speed(7, 0);
+                    Set_window_tail_type(7, 0);
+                    Set_window_position(7, 0, 0x96);
+                    Close_window(7);
+                    switch (local18) {
+                    case 1:
+                        local24 = messages[0x138]="{0x08}{0x0A 00 00 00}Calm Depths";
+                        local25 = -1;
+                        break;
+                    case 2:
+                        local24 = messages[0x139]="{0x08}{0x0A 00 00 00}Undersea Gorge";
+                        local25 = -1;
+                        break;
+                    case 3:
+                        local24 = messages[0x13A]="{0x08}{0x0A 00 00 00}Den of Tides";
+                        local25 = -1;
+                        break;
+                    case 4:
+                        local24 = messages[0x13B]="{0x08}{0x0A 00 00 00}Below Deck";
+                        local25 = -1;
+                        break;
+                    case 5:
+                        local24 = messages[0x13C]="{0x08}{0x0A 00 00 00}Below Deck";
+                        local25 = -1;
+                        break;
+                    case 6:
+                        local24 = -1;
+                        local25 = messages[0x13D]="{0x08}{0x0A 00 00 00}Below Deck";
+                        break;
+                    default:
+                        local24 = -1;
+                        local25 = -1;
+                    }
+                    if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                        Open_window_no_close(7);
+                        Display_message(7, local24);
+                        goto L8;
+                    }
+                    if (!((save_data2[0x1D] == 1) & (local25 != -1))) goto L8;
+                    Open_window_no_close(7);
+                    Display_message(7, local25);
+                L8:
+                    goto L9;
+                }
+                if (!((local18 == 0) & (local19 == 1))) goto L9;
+                if ((save_data2[0x1D] == 0) & (local24 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 0) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                if ((save_data2[0x1D] == 1) & (local25 != -1)) {
+                    Close_window(7);
+                }
+                DIALOG_STATE = 0;
+                local19 = 0;
+            L9:
+                if (!(DIALOG_STATE == 3)) goto L1;
+                local19 = 0;
+            L1:
+            }
+        }
+    }
+}
