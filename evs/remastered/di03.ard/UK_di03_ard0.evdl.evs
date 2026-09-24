@@ -7433,7 +7433,9 @@ kgr 4 {
             CAN_PROGRESS_DI_DAY_2 = 1;
             await(sora.entry_13, level=6);
             Write_set_number_from_table(4);
-            Add_event_box(0xA, -0x5A5, -6, 0x45E, 0xFA, 0xC8, 0x96);
+            if (((DI_DRINKING_WATER_TAKEN == 0) & (CAN_PROGRESS_DI_DAY_2 == 1)) & (Check_bag_item_count(ITEM_EMPTY_BOTTLE) > 0)) {
+                Add_event_box(0xA, -0x5A5, -6, 0x45E, 0xFA, 0xC8, 0x96);
+            }
         }
     }
 
