@@ -21,6 +21,7 @@ function _OnInit()
                 {DAY_2_MATERIALS_REQUIRED, "day_2_materials"},
                 {HOMECOMING_MATERIALS_REQUIRED, "homecoming_materials"},
                 {SHORTEN_GO_MODE, "shorten_go_mode"},
+                {SKIP_100_ACRE_WOOD_MINIGAMES, "skip_hundred_acre_wood_minigames"},
             }
         end
     else

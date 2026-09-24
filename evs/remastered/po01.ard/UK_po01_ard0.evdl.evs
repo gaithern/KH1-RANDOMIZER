@@ -6,10 +6,16 @@ globals {
     POOH_AREA_3_PROGRESS = save_data[0x824];
     POOH_AREA_4_PROGRESS = save_data[0x826];
     POOH_AREA_5_PROGRESS = save_data[0x828];
+    POOH_EEYORES_TAIL_WON = save_data[0x817];
+    POOH_FOUND_EVERYONE_WON = save_data[0x819];
+    POOH_HUNNY_HUNT_WON = save_data[0x815];
+    POOH_MINIGAMES_WON = save_data2[0x147];
     POOH_OWL_CHEER = save_data[0x80F];
     POOH_PROGRESS_2 = save_data[0x820];
+    POOH_RABBITS_CARROTS_WON = save_data[0x816];
     POOH_ROOM_CABINET = save_data2[0x143];
     POOH_ROOM_CHIMNEY = save_data2[0x144];
+    POOH_TIGGER_BOUNCE_WON = save_data[0x818];
     PREVIOUS_AREA = save_data2[1];
     PREVIOUS_SET = save_data2[2];
     PREVIOUS_WORLD = save_data2[0];
@@ -685,27 +691,27 @@ kgr 0 {
                 Open_window_no_close(2);
                 Display_message(2, messages[0x14F]="{0x0B 00 0A 00}{0x07 0C 00}You've been a great help,{lf}{0x0B 00 0A 00}Sora. Thank you!");
                 Wait_message_end_ID(2);
-                if (save_data[0x815] == 1) {
+                if (POOH_HUNNY_HUNT_WON == 1) {
                     Display_message(2, messages[0x150]="{0x0B 00 03 00}{0x07 0C 00}You helped Pooh get honey{lf}{0x0B 00 03 00}from the bees.");
                     Wait_message_end_ID(2);
                     runtime.dword[0x93C] = runtime.dword[0x93C] + 1;
                 }
-                if (save_data[0x816] == 1) {
+                if (POOH_RABBITS_CARROTS_WON == 1) {
                     Display_message(2, messages[0x151]="{0x0B 00 28 00}{0x07 0C 00}You helped protect{lf}{0x0B 00 28 00}Rabbit's carrots.");
                     Wait_message_end_ID(2);
                     runtime.dword[0x93C] = runtime.dword[0x93C] + 1;
                 }
-                if (save_data[0x817] == 1) {
+                if (POOH_EEYORES_TAIL_WON == 1) {
                     Display_message(2, messages[0x152]="{0x0B 00 14 00}{0x07 0C 00}You helped find Eeyore's{lf}{0x0B 00 14 00}lost tail.");
                     Wait_message_end_ID(2);
                     runtime.dword[0x93C] = runtime.dword[0x93C] + 1;
                 }
-                if (save_data[0x818] == 1) {
+                if (POOH_TIGGER_BOUNCE_WON == 1) {
                     Display_message(2, messages[0x153]="{0x0B 00 14 00}{0x07 0C 00}You bounced along with{lf}{0x0B 00 14 00}Tigger and Roo.");
                     Wait_message_end_ID(2);
                     runtime.dword[0x93C] = runtime.dword[0x93C] + 1;
                 }
-                if (save_data[0x819] == 1) {
+                if (POOH_FOUND_EVERYONE_WON == 1) {
                     Display_message(2, messages[0x154]="{0x0B 00 14 00}{0x07 0C 00}And you found all of us{lf}{0x0B 00 14 00}when we were lost.");
                     Wait_message_end_ID(2);
                     runtime.dword[0x93C] = runtime.dword[0x93C] + 1;
@@ -980,7 +986,7 @@ kgr 0 {
 
     thread mo_h_pot1 {  // 14
         init {
-            if (save_data2[0x147] >= 1) {
+            if (POOH_MINIGAMES_WON >= 1) {
                 Discard_object_data(MO_POT1);
                 Display_model(MO_H_POT1);
                 Set_char_ID(MO_H_POT1);
@@ -998,7 +1004,7 @@ kgr 0 {
 
     thread mo_h_pot2 {  // 15
         init {
-            if (save_data2[0x147] >= 2) {
+            if (POOH_MINIGAMES_WON >= 2) {
                 Discard_object_data(MO_POT2);
                 Display_model(MO_H_POT2);
                 Set_char_ID(MO_H_POT2);
@@ -1016,7 +1022,7 @@ kgr 0 {
 
     thread mo_h_pot3 {  // 16
         init {
-            if (save_data2[0x147] >= 3) {
+            if (POOH_MINIGAMES_WON >= 3) {
                 Discard_object_data(MO_POT3);
                 Display_model(MO_H_POT3);
                 Set_char_ID(MO_H_POT3);
@@ -1034,7 +1040,7 @@ kgr 0 {
 
     thread mo_h_pot4 {  // 17
         init {
-            if (save_data2[0x147] >= 4) {
+            if (POOH_MINIGAMES_WON >= 4) {
                 Discard_object_data(MO_POT4);
                 Display_model(MO_H_POT4);
                 Set_char_ID(MO_H_POT4);
@@ -1052,7 +1058,7 @@ kgr 0 {
 
     thread mo_h_pot5 {  // 18
         init {
-            if (save_data2[0x147] >= 5) {
+            if (POOH_MINIGAMES_WON >= 5) {
                 Discard_object_data(MO_POT5);
                 Display_model(MO_H_POT5);
                 Set_char_ID(MO_H_POT5);

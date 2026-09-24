@@ -5,6 +5,7 @@ globals {
     POOH_AREA_5_PROGRESS = save_data[0x828];
     POOH_BOUNCING_SPOT_BREAK_LOG = save_data2[0x145];
     POOH_BOUNCING_SPOT_FALL_THROUGH_TREE = save_data2[0x146];
+    POOH_MINIGAMES_WON = save_data2[0x147];
     POOH_RARE_NUTS_TURNED_IN = save_data[0x801];
     POOH_RARE_NUT_1_STATE = save_data[0x802];
     POOH_RARE_NUT_2_STATE = save_data[0x803];
@@ -12,6 +13,7 @@ globals {
     POOH_RARE_NUT_4_STATE = save_data[0x805];
     POOH_RARE_NUT_5_STATE = save_data[0x806];
     POOH_RARE_NUT_REWARD_PENDING = save_data[0x807];
+    POOH_TIGGER_BOUNCE_WON = save_data[0x818];
     GIFT_PO_BOUNCING_SPOT_BREAK_LOG = 0xA;
     GIFT_PO_BOUNCING_SPOT_FALL_THROUGH_TOP_OF_TREE_NEXT_TO_POOH = 0xB;
     GIFT_PO_BOUNCING_SPOT_TURN_IN_RARE_NUT_1 = 1;
@@ -2679,9 +2681,9 @@ kgr 0 {
                 Set_wait_timer(1);
                 Show_minigame_info(9, save_data.dword[0x830]);
                 if (!(runtime.dword[0x964] < 0x708)) goto L3;
-                if (!(save_data[0x818] != 1)) goto L3;
-                save_data[0x818] = 1;
-                save_data2[0x147] = save_data2[0x147] + 1;
+                if (!(POOH_TIGGER_BOUNCE_WON != 1)) goto L3;
+                POOH_TIGGER_BOUNCE_WON = 1;
+                POOH_MINIGAMES_WON = POOH_MINIGAMES_WON + 1;
             L3:
                 __flow_ctrl(0x7F4, 6, thread_0);
                 __flow_ctrl(0x812, 6, thread_3);
