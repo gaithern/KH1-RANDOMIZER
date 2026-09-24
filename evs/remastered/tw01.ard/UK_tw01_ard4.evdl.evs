@@ -41,6 +41,8 @@ globals {
     GIFT_TW_MAIL_POSTCARD_09_EVENT = 0x6F;
     GIFT_TW_MAIL_POSTCARD_10_EVENT = 0x70;
     ITEM_POSTCARD = 0xD3;
+    TW01 = 0;
+    WORLD_TRAVERSE_TOWN = 3;
 }
 
 kgr 0 {
@@ -138,6 +140,7 @@ kgr 0 {
                 bit[0x8291] = 1;
                 Set_world_map_flag(1);
                 Write_set_number_from_table(8);
+                Write_set_number(WORLD_TRAVERSE_TOWN, TW01, 5);
                 start(thread_2.entry_12, level=6);
                 start(thread_3.entry_12, level=6);
                 start(thread_4.entry_12, level=6);
