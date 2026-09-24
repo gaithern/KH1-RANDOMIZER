@@ -1697,9 +1697,19 @@ kgr 0 {
             Show_minigame_info(0xB, runtime.dword[0x95C]);
             Set_minigame_played_flag(0xC);
             if (SKIP_100_ACRE_WOOD_MINIGAMES == 1) {
-                runtime.dword[0x964] = 0xF;
-                runtime.dword[0x968] = 0xF;
-                runtime.dword[0x96C] = 0xF;
+                if (POOH_AREA_4_PROGRESS.word <= 2) {
+                    runtime.dword[0x964] = 8;
+                    runtime.dword[0x968] = 8;
+                    runtime.dword[0x96C] = 8;
+                } else {
+                    runtime.dword[0x964] = 0xF;
+                    runtime.dword[0x968] = 0xF;
+                    runtime.dword[0x96C] = 0xF;
+                }
+                if (POOH_EEYORES_TAIL_WON != 1) {
+                    POOH_EEYORES_TAIL_WON = 1;
+                    POOH_MINIGAMES_WON = POOH_MINIGAMES_WON + 1;
+                }
                 runtime.dword[0x948] = 5;
             }
             goto L1;
