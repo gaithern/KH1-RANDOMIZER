@@ -1687,15 +1687,14 @@ kgr 0 {
                     if (SKIP_100_ACRE_WOOD_MINIGAMES == 1) {
                         runtime.dword[0x924] = 5;
                         start(thread_0.entry_11, level=6);
-                        await(thread_0.entry_11, level=6);
                     } else {
                         runtime.dword[0x928] = 1;
                         runtime.dword[0x920] = 1;
                         Enable_targeting();
                         Start_timer_up(0);
+                        Exit_event_mode();
+                        Make_inoperable(sora);
                     }
-                    Exit_event_mode();
-                    Make_inoperable(sora);
                     break;
                 default:
                     if (!__set_ge(3)) break;
@@ -1785,16 +1784,15 @@ kgr 0 {
                         if (SKIP_100_ACRE_WOOD_MINIGAMES == 1) {
                             runtime.dword[0x924] = 5;
                             start(thread_0.entry_11, level=6);
-                            await(thread_0.entry_11, level=6);
                         } else {
                             runtime.dword[0x928] = 1;
                             runtime.dword[0x920] = 1;
                             Enable_targeting();
                             Start_timer_up(0);
+                            Set_command_speak_range(0);
+                            Exit_event_mode();
+                            Make_inoperable(sora);
                         }
-                        Set_command_speak_range(0);
-                        Exit_event_mode();
-                        Make_inoperable(sora);
                         break;
                     default:
                         Wait_motion_end();
