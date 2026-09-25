@@ -351,16 +351,44 @@ kgr 1 {
         main {
             OC_SEED = 1;
             OC_SEED_2 = 1;
-            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
-                Erase_all_enemies();
-                Trigger_event(20);
-                while (1) {
-                }
-            }
             All_char_ctrl_off();
             Restore_camera(0xB4, 0, 0xA);
             start(thread_1.entry_11, level=6);
             await(thread_1.entry_11, level=6);
+            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
+                Clear_resident_effect_ID(1);
+                Clear_resident_effect_ID(4);
+                Clear_resident_effect_ID(5);
+                Clear_resident_effect_ID(6);
+                Clear_map_effect(0x3E8);
+                Clear_map_effect(0x3E9);
+                Clear_map_effect(0x3EA);
+                Clear_map_effect(0x3EB);
+                Clear_map_effect(0x3EC);
+                Clear_map_effect(0x3ED);
+                Clear_map_effect(0x3EE);
+                Clear_map_effect(0x3EF);
+                Clear_map_effect(0x3F0);
+                Clear_map_effect(0x3F1);
+                Clear_map_effect(0x3F2);
+                Clear_map_effect(0x3F3);
+                Start_map_effect(0x3E8);
+                Start_map_effect(0x3E9);
+                Start_map_effect(0x3EA);
+                Start_map_effect(0x3EB);
+                Start_map_effect(0x3EC);
+                Start_map_effect(0x3ED);
+                Start_map_effect(0x3EE);
+                Start_map_effect(0x3EF);
+                Start_map_effect(0x3F0);
+                Start_map_effect(0x3F1);
+                Start_map_effect(0x3F2);
+                Start_map_effect(0x3F3);
+                Release_object_CALLNUM(0x15E);
+                Trigger_event(20);
+                while (1) {
+                }
+            }
             Restore_camera(0, 0, 1);
             Exit_event_mode();
             Event_camera_off();
