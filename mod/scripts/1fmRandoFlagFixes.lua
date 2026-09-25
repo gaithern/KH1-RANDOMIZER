@@ -29,7 +29,7 @@ function FlagFixes()
         WriteLong(instantGummiFix, 0) -- Fixes InstantGummi
     end
 
-    if ReadByte(world) == 1 and ReadFloat(soraHUD) > 0 and ReadInt(inGummi) == 0 then
+    if ReadByte(world) == 1 and ReadFloat(soraHUD) > 0 and ReadInt(inGummi) == 0 and ReadShort(stateFlag) == 0 then
         -- If you're in Destiny Islands and not in your Gummi Ship, make your party empty
         debugPrint("Section 2")
         WriteByte(party1, 0xFF)
