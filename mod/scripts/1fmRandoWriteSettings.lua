@@ -22,6 +22,8 @@ function _OnInit()
                 {HOMECOMING_MATERIALS_REQUIRED, "homecoming_materials"},
                 {SHORTEN_GO_MODE, "shorten_go_mode"},
                 {SKIP_100_ACRE_WOOD_MINIGAMES, "skip_hundred_acre_wood_minigames"},
+                {CUPS_STANDARD, "cups_standard"},
+                {CUPS_SOLO_TT, "cups_solo_time_trial"},
             }
         end
     else
@@ -31,6 +33,8 @@ end
 
 function _OnFrame()
     for _, w in ipairs(writes) do
-        WriteByte(w[1], to_byte(seed_vars["settings"][w[2]]))
+        if w[1] then
+            WriteByte(w[1], to_byte(seed_vars["settings"][w[2]]))
+        end
     end
 end

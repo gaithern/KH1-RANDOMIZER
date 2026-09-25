@@ -61,16 +61,8 @@ function FlagFixes()
         WriteByte(cutsceneFlags + 9, 0x14)
     end
 
-    -- Shorten solo and time trial
     if ReadByte(world) == 0xB then
         debugPrint("Section 13")
-        if (ReadShort(OCseed) == 0x0101 or ReadShort(OCseed) == 0x0B0B)
-        and ReadFloat(soraHUD) > 0 and (ReadByte(party1) == 0xFF or ReadInt(minitimer) > 0) then
-            WriteShort(OCseed, ReadShort(OCseed) == 0x0101 and 0x0909 or 0x1212)
-        elseif ReadByte(world) == 0xB and ReadByte(room) == 1 then
-            WriteInt(minitimer, 0)
-        end
-
         -- Require Entry Pass
         if ReadByte(cutsceneFlags + 6) >= 0x10 and ReadByte(cutsceneFlags + 6) <= 0x13 then -- In the correct part of OC story
             if ReadByte(inventory + 0xE4) > 0 or ReadByte(evidence + 0x106) >= 0x2 then -- Have the entry pass or turned it in
