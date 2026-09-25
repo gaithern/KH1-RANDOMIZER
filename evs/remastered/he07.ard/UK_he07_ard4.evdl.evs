@@ -5534,16 +5534,6 @@ kgr 10 {
         main {
             OC_SEED = 0xA;
             OC_SEED_2 = 0xA;
-            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
-                Erase_all_enemies();
-                if (save_data[0x33A] < 4) {
-                    Trigger_event(22);
-                } else {
-                    Trigger_event(20);
-                }
-                while (1) {
-                }
-            }
             if (save_data[0x33A] == 4) {
                 Restore_camera(0xB4, 1, 0xA);
                 Change_BGM_volume(1, 0, 0x28);
@@ -5559,6 +5549,15 @@ kgr 10 {
             Restore_camera(0xB4, 1, 0xA);
             start(thread_1.entry_11, level=6);
             await(thread_1.entry_11, level=6);
+            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
+                if (save_data[0x33A] < 4) {
+                    Trigger_event(22);
+                } else {
+                    Trigger_event(20);
+                }
+                while (1) {
+                }
+            }
             Restore_camera(0, 0, 1);
             Exit_event_mode();
             Event_camera_off();
