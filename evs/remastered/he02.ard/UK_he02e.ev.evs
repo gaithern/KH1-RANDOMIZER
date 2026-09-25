@@ -23,6 +23,9 @@ globals {
     GIFT_HERCULES_CUP_YELLOW_TRINITY_EVENT = 0xE;
     GIFT_HE_OLYMPIA_CHEST = 0x30;
     HE02 = 1;
+    ITEM_HERCULES_CUP = 0xB9;
+    ITEM_PEGASUS_CUP = 0xB8;
+    ITEM_PHIL_CUP = 0xB6;
 }
 
 kgr 0 {
@@ -48,6 +51,37 @@ kgr 0 {
     thread 0 {
         init {
             local0 = 0;
+            local3 = Check_bag_item_count(ITEM_PHIL_CUP);
+            local4 = Check_bag_item_count(ITEM_PEGASUS_CUP);
+            local5 = Check_bag_item_count(ITEM_HERCULES_CUP);
+            if (OC_CUP_UNLOCK != 1) {
+                if (local3 > 0) {
+                    OC_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_CUP_UNLOCK = 0;
+                }
+            }
+            if (OC_PEGASUS_CUP_UNLOCK != 1) {
+                if (local4 > 0) {
+                    OC_PEGASUS_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_PEGASUS_CUP_UNLOCK = 0;
+                }
+            }
+            if (OC_HERCULES_CUP_UNLOCK != 1) {
+                if (local5 > 0) {
+                    OC_HERCULES_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_HERCULES_CUP_UNLOCK = 0;
+                }
+            }
+            if (OC_HADES_CUP_UNLOCK != 1) {
+                if (((local3 > 0) & (local4 > 0)) & (local5 > 0)) {
+                    OC_HADES_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_HADES_CUP_UNLOCK = 0;
+                }
+            }
             Disable_all_battle_event_boxes();
             save_data2.word[0x3E0] = 0;
             save_data2.word[0x3E2] = 0;

@@ -42,6 +42,9 @@ globals {
     GIFT_HE_COLISEUM_GATES_ENTRY_PASS_EVENT = 7;
     GIFT_HE_COLISEUM_GATES_GREEN_TRINITY = 5;
     GIFT_HE_GATES_PURPLE_JAR_AFTER_DEFEATING_HADES = 4;
+    ITEM_HERCULES_CUP = 0xB9;
+    ITEM_PEGASUS_CUP = 0xB8;
+    ITEM_PHIL_CUP = 0xB6;
 }
 
 kgr 0 {
@@ -14242,53 +14245,37 @@ kgr 153 {
     thread 0 {
         init {
             local7 = 0;
-            if (!(((TRAVERSE_TOWN_PROGRESS >= 0x3C) & (TRAVERSE_TOWN_PROGRESS_2 <= 0x1E)) | (((WONDERLAND_PROGRESS >= 1) & (WONDERLAND_PROGRESS <= 0x3C)) | ((DEEP_JUNGLE_PROGRESS >= 0x12) & (DEEP_JUNGLE_PROGRESS <= 0x6E))))) goto L1;
-            if (!(OC_CUP_UNLOCK != 1)) goto L1;
-            OC_CUP_UNLOCK = 0xB;
-        L1:
-            if (!((TRAVERSE_TOWN_PROGRESS_2 >= 0x1E) & ((WONDERLAND_PROGRESS >= 0x30) & (DEEP_JUNGLE_PROGRESS >= 0x5C)))) goto L2;
-            if (!(OC_CUP_UNLOCK != 1)) goto L2;
-            OC_CUP_UNLOCK = 0xA;
-            save_data[0x32E] = 1;
-        L2:
-            if (!(((AGRABAH_PROGRESS >= 0xA) & (AGRABAH_PROGRESS <= 0x82)) | ((MONSTRO_PROGRESS >= 0x14) & (MONSTRO_PROGRESS <= 0x46)))) goto L3;
-            if (!(OC_PEGASUS_CUP_UNLOCK != 1)) goto L3;
-            OC_PEGASUS_CUP_UNLOCK = 0xB;
-        L3:
-            if (!((AGRABAH_PROGRESS >= 0x58) & (MONSTRO_PROGRESS >= 0x3F))) goto L4;
-            if (!(OC_PEGASUS_CUP_UNLOCK != 1)) goto L4;
-            OC_PEGASUS_CUP_UNLOCK = 0xA;
-            save_data[0x32F] = 1;
-        L4:
-            if (!(((HALLOWEEN_TOWN_PROGRESS >= 1) & (HALLOWEEN_TOWN_PROGRESS <= 0x78)) | ((NEVERLAND_PROGRESS >= 0x14) & (NEVERLAND_PROGRESS <= 0x78)))) goto L5;
-            if (!(OC_HERCULES_CUP_UNLOCK != 1)) goto L5;
-            OC_HERCULES_CUP_UNLOCK = 0xB;
-        L5:
-            if (!((HALLOWEEN_TOWN_PROGRESS >= 0x6A) & (NEVERLAND_PROGRESS >= 0x64))) goto L6;
-            if (!(OC_HERCULES_CUP_UNLOCK != 1)) goto L6;
-            OC_HERCULES_CUP_UNLOCK = 0xA;
-            save_data[0x330] = 1;
-        L6:
-            if ((OC_CUP_UNLOCK == 0xA) | (OC_CUP_UNLOCK == 1)) {
-                local3 = 1;
-            } else {
-                local3 = 0;
+            local3 = Check_bag_item_count(ITEM_PHIL_CUP);
+            local4 = Check_bag_item_count(ITEM_PEGASUS_CUP);
+            local5 = Check_bag_item_count(ITEM_HERCULES_CUP);
+            if (OC_CUP_UNLOCK != 1) {
+                if (local3 > 0) {
+                    OC_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_CUP_UNLOCK = 0;
+                }
             }
-            if ((OC_PEGASUS_CUP_UNLOCK == 0xA) | (OC_PEGASUS_CUP_UNLOCK == 1)) {
-                local4 = 1;
-            } else {
-                local4 = 0;
+            if (OC_PEGASUS_CUP_UNLOCK != 1) {
+                if (local4 > 0) {
+                    OC_PEGASUS_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_PEGASUS_CUP_UNLOCK = 0;
+                }
             }
-            if ((OC_HERCULES_CUP_UNLOCK == 0xA) | (OC_HERCULES_CUP_UNLOCK == 1)) {
-                local5 = 1;
-            } else {
-                local5 = 0;
+            if (OC_HERCULES_CUP_UNLOCK != 1) {
+                if (local5 > 0) {
+                    OC_HERCULES_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_HERCULES_CUP_UNLOCK = 0;
+                }
             }
-            if (!((((local3 == 1) & (local4 == 1)) & (local5 == 1)) & (STORY_PROGRESS_GLOBAL >= 0xF0))) goto L7;
-            if (!(OC_HADES_CUP_UNLOCK != 1)) goto L7;
-            OC_HADES_CUP_UNLOCK = 0xA;
-            save_data[0x331] = 1;
-        L7:
+            if (OC_HADES_CUP_UNLOCK != 1) {
+                if (((local3 > 0) & (local4 > 0)) & (local5 > 0)) {
+                    OC_HADES_CUP_UNLOCK = 0xA;
+                } else {
+                    OC_HADES_CUP_UNLOCK = 0;
+                }
+            }
             Disable_all_battle_event_boxes();
             save_data2.word[0x3E0] = 0;
             save_data2.word[0x3E2] = 0;
