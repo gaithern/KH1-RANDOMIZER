@@ -349,6 +349,12 @@ kgr 1 {
         main {
             OC_SEED = 1;
             OC_SEED_2 = 1;
+            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
+                Erase_all_enemies();
+                Trigger_event(20);
+                while (1) {
+                }
+            }
             All_char_ctrl_off();
             Restore_camera(0xB4, 1, 0xA);
             Change_BGM_volume(1, 0, 0x28);
@@ -362,20 +368,6 @@ kgr 1 {
             Play_BGM(1);
             start(thread_1.entry_11, level=6);
             await(thread_1.entry_11, level=6);
-            if ((CUPS_STANDARD == CUPS_STANDARD_NO_FIGHTS) & (OC_CUP_MODE != 3)) {
-                Change_BGM_volume(1, 0, 0x1E);
-                Set_wait_timer(1);
-                Stop_BGM();
-                Load_wave_motion_bank2(1, 0x67);
-                Wait_waveform_load();
-                Load_BGM_motion_bank2(1, 0x67);
-                Wait_BGM_load();
-                Play_BGM(1);
-                Release_object_CALLNUM(0x15E);
-                Trigger_event(20);
-                while (1) {
-                }
-            }
             Restore_camera(0, 0, 1);
             Exit_event_mode();
             Event_camera_off();
