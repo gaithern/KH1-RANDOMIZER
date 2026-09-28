@@ -15,8 +15,9 @@ local GIFT_POPUP_INSTR = 0x1800025D
 local installed = false
 
 local function stub_chunks(end_skip, orig)
+    local in_cutscene = string.pack("<I8", kh1_native.get_module_base() + inCutscene)
     return {
-        sc(0x48, 0xB8) .. string.pack("<I8", kh1_native.get_module_base() + inCutscene), -- mov rax, inCutscene
+        sc(0x48, 0xB8) .. in_cutscene,                      -- mov rax, inCutscene
         sc(0xF6, 0x00, 0x01),                               -- test byte [rax], 1
         sc(0x0F, 0x84), {rel32 = "orig"},                   -- jz orig
         sc(0x8B, 0x81, 0x90, 0x01, 0x00, 0x00),             -- mov eax, [rcx+0x190]  pc
@@ -29,6 +30,11 @@ local function stub_chunks(end_skip, orig)
         sc(0xFF, 0xD0),                                     -- call rax
         sc(0x48, 0x83, 0xC4, 0x20),                         -- add rsp, 0x20
         sc(0x59),                                           -- pop rcx
+        sc(0x48, 0xB8) .. in_cutscene,                      -- mov rax, inCutscene
+        sc(0xF6, 0x00, 0x01),                               -- test byte [rax], 1
+        sc(0x0F, 0x85), {rel32 = "orig"},                   -- jnz orig  skip not ended
+        sc(0xB8, 0x04, 0x00, 0x00, 0x00),                   -- mov eax, 4  yield, retry once the per-frame skip snapshot clears
+        sc(0xC3),                                           -- ret
         {label = "orig"},
         sc(0x48, 0xB8) .. string.pack("<I8", orig),         -- mov rax, original handler
         sc(0xFF, 0xE0),                                     -- jmp rax
