@@ -1,0 +1,159 @@
+globals {
+    BLUE_TRINITY_LEARNED = bit[0x6AD8];
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    END_OF_THE_WORLD_PROGRESS = save_data[0x90F];
+    EW33_SECOND_VISIT = save_data[0x141];
+    GREEN_TRINITY_LEARNED = bit[0x6ADA];
+    RED_TRINITY_LEARNED = bit[0x6AD9];
+    SHORTEN_GO_MODE = save_data[0x4C];
+    WHITE_TRINITY_LEARNED = bit[0x6ADC];
+    YELLOW_TRINITY_LEARNED = bit[0x6ADB];
+}
+
+kgr 0 {
+    entities {
+        SORA = 0;
+        PLAYER1 = 1;
+        PLAYER2 = 2;
+    }
+
+    thread 0 {
+        init {
+            if (!SHORTEN_GO_MODE) goto L1;
+            if (!(END_OF_THE_WORLD_PROGRESS == 0x9B)) goto L1;
+            if (!(EW33_SECOND_VISIT == 0)) goto L1;
+            Set_party(1, 2, -1);
+        L1:
+            Disable_all_battle_event_boxes();
+            save_data2.word[0x3E0] = 0;
+            save_data2.word[0x3E2] = 0;
+            save_data2.word[0x3E4] = 0;
+            save_data2.word[0x3E6] = 0;
+            save_data2.word[0x3E8] = 0;
+            save_data2.word[0x3EA] = 0;
+            save_data2.word[0x3EC] = 0;
+            save_data2.word[0x3EE] = 0;
+            save_data2[0x3F0] = 0;
+            save_data2[0x3F1] = 0;
+            save_data2[0x3F2] = 0;
+            save_data2[0x3F3] = 0;
+            save_data2[0x3F4] = 0;
+            save_data2[0x3F5] = 0;
+            save_data2[0x3F6] = 0;
+            save_data2[0x3F7] = 0;
+            save_data2[0x1D] = 0;
+            CURRENT_WORLD = Get_world_number();
+            if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                DIALOG_STATE = 4;
+            }
+            bit[0x6B2E] = 1;
+            bit[0x6B2F] = 0;
+            Pad_ctrl_on();
+            Enter_event_mode();
+            Set_party(1, 2, -1);
+        }
+        main {
+            Write_set_number(0x10, 0, 0xC);
+            Write_set_number(0x10, 1, 0xC);
+            Write_set_number(0x10, 2, 0xC);
+            Write_set_number(0x10, 3, 0xC);
+            Write_set_number(0x10, 4, 0xC);
+            Write_set_number(0x10, 5, 0xC);
+            Write_set_number(0x10, 6, 0xC);
+            Write_set_number(0x10, 7, 0xC);
+            Write_set_number(0x10, 8, 0xC);
+            Write_set_number(0x10, 9, 0xC);
+            Write_set_number(0x10, 0xA, 0xC);
+            Write_set_number(0x10, 0xB, 0xC);
+            Write_set_number(0x10, 0xC, 0xC);
+            Write_set_number(0x10, 0xD, 0xC);
+            Write_set_number(0x10, 0xE, 0xC);
+            Write_set_number(0x10, 0xF, 0xC);
+            Write_set_number(0x10, 0x10, 0xC);
+            Write_set_number(0x10, 0x11, 0xC);
+            Write_set_number(0x10, 0x12, 0xC);
+            Write_set_number(0x10, 0x13, 0xC);
+            Write_set_number(0x10, 0x14, 0xC);
+            Write_set_number(0x10, 0x15, 0xC);
+            Write_set_number(0x10, 0x16, 0xC);
+            Write_set_number(0x10, 0x17, 0xC);
+            Write_set_number(0x10, 0x18, 0xC);
+            Write_set_number(0x10, 0x19, 0xC);
+            Write_set_number(0x10, 0x1A, 0xC);
+            Write_set_number(0x10, 0x1B, 0xC);
+            Write_set_number(0x10, 0x1C, 0xC);
+            Write_set_number(0x10, 0x1D, 0xC);
+            Write_set_number(0x10, 0x1E, 0xC);
+            Write_set_number(0x10, 0x1F, 0xC);
+            Write_set_number(0x10, 0x20, 0xC);
+            Write_set_number(0x10, 0x21, 0xC);
+            Write_set_number(0x10, 0x22, 0xC);
+            Write_set_number(0x10, 0x23, 0xC);
+            Write_set_number(0x10, 0x24, 0xC);
+            Write_set_number(0x10, 0x25, 0xC);
+            Write_set_number(0x10, 0x26, 0xC);
+            bit[0x8000] = 1;
+            BLUE_TRINITY_LEARNED = 1;
+            RED_TRINITY_LEARNED = 1;
+            GREEN_TRINITY_LEARNED = 1;
+            YELLOW_TRINITY_LEARNED = 1;
+            WHITE_TRINITY_LEARNED = 1;
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            while (1) {
+            }
+        }
+    }
+
+    thread sora {  // 1
+        init {
+            Set_char_ID(SORA);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player1 {  // 2
+        init {
+            Set_char_ID(PLAYER1);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread player2 {  // 3
+        init {
+            Set_char_ID(PLAYER2);
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread 4 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+        }
+        main {
+            while (1) {
+            }
+        }
+    }
+}

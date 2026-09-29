@@ -13,12 +13,6 @@ end
 
 function write_story_weapons()
     if read_item(81) == 0 then write_item(81) end
-    if read_item(82) == 0 then write_item(82) end
-    if read_item(83) == 0 then write_item(83) end
-    if read_item(84) == 0 then write_item(84) end
-    if read_item(85) == 0 and ReadByte(cutsceneFlags + 4 + 0xA) >= 0x1E then
-        write_item(85)
-    end
 end
 
 function _OnInit()

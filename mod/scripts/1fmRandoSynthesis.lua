@@ -4,16 +4,15 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Synthesis"
 
 local seed_vars = require("seed_vars")
+local items     = require("items")
 
 local synth_written = false
 local synth_items = {}
 
 local function get_synth_items()
     for i = 1, 33 do
-        local synth_item_id = seed_vars["item_location_map"][tostring(2656400 + i)] % 2641000
-        if synth_item_id > 255 then -- If not a regular item
-            synth_item_id = 230 -- Make it an AP Item
-        end
+        local ap_id = seed_vars["item_location_map"][tostring(2656400 + i)]
+        local synth_item_id = items.idx_of(ap_id) or items.AP_ITEM_IDX
         table.insert(synth_items, synth_item_id)
     end
 end

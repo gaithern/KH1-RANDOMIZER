@@ -1,0 +1,614 @@
+globals {
+    DIALOG_STATE = save_data2[3];
+    NEVERLAND_PROGRESS = save_data[0x90D];
+    PREVIOUS_AREA = save_data2[1];
+    PREVIOUS_SET = save_data2[2];
+    PREVIOUS_WORLD = save_data2[0];
+}
+
+kgr 0 {
+    entities {
+        TINK_DUMMY = 0x20000;
+        TINKERBELL = 0x20001;
+        SORA_2 = 0x30000;
+        DONALD = 0x30001;
+        GOOFY = 0x30002;
+        PETERPAN = 0x30003;
+        SPT_PP11_2 = 0x40000;
+        MO_TANA_6C = 0x40005;
+        MVF_TANA_6 = 0x50002;
+    }
+
+    thread 0 {
+        init {
+            Set_world_map_flag(1);
+            if (NEVERLAND_PROGRESS > 0x38) {
+                Enable_flight();
+            }
+            runtime.dword[0x904] = Get_part_from_party(1);
+            runtime.dword[0x908] = Get_part_from_party(2);
+            runtime.dword[0x90C] = Get_part_from_party(3);
+            if ((NEVERLAND_PROGRESS == 0x38) & (runtime.dword[0x90C] == 8)) {
+                Remove_party_member(8);
+            }
+        }
+        main {
+            Get_camera_info();
+            Set_wait_timer(4);
+            Fade_in(8);
+            Set_wait_timer(6);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            while (1) {
+            }
+        }
+    }
+
+    thread 1 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            save_data[0x605] = Get_part_from_party(3);
+            Set_wait_timer(1);
+            if (save_data[0x605] == 8) {
+                Enter_event_mode();
+                Event_camera_on();
+                Command_display_off();
+                Gauge_off();
+                Disable_battle_mode_entry();
+                Ground_sound_off();
+                Hide_party_weapons();
+                Switch_to_normal_mode();
+                start(thread_9.entry_11, level=6);
+                start(sora.entry_11, level=6);
+                start(donald.entry_11, level=6);
+                start(goofy.entry_11, level=6);
+                Set_wait_timer(0x14);
+                Set_wait_timer(1);
+                Ground_sound_on();
+                start(thread_2.entry_15, level=6);
+                await(thread_2.entry_15, level=6);
+                start(thread_2.entry_16, level=6);
+                await(thread_2.entry_16, level=6);
+                Set_wait_timer(0xF);
+                Restore_SE();
+                Ground_sound_on();
+                Enable_battle_mode_entry();
+                Event_camera_off();
+                Blur_off2();
+                Exit_event_mode();
+                Char_request_on();
+                Command_display_on();
+                Gauge_on();
+                Blur_off2();
+                Make_inoperable(sora);
+                Make_inoperable(donald);
+                Make_inoperable(goofy);
+            } else {
+                Enter_event_mode();
+                Event_camera_on();
+                Command_display_off();
+                Gauge_off();
+                Disable_battle_mode_entry();
+                Ground_sound_off();
+                Hide_party_weapons();
+                Switch_to_normal_mode();
+                start(thread_9.entry_12, level=6);
+                start(sora.entry_12, level=6);
+                start(donald.entry_12, level=6);
+                start(goofy.entry_12, level=6);
+                start(peterpan.entry_11, level=6);
+                Set_wait_timer(0x14);
+                Set_wait_timer(1);
+                Ground_sound_on();
+                start(thread_2.entry_11, level=6);
+                await(thread_2.entry_11, level=6);
+                start(thread_2.entry_12, level=6);
+                await(thread_2.entry_12, level=6);
+                switch (runtime.dword[0x900]) {
+                case 1:
+                    Write_set_number(0xD, 9, 2);
+                    goto L1;
+                default:
+                    if (__cmp_reg_imm(2) & (NEVERLAND_PROGRESS < 0x96)) {
+                        Write_set_number(0xD, 9, 1);
+                        if (!(NEVERLAND_PROGRESS < 0x78)) goto L1;
+                        NEVERLAND_PROGRESS = 0x78;
+                    L1:
+                        Wait_message_end_ID(1);
+                        start(thread_2.entry_14, level=6);
+                        await(thread_2.entry_14, level=6);
+                        Set_wait_timer(0xF);
+                        Fade_out(0x1E);
+                        Set_wait_timer(0x1E);
+                        Restore_SE();
+                        Ground_sound_on();
+                        Enable_battle_mode_entry();
+                        Event_camera_off();
+                        Blur_off2();
+                        Exit_event_mode();
+                        Char_request_on();
+                        Command_display_on();
+                        Gauge_on();
+                        Set_wait_timer(1);
+                        Hold_camera_info();
+                        Make_operable(sora);
+                        Make_party_invincible();
+                        Enter_event_mode();
+                        Command_display_off();
+                        Gauge_off();
+                        Set_wait_timer(1);
+                        PREVIOUS_WORLD = Get_world_number();
+                        runtime[0xD04] = PREVIOUS_AREA;
+                        PREVIOUS_AREA = Get_area_number();
+                        PREVIOUS_SET = Get_set_number();
+                        DIALOG_STATE = 2;
+                        Close_window(7);
+                        Pad_ctrl_off();
+                        Set_wait_timer(1);
+                        if (0x1F != -1) {
+                            Load_next_map_texture(0x1F);
+                        }
+                        Pad_ctrl_off();
+                        Set_wait_timer(1);
+                        DIALOG_STATE = 3;
+                        bit[0x6B2F] = 1;
+                        bit[0x6B2E] = 1;
+                        Event_camera_off();
+                        Change_area(0x1F);
+                        break;
+                    }
+                    Wait_message_end_ID(1);
+                    start(thread_2.entry_13, level=6);
+                    await(thread_2.entry_13, level=6);
+                    Set_wait_timer(0xF);
+                    Restore_SE();
+                    Ground_sound_on();
+                    Enable_battle_mode_entry();
+                    Event_camera_off();
+                    Blur_off2();
+                    Exit_event_mode();
+                    Char_request_on();
+                    Command_display_on();
+                    Gauge_on();
+                    start(donald.entry_13, level=6);
+                    start(goofy.entry_13, level=6);
+                    start(peterpan.entry_12, level=6);
+                    Make_inoperable(sora);
+                }
+            }
+        }
+    }
+
+    thread 2 {
+        init {
+            Set_window_position(0, 0, 0x84);
+            Set_window_size(0, 0x14, 2);
+            Set_window_opening_speed(0, 0);
+            Set_window_close_speed(0, 0);
+            Set_message_display_speed(0, 0);
+            Set_window_tail_type(0, 0);
+            Set_window_type(0, 0);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_window_size(2, 9, 2);
+            Set_window_type(2, 3);
+            Set_window_tail_type(2, 1);
+            Set_window_opening_speed(2, 2);
+            Set_window_close_speed(2, 2);
+            Set_message_display_speed(2, 2);
+            Set_window_position(2, -0x50, 0x3C);
+            Set_window_size(2, 9, 2);
+            Set_window_tail_location(2, 1);
+            Set_window_tail_rotation(2, 0x2D);
+            Start_texture_animation(peterpan, 0x21, 0);
+            Open_window(2);
+            Display_message(2, messages[0x8D]="{0x07 0C 00}What is it, Tink? You want{lf}to go to the clock tower?");
+            Display_message(2, messages[0x8E]="{0x07 16 00}{0x08}It's up to you, Sora.");
+            Wait_message_end();
+            Wait_message_end_ID(2);
+            Start_texture_animation(peterpan, 0x1E, 0);
+        }
+        entry_12 {
+            Set_window_size(1, 7 + ((NEVERLAND_PROGRESS < 0x96) * 3), 2 + (NEVERLAND_PROGRESS < 0x96));
+            Set_window_type(1, 3);
+            Set_window_tail_type(1, 1);
+            Set_window_opening_speed(1, 2);
+            Set_window_close_speed(1, 2);
+            Set_message_display_speed(1, 2);
+            Set_window_position(1, 0x64, -0x5A);
+            Set_window_size(1, 7 + ((NEVERLAND_PROGRESS < 0x96) * 3), 2 + (NEVERLAND_PROGRESS < 0x96));
+            Set_window_tail_location(1, 0xB);
+            Set_window_tail_rotation(1, 0xE1);
+            Open_window(1);
+            Display_message(1, messages[0x91]="{0x07 0C 00}       Let's go!{lf}       Not right now." + ((NEVERLAND_PROGRESS < 0x96) * 0x9F));
+            Enter_selection_mode(1, 1, 2 + (NEVERLAND_PROGRESS < 0x96), runtime.dword[0x900]);
+            Wait_selection();
+        }
+        entry_13 {
+            Set_window_size(1, 8, 2 + (NEVERLAND_PROGRESS < 0x96));
+            Set_window_type(1, 3);
+            Set_window_tail_type(1, 1);
+            Set_window_opening_speed(1, 2);
+            Set_window_close_speed(1, 2);
+            Set_message_display_speed(1, 2);
+            Set_window_position(2, -0x50, 0x3C);
+            Set_window_size(2, 8, 2);
+            Set_window_tail_location(2, 1);
+            Set_window_tail_rotation(2, 0x2D);
+            Start_texture_animation(peterpan, 0x21, 0);
+            Open_window(2);
+            Display_message(2, messages[0x8F]="{0x07 0C 00}Don't be mad, Tink.{lf}Sora's got a lot to do.");
+            Wait_message_end();
+            Wait_message_end_ID(2);
+            Start_texture_animation(peterpan, 0x1E, 0);
+        }
+        entry_14 {
+            Set_window_size(1, 9, 1);
+            Set_window_type(1, 3);
+            Set_window_tail_type(1, 1);
+            Set_window_opening_speed(1, 2);
+            Set_window_close_speed(1, 2);
+            Set_message_display_speed(1, 2);
+            Set_window_position(2, 0x3C, -0x6E);
+            Set_window_size(2, 9, 1);
+            Set_window_tail_location(2, 0xD);
+            Set_window_tail_rotation(2, 0xE1);
+            Start_texture_animation(peterpan, 0x21, 0);
+            Open_window(2);
+            Display_message(2, messages[0x90]="{0x07 0C 00}{0x08}Okay! Let's fly together!");
+            Wait_message_end();
+            Wait_message_end_ID(2);
+            Start_texture_animation(peterpan, 0x1E, 0);
+        }
+        entry_15 {
+            Set_window_size(1, 8, 1);
+            Set_window_type(1, 3);
+            Set_window_tail_type(1, 1);
+            Set_window_opening_speed(1, 2);
+            Set_window_close_speed(1, 2);
+            Set_message_display_speed(1, 2);
+            Set_window_position(1, 0x50, 0x3C);
+            Set_window_size(1, 8, 1);
+            Set_window_tail_location(1, 1);
+            Set_window_tail_rotation(1, 0x13B);
+            Start_texture_animation(sora, 0x21, 0);
+            Open_window(1);
+            Display_message(1, messages[0x92]="{0x07 0C 00}{0x08}I can't understand her.");
+            Wait_message_end();
+            Wait_message_end_ID(1);
+            Start_texture_animation(sora, 0x1E, 0);
+        }
+        entry_16 {
+            Set_window_size(1, 7, 2);
+            Set_window_type(1, 3);
+            Set_window_tail_type(1, 1);
+            Set_window_opening_speed(1, 2);
+            Set_window_close_speed(1, 2);
+            Set_message_display_speed(1, 2);
+            Set_window_position(1, -0x64, -0x6E);
+            Set_window_size(1, 7, 2);
+            Set_window_tail_location(1, 0xD);
+            Set_window_tail_rotation(1, 0x87);
+            Start_texture_animation(goofy, 0x21, 0);
+            Open_window(1);
+            Display_message(1, messages[0x93]="{0x07 0C 00}I'll bet Peter knows{lf}what she's saying.");
+            Wait_message_end();
+            Wait_message_end_ID(1);
+            Start_texture_animation(goofy, 0x1E, 0);
+        }
+    }
+
+    thread sora {  // 3
+        init {
+            Set_char_ID(SORA_2);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_position(-0x87, -0x389, -0x99C);
+            Turn_char(0x96, 0);
+            Change_char_action(0);
+            Motion_ctrl_on();
+            Set_battle_motion();
+            Change_motion(0);
+        }
+        entry_12 {
+            Set_char_position(-0xDC, -0x389, -0x9B0);
+            Turn_char(0x69, 0);
+            Change_char_action(0);
+            Motion_ctrl_on();
+            Set_battle_motion();
+            Change_motion(0);
+        }
+    }
+
+    thread donald {  // 4
+        init {
+            if ((runtime.dword[0x904] == 1) | (runtime.dword[0x908] == 1)) {
+                Set_char_ID(DONALD);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_ID(DONALD);
+            Set_char_position(-0xE6, -0x389, -0x9B0);
+            Turn_char(0x73, 0);
+            Char_ctrl_off();
+            Change_char_action(0);
+            Motion_ctrl_on();
+            Set_battle_motion();
+            Change_motion(0);
+        }
+        entry_12 {
+            if (save_data[0x605] != 1) {
+                Set_char_ID(DONALD);
+                Set_char_position(-0x96, -0x38E, -0x942);
+                Turn_char(0x96, 0);
+                Char_ctrl_off();
+                Change_char_action(0);
+                Motion_ctrl_on();
+                Set_battle_motion();
+                Change_motion(0);
+            }
+        }
+        entry_13 {
+            if (save_data[0x605] != 1) {
+                Char_ctrl_on();
+            }
+        }
+    }
+
+    thread goofy {  // 5
+        init {
+            if ((runtime.dword[0x904] == 2) | (runtime.dword[0x908] == 2)) {
+                Set_char_ID(GOOFY);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_ID(GOOFY);
+            Set_char_position(-0xBE, -0x389, -0x951);
+            Turn_char(0x9B, 0);
+            Char_ctrl_off();
+            Change_char_action(0);
+            Motion_ctrl_on();
+            Set_battle_motion();
+            Change_motion(0);
+        }
+        entry_12 {
+            if (save_data[0x605] != 2) {
+                Set_char_ID(GOOFY);
+                Set_char_position(-0x96, -0x38E, -0x942);
+                Turn_char(0x96, 0);
+                Char_ctrl_off();
+                Change_char_action(0);
+                Motion_ctrl_on();
+                Set_battle_motion();
+                Change_motion(0);
+            }
+        }
+        entry_13 {
+            if (save_data[0x605] != 2) {
+                Char_ctrl_on();
+            }
+        }
+    }
+
+    thread peterpan {  // 6
+        init {
+            if ((runtime.dword[0x904] == 8) | (runtime.dword[0x908] == 8)) {
+                Set_char_ID(PETERPAN);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_ID(PETERPAN);
+            Set_char_position(-0x5F, -0x393, -0x98D);
+            Turn_char(0xD7, 0);
+            Char_ctrl_off();
+            Change_char_action(8);
+            Motion_ctrl_on();
+            Set_battle_motion();
+            Change_motion(0);
+        }
+        entry_12 {
+            Change_char_action(8);
+            Char_ctrl_on();
+        }
+    }
+
+    thread tinkerbell {  // 7
+        init {
+            if (NEVERLAND_PROGRESS > 0x56) {
+                Display_model(TINKERBELL);
+                Set_char_ID(TINKERBELL);
+                switch (1) {
+                case 0:
+                    Hide_char();
+                    Hide_char_shadow();
+                    break;
+                case 1:
+                    Show_char();
+                    Show_char_shadow();
+                    break;
+                }
+                switch (0) {
+                case 0:
+                    Char_bg_off();
+                    Collision_off();
+                    break;
+                case 1:
+                    Char_bg_on();
+                    Collision_on();
+                    break;
+                }
+                Set_char_position(-0x50, -0x3FC, -0xA00);
+                Turn_char(0x154, 0);
+            }
+        }
+        main {
+            if (!(NEVERLAND_PROGRESS > 0x56)) goto L1;
+            Make_invincible();
+            Disable_targeting();
+            Start_resident_effect(2);
+            Set_wait_timer(1);
+            Set_resident_effect_location_bone(2, tinkerbell, 0x1053, 0);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread tink_dummy {  // 8
+        init {
+            if (NEVERLAND_PROGRESS > 0x56) {
+                Display_model(TINK_DUMMY);
+                Set_char_ID(TINK_DUMMY);
+                switch (0) {
+                case 0:
+                    Hide_char();
+                    Hide_char_shadow();
+                    break;
+                case 1:
+                    Show_char();
+                    Show_char_shadow();
+                    break;
+                }
+                switch (0) {
+                case 0:
+                    Char_bg_off();
+                    Collision_off();
+                    break;
+                case 1:
+                    Char_bg_on();
+                    Collision_on();
+                    break;
+                }
+                Set_char_position(-0x50, -0x3B6, -0xA00);
+                Turn_char(0x154, 0);
+            }
+        }
+        main {
+            if (!(NEVERLAND_PROGRESS > 0x56)) goto L1;
+            Make_invincible();
+            Enable_targeting();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+        on_talk {
+            Make_operable(sora);
+            start(thread_1.entry_11, level=6);
+        }
+    }
+
+    thread 9 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Play_camera_motion(0);
+            local0 = 1;
+            Set_wait_timer(1);
+            switch (local0) {
+            case 0:
+                Blur_off2();
+                break;
+            case 1:
+                Blur_on2();
+                break;
+            default:
+                Blur_off2();
+            }
+            Blur_type(1);
+            Blur_distance(0x14050);
+        }
+        entry_12 {
+            Play_camera_motion(1);
+        }
+    }
+
+    thread 10 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+        }
+        main {
+            Set_attribute_off(0xA0);
+            Set_attribute_off(0xA1);
+            Set_attribute_on(0xA2);
+            while (1) {
+            }
+        }
+    }
+
+    thread mo_tana_6c {  // 11
+        init {
+            Set_char_ID(MO_TANA_6C);
+        }
+        main {
+            if (!(NEVERLAND_PROGRESS >= 0x35)) goto L1;
+            Set_char_position(-0x245, -0x446, -0x79E);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread mvf_tana_6 {  // 12
+        init {
+            Set_char_ID(MVF_TANA_6);
+        }
+        main {
+            if (!(NEVERLAND_PROGRESS >= 0x35)) goto L1;
+            Set_char_position(-0x245, -0x389, -0x79E);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread spt_pp11_2 {  // 13
+        init {
+            Set_char_ID(SPT_PP11_2);
+        }
+        main {
+            while (1) {
+                if (!(bit[0x8231] == 0)) goto L1;
+                local18 = GetLength_2(Push_actor_coord_X(spt_pp11_2), Push_actor_coord_Z(spt_pp11_2), Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+                if (!(local18 < 0x64)) goto L1;
+                bit[0x8231] = 1;
+            L1:
+            }
+        }
+    }
+}

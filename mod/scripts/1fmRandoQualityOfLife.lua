@@ -20,17 +20,13 @@ end
 
 function _OnFrame()
     if canExecute then
-       if ReadByte(evidence + 0x0E60) == 0x00 then --No Red Trinities Activated
-           WriteByte(evidence + 0x0E60, 0x01) --Activated 1 Red Trinity because Secret Waterway Entrance
-       end
        if ReadByte(evidence + 0x0EB5) == 0x01 then --Stepped on All 3 Switches in Gizmo Shop
            WriteByte(evidence + 0x0EB5, 0x03) --No Wait Time for the 2 Postcards
        end
-       if ReadByte(world) == 0x04 and ReadByte(evidence + 0x0F06) == 0x00 then
-           WriteByte(evidence + 0x0F06, 0xFF) --All Evidence Boxes Opened
-       end
-       if ReadByte(inventory + 0xDE) == 0x01 and ReadByte(evidence) == 0x00 then
-           WriteByte(evidence, 0x01) --Found Footprints
+       for i = 0, 3 do --Found Footprints / Claw Marks / Stench / Antenna (trial reads these, set 13 rooms normally derive them)
+           if ReadByte(inventory + 0xDE + i) >= 0x01 and ReadByte(evidence + i) == 0x00 then
+               WriteByte(evidence + i, 0x01)
+           end
        end
        if ReadShort(evidence + 0x1001) == 0x0100 then --Only Shiva Belt Chest spawned
            WriteByte(evidence + 0x100A, 0x02)

@@ -5,14 +5,15 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Handle Special Cases with Key Items"
 local seed_vars = require("seed_vars")
 
 local function handle_slides(stock)
-    if stock[217] > 0 and stock[218] == 0 then
-        WriteByte(inventory + 218-1, 1)
-        WriteByte(inventory + 219-1, 1)
-        WriteByte(inventory + 220-1, 1)
-        WriteByte(inventory + 221-1, 1)
-        WriteByte(inventory + 222-1, 1)
-        local slides_picked_up_array = {1,1,1,1,1,1}
-        WriteArray(evidence + 0x3FF, slides_picked_up_array)
+    if seed_vars["settings"]["slides_bundle"] ~= false and stock[217] > 0 and stock[218] == 0 then
+        for idx = 218, 222 do
+            WriteByte(inventory + idx-1, 1)
+        end
+    end
+    for i = 0, 5 do -- "Obtained Slide N" flags (save_data 0x607-0x60C) follow the bag
+        if stock[217+i] > 0 and ReadByte(evidence + 0x3FF + i) == 0 then
+            WriteByte(evidence + 0x3FF + i, 1)
+        end
     end
 end
 
@@ -201,30 +202,6 @@ local function handle_final_door(stock)
     end
 end
 
-local function read_olympus_cups_array()
-    --[[Reads an array of the bytes which correspond to which Olympus Coliseum
-    cups have been unlocked.]]
-    return ReadArray(OCCupUnlock, 4)
-end
-
-local function handle_olympus_cups(stock)
-    --[[Writes the player's unlocked Olympus Coliseum cups]]
-    local olympus_cups_array = {0,0,0,0}
-    olympus_cups_array[1] = math.min(stock[182], 1) * 10
-    olympus_cups_array[2] = math.min(stock[184], 1) * 10
-    olympus_cups_array[3] = math.min(stock[185], 1) * 10
-    if olympus_cups_array[1] == 10 and olympus_cups_array[2] == 10 and olympus_cups_array[3] == 10 then
-        olympus_cups_array[4] = 10
-    end
-    local current_olympus_cups_array = read_olympus_cups_array()
-    for k,v in pairs(current_olympus_cups_array) do
-        if v == 1 then
-            olympus_cups_array[k] = v
-        end
-    end
-    WriteArray(OCCupUnlock, olympus_cups_array)
-end
-
 local function handle_forget_me_not(stock)
     if seed_vars["settings"]["halloween_town_key_item_bundle"] and stock[227] > 0 and stock[228] == 0 then
         WriteByte(inventory + 228 - 1, 1)
@@ -311,7 +288,6 @@ function _OnFrame()
         handle_puppies(stock)
         handle_torn_pages(stock)
         handle_final_door(stock)
-        handle_olympus_cups(stock)
         handle_stat_ups(stock)
         handle_forget_me_not(stock)
         handle_ap_item(stock)

@@ -1,0 +1,1734 @@
+bd ex_1030.bd code 0x0870 {
+    names {
+        ai_state = glob[32];
+        armor = glob[100];
+        b5c_counter = glob[68];
+        defeat_effect = glob[64];
+        defeated = glob[76];
+        guard_attacks = glob[88];
+        guard_effect = glob[60];
+        guard_hits = glob[92];
+        guard_mode = glob[84];
+        home_pos = glob[16];
+        is_oc = glob[96];
+        map_info = glob[56];
+        queued_action = glob[72];
+        retal_hits = glob[80];
+        self = glob[0];
+        small_hits = glob[108];
+        spin_stance = glob[104];
+    }
+
+    func entry() frame 2 seed 0x0172 {  // @L0870
+        if (sub_2F66(self.attacker, 0) == 0) {
+            sub_2D0C(self, sub_29C0());
+        }
+        sub_2A2A(&ai_state, @ai_loop);
+        return;
+    }
+    func ai_loop() frame 6 {  // @L08A8
+        if (queued_action == 0x384) {
+            defeated = 1;
+            if (is_oc == 1) {
+                __t0_0xc5();
+            }
+            SetActorFlags(self, 0, 0, 1);
+            sub_2EA4(self, 0x40);
+            QueueVoice?(self, 0x11);
+            if ((is_oc - 0) == 0) {
+                AttachStatusEffect?(self, 1);
+            }
+            SetMotion(self, 0xD4, 0.0, 0.0);
+            RecordDefeat(self);
+            if (!((is_oc == 1))) goto L1;
+            SendEventComm(0x64, 2);
+            goto L1;
+        L1:
+            yield;
+            goto L1;
+        } else if (queued_action == 0x3E8) {
+            sub_2EA4(self, 0x40);
+            defeat();
+            set_ai_state(&ai_state, 0);
+            abort;
+        }
+        if (queued_action == 0x64) {
+            queued_action = 0;
+            guard_mode_start();
+            set_ai_state(&ai_state, 0);
+            abort;
+        } else if (queued_action == 0xC8) {
+            queued_action = 0;
+            guard_effect = CancelTimedTask?(guard_effect);
+            guard_mode = 0;
+            guard_attacks = 0;
+            face_target(self, self.target);
+            if (GetQueuedAction?(self) == -1) {
+                loc[0] = RandFloat01();
+                if (loc[0] > 0.5) {
+                    QueueVoice?(self, 8);
+                } else {
+                    QueueVoice?(self, 9);
+                }
+            }
+            __t1_0x00(0x15B3);
+            __t0_0xc2(self, (self.stats[26] / 0x64) + 1);
+            SetMotion(self, 0x10000D1, 0.0, 0.0);
+            QueueMotion(self, 0x40000000, 0.0, 0.0);
+            yield;
+            set_ai_state(&ai_state, 0);
+            abort;
+        } else if (queued_action == 0x12C) {
+            queued_action = 0;
+            sub_3F3E(300.0, 400.0, 10.0, 2);
+            loc[0] = RandFloat01();
+            if (loc[0] > 0.5) {
+                slash_combo_a();
+            } else {
+                slash_combo_b();
+            }
+        } else if (queued_action == 0x190) {
+            queued_action = 0;
+            loc[0] = RandFloat01();
+            if (loc[0] > 0.5) {
+                slash_a();
+            } else {
+                slash_b();
+            }
+            set_ai_state(&ai_state, 0);
+            abort;
+        } else if (queued_action == 0x1F4) {
+            retaliation();
+            queued_action = 0;
+            set_ai_state(&ai_state, 0);
+            abort;
+        }
+        if (((hp_ratio(self) < 0.0001) && ((guard_mode - 0) == 0)) && ((is_oc - 0) == 0)) {
+            guard_mode = 1;
+            guard_mode_start();
+            set_ai_state(&ai_state, 0);
+            abort;
+        }
+        loc[4] = distance_to(self, self.target);
+        if (loc[4] < 350.0) {
+            if (small_hits >= 5) {
+                small_hits = 0;
+                if ((is_oc - 0) == 0) {
+                    if ((guard_mode - 0) == 0) {
+                        *(&retal_hits) += 1;
+                    }
+                    loc[0] = RandFloat01();
+                    if (loc[0] > 0.6) {
+                        get_this_spin();
+                    } else if (loc[0] > 0.3) {
+                        slash_a();
+                    } else {
+                        slash_b();
+                    }
+                } else {
+                    loc[0] = RandFloat01();
+                    if (loc[0] > 0.5) {
+                        slash_a();
+                    } else {
+                        slash_b();
+                    }
+                }
+            }
+            face_target(self, self.target);
+            wait(10.0);
+            back_hop();
+        } else {
+            if ((is_oc - 0) == 0) {
+                loc[0] = RandFloat01();
+                if (loc[0] > 0.5) {
+                    jump_slash(16.0);
+                } else {
+                    fireball();
+                }
+            } else {
+                loc[0] = RandFloat01();
+                if (loc[0] > 0.5) {
+                    fireball();
+                } else {
+                    sub_16FE();
+                }
+            }
+        }
+        yield;
+        loc[8] = sub_29C0();
+        sub_2D0C(self, loc[8]);
+        set_ai_state(&ai_state, 0);
+        abort;
+        return;
+    }
+    func sub_0DFA() frame 2 {  // @L0DFA
+        if (sub_2F66(self.target, 0) == 0) {
+            sub_2D0C(self, sub_29C0());
+        }
+        small_hits = 0;
+        sub_2A2A(&ai_state, @sub_0E3C);
+        return;
+    }
+    func sub_0E3C() frame 2 {  // @L0E3C
+        if (!((is_oc == 1))) goto L1;
+        loop {
+            sub_0ED4();
+            yield;
+        }
+        goto L2;
+    L1:
+        if (hp_ratio(self) < 0.0001) {
+            if ((guard_mode - 0) == 0) {
+                guard_mode = 1;
+                guard_mode_start();
+            } else {
+                sub_1144();
+            }
+        } else {
+            if ((guard_mode - 0) == 0) {
+                sub_1480();
+            } else {
+                sub_1144();
+            }
+        }
+        yield;
+        goto L1;
+        goto L2;
+    L2:
+        return;
+    }
+    func sub_0ED4() frame 2 {  // @L0ED4
+        loc[4] = distance_to(self, self.target);
+        if (loc[4] > 1100.0) {
+            sub_16FE();
+        } else if (loc[4] > 700.0) {
+            loc[0] = RandFloat01();
+            if (loc[0] > 0.5) {
+                fireball();
+                sidestep(self.target, 3.0, 250.0, 300.0);
+            } else {
+                sub_16FE();
+            }
+        } else if (loc[4] > 350.0) {
+            if (((&self.target.pos)[1] < ((&self.pos)[1] - 150.0)) && (self.target.air != 2)) {
+                sub_16C2();
+            } else {
+                sub_3F3E(300.0, 300.0, 4.0, 1);
+                loc[0] = RandFloat01();
+                if (loc[0] > 0.5) {
+                    slash_combo_a();
+                } else {
+                    slash_combo_b();
+                }
+            }
+        } else {
+            loc[0] = RandFloat01();
+            if (loc[0] > 0.5) {
+                face_target(self, self.target);
+                wait(10.0);
+                back_hop();
+                sidestep(self.target, 3.0, 250.0, 300.0);
+                loc[0] = RandFloat01();
+                if (loc[0] > 0.3) {
+                    face_target(self, self.target);
+                    wait(10.0);
+                    back_hop();
+                    fireball();
+                }
+            } else {
+                sub_10AE();
+            }
+        }
+        return;
+    }
+    func sub_10AE() frame 2 {  // @L10AE
+        loc[0] = RandFloat01();
+        if (loc[0] > 0.8) {
+            slash_b();
+        } else if (loc[0] > 0.6) {
+            slash_a();
+        } else if (loc[0] > 0.4) {
+            slash_combo_b();
+        } else if (loc[0] > 0.2) {
+            slash_combo_a();
+        } else {
+            face_target(self, self.target);
+            wait(10.0);
+            back_hop();
+            fireball();
+        }
+        return;
+    }
+    func sub_1144() frame 6 {  // @L1144
+        loc[12] = distance_to(self, self.target);
+        if (loc[12] < 454.99997) {
+            loc[8] = RandFloat01();
+            if (loc[8] > 0.5) {
+                BlendMotion(self, 0, 8.0);
+                wait(4.0);
+                get_this_spin();
+            } else if (loc[8] > 0.25) {
+                slash_a();
+            } else {
+                slash_b();
+            }
+            loc[12] = distance_to(self, self.target);
+            if (loc[12] < 454.99997) {
+                face_target(self, self.target);
+                wait(10.0);
+                back_hop();
+                loc[8] = RandFloat01();
+                if (loc[8] > 0.5) {
+                    jump_slash(16.0);
+                }
+            }
+        } else {
+            if (hp_ratio(self) > 0.3) {
+                if (GetQueuedAction?(self) == -1) {
+                    loc[8] = RandFloat01();
+                    if (loc[8] > 0.5) {
+                        QueueVoice?(self, 6);
+                    } else {
+                        QueueVoice?(self, 7);
+                    }
+                }
+            }
+            loc[8] = RandFloat01();
+            if (loc[8] > 0.5) {
+                loc[12] = distance_to(self, self.target);
+                if (loc[12] > 600.0) {
+                    loc[4] = GetMotionDuration?(self, 0xD5) + 14.0;
+                    sub_3F3E(loc[4], 500.0, 8.0, 0xD5);
+                    loc[0] = 0.0;
+                } else {
+                    loc[0] = 16.0;
+                }
+                jump_slash(loc[0]);
+            } else {
+                sub_3F3E(210.0, 400.0, 4.0, 1);
+                loc[8] = RandFloat01();
+                if (loc[8] > 0.7) {
+                    slash_a();
+                } else {
+                    slash_b();
+                }
+            }
+            *(&guard_attacks) += 1;
+            loc[12] = distance_to(self, self.target);
+            if (loc[12] < 454.99997) {
+                face_target(self, self.target);
+                wait(10.0);
+                back_hop();
+                loc[8] = RandFloat01();
+                if (loc[8] > 0.5) {
+                    sidestep(self.target, 3.0, 450.0, 210.0);
+                }
+            }
+        }
+        if (hp_ratio(self) >= -1.0) {
+            if (guard_attacks >= 1) {
+                guard_attacks = 0;
+                guard_effect = DestroyObj?(guard_effect);
+                guard_mode = 0;
+                guard_hits = 0;
+                sub_1738(3);
+            }
+        }
+        return;
+    }
+    func sub_1480() frame 6 {  // @L1480
+        loc[12] = distance_to(self, self.target);
+        if (loc[12] < 350.0) {
+            get_this_spin();
+            loc[8] = RandFloat01();
+            if (loc[8] > 0.5) {
+                sub_1738(1);
+            } else {
+                face_target(self, self.target);
+                wait(10.0);
+                back_hop();
+            }
+        } else if (loc[12] < 700.0) {
+            loc[8] = RandFloat01();
+            if (loc[8] > 0.5) {
+                sub_3F3E(300.0, 300.0, 10.0, 2);
+                loc[8] = RandFloat01();
+                if (loc[8] > 0.5) {
+                    slash_combo_b();
+                } else {
+                    slash_combo_a();
+                }
+            } else {
+                loc[12] = distance_to(self, self.target);
+                if (loc[12] > 500.0) {
+                    loc[4] = GetMotionDuration?(self, 0xD5) + 14.0;
+                    sub_3F3E(loc[4], 400.0, 8.0, 0xD5);
+                    loc[0] = 0.0;
+                } else {
+                    loc[0] = 16.0;
+                }
+                jump_slash(loc[0]);
+            }
+        } else {
+            loc[8] = RandFloat01();
+            if (loc[8] > 0.5) {
+                fireball();
+                loc[8] = RandFloat01();
+                if (loc[8] > 0.5) {
+                    sub_1738(1);
+                } else {
+                    sub_3F3E(300.0, 300.0, 4.0, 1);
+                    BlendMotion(self, 0, 8.0);
+                    wait(4.0);
+                    get_this_spin();
+                    sub_1738(1);
+                }
+            } else {
+                loc[4] = GetMotionDuration?(self, 0xD5) + 14.0;
+                sub_3F3E(loc[4], 400.0, 8.0, 0xD5);
+                jump_slash(0.0);
+            }
+        }
+        return;
+    }
+    func sub_16C2() frame 2 {  // @L16C2
+        sub_269A(500.0, 40.0, 50.0, 30.0);
+        while (self.air == 2) {
+            yield;
+        }
+        yield;
+        return;
+    }
+    func sub_16FE() frame 2 {  // @L16FE
+        sub_269A(170.0, 40.0, 50.0, 30.0);
+        while (self.air == 2) {
+            yield;
+        }
+        return;
+    }
+    func sub_1738(a0) frame 10 {  // @L1738
+        loc[0] = a0;
+        loc[32] = 0;
+        loop {
+            sub_2ABE(&loc[16], 500.0, 800.0);
+            VecAdd(&loc[16], &self.target.pos);
+            (&loc[16])[1] = sub_2958(&loc[16]);
+            sub_4200(&loc[16], 300.0, 200.0, 10.0);
+            *(&loc[32]) += 1;
+            if (loc[32] >.i loc[0]) {
+                goto L1;
+            }
+            yield;
+        }
+    L1:
+        self.stats[5] = 0.2;
+        return;
+    }
+    func sub_17D8() frame 2 {  // @L17D8
+        sub_2A2A(&ai_state, @sub_17E8);
+        return;
+    }
+    func sub_17E8() frame 2 {  // @L17E8
+        loop {
+            sub_2D0C(self, sub_29C0());
+            set_ai_state(&ai_state, 0);
+            abort;
+            yield;
+        }
+        return;
+    }
+    func fireball() frame 2 {  // @L180C
+        sub_28C2();
+        face_target(self, self.target);
+        ScheduleCallback?(self, 0, self, &data[0x0768], &data[0x07D8]);
+        SetMotion(self, 0xD0, 8.0, 0.0);
+        QueueMotion(self, 0, 0.0, 0.0);
+        loc[0] = GetMotionDuration?(self, 0xD0) + 6.0;
+        loop {
+            if (!(((loc[0] - 0.0) > 0.0))) goto L1;
+            if (loc[0] > 90.0) {
+                face_target(self, self.target);
+            } else if ((loc[0] <= 80.0) && (loc[0] > (80.0 - FrameDelta()))) {
+                if (GetQueuedAction?(self) == -1) {
+                    QueueVoice?(self, 2);
+                }
+            }
+            *(&loc[0]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) != 0xD0) {
+                goto L1;
+            }
+        }
+    L1:
+        yield;
+        return;
+    }
+    func guard_mode_start() frame 2 {  // @L1942
+        sub_28C2();
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            loc[0] = RandFloat01();
+            if (loc[0] > 0.5) {
+                QueueVoice?(self, 4);
+            } else {
+                QueueVoice?(self, 0xA);
+            }
+        }
+        guard_effect = AttachStatusEffect?(self, 7);
+        AttachStatusEffect?(self, 0x16);
+        SetMotion(self, 0x10000CF, 0.0, 0.0);
+        QueueMotion(self, 0x40000000, 0.0, 0.0);
+        yield;
+        return;
+    }
+    func get_this_spin() frame 2 {  // @L19F8
+        sub_28C2();
+        spin_stance = 1;
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 3);
+        }
+        if ((guard_mode - 0) == 0) {
+            AttachStatusEffect?(self, 0xB);
+            MakeAttack(self, GetActor(), &data[0x04C8]);
+        } else {
+            AttachStatusEffect?(self, 0xF);
+            MakeAttack(self, GetActor(), &data[0x06F8]);
+        }
+        SetMotion(self, 0xCE, 0.0, 0.0);
+        QueueMotion(self, 0, 0.0, 0.0);
+        loc[0] = GetMotionDuration?(self, 0xCE) + 6.0;
+        loop {
+            if (!(((loc[0] - 0.0) > 0.0))) goto L1;
+            if ((loc[0] <= 40.0) && (spin_stance == 1)) {
+                spin_stance = 0;
+            }
+            *(&loc[0]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) != 0xCE) {
+                spin_stance = 0;
+                goto L1;
+            }
+        }
+    L1:
+        yield;
+        return;
+    }
+    func jump_slash(a0) frame 14 {  // @L1B5A
+        loc[0] = a0;
+        face_target(self, self.target);
+        sub_28C2();
+        armor = 1;
+        __t0_0xa9(self, sub_305A(&loc[32], 0.0, 0.0, 0.0, 1.0));
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 5);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 0xA, loc[0]);
+            SpawnEffect?(self, 0x17, loc[0]);
+            MakeAttack(self, GetActor(), &data[0x03E8]);
+            MakeAttack(self, GetActor(), &data[0x0458]);
+        } else {
+            SpawnEffect?(self, 0xE, loc[0]);
+            SpawnEffect?(self, 0x18, loc[0]);
+            MakeAttack(self, GetActor(), &data[0x0618]);
+            MakeAttack(self, GetActor(), &data[0x0688]);
+        }
+        SetMotion(self, 0xCD, loc[0], 0.0);
+        QueueMotion(self, 0, 8.0, 0.0);
+        wait(loc[0]);
+        loc[4] = GetMotionDuration?(self, 0xCD);
+        loop {
+            if (!(((loc[4] - 0.0) > 0.0))) goto L1;
+            if ((loc[4] <= 56.0) && (armor == 1)) {
+                loc[16] = self.rot;
+                FaceTarget?(self, &loc[16]);
+                armor = 0;
+            } else if (loc[4] > 130.0) {
+                SetTurnSpeedDeg?(self, 11.25);
+                face_target(self, self.target);
+                loc[16] = self.rot;
+                self[8] = load(&loc[16], 4);
+                (&self[8])[3] = 8.0;
+            }
+            if (((GetActorTimer?(self) <= 50.0) && ((self.air - 0) != 0)) && (loc[4] < 100.0)) {
+                __t0_0x58(self, 0);
+            }
+            *(&loc[4]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) != 0xCD) {
+                if (armor == 1) {
+                    armor = 0;
+                }
+                loc[16] = self.rot;
+                FaceTarget?(self, &loc[16]);
+                __t0_0x58(self, 0);
+                goto L1;
+            }
+        }
+    L1:
+        if.nj ((self.air - 0) != 0) {
+            yield;
+            goto L1;
+        }
+        yield;
+        return;
+    }
+    func slash_combo_a() frame 2 {  // @L1E3E
+        sub_28C2();
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 1);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 8, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0308]);
+        } else {
+            SpawnEffect?(self, 0xC, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0538]);
+        }
+        SetMotion(self, 0xCB, 8.0, 0.0);
+        loc[0] = 38.0;
+        loop {
+            if (!(((loc[0] - 0.0) > 0.0))) goto L1;
+            *(&loc[0]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) != 0xCB) {
+                goto L1;
+            }
+        }
+    L1:
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 0);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 9, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0378]);
+        } else {
+            SpawnEffect?(self, 0xD, 8.0);
+            MakeAttack(self, GetActor(), &data[0x05A8]);
+        }
+        SetMotion(self, 0x10000CC, 12.0, 0.0);
+        QueueMotion(self, 0x40000000, 8.0, 0.0);
+        wait(4.0);
+        yield;
+        return;
+    }
+    func slash_combo_b() frame 2 {  // @L2000
+        sub_28C2();
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 0);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 9, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0378]);
+        } else {
+            SpawnEffect?(self, 0xD, 8.0);
+            MakeAttack(self, GetActor(), &data[0x05A8]);
+        }
+        SetMotion(self, 0xCC, 8.0, 0.0);
+        loc[0] = 44.0;
+        loop {
+            if (!(((loc[0] - 0.0) > 0.0))) goto L1;
+            *(&loc[0]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) != 0xCC) {
+                goto L1;
+            }
+        }
+    L1:
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 1);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 8, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0308]);
+        } else {
+            SpawnEffect?(self, 0xC, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0538]);
+        }
+        SetMotion(self, 0x10000CB, 12.0, 0.0);
+        QueueMotion(self, 0x40000000, 8.0, 0.0);
+        wait(4.0);
+        yield;
+        return;
+    }
+    func slash_b() frame 2 {  // @L21C2
+        sub_28C2();
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 0);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 9, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0378]);
+        } else {
+            SpawnEffect?(self, 0xD, 8.0);
+            MakeAttack(self, GetActor(), &data[0x05A8]);
+        }
+        SetMotion(self, 0x10000CC, 8.0, 0.0);
+        QueueMotion(self, 0x40000000, 10.0, 0.0);
+        wait(6.0);
+        return;
+    }
+    func slash_a() frame 2 {  // @L2290
+        sub_28C2();
+        face_target(self, self.target);
+        if (GetQueuedAction?(self) == -1) {
+            QueueVoice?(self, 1);
+        }
+        if ((guard_mode - 0) == 0) {
+            SpawnEffect?(self, 8, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0308]);
+        } else {
+            SpawnEffect?(self, 0xC, 8.0);
+            MakeAttack(self, GetActor(), &data[0x0538]);
+        }
+        SetMotion(self, 0x10000CB, 8.0, 0.0);
+        QueueMotion(self, 0x40000000, 10.0, 0.0);
+        wait(6.0);
+        return;
+    }
+    func sub_235E() {  // @L235E
+        SetControllerVibration?(180.0);
+        return;
+    }
+    func defeat_slowmo(a0, a1) frame 2 {  // @L2368
+        loc[0] = a1;
+        loc[4] = a0;
+        __t0_0xc5();
+        SetActorFlag_0x80000?(self);
+        sub_23D0();
+        if ((self.stats[26] - 0) != 0) {
+            GiveExp?(self, self.stats[26]);
+        }
+        wait(loc[0]);
+        SetMotionSpeed(self, loc[4]);
+        wait(38.0 - loc[0]);
+        return;
+    }
+    func sub_23D0() {  // @L23D0
+        FadeOutToWhite(1);
+        FadeIn(0x18);
+        return;
+    }
+    func sub_23E2() -> 1 frame 2 {  // @L23E2
+        loc[4] = 0;
+        if (sub_264C() == 0xB) {
+            if (GetActionMode?(self) == 0x206) {
+                if (sub_262C() != 4) {
+                    loc[4] = 0x1F4;
+                } else {
+                    loc[4] = 0x1F9;
+                }
+            } else if (GetActionMode?(self) == 0x205) {
+                if (sub_262C() != 4) {
+                    loc[4] = 0x1F5;
+                } else {
+                    loc[4] = 0x1FB;
+                }
+            } else if (GetActionMode?(self) == 0x207) {
+                if (sub_262C() != 4) {
+                    loc[4] = 0x1F6;
+                } else {
+                    loc[4] = 0x1FC;
+                }
+            } else if (GetActionMode?(self) == 0x208) {
+                loc[4] = 0x1F7;
+            } else if (GetActionMode?(self) == 0x149) {
+                loc[4] = 0x1F8;
+            } else if (GetActionMode?(self) == 0x1F9) {
+                loc[4] = 0x1FA;
+            } else if (GetActionMode?(self) == 0x204) {
+                loc[4] = 0x1FD;
+            } else if (GetActionMode?(self) == 0x1F7) {
+                loc[4] = 0x1FE;
+            }
+        }
+        if ((loc[4] - 0) != 0) {
+            if (!(SendEventComm(loc[4], 0x190))) {
+                loc[0] = 0;
+            } else {
+                loc[0] = 1;
+            }
+        }
+        return loc[0];
+    }
+    func sub_25C8(a0) frame 2 {  // @L25C8
+        loc[0] = a0;
+        if ((sub_2F66(self.attacker, sub_29C0()) == 0) && ((hit_type(loc[0]) == 1) || (hit_type(loc[0]) == 0xA))) {
+            set_hit_level(loc[0], 0);
+            abort;
+        }
+        return;
+    }
+    func sub_262C() -> 1 {  // @L262C
+        loc[0] = GetMapInfo();
+        return loc[0][2];
+    }
+    func sub_263C() -> 1 {  // @L263C
+        loc[0] = GetMapInfo();
+        return loc[0][1];
+    }
+    func sub_264C() -> 1 {  // @L264C
+        loc[0] = GetMapInfo();
+        return *loc[0];
+    }
+    func sub_265A() frame 2 {  // @L265A
+        loc[0] = 30.0;
+        if (GetActionMode?(self) == 0x12D) {
+            sub_2EE6(self, loc[0]);
+        } else {
+            sub_2CB2(self, loc[0]);
+        }
+        return;
+    }
+    func sub_269A(a0, a1, a2, a3) frame 10 {  // @L269A
+        loc[0] = a3;
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[12] = a0;
+        while ((self.air - 0) != 0) {
+            yield;
+        }
+        loc[16] = self.target.pos;
+        VecSub(&loc[16], &self.pos);
+        VecNormalize?(&loc[16]);
+        GetAngleToTarget?(self, &loc[16]);
+        (&loc[16])[3] = ((&loc[16])[3] - loc[4]) / loc[0];
+        if ((&loc[16])[3] > loc[8]) {
+            (&loc[16])[3] = loc[8];
+        }
+        sub_2B9E(self, loc[12], &loc[16]);
+        return;
+    }
+    func sub_2744(a0) -> 1 {  // @L2744
+        loc[0] = a0;
+        loc[60] = 0;
+        loc[32] = self.rot;
+        loc[16] = self.target.pos;
+        VecSub(&loc[16], &self.pos);
+        VecNormalize?(&loc[16]);
+        RotateDeg(&loc[32], loc[0]);
+        loc[56] = CosAngle(&loc[32], &loc[16]);
+        loc[32] = self.rot;
+        RotateDeg(&loc[32], 90.0 - loc[0]);
+        loc[48] = CosAngle(&loc[32], &loc[16]);
+        loc[32] = self.rot;
+        RotateDeg(&loc[32], 90.0 + loc[0]);
+        loc[52] = CosAngle(&loc[32], &loc[16]);
+        if ((((loc[56] - 0.0) > 0.0) && ((loc[48] - 0.0) > 0.0)) && ((loc[52] - 0.0) < 0.0)) {
+            loc[60] = 1;
+        }
+        return loc[60];
+    }
+    func sub_2842() -> 1 {  // @L2842
+        loc[32] = self.rot;
+        loc[16] = self.target.pos;
+        VecSub(&loc[16], &self.pos);
+        VecNormalize?(&loc[16]);
+        RotateDeg(&loc[32], 90.0);
+        loc[0] = CosAngle(&loc[32], &loc[16]);
+        return loc[0];
+    }
+    func sub_2890() -> 1 {  // @L2890
+        loc[0] = 0;
+        if (GetActionState(self) == 6) {
+            loc[0] = 1;
+        }
+        return loc[0];
+    }
+    func sub_28C2() {  // @L28C2
+        while ((self.air - 0) != 0) {
+            yield;
+        }
+        return;
+    }
+    func sub_28E0(a0) {  // @L28E0
+        loc[0] = a0;
+        *(&heap[0]) = 1.0;
+        (&heap[0])[1] = 1.0;
+        (&heap[0])[2] = 1.0;
+        (&heap[0])[3] = 0.5;
+        heap[16] = 0x100;
+        heap[20] = 0xC0;
+        heap[24] = 0;
+        heap[28] = 0;
+        heap[32] = 0.0;
+        heap[36] = 1;
+        return;
+    }
+    func sub_2958(a0) -> 1 frame 14 {  // @L2958
+        loc[0] = a0;
+        sub_305A(&loc[32], 0.0, 1000000.0, 0.0, 1.0);
+        if ((RayCast(loc[0], &loc[32], &loc[16]) - 0) == 0) {
+            (&loc[16])[1] = loc[0][1] + 1000000.0;
+        }
+        return (&loc[16])[1];
+    }
+    func sub_29C0() -> 1 {  // @L29C0
+        loc[0] = GetTargetEntity?(0);
+        return loc[0];
+    }
+    func sub_29D2(a0, a1, a2, a3) -> 1 {  // @L29D2
+        loc[4] = a3;
+        loc[8] = a2;
+        loc[12] = a1;
+        loc[0] = a0;
+        loc[20] = DispatchReactionTable?(heap[0], (loc[12] * 0x14) + heap[4], loc[8], loc[4]);
+        return loc[20];
+    }
+    func sub_2A0C(a0, a1, a2) {  // @L2A0C
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[0] = a0;
+        heap[0] = loc[8];
+        heap[4] = loc[4];
+        return;
+    }
+    func sub_2A2A(a0, a1) {  // @L2A2A
+        loc[4] = a1;
+        loc[0] = a0;
+        heap[8] = ReplaceThread(heap[8], 0, loc[4]);
+        return;
+    }
+    func sub_2A48(a0) -> 1 {  // @L2A48
+        loc[0] = a0;
+        if (heap[4]) {
+            loc[8] = heap[0];
+        } else {
+            loc[8] = -1;
+        }
+        heap[4] = 0;
+        return loc[8];
+    }
+    func set_ai_state(a0, a1) {  // @L2A7E
+        loc[4] = a1;
+        loc[0] = a0;
+        heap[0] = loc[4];
+        heap[4] = 1;
+        return;
+    }
+    func sub_2A9A(a0) {  // @L2A9A
+        loc[0] = a0;
+        heap[0] = 0;
+        heap[4] = 0;
+        heap[8] = 0;
+        return;
+    }
+    func sub_2ABE(a0, a1, a2) frame 6 {  // @L2ABE
+        loc[0] = a2;
+        loc[4] = a1;
+        loc[8] = a0;
+        sub_305A(loc[8], sub_2B04(loc[4], loc[0]), 0.0, 0.0, 0.0);
+        RotateDeg(loc[8], RandFloat01() * 360.0);
+        return;
+    }
+    func sub_2B04(a0, a1) -> 1 {  // @L2B04
+        loc[0] = a1;
+        loc[4] = a0;
+        return (RandFloat01() * (loc[0] - loc[4])) + loc[4];
+    }
+    func sub_2B22(a0, a1) {  // @L2B22
+        loc[4] = a1;
+        loc[0] = a0;
+        GetBodyPos(loc[0], &loc[16]);
+        SpawnPrizeDropsForced?(loc[4], &loc[16]);
+        return;
+    }
+    func sub_2B40(a0, a1) {  // @L2B40
+        loc[4] = a1;
+        loc[0] = a0;
+        GetBodyPos(loc[0], &loc[16]);
+        SpawnPrizeDrops?(loc[4], &loc[16]);
+        return;
+    }
+    func distance_to(a0, a1) -> 1 frame 10 {  // @L2B5E
+        loc[4] = a1;
+        loc[0] = a0;
+        if (sub_2F66(loc[4], 0) == 0) {
+            __t0_0x42();
+        }
+        loc[16] = loc[4][4]:4;
+        VecSub(&loc[16], &heap[16]);
+        return VecLength(&loc[16]);
+    }
+    func sub_2B9E(a0, a1, a2) {  // @L2B9E
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[0] = a0;
+        SetMotion(loc[0], 0x1000003, 0.0, 0.0);
+        QueueMotion(loc[0], 0x40010004, 0.0, 0.0);
+        yield;
+        SetVectorSafe?(loc[0], loc[8], loc[4]);
+        return;
+    }
+    func sub_2BEC(a0, a1) frame 10 {  // @L2BEC
+        loc[4] = a1;
+        loc[0] = a0;
+        ClearActorFlags88(loc[0], 2);
+        QueryPosition?(loc[0], 0x8003, 0.0, &loc[16]);
+        loc[12] = SpawnObj(heap[104], 0, 0x4E20, &loc[16]);
+        if (sub_2F7A(loc[12])) {
+            sub_305A(&loc[16], fneg(loc[4][4]), 0.0, fneg((&loc[4][4])[2]), 0.0);
+            SetObjRotationFromVec?(loc[12], &loc[16]);
+        }
+        AttachStatusEffect?(loc[0], 1);
+        SetActorFlag_0x80000?(loc[0]);
+        sub_2EE6(loc[0], 30.0);
+        RecordDefeat(loc[0]);
+        GiveExp?(loc[0], loc[0][27][26]);
+        return;
+    }
+    func sub_2CB2(a0, a1) frame 6 {  // @L2CB2
+        loc[4] = a1;
+        loc[0] = a0;
+        SetMotion(loc[0], 0x40000046, 0.0, 0.0);
+        sub_2EBE(loc[0], 0.0);
+        wait(loc[4]);
+        AttachStatusEffect?(loc[0], 3);
+        sub_2EE6(loc[0], 30.0);
+        loop {
+            yield;
+        }
+        return;
+    }
+    func sub_2D0C(a0, a1) frame 6 {  // @L2D0C
+        loc[4] = a1;
+        loc[0] = a0;
+        if (sub_2F66(loc[4], 0) == 0) {
+            __t0_0x42();
+        }
+        SetTarget(loc[0], loc[4]);
+        return;
+    }
+    func sub_2D3A(a0) -> 1 {  // @L2D3A
+        loc[0] = a0;
+        return heap[136] & 0x102;
+    }
+    func sub_2D4C(a0) -> 1 {  // @L2D4C
+        loc[0] = a0;
+        return heap[136] & 1;
+    }
+    func sub_2D5E(a0) {  // @L2D5E
+        loc[0] = a0;
+        loop {
+            yield;
+            if (IsActionDone?(loc[0])) {
+                goto L1;
+            }
+        }
+    L1:
+        return;
+    }
+    func hp_ratio(a0) -> 1 {  // @L2D7C
+        loc[0] = a0;
+        return ftoi(heap[108][15]) / ftoi(heap[108][16]);
+    }
+    func face_target(a0, a1) {  // @L2D98
+        loc[4] = a1;
+        loc[0] = a0;
+        loc[16] = loc[4][4]:4;
+        VecSub(&loc[16], &heap[16]);
+        GetAngleToTarget?(loc[0], &loc[16]);
+        return;
+    }
+    func face_attacker(a0, a1) frame 10 {  // @L2DC2
+        loc[4] = a1;
+        loc[0] = a0;
+        if (sub_2F66(loc[4], 0) == 0) {
+            __t0_0x42();
+        } else {
+            loc[16] = loc[4][4]:4;
+            VecSub(&loc[16], &heap[16]);
+            FaceTarget?(loc[0], &loc[16]);
+        }
+        return;
+    }
+    func sub_2E0A(a0, a1, a2, a3) -> 1 {  // @L2E0A
+        loc[4] = a3;
+        loc[8] = a2;
+        loc[12] = a1;
+        loc[0] = a0;
+        loop {
+            if (!(((loc[4] - 0.0) > 0.0))) goto L1;
+            loc[20] = MoveTo(loc[0], loc[12], loc[8]);
+            yield;
+            if (((loc[20] - 0.0) <= 0.0) && ((heap[112] - 0) == 0)) {
+                goto L1;
+            }
+            *(&loc[4]) -= FrameDelta();
+        }
+    L1:
+        return loc[20];
+    }
+    func clear_hit_flags(a0, a1) {  // @L2E88
+        loc[4] = a1;
+        loc[0] = a0;
+        *(&heap[0]) &= bnot(loc[4]);
+        return;
+    }
+    func sub_2EA4(a0, a1) {  // @L2EA4
+        loc[4] = a1;
+        loc[0] = a0;
+        *(&heap[0]) |=.i loc[4];
+        return;
+    }
+    func sub_2EBE(a0, a1) {  // @L2EBE
+        loc[4] = a1;
+        loc[0] = a0;
+        *loc[0] |= 0x80;
+        loc[0][3] = loc[4];
+        return;
+    }
+    func sub_2EE6(a0, a1) frame 6 {  // @L2EE6
+        loc[4] = a1;
+        loc[0] = a0;
+        sub_2F0E(loc[0], loc[4]);
+        *loc[0] |= 8;
+        return;
+    }
+    func sub_2F0E(a0, a1) {  // @L2F0E
+        loc[4] = a1;
+        loc[0] = a0;
+        loc[0][24] = 1.0;
+        loc[0][25] = -1.0 / loc[4];
+        return;
+    }
+    func sub_2F3A(a0, a1) {  // @L2F3A
+        loc[4] = a1;
+        loc[0] = a0;
+        loc[0][24] = 0.0;
+        loc[0][25] = 1.0 / loc[4];
+        return;
+    }
+    func sub_2F66(a0, a1) -> 1 {  // @L2F66
+        loc[4] = a1;
+        loc[0] = a0;
+        return loc[0] -.i loc[4];
+    }
+    func sub_2F7A(a0) -> 1 {  // @L2F7A
+        loc[0] = a0;
+        return (loc[0] - 0) != 0;
+    }
+    func set_hit_level(a0, a1) {  // @L2F8E
+        loc[4] = a1;
+        loc[0] = a0;
+        heap[12] = (heap[12] & -0x20) | loc[4];
+        return;
+    }
+    func sub_2FAE(a0) {  // @L2FAE
+        loc[0] = a0;
+        *(&heap[0]) |= 2;
+        return;
+    }
+    func is_recoil_hit(a0) -> 1 frame 2 {  // @L2FC6
+        loc[0] = a0;
+        return (hit_level(loc[0]) == 6) || (hit_level(loc[0]) == 7);
+    }
+    func sub_2FF8(a0) -> 1 {  // @L2FF8
+        loc[0] = a0;
+        return heap[0] & 0x20;
+    }
+    func hit_type(a0) -> 1 {  // @L300A
+        loc[0] = a0;
+        return (heap[12] >> 6) & 0xF;
+    }
+    func hit_level(a0) -> 1 {  // @L3024
+        loc[0] = a0;
+        return heap[12] & 0x1F;
+    }
+    func sub_3036(a0, a1) -> 1 {  // @L3036
+        loc[4] = a1;
+        loc[0] = a0;
+        loc[16] = load(loc[4], 4);
+        VecSub(&loc[16], loc[0]);
+        return VecLength(&loc[16]);
+    }
+    func sub_305A(a0, a1, a2, a3, a4) -> 1 {  // @L305A
+        loc[4] = a4;
+        loc[8] = a3;
+        loc[12] = a2;
+        loc[16] = a1;
+        loc[0] = a0;
+        heap[0] = loc[16];
+        heap[4] = loc[12];
+        heap[8] = loc[8];
+        heap[12] = loc[4];
+        return loc[0];
+    }
+    func sub_3094(a0) frame 2 {  // @L3094
+        loc[0] = a0;
+        b5c_counter = GetGlobalB5C?();
+        self = loc[0];
+        sub_3130(loc[0]);
+        yield;
+        *b5c_counter += 1;
+        __t1_0x00(*b5c_counter);
+        sub_17D8();
+        loop {
+            loc[4] = sub_2A48(&ai_state);
+            if ((loc[4] - 0) == 0) {
+                sub_0DFA();
+            } else if (loc[4] == 1) {
+                sub_17D8();
+            } else if (loc[4] == 2) {
+                entry();
+            }
+            yield;
+        }
+        return;
+    }
+    func sub_3130(a0) frame 2 {  // @L3130
+        loc[0] = a0;
+        self.stats[1] = 3.0;
+        self.stats[2] = 9.0;
+        self.stats[4] = 200.0;
+        PlaySE?(self, 0xC);
+        map_info = GetMapInfo();
+        loc[4] = *map_info;
+        if (loc[4] == 3) {
+            is_oc = 1;
+            TriggerEffect?(self, &data[0x0014]);
+        } else {
+            is_oc = 0;
+            if (__t0_0xc6()) {
+                if (sub_262C() == 4) {
+                    if (sub_23E2()) {
+                        TriggerEffect?(self, &data[0x029C]);
+                    } else {
+                        TriggerEffect?(self, &data[0x0230]);
+                    }
+                } else {
+                    if (sub_23E2()) {
+                        TriggerEffect?(self, &data[0x01C4]);
+                    } else {
+                        TriggerEffect?(self, &data[0x0158]);
+                    }
+                }
+            } else {
+                if (sub_23E2()) {
+                    TriggerEffect?(self, &data[0x00EC]);
+                } else {
+                    TriggerEffect?(self, &data[0x0080]);
+                }
+            }
+        }
+        b5c_counter = GetGlobalB5C?();
+        *b5c_counter = 0;
+        queued_action = 0;
+        defeated = 0;
+        retal_hits = 0;
+        guard_mode = 0;
+        guard_attacks = 0;
+        guard_hits = 0;
+        armor = 0;
+        spin_stance = 0;
+        small_hits = 0;
+        home_pos = self.pos;
+        sub_2A9A(&ai_state);
+        sub_2A0C(&glob[48], self, &data[0x0848]);
+        SetEventHandlers(@on_hit, @sub_32FE, @sub_3316, 0);
+        return;
+    }
+    func sub_32FE(a0, a1) -> 1 {  // @L32FE
+        loc[0] = a1;
+        loc[4] = a0;
+        loc[8] = 0;
+        return loc[8];
+    }
+    func sub_3316(a0, a1) {  // @L3316
+        loc[0] = a1;
+        loc[4] = a0;
+        abort;
+        return;
+    }
+    func on_hit(a0) frame 18 {  // @L3322
+        loc[0] = a0;
+        b5c_counter = GetGlobalB5C?();
+        if (hit_type(loc[0]) == 0xB) {
+            loc[56] = ApplyHitOutcome?(self, loc[0]);
+            abort;
+        }
+        if (armor == 2) {
+            ClearActorFlags88(self, 2);
+            set_hit_level(loc[0], 0);
+            abort;
+        }
+        if (((((GetActionState(self) == 0xEE) || (GetActionState(self) == 0xEF)) || (defeated == 1)) || (armor == 2)) || (GetActionState(self) == 0xCF)) {
+            if (hit_type(loc[0]) != 9) {
+                loc[0][2] = 2;
+                loc[56] = ApplyHitOutcome?(self, loc[0]);
+                sub_3A60(loc[56], loc[0]);
+            }
+            ClearActorFlags88(self, 2);
+            set_hit_level(loc[0], 0);
+            abort;
+        }
+        if ((((sub_2F66(self.attacker, sub_29C0()) != 0) && (hit_level(loc[0]) == 3)) && (hit_type(loc[0]) != 0xA)) && !(sub_2D3A(self))) {
+            loc[56] = ApplyHitOutcome?(self, loc[0]);
+            sub_3A60(loc[56], loc[0]);
+            PushOnHit?(self, loc[0]);
+            abort;
+        }
+        if (guard_mode == 1) {
+            if (is_recoil_hit(loc[0])) {
+                if (sub_2F66(self.attacker, sub_29C0()) == 0) {
+                    __t1_0x00(0x339D);
+                    *(&guard_hits) += 1;
+                    if (guard_hits >= 3) {
+                        guard_hits = 0;
+                        if (spin_stance == 1) {
+                            spin_stance = 0;
+                        }
+                        face_attacker(self, self.attacker);
+                        clear_hit_flags(self, 4);
+                        set_hit_level(loc[0], 0);
+                        queued_action = 0xC8;
+                        set_ai_state(&ai_state, 2);
+                        abort;
+                    }
+                } else {
+                    sub_2FAE(loc[0]);
+                    abort;
+                }
+            }
+        }
+        loc[56] = ApplyHitOutcome?(self, loc[0]);
+        if (sub_3BF0(loc[0])) {
+            if ((loc[56] - 0) != 0) {
+                __t1_0x00(0xAD9C);
+                __t0_0xc2(self, (self.stats[26] / 0x1F4) + 1);
+                clear_hit_flags(self, 4);
+                set_hit_level(loc[0], 3);
+                __t0_0xb3(self, 100.0);
+                queued_action = 0x12C;
+                set_ai_state(&ai_state, 2);
+                abort;
+            } else {
+                clear_hit_flags(self, 4);
+                set_hit_level(loc[0], 3);
+            }
+        }
+        if ((loc[56] - 0) == 0) {
+            sub_3A88(loc[0]);
+        }
+        if (retal_hits < 5) {
+            *(&retal_hits) += 1;
+        }
+        if (retal_hits >= 5) {
+            small_hits = 0;
+            face_attacker(self, self.attacker);
+            clear_hit_flags(self, 4);
+            set_hit_level(loc[0], 0);
+            queued_action = 0x1F4;
+            armor = 2;
+            set_ai_state(&ai_state, 2);
+            abort;
+        }
+        if (small_hits >= 5) {
+            PushOnHit?(self, loc[0]);
+            abort;
+        }
+        if (hit_type(loc[0]) == 8) {
+            clear_hit_flags(self, 4);
+            set_hit_level(loc[0], 3);
+        } else if (hit_type(loc[0]) == 9) {
+            abort;
+        }
+        if (spin_stance == 2) {
+            if (is_recoil_hit(loc[0])) {
+                __t1_0x00(0x11C2);
+                abort;
+            } else {
+                __t1_0x00(0x315);
+                if (hit_type(loc[0]) == 0xA) {
+                    spin_stance = 0;
+                } else {
+                    PushOnHit?(self, loc[0]);
+                    abort;
+                }
+            }
+        }
+        if (((GetActionState(self) == 0xEE) || (GetActionState(self) == 0xEF)) && (hit_type(loc[0]) != 0xA)) {
+            if (is_recoil_hit(loc[0])) {
+                abort;
+            } else {
+                PushOnHit?(self, loc[0]);
+                abort;
+            }
+        }
+        if (((hit_type(loc[0]) - 0) == 0) && !(sub_2D3A(self))) {
+            PushOnHit?(self, loc[0]);
+            abort;
+        }
+        if ((hit_level(loc[0]) == 4) || (hit_level(loc[0]) == 5)) {
+            if ((self.air - 0) == 0) {
+                loc[60] = 0xFA;
+            } else {
+                loc[60] = 0x104;
+            }
+            small_hits = 0;
+            hurt_voice();
+            if (hit_level(loc[0]) == 4) {
+                ScriptedKnockback?(self, loc[0], loc[60], 180.0, 5.0, 0.0);
+            } else {
+                ScriptedKnockback?(self, loc[0], loc[60], 5.0, 50.0, 0.0);
+            }
+        } else if (hit_level(loc[0]) == 3) {
+            *(&small_hits) += 1;
+            if (small_hits >= 5) {
+                set_ai_state(&ai_state, 2);
+                abort;
+            }
+            sub_39CA();
+        }
+        set_ai_state(&ai_state, 2);
+        abort;
+        return;
+    }
+    func sub_39CA() {  // @L39CA
+        loc[0] = RandFloat01();
+        if (loc[0] > 0.7) {
+            QueueVoice?(self, 0xB);
+        } else if (loc[0] > 0.4) {
+            QueueVoice?(self, 0xC);
+        } else {
+            QueueVoice?(self, 0xD);
+        }
+        return;
+    }
+    func hurt_voice() {  // @L3A26
+        loc[0] = RandFloat01();
+        if (loc[0] > 0.5) {
+            QueueVoice?(self, 0xF);
+        } else {
+            QueueVoice?(self, 0x10);
+        }
+        return;
+    }
+    func sub_3A60(a0, a1) frame 2 {  // @L3A60
+        loc[0] = a1;
+        loc[4] = a0;
+        if ((loc[4] - 0) == 0) {
+            sub_3A88(loc[0]);
+        }
+        return;
+    }
+    func sub_3A88(a0) frame 2 {  // @L3A88
+        loc[0] = a0;
+        if (sub_2F66(self.attacker, sub_29C0()) == 0) {
+            if ((self.air - 0) == 0) {
+                if (guard_mode == 1) {
+                    guard_mode = 0;
+                    guard_effect = DestroyObj?(guard_effect);
+                }
+                ClearActorFlags88(self, 2);
+                SetActorFlag_0x80000?(self);
+                *b5c_counter -= 1;
+                if (((*b5c_counter - 0) != 0) || (is_oc == 1)) {
+                    SetActorFlag_0x80000?(self);
+                    FadeOutToWhite(1);
+                    FadeIn(0x18);
+                    GiveExp?(self, self.stats[26]);
+                    __t0_0x4f(self, loc[0]);
+                    queued_action = 0x384;
+                } else {
+                    face_attacker(self, self.attacker);
+                    clear_hit_flags(self, 4);
+                    set_hit_level(loc[0], 0);
+                    queued_action = 0x3E8;
+                }
+                set_ai_state(&ai_state, 2);
+                abort;
+            } else {
+                self.stats.hp = 1;
+            }
+        } else {
+            self.stats.hp = 1;
+        }
+        return;
+    }
+    func sub_3BF0(a0) -> 1 {  // @L3BF0
+        loc[0] = a0;
+        loc[4] = 0;
+        if (__t0_0xbc(loc[0]) == 0x3D5F) {
+            loc[4] = 1;
+        }
+        return loc[4];
+    }
+    func defeat() frame 2 {  // @L3C26
+        SetMotion(self, 0xD2, 0.0, 0.0);
+        QueueMotion(self, 0xD4, 0.0, 0.0);
+        QueueVoice?(self, 0x11);
+        defeat_slowmo(0.1, 0.0);
+        defeat_effect = AttachStatusEffect?(self, 0x19);
+        wait(100.0);
+        defeat_effect = CancelTimedTask?(defeat_effect);
+        sub_2D5E(self);
+        loop {
+            yield;
+        }
+        return;
+    }
+    func back_hop() frame 6 {  // @L3CA6
+        sub_28C2();
+        loc[0] = self.rot;
+        FaceTarget?(self, &loc[0]);
+        yield;
+        SetMotion(self, 0x10000CA, 0.0, 0.0);
+        QueueMotion(self, 0x40000000, 8.0, 0.0);
+        wait(6.0);
+        return;
+    }
+    func sidestep(a0, a1, a2, a3) frame 18 {  // @L3CFE
+        loc[0] = a3;
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[12] = a0;
+        loc[52] = RandFloat01();
+        loc[56] = loc[0] - 30.0;
+        sub_28C2();
+        if (!(((hp_ratio(self) > 0.3) && (loc[52] > 0.5)))) goto L1;
+        goto L1;
+    L1:
+        if (!(((loc[0] - 0.0) > 0.0))) goto L2;
+        loc[60] = distance_to(self, self.target);
+        if (loc[60] < loc[4]) {
+            BlendMotion(self, 0, 8.0);
+            (&self[8])[3] = 0.0;
+            goto L2;
+        }
+        loc[16] = loc[12][4]:4;
+        VecSub(&loc[16], &self.pos);
+        if (loc[52] > 0.5) {
+            RotateDeg(&loc[16], 80.0);
+            BlendMotion(self, 0xD7, 8.0);
+        } else {
+            RotateDeg(&loc[16], -80.0);
+            BlendMotion(self, 0xD8, 8.0);
+        }
+        loc[48] = loc[8];
+        GetAngleToTarget?(self, &loc[16]);
+        loc[16] = self.rot;
+        self[8] = load(&loc[16], 4);
+        (&self[8])[3] = loc[48];
+        yield;
+        if ((GetActionState(self) != 0xD7) && (GetActionState(self) != 0xD8)) {
+            (&self[8])[3] = 0.0;
+            goto L2;
+        }
+        if (loc[0] < loc[56]) {
+            GetVelocity?(self, &loc[32]);
+            if (VecLength(&loc[32]) < ((loc[8] * 0.25) * FrameDelta())) {
+                BlendMotion(self, 0, 8.0);
+                face_target(self, self.target);
+                wait(20.0);
+                goto L2;
+                abort;
+            }
+        }
+        *(&loc[0]) -= FrameDelta();
+        goto L1;
+    L2:
+        BlendMotion(self, 0, 8.0);
+        return;
+    }
+    func sub_3F3E(a0, a1, a2, a3) frame 26 {  // @L3F3E
+        loc[0] = a3;
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[12] = a0;
+        loc[92] = loc[12];
+        loc[84] = 0.0;
+        sub_28C2();
+        if.nj (loc[0] == 0xD5) {
+            loc[80] = 16.0;
+            goto L1;
+        }
+        loc[80] = 8.0;
+        goto L1;
+    L1:
+        if (!(((loc[92] - 0.0) > 0.0))) goto L2;
+        BlendMotion(self, loc[0], loc[80]);
+        loc[16] = self.target.pos;
+        (&loc[16])[1] = (&self.pos)[1];
+        VecSub(&loc[16], &self.pos);
+        loc[88] = distance_to(self, self.target);
+        if (((loc[88] < loc[8]) || (VecLength(&loc[16]) < loc[8])) && (GetActionState(self) != 0xD5)) {
+            __t1_0x00(0x457);
+            (&self[8])[3] = 0.0;
+            BlendMotion(self, 0, 8.0);
+            goto L2;
+        }
+        self.stats[5] = 0.2;
+        face_target(self, self.target);
+        loc[64] = self.rot;
+        self[8] = load(&loc[64], 4);
+        (&self[8])[3] = loc[4];
+        *(&loc[92]) -= FrameDelta();
+        *(&loc[84]) += FrameDelta();
+        yield;
+        if (GetActionState(self) !=.i loc[0]) {
+            (&self[8])[3] = 0.0;
+            goto L2;
+        }
+        if (loc[84] > 30.0) {
+            GetVelocity?(self, &loc[48]);
+            if ((VecLength(&loc[48]) < (2.0 * FrameDelta())) && (GetActionState(self) != 0xD5)) {
+                face_target(self, self.target);
+                wait(8.0);
+                self.stats[5] = 0.8;
+                sub_305A(&loc[32], 0.0, 0.0, 1.0, 10.0);
+                sub_4592(50.0, 200.0, 62.0);
+                loc[84] = 0.0;
+            }
+        }
+        goto L1;
+    L2:
+        if ((GetActionState(self) != 0xD5) && ((self.air - 0) == 0)) {
+            (&self[8])[3] = 0.0;
+        }
+        return;
+    }
+    func sub_4200(a0, a1, a2, a3) frame 30 {  // @L4200
+        loc[0] = a3;
+        loc[4] = a2;
+        loc[8] = a1;
+        loc[12] = a0;
+        loc[112] = GetMotionDuration?(self, 2) * 2.0;
+        loc[108] = 0.0;
+        SetTurnSpeedDeg?(self, 11.25);
+        sub_28C2();
+        loc[48] = load(loc[12], 4);
+        (&loc[48])[1] = (&self.pos)[1];
+        VecSub(&loc[48], &self.pos);
+        GetAngleToTarget?(self, &loc[48]);
+        VecNormalize?(&loc[48]);
+        BlendMotion(self, 2, 8.0);
+        wait(6.0);
+        loop {
+            if (!(((loc[112] - 0.0) > 0.0))) goto L1;
+            BlendMotion(self, 2, 8.0);
+            self.stats[5] = 0.2;
+            self[8] = load(&loc[48], 4);
+            (&self[8])[3] = loc[0] * 1.2;
+            *(&loc[112]) -= FrameDelta();
+            *(&loc[108]) += FrameDelta();
+            yield;
+            if (GetActionState(self) != 2) {
+                (&self[8])[3] = 0.0;
+                goto L1;
+                abort;
+            }
+            if (loc[108] > 30.0) {
+                GetVelocity?(self, &loc[64]);
+                if (VecLength(&loc[64]) < (2.0 * FrameDelta())) {
+                }
+            }
+        }
+    L1:
+        loc[32] = self.target.pos;
+        (&loc[32])[1] = (&self.pos)[1];
+        VecSub(&loc[32], &self.pos);
+        loc[16] = self.rot;
+        RotateDeg(&loc[16], -90.0);
+        loc[104] = CosAngle(&loc[16], &loc[32]);
+        if ((loc[104] - 0.0) <= 0.0) {
+            loc[116] = 0xC8;
+            loc[96] = 2.5;
+        } else {
+            loc[116] = 0xC9;
+            loc[96] = -2.5;
+        }
+        BlendMotion(self, loc[116], 0.0);
+        QueueMotion(self, 0, 0.0, 0.0);
+        loc[100] = GetMotionDuration?(self, loc[116]) - 2.0;
+        loop {
+            if (!(((loc[100] - 0.0) > 0.0))) goto L2;
+            if (loc[100] < 24.0) {
+                *(&loc[0]) *= 0.999;
+                if ((loc[0] - 0.0) <= 0.0) {
+                    loc[0] = 0.0;
+                }
+                face_target(self, self.target);
+            } else {
+                loc[80] = self.rot;
+                RotateDeg(&loc[80], loc[96] * FrameDelta());
+                GetAngleToTarget?(self, &loc[80]);
+                *(&loc[0]) *= 0.999;
+                if ((loc[0] - 0.0) <= 0.0) {
+                    loc[0] = 0.0;
+                }
+                self[8] = load(&loc[48], 4);
+                (&self[8])[3] = loc[0];
+            }
+            *(&loc[100]) -= FrameDelta();
+            yield;
+            if (GetActionState(self) !=.i loc[116]) {
+                (&self[8])[3] = 0.0;
+                goto L2;
+            }
+        }
+    L2:
+        self.stats[5] = 0.001;
+        (&self[8])[3] = 0.0;
+        return;
+    }
+    func sub_4592(a0, a1, a2) frame 10 {  // @L4592
+        loc[0] = a2;
+        loc[4] = a1;
+        loc[8] = a0;
+        loc[16] = self.rot;
+        VecNormalize?(&loc[16]);
+        VecScale?(&loc[16], loc[8]);
+        (&loc[16])[1] = loc[4];
+        SetMotion(self, 3, 0.0, 0.0);
+        wait(GetMotionDuration?(self, 3) - 2.0);
+        SetMotion(self, 0x10004, 0.0, 0.0);
+        __t0_0x52(self, &loc[16], 0.9, loc[0]);
+        __t0_0x53(self, 3);
+        loop {
+            if (!(((self.air == 3) || (self.air == 5)))) goto L1;
+            if ((GetActionState(self) - 0) == 0) {
+                __t0_0x58(self, 0);
+                goto L1;
+            }
+            yield;
+        }
+    L1:
+        if (!(((self.air - 0) != 0))) goto L2;
+        if ((GetActionState(self) - 0) == 0) {
+            __t0_0x58(self, 0);
+            goto L2;
+        }
+        yield;
+        goto L1;
+    L2:
+        return;
+    }
+    func retaliation() frame 0 {  // @L46D2
+        if (RandFloat01() < 0.5) {
+            get_this_spin();
+        } else {
+            fireball();
+        }
+        armor = 0;
+        retal_hits = 0;
+        return;
+    }
+    func wait(a0) {  // @L4708
+        loc[0] = a0;
+        while ((loc[0] - 0.0) > 0.0) {
+            *(&loc[0]) -= FrameDelta();
+            yield;
+        }
+        return;
+    }
+    data {  // 0x4734-0x4739
+        00 00 00 00 00 00
+    }
+}

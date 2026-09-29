@@ -1,0 +1,2844 @@
+globals {
+    CURRENT_WORLD = save_data2[0x1C];
+    DIALOG_STATE = save_data2[3];
+    GIFT_TABLE_ITEM = save_data2[0x3C4];
+    NEVERLAND_PROGRESS = save_data[0x90D];
+    NL_CLOCK_TOWER_0100_DOOR_OPENED = bit[0x7D0F];
+    NL_CLOCK_TOWER_0200_DOOR_OPENED = bit[0x7D0E];
+    NL_CLOCK_TOWER_0300_DOOR_OPENED = bit[0x7D0D];
+    NL_CLOCK_TOWER_0400_DOOR_OPENED = bit[0x7D0C];
+    NL_CLOCK_TOWER_0500_DOOR_OPENED = bit[0x7D0B];
+    NL_CLOCK_TOWER_0600_DOOR_OPENED = bit[0x7D0A];
+    NL_CLOCK_TOWER_0700_DOOR_OPENED = bit[0x7D09];
+    NL_CLOCK_TOWER_0800_DOOR_OPENED = bit[0x7D08];
+    NL_CLOCK_TOWER_0900_DOOR_OPENED = bit[0x7D17];
+    NL_CLOCK_TOWER_1000_DOOR_OPENED = bit[0x7D16];
+    NL_CLOCK_TOWER_1100_DOOR_OPENED = bit[0x7D15];
+    NL_CLOCK_TOWER_1200_DOOR_OPENED = bit[0x7D14];
+    GIFT_PP_CLOCK_TOWER_01_00_DOOR = 0xC;
+    GIFT_PP_CLOCK_TOWER_02_00_DOOR = 0xD;
+    GIFT_PP_CLOCK_TOWER_03_00_DOOR = 0xE;
+    GIFT_PP_CLOCK_TOWER_04_00_DOOR = 0x10;
+    GIFT_PP_CLOCK_TOWER_05_00_DOOR = 0x11;
+    GIFT_PP_CLOCK_TOWER_06_00_DOOR = 0x12;
+    GIFT_PP_CLOCK_TOWER_07_00_DOOR = 0x13;
+    GIFT_PP_CLOCK_TOWER_08_00_DOOR = 0x14;
+    GIFT_PP_CLOCK_TOWER_09_00_DOOR = 0x16;
+    GIFT_PP_CLOCK_TOWER_10_00_DOOR = 0x17;
+    GIFT_PP_CLOCK_TOWER_11_00_DOOR = 0x18;
+    GIFT_PP_CLOCK_TOWER_12_00_DOOR = 0x19;
+    GIFT_PP_DEFEAT_PHANTOM_STOP_EVENT = 0xA;
+}
+
+kgr 0 {
+    entities {
+        SORA_2 = 0x30000;
+        DONALD = 0x30001;
+        GOOFY = 0x30002;
+        PETERPAN = 0x30003;
+        PPBOSS = 0x30004;
+        MO_CHO_E1 = 0x40001;
+        MO_CHO_N1 = 0x40002;
+        MO_CHO_S1 = 0x40003;
+        MO_CHO_W1 = 0x40004;
+        MO_TAN_E1 = 0x40005;
+        MO_TAN_N1 = 0x40006;
+        MO_TAN_S1 = 0x40007;
+        MO_TAN_W1 = 0x40008;
+        SPT_PP10_3 = 0x40009;
+        MO_KOMADO_E3 = 0x4000C;
+        MO_KOMADO_E5 = 0x4000E;
+        MO_KOMADO_E7 = 0x40010;
+        MO_KOMADO_N1 = 0x40011;
+        MO_KOMADO_N3 = 0x40013;
+        MO_KOMADO_N6 = 0x40016;
+        MO_KOMADO_S2 = 0x40019;
+        MO_KOMADO_S6 = 0x4001D;
+        MO_KOMADO_S7 = 0x4001E;
+        MO_KOMADO_W2 = 0x40020;
+        MO_KOMADO_W4 = 0x40022;
+        MO_KOMADO_W6 = 0x40024;
+        MO_CLOCK_HIT = 0x40026;
+        MVF_CHO_E1_D = 0x50000;
+        MVF_CHO_N1_D = 0x50001;
+        MVF_CHO_S1_D = 0x50002;
+        MVF_CHO_W1_D = 0x50003;
+        MVF_TAN_E1_D = 0x50004;
+        MVF_TAN_N1_D = 0x50005;
+        MVF_TAN_S1_D = 0x50006;
+        MVF_TAN_W1_D = 0x50007;
+    }
+
+    thread 0 {
+        init {
+            Quick_save_off();
+            Enable_flight();
+            __store_reg(0, NEVERLAND_PROGRESS);
+            if (!__set_lt(0x96)) goto L1;
+            Stop_BGM();
+            goto L1;
+        L1:
+            __dec_reg_idx(0);
+            Disable_all_battle_event_boxes();
+            save_data2.word[0x3E0] = 0;
+            save_data2.word[0x3E2] = 0;
+            save_data2.word[0x3E4] = 0;
+            save_data2.word[0x3E6] = 0;
+            save_data2.word[0x3E8] = 0;
+            save_data2.word[0x3EA] = 0;
+            save_data2.word[0x3EC] = 0;
+            save_data2.word[0x3EE] = 0;
+            save_data2[0x3F0] = 0;
+            save_data2[0x3F1] = 0;
+            save_data2[0x3F2] = 0;
+            save_data2[0x3F3] = 0;
+            save_data2[0x3F4] = 0;
+            save_data2[0x3F5] = 0;
+            save_data2[0x3F6] = 0;
+            save_data2[0x3F7] = 0;
+            save_data2[0x1D] = 0;
+            CURRENT_WORLD = Get_world_number();
+            if ((bit[0x6B2F] == 1) | (bit[0x6B2E] == 0)) {
+                DIALOG_STATE = 4;
+            }
+            bit[0x6B2E] = 1;
+            bit[0x6B2F] = 0;
+            Pad_ctrl_on();
+            Enter_event_mode();
+            runtime.dword[0xA04] = Get_time_since_start();
+            runtime.dword[0xA10] = 0;
+            runtime.dword[0x914] = 0x64;
+            runtime.dword[0x918] = 0;
+            Set_comm_work(0x64, 0);
+        }
+        main {
+            __store_reg(0, NEVERLAND_PROGRESS);
+            if (__set_lt(0x96)) {
+                Fade_out(0);
+                All_char_ctrl_off();
+                Pad_ctrl_off();
+                Set_wait_timer(1);
+                Discard_object_data(SPT_PP10_3);
+                start(thread_1.entry_11, level=6);
+                while (0 == runtime.dword[0x918]) {
+                    runtime.dword[0x918] = Get_comm_Num();
+                }
+                Wait_limit_skill_end();
+                Wait_summon_end();
+                Wait_battle_icon_display();
+                Pad_ctrl_off();
+                All_char_ctrl_off();
+                Switch_to_normal_mode();
+                start(thread_1.entry_12, level=6);
+            } else {
+                Get_camera_info();
+                Set_wait_timer(4);
+                Fade_in(8);
+                Set_wait_timer(6);
+                Command_display_on();
+                Gauge_on();
+                Pad_ctrl_on();
+                All_char_ctrl_on();
+                Remove_invincibility();
+                Exit_event_mode();
+                DIALOG_STATE = 0;
+                Enable_all_battle_event_boxes();
+            }
+            __dec_reg_idx(0);
+            while (1) {
+            }
+        }
+    }
+
+    thread 1 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Disable_battle_mode_entry();
+            Enter_event_mode();
+            Event_camera_on();
+            Command_display_off();
+            Gauge_off();
+            Change_BGM_volume(1, 0, 0x28);
+            Change_BGM_volume(2, 0, 0x28);
+            Set_wait_timer(0x28);
+            Stop_BGM();
+            Widescreen_on_quick();
+            Disable_summon_command();
+            runtime.dword[0x90C] = Get_part_from_party(1);
+            runtime.dword[0x910] = Get_part_from_party(2);
+            save_data[0x509] = Get_part_from_party(3);
+            start(thread_8.entry_11, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_11, level=6);
+            Set_wait_timer(1);
+            start(thread_8.entry_12, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_12, level=6);
+            Set_wait_timer(1);
+            start(thread_8.entry_13, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_13, level=6);
+            Set_wait_timer(1);
+            start(sora.entry_11, level=6);
+            Set_wait_timer(1);
+            await(sora.entry_11, level=6);
+            Set_wait_timer(1);
+            if (1 != save_data[0x509]) {
+                start(donald.entry_11, level=6);
+                Set_wait_timer(1);
+                await(donald.entry_11, level=6);
+                Set_wait_timer(1);
+            }
+            if (2 != save_data[0x509]) {
+                start(goofy.entry_11, level=6);
+                Set_wait_timer(1);
+                await(goofy.entry_11, level=6);
+                Set_wait_timer(1);
+            }
+            if (8 != save_data[0x509]) {
+                start(peterpan.entry_11, level=6);
+                Set_wait_timer(1);
+                await(peterpan.entry_11, level=6);
+                Set_wait_timer(1);
+            }
+            start(ppboss.entry_11, level=6);
+            Set_wait_timer(1);
+            await(ppboss.entry_11, level=6);
+            Set_wait_timer(1);
+            start(thread_10.entry_11, level=6);
+            start(sora.entry_12, level=6);
+            Play_SE2(0x4795, 5);
+            Set_wait_timer(1);
+            Pad_ctrl_on();
+            Fade_in(0xF);
+            Set_wait_timer(0x37);
+            start(sora.entry_13, level=6);
+            Set_wait_timer(0x5A);
+            start(thread_10.entry_12, level=6);
+            start(sora.entry_14, level=6);
+            start(ppboss.entry_12, level=6);
+            Play_SE2(0x4796, 5);
+            Set_wait_timer(0x10E);
+            start(thread_10.entry_13, level=6);
+            start(sora.entry_15, level=6);
+            if (1 != save_data[0x509]) {
+                start(donald.entry_12, level=6);
+            }
+            if (2 != save_data[0x509]) {
+                start(goofy.entry_12, level=6);
+            }
+            if (8 != save_data[0x509]) {
+                start(peterpan.entry_12, level=6);
+            }
+            start(ppboss.entry_13, level=6);
+            if (save_data[0x503] == 1) {
+                start(thread_11.entry_12, level=6);
+            }
+            Set_wait_timer(0x96);
+            Restore_SE();
+            Set_camera_parameters(0);
+            Widescreen_off();
+            Event_camera_off();
+            Switch_to_battle_mode();
+            Set_wait_timer(1);
+            Enable_battle_mode_entry();
+            start(sora.entry_16, level=6);
+            if (1 != save_data[0x509]) {
+                start(donald.entry_13, level=6);
+            }
+            if (2 != save_data[0x509]) {
+                start(goofy.entry_13, level=6);
+            }
+            if (8 != save_data[0x509]) {
+                start(peterpan.entry_13, level=6);
+            }
+            start(ppboss.entry_14, level=6);
+            Play_BGM(1);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            Exit_event_mode();
+        }
+        entry_12 {
+            Fade_out(0xF);
+            Set_wait_timer(0xF);
+            Disable_battle_mode_entry();
+            Blur_off();
+            Reset_camera_parameters();
+            Change_game_speed(0x64);
+            Enter_event_mode();
+            Event_camera_on();
+            Command_display_off();
+            Gauge_off();
+            Widescreen_on_quick();
+            start(thread_8.entry_14, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_14, level=6);
+            Set_wait_timer(1);
+            start(thread_8.entry_15, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_15, level=6);
+            Set_wait_timer(1);
+            start(thread_8.entry_16, level=6);
+            Set_wait_timer(1);
+            await(thread_8.entry_16, level=6);
+            Set_wait_timer(1);
+            start(sora.entry_17, level=6);
+            Set_wait_timer(1);
+            await(sora.entry_17, level=6);
+            Set_wait_timer(1);
+            if (1 != save_data[0x509]) {
+                start(donald.entry_14, level=6);
+                Set_wait_timer(1);
+                await(donald.entry_14, level=6);
+                Set_wait_timer(1);
+            }
+            if (2 != save_data[0x509]) {
+                start(goofy.entry_14, level=6);
+                Set_wait_timer(1);
+                await(goofy.entry_14, level=6);
+                Set_wait_timer(1);
+            }
+            if (8 != save_data[0x509]) {
+                start(peterpan.entry_14, level=6);
+                Set_wait_timer(1);
+                await(peterpan.entry_14, level=6);
+                Set_wait_timer(1);
+            }
+            start(ppboss.entry_15, level=6);
+            Set_wait_timer(1);
+            await(ppboss.entry_15, level=6);
+            Set_wait_timer(1);
+            Hide_party_weapons();
+            start(thread_10.entry_14, level=6);
+            start(ppboss.entry_16, level=6);
+            Play_SE2(0x47AC, 5);
+            Set_wait_timer(1);
+            Pad_ctrl_on();
+            Fade_in(0xF);
+            Set_wait_timer(0x78);
+            start(thread_10.entry_15, level=6);
+            start(ppboss.entry_17, level=6);
+            Play_SE2(0x47AD, 5);
+            Set_wait_timer(0x1E);
+            start(thread_7.entry_13, level=6);
+            Set_wait_timer(0x46);
+            start(thread_7.entry_11, level=6);
+            Set_wait_timer(0x2D);
+            start(ppboss.entry_18, level=6);
+            Set_wait_timer(0x2D);
+            start(thread_10.entry_16, level=6);
+            start(thread_7.entry_12, level=6);
+            Set_wait_timer(0x1E);
+            start(ppboss.entry_19, level=5);
+            start(thread_7.entry_14, level=6);
+            Set_wait_timer(0x78);
+            Fade_out_3D(0x1E);
+            Set_wait_timer(0x1E);
+            Widescreen_off_quick();
+            Set_wait_timer(0x14);
+            if (DIALOG_STATE == 1) {
+                DIALOG_STATE = 2;
+                Close_window(7);
+            }
+            GIFT_TABLE_ITEM.dword = GIFT_PP_DEFEAT_PHANTOM_STOP_EVENT;
+            Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+            Set_window_size(7, 0, 1);
+            Set_window_type(7, 1);
+            Set_window_opening_speed(7, 0);
+            Set_window_close_speed(7, 0);
+            Set_window_tail_type(7, 0);
+            Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+            Set_window_position(7, 0, 1);
+            Open_window(7);
+            Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+            Set_wait_timer(8);
+            Play_SE2(0x1F, 0);
+            Wait_message_end_ID(7);
+            Close_window(7);
+            if (DIALOG_STATE == 2) {
+                DIALOG_STATE = 3;
+            }
+            Set_wait_timer(0xF);
+            Restore_HP_MP(sora);
+            start(sora.entry_18, level=6);
+            if (1 != save_data[0x509]) {
+                Restore_HP_MP(donald);
+                start(donald.entry_15, level=6);
+                Set_wait_timer(1);
+                await(donald.entry_15, level=6);
+                Set_wait_timer(1);
+            }
+            if (2 != save_data[0x509]) {
+                Restore_HP_MP(goofy);
+                start(goofy.entry_15, level=6);
+                Set_wait_timer(1);
+                await(goofy.entry_15, level=6);
+                Set_wait_timer(1);
+            }
+            if (8 != save_data[0x509]) {
+                Restore_HP_MP(peterpan);
+                start(peterpan.entry_15, level=6);
+                Set_wait_timer(1);
+                await(peterpan.entry_15, level=6);
+                Set_wait_timer(1);
+            }
+            start(ppboss.entry_20, level=6);
+            Set_wait_timer(1);
+            await(ppboss.entry_20, level=6);
+            Set_wait_timer(1);
+            start(thread_7.entry_15, level=6);
+            Discard_object_data(PPBOSS);
+            Quick_save_on();
+            NEVERLAND_PROGRESS = 0x96;
+            Write_set_number_from_table(0x11);
+            Add_char_to_dictionary(0xA4);
+            Restore_SE();
+            Reset_camera_parameters();
+            Event_camera_off();
+            Enable_battle_mode_entry();
+            Switch_to_normal_mode();
+            Display_model(SPT_PP10_3);
+            Enable_summon_command();
+            Change_BGM_volume(1, 0, 0x28);
+            Change_BGM_volume(2, 0, 0x28);
+            Set_wait_timer(0x28);
+            Restore_BGM();
+            Wait_restore_music();
+            Fade_out(1);
+            Set_wait_timer(1);
+            Fade_in_3D(1);
+            Set_wait_timer(1);
+            Command_display_on();
+            Gauge_on();
+            Pad_ctrl_on();
+            All_char_ctrl_on();
+            Remove_invincibility();
+            Exit_event_mode();
+            DIALOG_STATE = 0;
+            Enable_all_battle_event_boxes();
+            Exit_event_mode();
+            Fade_in(0xF);
+        }
+    }
+
+    thread sora {  // 2
+        init {
+            Set_char_ID(SORA_2);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Char_ctrl_off();
+            Set_char_initial_state(-0x6095, -0x1226, -0x6421);
+            Turn_char(0x47, 0);
+            Char_bg_off();
+            Collision_off();
+            Set_wait_timer(1);
+            Motion_ctrl_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xCC);
+            Weapon_display_off();
+            Change_char_action(8);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_12 {
+            Move_char(1, -0x6047, -0x121F, -0x6402);
+        }
+        entry_13 {
+            Move_char(8, -0x57C3, -0x10F6, -0x6064);
+        }
+        entry_14 {
+            Set_char_position(-0xE82, -0x914, -0x54D7);
+            Turn_char(0, 0);
+            Move_char(8, -0xE82, -0x914, -0x2DC7);
+            Motion_change_no_loop_frame(0xC9, 0, 0);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Change_motion_frame(0xCA, 0xA, 0);
+            Set_wait_timer(1);
+            runtime.dword[0x91C] = Push_motion_frames(sora);
+            Set_wait_timer(1);
+            while (runtime.dword[0x91C] < 0x77) {
+                runtime.dword[0x91C] = Push_motion_frames(sora);
+            }
+            Play_partial_motion(0x78, 0xB4, 1);
+            Move_char(0xC, -0xE82, -0x914, -0x2DC7);
+        }
+        entry_15 {
+            Cancel_movement();
+            Set_char_position(0x2D, -0x5B9, -0xD20);
+            Turn_char(0, 0);
+            Change_motion(0xCB);
+        }
+        entry_16 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+        }
+        entry_17 {
+            Set_char_initial_state(0x2D, -0x5B9, -0xD20);
+            Turn_char(0, 0);
+            Weapon_display_on(0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 0);
+            Change_motion(0xC8);
+            Set_motion_speed(0x64, sora);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_18 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+    }
+
+    thread donald {  // 3
+        init {
+            save_data[0x501] = Get_part_from_party(1);
+            save_data[0x502] = Get_part_from_party(2);
+            if ((1 == save_data[0x501]) | (1 == save_data[0x502])) {
+                Set_char_ID(DONALD);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            if (1 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (1 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 1);
+            Change_motion(0xC8);
+            Hide_char();
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_12 {
+            Show_char();
+            Change_char_action(8);
+        }
+        entry_13 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+        }
+        entry_14 {
+            if (1 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (1 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 1);
+            Change_motion(0xC8);
+            Set_motion_speed(0x64, donald);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_15 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+    }
+
+    thread goofy {  // 4
+        init {
+            save_data[0x501] = Get_part_from_party(1);
+            save_data[0x502] = Get_part_from_party(2);
+            if ((2 == save_data[0x501]) | (2 == save_data[0x502])) {
+                Set_char_ID(GOOFY);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            if (2 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (2 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 2);
+            Change_motion(0xC8);
+            Hide_char();
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_12 {
+            Show_char();
+            Change_char_action(8);
+        }
+        entry_13 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+        }
+        entry_14 {
+            if (2 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (2 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 2);
+            Change_motion(0xC8);
+            Set_motion_speed(0x64, goofy);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_15 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+    }
+
+    thread peterpan {  // 5
+        init {
+            save_data[0x501] = Get_part_from_party(1);
+            save_data[0x502] = Get_part_from_party(2);
+            if ((8 == save_data[0x501]) | (8 == save_data[0x502])) {
+                Set_char_ID(PETERPAN);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            if (8 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (8 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 3);
+            Change_motion(0xC8);
+            Hide_char();
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_12 {
+            Show_char();
+            Change_char_action(8);
+        }
+        entry_13 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+        }
+        entry_14 {
+            if (8 == runtime.dword[0x90C]) {
+                Set_char_initial_state(-0x55, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            if (8 == runtime.dword[0x910]) {
+                Set_char_initial_state(0xAF, -0x5AF, -0xCE4);
+                Turn_char(0, 0);
+            }
+            Weapon_display_on(0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 3);
+            Change_motion(0xC8);
+            Set_motion_speed(0x64, peterpan);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_15 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0x75);
+            Motion_ctrl_on();
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+    }
+
+    thread ppboss {  // 6
+        init {
+            Set_char_ID(PPBOSS);
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_char_initial_state(0x2D, -0x546, -0x866);
+            Turn_char(0xB4, 0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 4);
+            Change_motion(0xC8);
+            Hide_char();
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_12 {
+            Set_char_position(-0xE82, -0x914, -0x54D7);
+            Turn_char(0, 0);
+            Move_char(8, -0xE82, -0x914, -0x2DC7);
+            Set_wait_timer(0x78);
+            Show_char();
+            Motion_change_no_loop_frame(0xC9, 0, 0x28);
+        }
+        entry_13 {
+            Cancel_movement();
+            Set_char_position(0x2D, -0x546, -0x866);
+            Turn_char(0xB4, 0);
+            Motion_change_no_loop_frame(0xCA, 0, 5);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Change_motion(0xC8);
+        }
+        entry_14 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0);
+            Motion_ctrl_on();
+        }
+        entry_15 {
+            Set_char_initial_state(0x2D, -0x546, -0x866);
+            Turn_char(0xB4, 0);
+            Collision_off();
+            Char_bg_off();
+            Motion_ctrl_off();
+            Set_event_motion(1, 4);
+            Change_motion(0xC8);
+            Set_motion_speed(0x64, ppboss);
+            Change_char_color_from_map_table(7, 1);
+        }
+        entry_16 {
+            Motion_change_no_loop_frame(0xC9, 0, 0);
+        }
+        entry_17 {
+            Set_char_position(0x2D, -0x514, -0x40B);
+            Turn_char(0xB4, 0);
+            Clipping_off();
+            Change_motion_frame(0xCA, 0, 0);
+            Set_wait_timer(1);
+            runtime.dword[0x920] = Push_motion_frames(ppboss);
+            Set_wait_timer(1);
+            while (runtime.dword[0x920] < 0x31) {
+                runtime.dword[0x920] = Push_motion_frames(ppboss);
+            }
+            Play_partial_motion(0x32, 0xAA, 1);
+        }
+        entry_18 {
+            Motion_change_no_loop_frame(0xCA, 0xA, 0xAA);
+        }
+        entry_19 {
+            Change_char_color(0xFF, 0xFF, 0xFF, 0, 0x78);
+        }
+        entry_20 {
+            Collision_on();
+            Char_bg_on();
+            Set_battle_motion();
+            Change_motion(0);
+            Motion_ctrl_on();
+            Change_char_color(0xFF, 0xFF, 0xFF, 0x80, 0);
+            Restore_char_color();
+        }
+    }
+
+    thread 7 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Start_effect(0);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(0, 0x2D, -0x578, -0x4CE);
+        }
+        entry_12 {
+            Clear_loaded_effect_ID(0);
+        }
+        entry_13 {
+            Start_effect(1);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(1, 0x2D, -0x578, -0x4CE);
+        }
+        entry_14 {
+            End_effect_loop(1);
+        }
+        entry_15 {
+            Clear_loaded_effect_ID(1);
+        }
+    }
+
+    thread 8 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Load_event_SE(0xC, 0x16);
+            Wait_event_SE_load();
+        }
+        entry_12 {
+            Stop_BGM();
+            Set_wait_timer(1);
+            Load_wave_motion_bank2(1, 0x91);
+            Wait_waveform_load();
+            Set_wait_timer(1);
+            Load_BGM_motion_bank2(1, 0x91);
+            Wait_BGM_load();
+            Set_wait_timer(1);
+        }
+        entry_13 {
+            Load_event_motion(1, 0x9D);
+            Wait_file_load(1);
+        }
+        entry_14 {
+            Load_event_SE(0xC, 0x17);
+            Wait_event_SE_load();
+        }
+        entry_15 {
+            Load_event_motion(1, 0x9E);
+            Wait_file_load(1);
+        }
+        entry_16 {
+            Load_event_effect(0xC, 2);
+            Wait_event_effect_load();
+        }
+    }
+
+    thread 9 {
+        main {
+            while (1) {
+            }
+        }
+    }
+
+    thread 10 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Play_camera_motion(0);
+        }
+        entry_12 {
+            Set_camera_speed(0x30);
+            Play_camera_motion(1);
+        }
+        entry_13 {
+            Set_camera_speed(0x64);
+            Play_camera_motion(2);
+        }
+        entry_14 {
+            Play_camera_motion(3);
+        }
+        entry_15 {
+            Play_camera_motion(4);
+        }
+        entry_16 {
+            Play_camera_motion(5);
+        }
+    }
+
+    thread 11 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Set_window_position(4, 0, -0x7D);
+            Set_window_size(4, 0x14, 1);
+            Set_window_type(4, 0);
+            Set_window_tail_type(4, 0);
+            Set_window_opening_speed(4, 0);
+            Set_window_close_speed(4, 0);
+            Set_message_display_speed(4, 0);
+            Open_window(4);
+            Display_message(4, messages[0]="{0x08}P A U S E");
+            Wait_message_end();
+        }
+        entry_12 {
+            Set_wait_timer(0xF0);
+            Set_comm_work(0x64, 1);
+        }
+    }
+
+    thread 12 {
+        init {
+            All_char_ctrl_off();
+            Make_party_invincible();
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+            local5 = Get_game_clear_flag();
+            Display_register_value(local5);
+            runtime.dword[0xA10] = 0;
+            if ((0x78 <= NEVERLAND_PROGRESS) & (local5 == 0)) {
+                runtime.dword[0xA10] = 1;
+                Display_register_value(local16);
+            }
+            if ((0x96 <= NEVERLAND_PROGRESS) & (local5 == 1)) {
+                runtime.dword[0xA10] = 1;
+                Display_register_value(local15);
+            }
+            if ((NEVERLAND_PROGRESS < 0x96) & (local5 == 1)) {
+            } else {
+                Set_polygon_attribute(0xAA, 8, 0);
+            }
+            if (runtime.dword[0xA10] == 1) {
+                runtime.dword[0xA08] = (runtime.dword[0xA04] / 0xE10) % 0xC;
+                Display_register_value(runtime.dword[0xA08]);
+                runtime.dword[0xA0C] = (runtime.dword[0xA04] - ((runtime.dword[0xA08] * 0x3C) * 0x3C)) / 0x3C;
+                Display_register_value(runtime.dword[0xA0C]);
+            }
+        }
+        main {
+            if (!(runtime.dword[0xA10] == 1)) goto L1;
+            start(mo_cho_s1.entry_12, level=6);
+            start(mvf_cho_s1_d.entry_12, level=6);
+            start(mo_tan_s1.entry_11, level=6);
+            start(mvf_tan_s1_d.entry_11, level=6);
+        L1:
+            if (1) {
+                if (!(runtime.dword[0xA10] == 1)) goto L2;
+                if ((NL_CLOCK_TOWER_1200_DOOR_OPENED == 1) & (local14 == 0)) {
+                    local14 = 1;
+                    Start_resident_effect(1);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(1, 0x30, -0x854, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0100_DOOR_OPENED == 1) & (local15 == 0)) {
+                    local15 = 1;
+                    Start_resident_effect(3);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(3, 0x168, -0x7FD, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0200_DOOR_OPENED == 1) & (local16 == 0)) {
+                    local16 = 1;
+                    Start_resident_effect(4);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(4, 0x24C, -0x716, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0300_DOOR_OPENED == 1) & (local17 == 0)) {
+                    local17 = 1;
+                    Start_resident_effect(5);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(5, 0x2A8, -0x5DC, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0400_DOOR_OPENED == 1) & (local18 == 0)) {
+                    local18 = 1;
+                    Start_resident_effect(6);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(6, 0x24C, -0x4A1, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0500_DOOR_OPENED == 1) & (local19 == 0)) {
+                    local19 = 1;
+                    Start_resident_effect(7);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(7, 0x168, -0x3B2, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0600_DOOR_OPENED == 1) & (local20 == 0)) {
+                    local20 = 1;
+                    Start_resident_effect(8);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(8, 0x30, -0x35E, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0700_DOOR_OPENED == 1) & (local21 == 0)) {
+                    local21 = 1;
+                    Start_resident_effect(9);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(9, -0x109, -0x3B2, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0800_DOOR_OPENED == 1) & (local22 == 0)) {
+                    local22 = 1;
+                    Start_resident_effect(0xA);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(0xA, -0x1F8, -0x4A1, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_0900_DOOR_OPENED == 1) & (local23 == 0)) {
+                    local23 = 1;
+                    Start_resident_effect(0xB);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(0xB, -0x246, -0x5D8, -0x32 + 0x46);
+                }
+                if ((NL_CLOCK_TOWER_1000_DOOR_OPENED == 1) & (local24 == 0)) {
+                    local24 = 1;
+                    Start_resident_effect(0xC);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(0xC, -0x1F8, -0x716, -0x32 + 0x46);
+                }
+                if (!((NL_CLOCK_TOWER_1100_DOOR_OPENED == 1) & (local25 == 0))) goto L2;
+                local25 = 1;
+                Start_resident_effect(0xD);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(0xD, -0x109, -0x7FD, -0x32 + 0x46);
+            L2:
+                goto L1;
+            }
+        }
+    }
+
+    thread mo_komado_s7 {  // 13
+        init {
+            Set_char_ID(MO_KOMADO_S7);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 1)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 1)) & (local0 == 0)) {
+                local23 = 1;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x196, -0xD9E, 0xBF);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 1)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0100_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x3B]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 1:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_01_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0100_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_w2 {  // 14
+        init {
+            Set_char_ID(MO_KOMADO_W2);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 2)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 2)) & (local0 == 0)) {
+                local23 = 2;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, -0x377, -0xCA8, 0x4AC);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 2)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0200_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x3C]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 2:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_02_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0200_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_n3 {  // 15
+        init {
+            Set_char_ID(MO_KOMADO_N3);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0300_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 3)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0300_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 3)) & (local0 == 0)) {
+                local23 = 3;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, -0x97, -0xCA8, 0x796);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0300_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 3)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0300_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x3D]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 3:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_03_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0300_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_n6 {  // 16
+        init {
+            Set_char_ID(MO_KOMADO_N6);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0400_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 4)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0400_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 4)) & (local0 == 0)) {
+                local23 = 4;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x2C, -0xD9E, 0x718);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0400_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 4)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0400_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x3E]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 4:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_04_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0400_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_e5 {  // 17
+        init {
+            Set_char_ID(MO_KOMADO_E5);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0500_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 5)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0500_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 5)) & (local0 == 0)) {
+                local23 = 5;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x355, -0xD9E, 0x27E);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0500_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 5)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0500_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x3F]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 5:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_05_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0500_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_s2 {  // 18
+        init {
+            Set_char_ID(MO_KOMADO_S2);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0600_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 6)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0600_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 6)) & (local0 == 0)) {
+                local23 = 6;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, -0x93, -0xCA8, 0x3E);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0600_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 6)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0600_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x40]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 6:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_06_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0600_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_w4 {  // 19
+        init {
+            Set_char_ID(MO_KOMADO_W4);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0700_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 7)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0700_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 7)) & (local0 == 0)) {
+                local23 = 7;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, -0x384, -0xCA8, 0x1D0);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0700_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 7)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0700_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x41]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 7:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_07_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0700_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_w6 {  // 20
+        init {
+            Set_char_ID(MO_KOMADO_W6);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0800_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 8)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0800_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 8)) & (local0 == 0)) {
+                local23 = 8;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, -0x2FC, -0xD9E, 0x3EE);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0800_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 8)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0800_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x42]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 8:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_08_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0800_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_n1 {  // 21
+        init {
+            Set_char_ID(MO_KOMADO_N1);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0900_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 9)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0900_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 9)) & (local0 == 0)) {
+                local23 = 9;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x24B, -0xCA8, 0x78C);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_0900_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 9)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_0900_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x43]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 9:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_09_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_0900_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_e7 {  // 22
+        init {
+            Set_char_ID(MO_KOMADO_E7);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1000_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0xA)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1000_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0xA)) & (local0 == 0)) {
+                local23 = 0xA;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x35F, -0xD9E, 0x554);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1000_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 0xA)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_1000_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x44]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 10:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_10_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_1000_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_e3 {  // 23
+        init {
+            Set_char_ID(MO_KOMADO_E3);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0xB)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0xB)) & (local0 == 0)) {
+                local23 = 0xB;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x3D2, -0xCA8, 0x4A8);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1100_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 0xB)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_1100_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x45]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 11:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_11_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_1100_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_komado_s6 {  // 24
+        init {
+            Set_char_ID(MO_KOMADO_S6);
+            local0 = 0;
+            local1 = 0;
+            local2 = 0;
+            local3 = 0;
+            local4 = 0;
+            local5 = 0;
+            local6 = 0;
+            local7 = 0;
+            local8 = 0;
+            local9 = 0;
+            local10 = 0;
+            local11 = 0;
+            local12 = 0;
+            local13 = 0;
+            local14 = 0;
+            local15 = 0;
+            local16 = 0;
+            local17 = 0;
+            local18 = 0;
+            local19 = 0;
+            local20 = 0;
+            local21 = 0;
+            local22 = 0;
+            local23 = 0;
+            local24 = 0;
+            local25 = 0;
+        }
+        main {
+            if (((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0)) {
+                Set_command_check_range(0x96);
+            } else {
+                Set_command_check_range(0);
+            }
+            local24 = runtime.dword[0xA08];
+            Display_register_value(local24);
+        L1:
+            if (!1) goto L2;
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] == 0)) & (local0 == 0)) {
+                local23 = 0;
+                Display_register_value(local23);
+                Set_command_check_range(0x96);
+                Start_resident_effect(2);
+                Set_wait_timer(1);
+                Change_resident_effect_coords(2, 0x2C, -0xD9E, 0xAE);
+                local0 = 1;
+            }
+            if ((((runtime.dword[0xA10] == 1) & (NL_CLOCK_TOWER_1200_DOOR_OPENED == 0)) & (runtime.dword[0xA08] != 0)) & (local0 == 1)) {
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+                local0 = 0;
+            }
+            goto L1;
+        L2:
+            if (1) {
+                goto L2;
+            }
+        }
+        on_action {
+            Make_operable(sora);
+            Make_party_invincible();
+            Enter_event_mode();
+            Command_display_off();
+            Gauge_off();
+            Set_wait_timer(1);
+            Play_SE2(0xDFA9, 0);
+            Motion_change_no_loop(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            if (NL_CLOCK_TOWER_1200_DOOR_OPENED == 0) {
+                Set_window_size(7, 0xE, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Set_window_position(7, 0, 0);
+                Open_window(7);
+                Display_message(7, messages[0x46]="{0x08}{0x0A 00 00 00}{0x07 0E 00}The 12:00 door opened.");
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                if (DIALOG_STATE == 1) {
+                    DIALOG_STATE = 2;
+                    Close_window(7);
+                }
+                GIFT_TABLE_ITEM.dword = GIFT_PP_CLOCK_TOWER_12_00_DOOR;
+                Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
+                Set_window_size(7, 0, 1);
+                Set_window_type(7, 1);
+                Set_window_opening_speed(7, 0);
+                Set_window_close_speed(7, 0);
+                Set_window_tail_type(7, 0);
+                Scale_window_from_gift(7, GIFT_TABLE_ITEM.dword, -0xDC, -0x96);
+                Set_window_position(7, 0, 1);
+                Open_window(7);
+                Display_message_from_gift_table(7, GIFT_TABLE_ITEM.dword);
+                Set_wait_timer(8);
+                Play_SE2(0x1F, 0);
+                Wait_message_end_ID(7);
+                Close_window(7);
+                if (DIALOG_STATE == 2) {
+                    DIALOG_STATE = 3;
+                }
+                NL_CLOCK_TOWER_1200_DOOR_OPENED = 1;
+                Set_command_check_range(0);
+                Clear_resident_effect_ID(2);
+            }
+            Play_SE2(0xDFAA, 0);
+            Motion_change_no_loop(2);
+            Set_wait_timer(1);
+            Wait_motion_end();
+            Exit_event_mode();
+            Gauge_on();
+            Command_display_on();
+            Remove_invincibility();
+            Make_inoperable(sora);
+        }
+    }
+
+    thread mo_cho_s1 {  // 25
+        init {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_CHO_S1);
+            if (NEVERLAND_PROGRESS < 0x64) {
+                if (save_data2[0x26A] == 0) {
+                    save_data2[0x26A] = 9;
+                }
+                Rotate_char(0, 0, -0x5A);
+                runtime.dword[0xA00] = save_data2[0x26A];
+                goto L1;
+            }
+            Rotate_char(0, 0, -0x5A);
+        L1:
+        }
+        main {
+            if (!(NEVERLAND_PROGRESS < 0x64)) goto L1;
+            ROT(0x3C, 0, 0, 0x1E * runtime.dword[0xA00]);
+            runtime.dword[0xA0C] = runtime.dword[0xA00] * 5;
+            start(mvf_cho_s1_d.entry_12, level=6);
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+        entry_11 {
+            ROT(0x1E, 0, 0, 0x1E);
+        }
+        entry_12 {
+            ROT(1, 0, 0, runtime.dword[0xA0C] * 6);
+        }
+    }
+
+    thread mvf_cho_s1_d {  // 26
+        init {
+            local5 = Get_game_clear_flag();
+            if ((NEVERLAND_PROGRESS < 0x96) & (local5 == 1)) {
+                Display_model(MVF_CHO_S1_D);
+                Set_char_ID(MVF_CHO_S1_D);
+                Collision_off();
+                Char_bg_off();
+                goto L1;
+            }
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Display_model(MVF_CHO_S1_D);
+            Set_char_ID(MVF_CHO_S1_D);
+            Rotate_char(0, 0, -0x5A);
+        L1:
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            ROT(0x1E, 0, 0, 0x1E);
+        }
+        entry_12 {
+            ROT(1, 0, 0, runtime.dword[0xA0C] * 6);
+        }
+    }
+
+    thread mo_tan_s1 {  // 27
+        init {
+            if ((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78)) {
+                Set_char_ID(MO_TAN_S1);
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Rotate_char(0, 0, (runtime.dword[0xA08] * 0x1E) + (runtime.dword[0xA0C] / 2));
+        }
+    }
+
+    thread mvf_tan_s1_d {  // 28
+        init {
+            local5 = Get_game_clear_flag();
+            if ((NEVERLAND_PROGRESS < 0x96) & (local5 == 1)) {
+                Display_model(MVF_TAN_S1_D);
+                Set_char_ID(MVF_TAN_S1_D);
+                Collision_off();
+                Char_bg_off();
+                goto L1;
+            }
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Display_model(MVF_TAN_S1_D);
+            Set_char_ID(MVF_TAN_S1_D);
+        L1:
+        }
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Rotate_char(0, 0, (runtime.dword[0xA08] * 0x1E) + (runtime.dword[0xA0C] / 2));
+        }
+    }
+
+    thread mo_clock_hit {  // 29
+        init {
+            if (NEVERLAND_PROGRESS < 0x64) {
+                Set_char_ID(MO_CLOCK_HIT);
+                switch (runtime.dword[0xA00]) {
+                case 9:
+                    Set_char_position(-0x246, -0x5D8, -0x32);
+                    break;
+                case 0xA:
+                    Set_char_position(-0x1F8, -0x716, -0x32);
+                    break;
+                case 0xB:
+                    Set_char_position(-0x109, -0x7FD, -0x32);
+                    break;
+                }
+            }
+        }
+        main {
+            while (1) {
+            }
+        }
+        on_hit {
+            if (!((runtime.dword[0xA00] != 0) & (runtime.dword[0xA00] < 0xC))) goto L1;
+            local6 = Get_attack_type_received();
+            if (!(local6 == 1)) goto L1;
+            Collision_off();
+            Make_invincible();
+            Disable_targeting();
+            runtime.dword[0xA00] = (runtime.dword[0xA00] + 1) % 0xC;
+            save_data2[0x26A] = runtime.dword[0xA00];
+            local20 = save_data2[0x26A];
+            Display_register_value(local20);
+            Play_SE2(0xDFA0, 0);
+            start(mo_cho_s1.entry_11, level=6);
+            start(mvf_cho_s1_d.entry_11, level=6);
+            if (runtime.dword[0xA00] == 0) {
+                Make_operable(sora);
+            }
+            Set_wait_timer(0x1E);
+            switch (runtime.dword[0xA00]) {
+            case 0:
+                Disable_targeting();
+                bit[0x7D07] = 1;
+                break;
+            case 9:
+                Set_char_position(-0x246, -0x5D8, -0x32);
+                break;
+            case 0xA:
+                Set_char_position(-0x1F8, -0x716, -0x32);
+                break;
+            case 0xB:
+                Set_char_position(-0x109, -0x7FD, -0x32);
+                break;
+            }
+            Enable_targeting();
+            Make_not_invincible();
+            Collision_on();
+        L1:
+        }
+    }
+
+    thread 30 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_CHO_W1);
+            Rotate_char(-0x5A, 0, -0x5A);
+            Display_model(MVF_CHO_W1_D);
+            Set_char_ID(MVF_CHO_W1_D);
+            Rotate_char(0, 0, -0x5A);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread 31 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_TAN_W1);
+            Display_model(MVF_TAN_W1_D);
+            Set_char_ID(MVF_TAN_W1_D);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread 32 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_CHO_E1);
+            Rotate_char(0x5A, 0, -0x5A);
+            Display_model(MVF_CHO_E1_D);
+            Set_char_ID(MVF_CHO_E1_D);
+            Rotate_char(0, 0, -0x5A);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread 33 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_TAN_E1);
+            Display_model(MVF_TAN_E1_D);
+            Set_char_ID(MVF_TAN_E1_D);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread 34 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_CHO_N1);
+            Rotate_char(0xB4, 0, -0x5A);
+            Display_model(MVF_CHO_N1_D);
+            Set_char_ID(MVF_CHO_N1_D);
+            Rotate_char(0, 0, -0x5A);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread 35 {
+        main {
+            if (!((runtime.dword[0xA10] == 1) | (NEVERLAND_PROGRESS <= 0x78))) goto L1;
+            Set_char_ID(MO_TAN_N1);
+            Display_model(MVF_TAN_N1_D);
+            Set_char_ID(MVF_TAN_N1_D);
+            local5 = Get_game_clear_flag();
+            if (!((NEVERLAND_PROGRESS < 0x96) & (local5 == 1))) goto L1;
+            Collision_off();
+            Char_bg_off();
+        L1:
+            if (1) {
+                goto L1;
+            }
+        }
+    }
+
+    thread spt_pp10_3 {  // 36
+        init {
+            local1 = 0;
+            local0 = Get_game_clear_flag();
+            if (local0 == 0) {
+                Set_char_ID(SPT_PP10_3);
+                local1 = 1;
+                goto L1;
+            }
+            if (!(NEVERLAND_PROGRESS >= 0x96)) goto L1;
+            Set_char_ID(SPT_PP10_3);
+            local1 = 1;
+        L1:
+        }
+        main {
+            if (!(local1 == 1)) goto L1;
+        L2:
+            if (!1) goto L1;
+            if (!(bit[0x8232] == 0)) goto L3;
+            local18 = GetLength_2(Push_actor_coord_X(spt_pp10_3), Push_actor_coord_Z(spt_pp10_3), Push_actor_coord_X2(0), Push_actor_coord_Z2(0));
+            if (!(local18 < 0x64)) goto L3;
+            bit[0x8232] = 1;
+        L3:
+            goto L2;
+        L1:
+        }
+        entry_11 {
+            Display_model(SPT_PP10_3);
+        }
+        entry_12 {
+            Discard_object_data(SPT_PP10_3);
+        }
+    }
+}
