@@ -24,6 +24,7 @@ function _OnInit()
                 {SKIP_100_ACRE_WOOD_MINIGAMES, "skip_hundred_acre_wood_minigames"},
                 {CUPS_STANDARD, "cups_standard"},
                 {CUPS_SOLO_TT, "cups_solo_time_trial"},
+                {SKIP_SUMMON_ANIMATIONS, "skip_summon_animations"},
             }
         end
     else
