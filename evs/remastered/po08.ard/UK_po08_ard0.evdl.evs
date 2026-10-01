@@ -2653,6 +2653,13 @@ kgr 0 {
                 if (SKIP_100_ACRE_WOOD_MINIGAMES == 1) {
                     runtime.dword[0x918] = 0x14;
                     POOH_AREA_5_PROGRESS.word = 4;
+                    Change_camera_sora_distance(0, 0x320);
+                    Set_wait_timer(1);
+                    Set_camera_fov(0x35);
+                    Gauge_on();
+                    Command_display_on();
+                    Event_camera_off();
+                    Exit_event_mode();
                     Make_operable(sora);
                     runtime.dword[0x938] = 0;
                     runtime.dword[0x964] = 0x6FF;
