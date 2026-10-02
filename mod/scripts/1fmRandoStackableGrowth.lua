@@ -42,12 +42,8 @@ function StackAbilities()
                 WriteByte(sharedAbilities+i, ab+1)
             end
         end
-        local magic = ReadShort(superglideSpeedHack+1)
-        if magic == 0x17FF then
-            WriteInt(superglideSpeedHack, 0x17FFBC + math.max(countedAbilities[3]-2, 0)*4)
-        elseif magic == 0x17CE then
-            WriteInt(superglideSpeedHack, 0x17CEDC + math.max(countedAbilities[3]-2, 0)*4)
-        end
+        -- rip-relative disp of movss xmm8, [superglideSpeedTable + n*4]
+        WriteInt(superglideSpeedHack, superglideSpeedTable + math.max(countedAbilities[3]-2, 0)*4 - (superglideSpeedHack + 4))
 
         WriteFloat(mermaidKickSpeed, 10+(8*countedAbilities[2]))
 
