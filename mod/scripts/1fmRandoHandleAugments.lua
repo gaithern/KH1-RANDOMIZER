@@ -75,7 +75,6 @@ local augment_item_to_key = {
     [2644038] = "aug_summon_anywhere_acc",
     [2644039] = "aug_summon_boost_acc",
     [2644040] = "aug_grounded_acc",
-    [2644041] = "aug_finishing_plus_acc",
 }
 
 local spell_order = {
@@ -116,18 +115,6 @@ for loc_id_str, aug_val in pairs(seed_vars["item_location_map"]) do
         end
     end
 end
-
-local ground_starter_attack_data = {}
-ground_starter_attack_data[9]  = {0xD0, 0x00, 0x05, 0xFF, 0xB8, 0x50, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x05, 0x06, 0x04, 0x00, 0x00, 0x00, 0x00}
-ground_starter_attack_data[10] = {0xD3, 0x00, 0x05, 0xFF, 0x58, 0x5A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0xFF, 0x00, 0x00, 0x00, 0x00}
-ground_starter_attack_data[12] = {0xCF, 0x00, 0x05, 0xFF, 0x28, 0x51, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x06, 0x04, 0x00, 0x00, 0x00, 0x00}
-ground_starter_attack_data[13] = {0xC8, 0x00, 0x05, 0xFF, 0x78, 0x4B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x06, 0x04, 0x00, 0x00, 0x00, 0x00}
-ground_starter_attack_data[14] = {0xCA, 0x00, 0x05, 0xFF, 0x78, 0x4B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x05, 0x06, 0x04, 0x00, 0x00, 0x00, 0x00}
-ground_starter_attack_data[27] = {0xC9, 0x00, 0xFF, 0xFF, 0x18, 0x5C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x05, 0x06, 0xFF, 0x00, 0x00, 0x00, 0x00}
-
-local ground_standard_finisher_attack_data = {0xCB, 0x00, 0x05, 0xFF, 0x58, 0x4C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x05, 0x06, 0x05, 0x00, 0x00, 0x00, 0x00}
-local ground_finisher_animations = {0xCB, 0xD0, 0xD2, 0xD3, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA}
-local ground_attack_animations = {0xC8, 0xC9, 0xCA, 0xCB, 0xCF, 0xD0, 0xD2, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA}
 
 local ground_buffed_animations = {0xCB, 0xD0, 0xD2, 0xD3, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA}
 local ground_buffed_bonuses    = {0.4,  1.0,  0.4,  0.75, 0.4,  0.5 , 0.5,  0.5,  0.4}
@@ -394,28 +381,6 @@ local function handle_grounded(acc_equipped, haste_mod)
     end
 end
 
-local function handle_finishing_plus(acc_equipped, ground_combo_length)
-    if kh1_lua_library.contains(acc_equipped, aug_acc["aug_finishing_plus_acc"]) then
-        local current_hits = kh1_lua_library.get_current_hits()
-        local currAnim = kh1_lua_library.get_current_animation()
-        
-        if kh1_lua_library.contains(ground_finisher_animations, currAnim) and current_hits > 1 and kh1_lua_library.get_inputs()[3] == 0 and kh1_lua_library.get_animation_time() > 40 then
-            kh1_lua_library.set_ground_combo_length_limit(1)
-            for k,v in pairs(ground_starter_attack_data) do
-                kh1_lua_library.set_attack_animation_data(k, ground_standard_finisher_attack_data)
-            end
-            kh1_lua_library.make_sora_actionable()
-        elseif not kh1_lua_library.contains(ground_attack_animations, currAnim) then
-            for k,v in pairs(ground_starter_attack_data) do
-                kh1_lua_library.set_attack_animation_data(k, v)
-            end
-            kh1_lua_library.set_ground_combo_length_limit(ground_combo_length)
-        end
-    else
-        kh1_lua_library.set_ground_combo_length_limit(ground_combo_length)
-    end
-end
-
 local function handle_summon_boost(acc_equipped)
     if kh1_lua_library.contains(acc_equipped, aug_acc["aug_summon_boost_acc"]) then
         kh1_lua_library.multiply_summon_time(1.5)
@@ -437,7 +402,7 @@ function _OnFrame()
     if ok then
         local acc_equipped = kh1_lua_library.get_soras_equipped_accessories()
         local haste_mod = handle_walk_and_animation_speed(acc_equipped)
-        local ground_combo_length = handle_ground_combo_length(acc_equipped)
+        handle_ground_combo_length(acc_equipped)
         handle_air_combo_length(acc_equipped)
         handle_abilities(acc_equipped)
         handle_scan(acc_equipped)
@@ -449,6 +414,5 @@ function _OnFrame()
         handle_magic_costs(acc_equipped)
         handle_summon_boost(acc_equipped)
         handle_grounded(acc_equipped, haste_mod)
-        handle_finishing_plus(acc_equipped, ground_combo_length)
     end
 end

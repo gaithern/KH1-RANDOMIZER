@@ -350,6 +350,8 @@ local sora_abilities = {
     [2643063] = { name = "Evolution" },
     [2643064] = { name = "EXP Zero" },
     [2643065] = { name = "Combo Master" },
+    [2643066] = { name = "Finishing Plus" },
+    [2643067] = { name = "Upper Slash" },
 }
 
 -- ---------------------------------------------------------------------------
