@@ -15,12 +15,8 @@ function fill_shop_addresses()
 end
 
 function fill_gummi_shop_addresses()
-    -- EGS: gummi shops are after item shops; Steam: before item shops
-    local egs_gummi   = {0x4FFA60, 0x4FFB34, 0x4FFC08, 0x4FFCDC}
-    local steam_gummi = {0x4FEAB0, 0x4FEB84, 0x4FEC58, 0x4FED2C}
-    local addrs = (shopTableBase == 0x4FF3C4) and egs_gummi or steam_gummi
     for i = 1, 4 do
-        table.insert(gummi_shop_addresses, i, addrs[i])
+        table.insert(gummi_shop_addresses, i, shopTableGummiBase + (i-1)*0xD4)
     end
 end
 
