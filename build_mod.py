@@ -73,9 +73,9 @@ def find_evdl_tools_dir():
 
 
 EVDL_TOOLS_DIR = find_evdl_tools_dir()
-sys.path.insert(0, str(EVDL_TOOLS_DIR))
-import evdl_tool
-sys.path.insert(0, str(EVDL_TOOLS_DIR / 'evs'))
+sys.path.insert(0, str(EVDL_TOOLS_DIR / 'ev' / 'asm'))
+import evdl_asm
+sys.path.insert(0, str(EVDL_TOOLS_DIR / 'ev' / 'evs'))
 import build as evs_build
 
 
@@ -110,10 +110,8 @@ def main():
                     print(f'  {rel}: new message strings written to {binl}')
                 from_evs += 1
             else:
-                evdl_tool.cmd_asm(str(src_path), str(mod_path), orig_bin_override=str(orig_path))
+                evdl_asm.assemble_file(str(src_path), str(mod_path), str(orig_path))
             built += 1
-        except SystemExit:
-            failed.append(str(rel))
         except Exception as e:
             failed.append(f'{rel} ({e})')
 
