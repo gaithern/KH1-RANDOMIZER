@@ -15,6 +15,7 @@ local state = {
     message_format = nil,
 
     is_connected = false,
+    death_link = false,
     connect_failures = 0,
     connect_attempt_time = nil,
     last_attempted_slot = nil,
@@ -61,8 +62,7 @@ local function remote_location_ids()
 end
 
 local function death_link_enabled()
-    local mode = state.game.slot_data and state.game.slot_data.death_link
-    return mode == "on" or mode == "toggle"
+    return state.death_link
 end
 
 state.reset_game_state = reset_game_state

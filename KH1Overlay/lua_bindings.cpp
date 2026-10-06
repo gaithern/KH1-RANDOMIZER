@@ -115,6 +115,12 @@ extern "C" int l_poll_connect_request(void* L) {
     return 1;
 }
 
+// Getter for the death link checkbox
+extern "C" int l_get_death_link(void* L) {
+    p_lua_pushboolean(L, GetDeathLink() ? 1 : 0);
+    return 1;
+}
+
 // Reconnection handler.  Used to auto reconnect in event 
 // of hot reload or a paused game causing disconnect.
 extern "C" int l_request_reconnect(void* L) {
@@ -140,6 +146,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"poll_send_message", reinterpret_cast<void*>(l_poll_send_message)},
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {"request_reconnect", reinterpret_cast<void*>(l_request_reconnect)},
+    {"get_death_link", reinterpret_cast<void*>(l_get_death_link)},
     {nullptr, nullptr}
 };
 

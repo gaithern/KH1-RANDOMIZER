@@ -12,6 +12,7 @@ local last_reported_locations_count = 0
 local last_reported_chat_version = 0
 
 local on_connect_request = nil
+local on_death_link_changed = nil
 
 local function push_chat_message(text)
     table.insert(chat_log, text)
@@ -66,8 +67,9 @@ local function build_settings_lines()
     return lines
 end
 
-local function init(connect_request_handler)
+local function init(connect_request_handler, death_link_handler)
     on_connect_request = connect_request_handler
+    on_death_link_changed = death_link_handler
     local overlay_ok, overlay = pcall(require, "kh1_overlay")
     if not (overlay_ok and type(overlay) == "table") then
         ConsolePrint("Warning: could not load kh1_overlay, F4 menu disabled: " .. tostring(overlay))
@@ -142,6 +144,17 @@ local function forward_connect_request()
     end
 end
 
+local function forward_death_link()
+    if type(state.overlay.get_death_link) ~= "function" then return end
+    local enabled = state.overlay.get_death_link()
+    if enabled == state.death_link then return end
+    state.death_link = enabled
+    ConsolePrint("Death Link " .. (enabled and "enabled" or "disabled"))
+    if on_death_link_changed then
+        on_death_link_changed()
+    end
+end
+
 local function frame()
     local overlay = state.overlay
     if not overlay then return end
@@ -154,6 +167,7 @@ local function frame()
     push_chat_log()
     forward_outgoing_chat()
     forward_connect_request()
+    forward_death_link()
 end
 
 return {

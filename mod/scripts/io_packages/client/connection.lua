@@ -22,6 +22,15 @@ local function drop_client()
     state.connect_attempt_time = nil
 end
 
+local function update_tags()
+    if not (state.ap and state.is_connected) then return end
+    if state.death_link_enabled() then
+        state.ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
+    else
+        state.ap:ConnectUpdate(nil, {"Lua-APClientPP"})
+    end
+end
+
 local function should_queue_item(record)
     local me = state.player_number()
     if record.player ~= me then return true end
@@ -84,11 +93,7 @@ local function connect(server, slot, password)
         notify("Connected!")
         state.reset_game_state()
         state.game.slot_data = slot_data
-        if state.death_link_enabled() then
-            state.ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
-        else
-            state.ap:ConnectUpdate(nil, {"Lua-APClientPP"})
-        end
+        update_tags()
         state.ap:StatusUpdate(AP.ClientStatus.PLAYING)
     end
 
@@ -146,7 +151,7 @@ local function connect(server, slot, password)
 
     local function on_bounced(msg)
         ConsolePrint(json.encode(msg))
-        if msg.tags and kh1_lua_library.contains(msg.tags, "DeathLink") and not kh1_lua_library.sora_koed() then
+        if state.death_link_enabled() and msg.tags and kh1_lua_library.contains(msg.tags, "DeathLink") and not kh1_lua_library.sora_koed() then
             kh1_lua_library.ko_sora()
             state.game.sora_koed = true
         end
@@ -263,5 +268,6 @@ return {
     check_timeout = check_timeout,
     send_pending_locations = send_pending_locations,
     send_death_link = send_death_link,
+    update_tags = update_tags,
     send_goal = send_goal,
 }

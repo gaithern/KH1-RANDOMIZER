@@ -61,7 +61,7 @@ function _OnInit()
     state.AP = require("lua-apclientpp")
 
     preload_system_or_bundled("d3dcompiler_47.dll")
-    overlay_bridge.init(connection.request_connect)
+    overlay_bridge.init(connection.request_connect, connection.update_tags)
 
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
