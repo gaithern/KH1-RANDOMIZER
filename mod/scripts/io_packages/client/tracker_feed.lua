@@ -30,12 +30,41 @@ local function settings()
     return type(s) == "table" and s or {}
 end
 
--- One key per location: "w<world id>" for world locations, otherwise
--- level / synthesis / starting_accessory / other.
+-- Groups a tracker files locations under, published in /locations.  World
+-- groups carry the game's world ID (the same number as `world` in /state).
+local GROUPS = {
+    { key = "destiny_islands",    name = "Destiny Islands",      world = 1  },
+    { key = "traverse_town",      name = "Traverse Town",        world = 3  },
+    { key = "wonderland",         name = "Wonderland",           world = 4  },
+    { key = "deep_jungle",        name = "Deep Jungle",          world = 5  },
+    { key = "hundred_acre_wood",  name = "100 Acre Wood",        world = 6  },
+    { key = "agrabah",            name = "Agrabah",              world = 8  },
+    { key = "atlantica",          name = "Atlantica",            world = 9  },
+    { key = "halloween_town",     name = "Halloween Town",       world = 10 },
+    { key = "olympus_coliseum",   name = "Olympus Coliseum",     world = 11 },
+    { key = "monstro",            name = "Monstro",              world = 12 },
+    { key = "neverland",          name = "Neverland",            world = 13 },
+    { key = "hollow_bastion",     name = "Hollow Bastion",       world = 15 },
+    { key = "end_of_the_world",   name = "End of the World",     world = 16 },
+    { key = "levels",             name = "Levels" },
+    { key = "synthesis",          name = "Synthesis" },
+    { key = "starting_accessory", name = "Starting Accessories" },
+    { key = "other",              name = "Other" },
+}
+
+local WORLD_GROUP = {}
+for _, group in ipairs(GROUPS) do
+    if group.world then WORLD_GROUP[group.world] = group.key end
+end
+
+local function world_group(world_id)
+    return WORLD_GROUP[world_id]
+end
+
 local function group_of(rec)
-    if rec.world then return "w" .. rec.world end
+    if rec.world then return world_group(rec.world) or "other" end
     local name = rec.name or ""
-    if name:find("^Level ") then return "level" end
+    if name:find("^Level ") then return "levels" end
     if name:find("Synth Item") then return "synthesis" end
     if name:find("Starting Accessory") then return "starting_accessory" end
     return "other"
@@ -289,6 +318,7 @@ local function build_state()
         { "player",                connected and jnum(ap_call("get_player_number")) or nil },
         { "connected",             jbool(connected) },
         { "world",                 jnum(kh1_lua_library.get_world()) },
+        { "current_group",         jstr(world_group(kh1_lua_library.get_world())) },
         { "in_gummi",              jbool(kh1_lua_library.is_in_gummi_garage()) },
         { "victory",               jbool(state.game.victory) },
         { "checked_locations",     cache.checked_json },
@@ -304,7 +334,8 @@ local function build_locations()
     for location_id, rec in pairs(locations.get()) do
         catalog[tostring(location_id)] = { name = rec.name, group = group_of(rec) }
     end
-    return { api = API_VERSION, locations = catalog }
+    -- An array, so trackers can keep this display order.
+    return { api = API_VERSION, groups = GROUPS, locations = catalog }
 end
 
 local function init()

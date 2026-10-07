@@ -17,16 +17,22 @@ The randomizer serves the player's progress as JSON over a local HTTP API, so tr
 
 ## `GET /locations`
 
-A catalog of every location: its name and the group it belongs to.  It's the same for every seed, so it reveals nothing; fetch it once.
+A catalog of the groups trackers file things under, and every location with its name and group.  It's the same for every seed, so it reveals nothing; fetch it once.
 
 ```json
-{"api": 1, "locations": {
-  "2650011": {"name": "Destiny Islands Chest", "group": "w1"},
-  "2658007": {"name": "Level 007 (Slot 1)", "group": "level"}
-}}
+{"api": 1,
+ "groups": [
+   {"key": "destiny_islands", "name": "Destiny Islands", "world": 1},
+   {"key": "traverse_town", "name": "Traverse Town", "world": 3},
+   {"key": "levels", "name": "Levels"}
+ ],
+ "locations": {
+   "2650011": {"name": "Destiny Islands Chest", "group": "destiny_islands"},
+   "2658007": {"name": "Level 007 (Slot 1)", "group": "levels"}
+ }}
 ```
 
-`group` is `w<world id>` for world locations (the game's world IDs, e.g. `w3` = Traverse Town), otherwise `level`, `synthesis`, `starting_accessory` or `other`.
+`groups` is in display order: the thirteen worlds, then `levels`, `synthesis`, `starting_accessory` and `other` for locations not tied to a world.  World groups carry `world`, the game's world ID, which is the same number as `world` in `/state`.
 
 ## `GET /state`
 
@@ -36,7 +42,7 @@ The current snapshot.  Every list is rebuilt from current data, so reloads, reco
 {
   "api": 1, "revision": 42,
   "seed": "69212864954286718189", "slot": "Gicu", "player": 1,
-  "connected": true, "world": 3, "in_gummi": false, "victory": false,
+  "connected": true, "world": 3, "current_group": "traverse_town", "in_gummi": false, "victory": false,
 
   "checked_locations": [2650011, 2650211, 2658007],
 
@@ -51,7 +57,7 @@ The current snapshot.  Every list is rebuilt from current data, so reloads, reco
 
   "starting_items": [{"item": 2641149, "name": "Wonderland"}],
 
-  "progression_remaining": {"w1": 9, "w3": 31, "synthesis": 16}
+  "progression_remaining": {"destiny_islands": 9, "traverse_town": 31, "synthesis": 16}
 }
 ```
 
@@ -62,13 +68,14 @@ The current snapshot.  Every list is rebuilt from current data, so reloads, reco
 | `seed`, `slot` | Identify the run.  `slot` is the connected slot when connected, otherwise the slot the seed mod was generated for.  If either changes, treat it as a new run. |
 | `player` | Archipelago player number, when connected. |
 | `connected` | Whether the client is connected to an Archipelago slot. |
-| `world`, `in_gummi` | Live position; use them to highlight the current world. |
+| `world`, `in_gummi` | Live position: the game's world ID, and whether Sora is in the gummi ship. |
+| `current_group` | The group key for `world` (e.g. `traverse_town`), or `null` when the world isn't one of the groups (title screen, cutscene worlds).  Use it with `in_gummi` to highlight the current world. |
 | `victory` | Final Ansem defeated. |
 | `checked_locations` | Location IDs checked by this client, plus, when connected, any the server has checked for the slot. |
 | `local_items` | Items the game granted from checked locations: `item_location_map` for each checked location, leaving out other players' items and locations whose items the server delivers (`remote_items`).  Use `/locations` to place them in a group. |
 | `received_items` | Items received from the Archipelago server this session, as the server sent them.  When `player` is you, `location` is one of your locations (a remote item), so `/locations` gives its group; otherwise it's a location in the sender's game.  Player `0` with location `-1` is a server grant.  `progression` comes from the item's Archipelago flags. |
 | `starting_items` | The seed's starting inventory, once the game has granted it. |
-| `progression_remaining` | Per group, how many locations holding a progression item (for any player) are still unchecked.  Only counts are published, never which locations.  Missing for seeds generated before this existed. |
+| `progression_remaining` | Per group key, how many locations holding a progression item (for any player) are still unchecked.  Only counts are published, never which locations.  Missing for seeds generated before this existed. |
 
 The lists don't overlap: each item the player has appears exactly once, in `local_items`, `received_items` or `starting_items`.
 
@@ -78,7 +85,7 @@ The lists don't overlap: each item the player has appears exactly once, in `loca
 
 ```js
 const API = "http://127.0.0.1:47111";
-const { locations } = await (await fetch(`${API}/locations`)).json();
+const { groups, locations } = await (await fetch(`${API}/locations`)).json();
 
 setInterval(async () => {
   const state = await (await fetch(`${API}/state`)).json();
