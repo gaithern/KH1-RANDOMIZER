@@ -42,11 +42,17 @@ local function group_of(rec)
 end
 
 -- Item names can carry in-game glyph codes; trackers get plain text.
+local item_names = {}
 local function item_name(item_id)
-    local name = items.name_for(item_id)
-    if not name then return nil end
-    name = name:gsub("{0x7C}", "\u{2191}"):gsub("%s*{0x%x+}", ""):gsub("^%s+", ""):gsub("%s+$", "")
-    return name
+    local name = item_names[item_id]
+    if name == nil then
+        name = items.name_for(item_id)
+        if name then
+            name = name:gsub("{0x7C}", "\u{2191}"):gsub("%s*{0x%x+}", ""):gsub("^%s+", ""):gsub("%s+$", "")
+        end
+        item_names[item_id] = name or false
+    end
+    return name or nil
 end
 
 local function ap_call(method, ...)
@@ -106,6 +112,7 @@ local function signature()
         #state.game.locations,
         #server_checked_locations(),
         #state.game.items_received,
+        #state.remote_location_ids(),
         tostring(state.is_connected),
         tostring(starting_items_granted()),
         tostring(state.game.victory),
@@ -114,50 +121,93 @@ local function signature()
     }, "|")
 end
 
--- Snapshot sections
+-- JSON encoding.  The snapshot is flat and can reach ~90 KB late in a run,
+-- which json.lua takes several milliseconds to encode, so each section is
+-- encoded by hand and cached until its own inputs change.
 
-local function local_items(checked, remote)
-    local map = seed_vars["item_location_map"] or {}
-    local found = {}
-    for _, location_id in ipairs(sorted_keys(checked)) do
+local ESCAPES = { ['"'] = '\\"', ['\\'] = '\\\\', ['\n'] = '\\n', ['\r'] = '\\r', ['\t'] = '\\t' }
+
+local function jstr(value)
+    if value == nil then return "null" end
+    local escaped = tostring(value):gsub('[%c"\\]', function(c)
+        return ESCAPES[c] or string.format("\\u%04x", c:byte())
+    end)
+    return '"' .. escaped .. '"'
+end
+
+local function jnum(value)
+    if value == nil then return "null" end
+    return string.format("%d", value)
+end
+
+local function jbool(value)
+    return value and "true" or "false"
+end
+
+-- Encodes an object from {key, encoded value} pairs, leaving out nil values.
+local function jobject(fields)
+    local parts = {}
+    for _, field in ipairs(fields) do
+        if field[2] ~= nil then parts[#parts + 1] = '"' .. field[1] .. '":' .. field[2] end
+    end
+    return "{" .. table.concat(parts, ",") .. "}"
+end
+
+-- Snapshot sections, each cached under the inputs it depends on
+
+local cache = {
+    checks_key = nil,         -- checked_locations, local_items, progression_remaining
+    checked_json = "[]",
+    local_json = "[]",
+    progression_json = nil,
+    received = {},            -- encoded received_items entries, append-only
+    starting_key = nil,
+    starting_json = "[]",
+    aliases = {},             -- player number -> name
+}
+
+local function player_alias(player)
+    local alias = cache.aliases[player]
+    if alias == nil then
+        alias = ap_call("get_player_alias", player) or false
+        cache.aliases[player] = alias
+    end
+    return alias or nil
+end
+
+-- The item at a location never changes, so each entry is encoded once:
+-- location -> JSON string, or false when it holds no KH1 item for this player.
+local local_entries = {}
+local function local_entry(location_id)
+    local entry = local_entries[location_id]
+    if entry == nil then
+        local map = seed_vars["item_location_map"] or {}
         local item_id = tonumber(map[tostring(location_id)])
-        if item_id and item_id ~= items.AP_ITEM_ID and items.kind_of(item_id) and not remote[location_id] then
-            found[#found + 1] = { location = location_id, item = item_id, name = item_name(item_id) }
+        entry = false
+        if item_id and item_id ~= items.AP_ITEM_ID and items.kind_of(item_id) then
+            entry = jobject({
+                { "location", jnum(location_id) },
+                { "item",     jnum(item_id) },
+                { "name",     jstr(item_name(item_id)) },
+            })
         end
+        local_entries[location_id] = entry
     end
-    return found
+    return entry
 end
 
-local function received_items()
-    local received = {}
-    for i, record in ipairs(state.game.items_received) do
-        local from_other = record.player ~= SERVER_PLAYER and not state.is_self(record.player)
-        received[#received + 1] = {
-            index       = record.index or (i - 1),
-            item        = record.item,
-            name        = item_name(record.item),
-            player      = record.player,
-            sender      = from_other and ap_call("get_player_alias", record.player) or nil,
-            location    = record.location,
-            progression = ((record.flags or 0) & 1) ~= 0,
-        }
+local function local_items_json(sorted_checked, remote)
+    local parts = {}
+    for _, location_id in ipairs(sorted_checked) do
+        local entry = local_entry(location_id)
+        if entry and not remote[location_id] then parts[#parts + 1] = entry end
     end
-    return received
-end
-
-local function starting_items()
-    local list = {}
-    if not starting_items_granted() then return list end
-    for _, item_id in ipairs(settings()["starting_items"] or {}) do
-        item_id = tonumber(item_id)
-        list[#list + 1] = { item = item_id, name = item_name(item_id) }
-    end
-    return list
+    return "[" .. table.concat(parts, ",") .. "]"
 end
 
 -- Per-group count of progression locations not yet checked.  Only counts are
 -- published, never which locations they are.  nil for seeds without the file.
-local function progression_remaining(checked)
+local function progression_json(checked)
     local list = seed_vars["progression_locations"]
     if type(list) ~= "table" then return nil end
     local remaining = {}
@@ -169,30 +219,84 @@ local function progression_remaining(checked)
             remaining[group] = (remaining[group] or 0) + (checked[location_id] and 0 or 1)
         end
     end
-    return remaining
+    local fields = {}
+    for _, group in ipairs(sorted_keys(remaining)) do fields[#fields + 1] = { group, jnum(remaining[group]) } end
+    return jobject(fields)
+end
+
+local function update_checks()
+    local key = table.concat({
+        #state.game.locations, #server_checked_locations(),
+        tostring(state.is_connected), #state.remote_location_ids(),
+    }, "|")
+    if key == cache.checks_key then return end
+    cache.checks_key = key
+    local checked = checked_set()
+    local sorted = sorted_keys(checked)
+    cache.checked_json = "[" .. table.concat(sorted, ",") .. "]"
+    cache.local_json = local_items_json(sorted, remote_set())
+    cache.progression_json = progression_json(checked)
+end
+
+local function update_received()
+    local records = state.game.items_received
+    -- The list is rebuilt from scratch on reconnect.
+    if #records < #cache.received then
+        cache.received = {}
+        cache.aliases = {}
+    end
+    for i = #cache.received + 1, #records do
+        local record = records[i]
+        local from_other = record.player ~= SERVER_PLAYER and not state.is_self(record.player)
+        cache.received[i] = jobject({
+            { "index",       jnum(record.index or (i - 1)) },
+            { "item",        jnum(record.item) },
+            { "name",        jstr(item_name(record.item)) },
+            { "player",      jnum(record.player) },
+            { "sender",      from_other and jstr(player_alias(record.player)) or nil },
+            { "location",    jnum(record.location) },
+            { "progression", jbool(((record.flags or 0) & 1) ~= 0) },
+        })
+    end
+end
+
+local function update_starting()
+    local granted = starting_items_granted()
+    if granted == cache.starting_key then return end
+    cache.starting_key = granted
+    local parts = {}
+    if granted then
+        for _, item_id in ipairs(settings()["starting_items"] or {}) do
+            item_id = tonumber(item_id)
+            parts[#parts + 1] = jobject({ { "item", jnum(item_id) }, { "name", jstr(item_name(item_id)) } })
+        end
+    end
+    cache.starting_json = "[" .. table.concat(parts, ",") .. "]"
 end
 
 local function build_state()
+    update_checks()
+    update_received()
+    update_starting()
     local s = settings()
     local connected = state.is_connected and true or false
-    local checked = checked_set()
     revision = revision + 1
-    return {
-        api                   = API_VERSION,
-        revision              = revision,
-        seed                  = s["seed"],
-        slot                  = (connected and ap_call("get_slot")) or s["slot_name"],
-        player                = connected and ap_call("get_player_number") or nil,
-        connected             = connected,
-        world                 = kh1_lua_library.get_world(),
-        in_gummi              = kh1_lua_library.is_in_gummi_garage(),
-        victory               = state.game.victory and true or false,
-        checked_locations     = sorted_keys(checked),
-        local_items           = local_items(checked, remote_set()),
-        received_items        = received_items(),
-        starting_items        = starting_items(),
-        progression_remaining = progression_remaining(checked),
-    }
+    return jobject({
+        { "api",                   jnum(API_VERSION) },
+        { "revision",              jnum(revision) },
+        { "seed",                  jstr(s["seed"]) },
+        { "slot",                  jstr((connected and ap_call("get_slot")) or s["slot_name"]) },
+        { "player",                connected and jnum(ap_call("get_player_number")) or nil },
+        { "connected",             jbool(connected) },
+        { "world",                 jnum(kh1_lua_library.get_world()) },
+        { "in_gummi",              jbool(kh1_lua_library.is_in_gummi_garage()) },
+        { "victory",               jbool(state.game.victory) },
+        { "checked_locations",     cache.checked_json },
+        { "local_items",           cache.local_json },
+        { "received_items",        "[" .. table.concat(cache.received, ",") .. "]" },
+        { "starting_items",        cache.starting_json },
+        { "progression_remaining", cache.progression_json },
+    })
 end
 
 local function build_locations()
@@ -210,6 +314,7 @@ local function init()
         ConsolePrint("Tracker API disabled: kh1_overlay has no tracker support")
         return
     end
+    -- Built once per load; json.lua's cost doesn't matter here.
     overlay.tracker_set_locations(json.encode(build_locations()))
 end
 
@@ -218,7 +323,7 @@ local function frame()
     local current = signature()
     if current == last_signature then return end
     last_signature = current
-    state.overlay.tracker_set_state(json.encode(build_state()))
+    state.overlay.tracker_set_state(build_state())
 end
 
 return {
