@@ -2,7 +2,7 @@
 """
 build_civetweb.py - fetch the CivetWeb sources KH1Overlay builds against.
 
-CivetWeb serves the tracker feed WebSocket (see TRACKER_FEED.md). Like Dear ImGui,
+CivetWeb serves the tracker API (see TRACKER_FEED.md). Like Dear ImGui,
 it is not vendored in this repository: this script downloads the pinned release
 tag from GitHub and extracts only the files the overlay compiles into
 KH1Overlay/external/civetweb/ (gitignored), mirroring upstream's layout.
@@ -37,7 +37,7 @@ CIVETWEB_REPO = 'civetweb/civetweb'
 CIVETWEB_VERSION = 'v1.16'
 
 # civetweb.c plus the .inl files it #includes in the configuration KH1Overlay
-# builds (NO_SSL, NO_CGI, NO_FILES, USE_WEBSOCKET).
+# builds (NO_SSL, NO_CGI, NO_FILES).
 CIVETWEB_FILES = [
     'include/civetweb.h',
     'src/civetweb.c',
@@ -45,7 +45,6 @@ CIVETWEB_FILES = [
     'src/match.inl',
     'src/md5.inl',
     'src/response.inl',
-    'src/sha1.inl',
     'src/sort.inl',
     'src/timer.inl',
 ]

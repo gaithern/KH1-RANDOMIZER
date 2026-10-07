@@ -1,42 +1,39 @@
 ---@diagnostic disable: undefined-global
 
--- Publishes checks and obtained items to the tracker WebSocket hosted by
--- kh1_overlay (ws://127.0.0.1:47111).  See TRACKER_FEED.md.
+-- Builds the tracker API documents served by kh1_overlay on
+-- http://127.0.0.1:47111 (see TRACKER_FEED.md):
 --
---  - Checks are the client's own checked list (state.game.locations), so
---    they work offline.  Their items come from item_location_map.
---  - When connected, items received from the server and locations the
---    server has checked that this client hasn't are added on top.
+--   /locations  static catalog of every location: name and group
+--   /state      snapshot of checks, items and progression, rebuilt only
+--               when one of its inputs changes
+--
+-- Everything is derived from current data on each rebuild, so reloads,
+-- reconnects and new saves need no special handling.
 
-local json            = require("json")
-local kh1_lua_library = require("kh1_lua_library")
-local items           = require("items")
-local locations       = require("locations")
-local seed_vars       = require("seed_vars")
-local state           = require("client.state")
+local json                   = require("json")
+local kh1_lua_library        = require("kh1_lua_library")
+local items                  = require("items")
+local locations              = require("locations")
+local item_location_handlers = require("item_location_handlers")
+local seed_vars              = require("seed_vars")
+local state                  = require("client.state")
 
+local API_VERSION = 1
 local SERVER_PLAYER = 0
-local SERVER_CHECK_INTERVAL = 60  -- frames between scans of the server's checked list
 
 local enabled = false
-local seq = 0
-local last_status = nil
-local frame_count = 0
-
-local reported_location_count = 0
-local reported_item_count = 0
-local reported_save = {}
-local reported_server = {}
-local reported_received = {}
-local credited_locations = {}  -- locations whose item has already been published
+local revision = 0
+local last_signature = nil
 
 local function settings()
     local s = seed_vars["settings"]
     return type(s) == "table" and s or {}
 end
 
-local function category_of(rec)
-    if rec.world then return "world" end
+-- One key per location: "w<world id>" for world locations, otherwise
+-- level / synthesis / starting_accessory / other.
+local function group_of(rec)
+    if rec.world then return "w" .. rec.world end
     local name = rec.name or ""
     if name:find("^Level ") then return "level" end
     if name:find("Synth Item") then return "synthesis" end
@@ -44,10 +41,12 @@ local function category_of(rec)
     return "other"
 end
 
-local function placed_item(location_id)
-    local map = seed_vars["item_location_map"]
-    if type(map) ~= "table" then return nil end
-    return tonumber(map[tostring(location_id)])
+-- Item names can carry in-game glyph codes; trackers get plain text.
+local function item_name(item_id)
+    local name = items.name_for(item_id)
+    if not name then return nil end
+    name = name:gsub("{0x7C}", "\u{2191}"):gsub("%s*{0x%x+}", ""):gsub("^%s+", ""):gsub("%s+$", "")
+    return name
 end
 
 local function ap_call(method, ...)
@@ -57,146 +56,169 @@ local function ap_call(method, ...)
     return nil
 end
 
-local function publish(event)
-    seq = seq + 1
-    event.seq = seq
-    state.overlay.tracker_event(json.encode(event))
-end
-
-local function publish_item(item_id, origin, location_id, world, player)
-    publish({
-        type     = "item",
-        item     = item_id,
-        name     = items.name_for(item_id),
-        kind     = items.kind_of(item_id),
-        origin   = origin,
-        location = location_id,
-        world    = world,
-        player   = player,
-        sender   = origin == "multiworld" and ap_call("get_player_alias", player) or nil,
-    })
-end
-
--- A location's item counts once, whether it shows up from the local scan
--- (offline, or local items online) or from the server (remote items).
-local function credit_location(location_id, item_id, player)
-    if credited_locations[location_id] then return end
-    credited_locations[location_id] = true
-    local rec = locations.get()[location_id] or {}
-    publish_item(item_id, "local", location_id, rec.world, player)
-end
-
-local function publish_check(location_id, source)
-    local rec = locations.get()[location_id] or {}
-    local item_id = placed_item(location_id)
-    local is_ap_item = item_id == items.AP_ITEM_ID
-    local is_local_item = item_id ~= nil and not is_ap_item and items.kind_of(item_id) ~= nil
-    publish({
-        type     = "check",
-        source   = source,
-        location = location_id,
-        name     = rec.name,
-        world    = rec.world,
-        category = category_of(rec),
-        item     = is_local_item and item_id or nil,
-        ap_item  = is_ap_item,
-    })
-    -- A local item at a server-only check was picked up by another client.
-    if source == "save" and is_local_item then
-        credit_location(location_id, item_id, nil)
-    end
-end
-
-local function report_checks()
-    local checked = state.game.locations
-    for i = reported_location_count + 1, #checked do
-        local location_id = checked[i]
-        if not reported_save[location_id] then
-            reported_save[location_id] = true
-            publish_check(location_id, "save")
-        end
-    end
-    reported_location_count = #checked
-end
-
--- The client adds a check to state.game.locations before sending it, so
--- anything the server knows that isn't in that list came from elsewhere.
-local function report_server_checks()
-    if not state.is_connected then return end
+local function server_checked_locations()
+    if not state.is_connected then return {} end
     local ok, checked = pcall(function() return state.ap.checked_locations end)
-    if not ok or type(checked) ~= "table" then return end
-    local client_checked = {}
-    for _, location_id in ipairs(state.game.locations) do client_checked[location_id] = true end
-    for _, location_id in ipairs(checked) do
-        if locations.get()[location_id] and not client_checked[location_id]
-            and not reported_save[location_id] and not reported_server[location_id] then
-            reported_server[location_id] = true
-            publish_check(location_id, "server")
-        end
-    end
+    if ok and type(checked) == "table" then return checked end
+    return {}
 end
 
-local function report_received()
-    local records = state.game.items_received
-    -- The list is rebuilt from scratch on reconnect; indexes keep this idempotent.
-    if #records < reported_item_count then reported_item_count = 0 end
-    for i = reported_item_count + 1, #records do
-        local record = records[i]
-        local key = record.index or i
-        if not reported_received[key] then
-            reported_received[key] = true
-            local location_id = record.location or -1
-            if state.is_self(record.player) and location_id >= 0 then
-                credit_location(location_id, record.item, record.player)
-            elseif record.player == SERVER_PLAYER or location_id < 0 then
-                publish_item(record.item, "server", nil, nil, record.player)
-            else
-                publish_item(record.item, "multiworld", location_id, nil, record.player)
-            end
-        end
-    end
-    reported_item_count = #records
+local function to_set(list)
+    local set = {}
+    for _, value in ipairs(list or {}) do set[tonumber(value)] = true end
+    return set
 end
 
-local function report_status()
+local function sorted_keys(set)
+    local keys = {}
+    for key in pairs(set) do keys[#keys + 1] = key end
+    table.sort(keys)
+    return keys
+end
+
+-- Inputs
+
+-- Locations checked by this client plus any the server has for the slot.
+local function checked_set()
+    local checked = {}
+    for _, location_id in ipairs(state.game.locations) do checked[location_id] = true end
+    for _, location_id in ipairs(server_checked_locations()) do
+        if locations.get()[location_id] then checked[location_id] = true end
+    end
+    return checked
+end
+
+-- Remote locations get their items from the server, so they show up in
+-- received_items rather than local_items.
+local function remote_set()
+    local ids = state.is_connected and state.remote_location_ids() or nil
+    if not ids or #ids == 0 then ids = settings()["remote_location_ids"] end
+    return to_set(ids)
+end
+
+local function starting_items_granted()
+    return item_location_handlers.get_start_inv_written_gummi() == 1
+end
+
+-- Cheap fingerprint of every input; the snapshot is rebuilt when it changes.
+local function signature()
+    return table.concat({
+        #state.game.locations,
+        #server_checked_locations(),
+        #state.game.items_received,
+        tostring(state.is_connected),
+        tostring(starting_items_granted()),
+        tostring(state.game.victory),
+        tostring(kh1_lua_library.get_world()),
+        tostring(kh1_lua_library.is_in_gummi_garage()),
+    }, "|")
+end
+
+-- Snapshot sections
+
+local function local_items(checked, remote)
+    local map = seed_vars["item_location_map"] or {}
+    local found = {}
+    for _, location_id in ipairs(sorted_keys(checked)) do
+        local item_id = tonumber(map[tostring(location_id)])
+        if item_id and item_id ~= items.AP_ITEM_ID and items.kind_of(item_id) and not remote[location_id] then
+            found[#found + 1] = { location = location_id, item = item_id, name = item_name(item_id) }
+        end
+    end
+    return found
+end
+
+local function received_items()
+    local received = {}
+    for i, record in ipairs(state.game.items_received) do
+        local from_other = record.player ~= SERVER_PLAYER and not state.is_self(record.player)
+        received[#received + 1] = {
+            index       = record.index or (i - 1),
+            item        = record.item,
+            name        = item_name(record.item),
+            player      = record.player,
+            sender      = from_other and ap_call("get_player_alias", record.player) or nil,
+            location    = record.location,
+            progression = ((record.flags or 0) & 1) ~= 0,
+        }
+    end
+    return received
+end
+
+local function starting_items()
+    local list = {}
+    if not starting_items_granted() then return list end
+    for _, item_id in ipairs(settings()["starting_items"] or {}) do
+        item_id = tonumber(item_id)
+        list[#list + 1] = { item = item_id, name = item_name(item_id) }
+    end
+    return list
+end
+
+-- Per-group count of progression locations not yet checked.  Only counts are
+-- published, never which locations they are.  nil for seeds without the file.
+local function progression_remaining(checked)
+    local list = seed_vars["progression_locations"]
+    if type(list) ~= "table" then return nil end
+    local remaining = {}
+    for _, location_id in ipairs(list) do
+        location_id = tonumber(location_id)
+        local rec = location_id and locations.get()[location_id]
+        if rec then
+            local group = group_of(rec)
+            remaining[group] = (remaining[group] or 0) + (checked[location_id] and 0 or 1)
+        end
+    end
+    return remaining
+end
+
+local function build_state()
     local s = settings()
     local connected = state.is_connected and true or false
-    local encoded = json.encode({
-        type           = "status",
-        seed           = s["seed"],
-        slot_name      = (connected and ap_call("get_slot")) or s["slot_name"],
-        player         = connected and ap_call("get_player_number") or nil,
-        connected      = connected,
-        world          = kh1_lua_library.get_world(),
-        in_gummi       = kh1_lua_library.is_in_gummi_garage(),
-        victory        = state.game.victory and true or false,
-        checks         = #state.game.locations,
-        items_received = #state.game.items_received,
-    })
-    if encoded ~= last_status then
-        state.overlay.tracker_status(encoded)
-        last_status = encoded
+    local checked = checked_set()
+    revision = revision + 1
+    return {
+        api                   = API_VERSION,
+        revision              = revision,
+        seed                  = s["seed"],
+        slot                  = (connected and ap_call("get_slot")) or s["slot_name"],
+        player                = connected and ap_call("get_player_number") or nil,
+        connected             = connected,
+        world                 = kh1_lua_library.get_world(),
+        in_gummi              = kh1_lua_library.is_in_gummi_garage(),
+        victory               = state.game.victory and true or false,
+        checked_locations     = sorted_keys(checked),
+        local_items           = local_items(checked, remote_set()),
+        received_items        = received_items(),
+        starting_items        = starting_items(),
+        progression_remaining = progression_remaining(checked),
+    }
+end
+
+local function build_locations()
+    local catalog = {}
+    for location_id, rec in pairs(locations.get()) do
+        catalog[tostring(location_id)] = { name = rec.name, group = group_of(rec) }
     end
+    return { api = API_VERSION, locations = catalog }
 end
 
 local function init()
     local overlay = state.overlay
-    enabled = overlay ~= nil and type(overlay.tracker_event) == "function"
+    enabled = overlay ~= nil and type(overlay.tracker_set_state) == "function"
     if not enabled then
-        ConsolePrint("Tracker feed disabled: kh1_overlay has no tracker support")
+        ConsolePrint("Tracker API disabled: kh1_overlay has no tracker support")
         return
     end
-    -- Scripts may have been hot reloaded; trackers rebuild from the replay.
-    overlay.tracker_reset()
+    overlay.tracker_set_locations(json.encode(build_locations()))
 end
 
 local function frame()
     if not enabled then return end
-    report_checks()
-    report_received()
-    frame_count = (frame_count + 1) % SERVER_CHECK_INTERVAL
-    if frame_count == 0 then report_server_checks() end
-    report_status()
+    local current = signature()
+    if current == last_signature then return end
+    last_signature = current
+    state.overlay.tracker_set_state(json.encode(build_state()))
 end
 
 return {

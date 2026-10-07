@@ -1,117 +1,89 @@
-# Tracker Feed
+# Tracker API
 
-The randomizer publishes what the player checks and obtains over a local WebSocket, so trackers don't have to read game memory or guess where an item came from.
+The randomizer serves the player's progress as JSON over a local HTTP API, so trackers don't have to read game memory or guess where an item came from.  It works the same online and offline: checks come from the client's own scan of the save flags and their items from the seed's `item_location_map`.  When connected to Archipelago, items received from the server and locations the slot has checked elsewhere are included too.
 
-It works the same online and offline: checks come from the client's own scan of the save flags and their items from the seed's `item_location_map`.  When connected to Archipelago, items received from the server, and locations the slot has checked elsewhere, are added on top.
+- **Address:** `http://127.0.0.1:47111` (localhost only)
+- **Hosted by:** `kh1_overlay.dll`, using [CivetWeb](https://github.com/civetweb/civetweb) (`KH1Overlay/tracker_server.cpp`), with the JSON built by `mod/scripts/io_packages/client/tracker_feed.lua`
+- **Requests:** `GET` only.  Responses are JSON with `Access-Control-Allow-Origin: *`, so web pages can call it with `fetch`.
+- **Updates:** poll `/state`, e.g. once a second.  `revision` goes up whenever anything changes.
+- **Testing:** open the tracker test page (`tracker_test.html`) in a browser while the game runs.
 
-Checks persist for the whole session, like the client's own checked list: loading an earlier save or starting a new game doesn't remove checks already reported.  The feed starts over when the randomizer's scripts reload.
+| Response | Meaning |
+|---|---|
+| `200` | The document. |
+| `503 {"error": "not ready"}` | The game is running but the randomizer hasn't published yet. |
+| `404` | Unknown path. |
+| Connection refused | The game isn't running, or an older randomizer without the API. |
 
-- **Address:** `ws://127.0.0.1:47111` (localhost only)
-- **Hosted by:** `kh1_overlay.dll`, using [CivetWeb](https://github.com/civetweb/civetweb) (`KH1Overlay/tracker_server.cpp` is the glue), fed by `mod/scripts/io_packages/client/tracker_feed.lua`
-- **Direction:** server → tracker only.  Anything a tracker sends is ignored, except ping and close.
-- **Format:** every message is one JSON object in a text frame, with a `type` field.
-- **Testing:** open `tools/tracker_test.html` in a browser while the game runs.  It shows what the feed reports and lists anything that breaks the guarantees below (sequence gaps, duplicate items or checks).
+## `GET /locations`
 
-## Connecting
-
-When a tracker connects it receives, in order:
-
-1. `hello`
-2. every event published so far, in order
-3. the latest `status`, if there is one
-
-After that, new events and status changes arrive as they happen.  A tracker that connects mid-run therefore ends up with the same state as one that was there from the start.
-
-If the feed isn't available (game not running, older randomizer), the connection is refused; retry every few seconds.
-
-## Messages
-
-### `hello`
+A catalog of every location: its name and the group it belongs to.  It's the same for every seed, so it reveals nothing; fetch it once.
 
 ```json
-{"type": "hello", "protocol": "kh1-tracker", "version": 1}
+{"api": 1, "locations": {
+  "2650011": {"name": "Destiny Islands Chest", "group": "w1"},
+  "2658007": {"name": "Level 007 (Slot 1)", "group": "level"}
+}}
 ```
 
-### `reset`
+`group` is `w<world id>` for world locations (the game's world IDs, e.g. `w3` = Traverse Town), otherwise `level`, `synthesis`, `starting_accessory` or `other`.
+
+## `GET /state`
+
+The current snapshot.  Every list is rebuilt from current data, so reloads, reconnects and new saves need no special handling.
 
 ```json
-{"type": "reset"}
-```
+{
+  "api": 1, "revision": 42,
+  "seed": "69212864954286718189", "slot": "Gicu", "player": 1,
+  "connected": true, "world": 3, "in_gummi": false, "victory": false,
 
-Discard all tracked state.  Sent when the randomizer's scripts (re)load; the feed then republishes everything as the client finds it again.  Trackers don't need to persist anything themselves.
+  "checked_locations": [2650011, 2650211, 2658007],
 
-### `check`
+  "local_items": [
+    {"location": 2650011, "item": 2641175, "name": "Fire"}
+  ],
 
-A location was checked.
+  "received_items": [
+    {"index": 0, "item": 2641177, "name": "Thunder", "player": 1, "location": 2650211, "progression": true},
+    {"index": 1, "item": 2641149, "name": "Wonderland", "player": 2, "sender": "Player2", "location": 99999, "progression": true}
+  ],
 
-```json
-{"type": "check", "seq": 5, "source": "save", "location": 2650211, "name": "Traverse Town 1st District Candle Puzzle Chest",
- "world": 3, "category": "world", "item": 2641176, "ap_item": false}
+  "starting_items": [{"item": 2641149, "name": "Wonderland"}],
+
+  "progression_remaining": {"w1": 9, "w3": 31, "synthesis": 16}
+}
 ```
 
 | Field | Meaning |
 |---|---|
-| `seq` | Increases by one per event.  Restarts after `reset`. |
-| `source` | `save`: this client found it checked in the save data.  `server`: the Archipelago server has this location checked for the slot but this client hasn't seen it, e.g. after picking up someone else's slot.  Its local item was collected by whoever checked it, so no `item` event follows.  A location can arrive as `server` and later as `save` once this client checks it too. |
-| `location` | Archipelago location ID (see `locations.lua`). |
-| `name` | Location name. |
-| `world` | KH1 world ID (same IDs as the game's world byte, e.g. 3 = Traverse Town).  Missing for locations not tied to a world. |
-| `category` | `world`, `level`, `synthesis`, `starting_accessory` or `other`. |
-| `item` | The KH1 item placed here, when the seed file knows it.  Missing when the item belongs to another player or is sent remotely. |
-| `ap_item` | `true` when the seed file only has the Archipelago placeholder for this location. |
-
-### `item`
-
-The player obtained an item.  Each item is reported exactly once, so a tracker can count these directly.
-
-```json
-{"type": "item", "seq": 6, "item": 2641176, "name": "Blizzard", "kind": "item",
- "origin": "local", "location": 2650211, "world": 3, "player": 1}
-```
-
-| Field | Meaning |
-|---|---|
-| `item` | Archipelago item ID.  KH1 items are `2641000 + index`. |
-| `name` | Item name, when known. |
-| `kind` | `item`, `shared_ability` or `sora_ability`. |
-| `origin` | `local`: found at one of the player's own locations (offline, or online with local or remote items).  `multiworld`: sent by another player.  `server`: starting inventory or an admin/server grant. |
-| `location` | Location it was found at.  For `multiworld`, this is a location in the sender's world. |
-| `world` | KH1 world the item was found in, for `local` items at world locations.  Use this to attribute items to worlds. |
-| `player` | Archipelago player number of the finder.  Missing offline. |
-| `sender` | Name of the sending player, for `multiworld` items. |
-
-A typical tracker rule: show `item` events with a `world` under that world, `origin: "multiworld"` under an Archipelago section, and level rewards (a `local` item whose location has `category: "level"`) under levels.
-
-### `status`
-
-Sent whenever any field changes.  It isn't part of the event history; only the latest one is replayed.
-
-```json
-{"type": "status", "seed": "12345", "slot_name": "Sora", "player": 1, "connected": true, "world": 3,
- "in_gummi": false, "victory": false, "checks": 3, "items_received": 0}
-```
-
-| Field | Meaning |
-|---|---|
-| `seed` | Seed of the installed seed mod. |
-| `slot_name` | The connected slot when connected, otherwise the slot the seed mod was generated for. |
+| `api` | API version, currently `1`. |
+| `revision` | Increases whenever the snapshot changes.  Restarts when the randomizer's scripts reload. |
+| `seed`, `slot` | Identify the run.  `slot` is the connected slot when connected, otherwise the slot the seed mod was generated for.  If either changes, treat it as a new run. |
 | `player` | Archipelago player number, when connected. |
 | `connected` | Whether the client is connected to an Archipelago slot. |
 | `world`, `in_gummi` | Live position; use them to highlight the current world. |
-| `checks` | Locations this client has checked this session. |
-| `items_received` | Items the server has sent this session. |
+| `victory` | Final Ansem defeated. |
+| `checked_locations` | Location IDs checked by this client, plus, when connected, any the server has checked for the slot. |
+| `local_items` | Items the game granted from checked locations: `item_location_map` for each checked location, leaving out other players' items and locations whose items the server delivers (`remote_items`).  Use `/locations` to place them in a group. |
+| `received_items` | Items received from the Archipelago server this session, as the server sent them.  When `player` is you, `location` is one of your locations (a remote item), so `/locations` gives its group; otherwise it's a location in the sender's game.  Player `0` with location `-1` is a server grant.  `progression` comes from the item's Archipelago flags. |
+| `starting_items` | The seed's starting inventory, once the game has granted it. |
+| `progression_remaining` | Per group, how many locations holding a progression item (for any player) are still unchecked.  Only counts are published, never which locations.  Missing for seeds generated before this existed. |
 
-If `seed` or `slot_name` changes, treat it as a new run.
+The lists don't overlap: each item the player has appears exactly once, in `local_items`, `received_items` or `starting_items`.
 
-## Example client
+"Progression" is Archipelago's own classification for the seed, so it includes any item the logic can require, such as some accessories and keyblades, and other players' progression items placed in this slot's worlds.
+
+## Example
 
 ```js
-const ws = new WebSocket("ws://127.0.0.1:47111");
-ws.onmessage = (e) => {
-  const msg = JSON.parse(e.data);
-  if (msg.type === "reset") clearState();
-  else if (msg.type === "item") addItem(msg);
-  else if (msg.type === "check") markChecked(msg);
-  else if (msg.type === "status") updateStatus(msg);
-};
+const API = "http://127.0.0.1:47111";
+const { locations } = await (await fetch(`${API}/locations`)).json();
+
+setInterval(async () => {
+  const state = await (await fetch(`${API}/state`)).json();
+  for (const { location, name } of state.local_items) {
+    addItem(locations[location].group, name);
+  }
+}, 1000);
 ```
