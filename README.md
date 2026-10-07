@@ -18,6 +18,8 @@ The repository contains:
 
 A small native DLL that injects Dear ImGUI into the game process, exposing lua-callable functions that `1fmRandoClient.lua` uses to display connection info and some additional game/seed info.
 
+It also hosts the tracker feed, a local WebSocket (`ws://127.0.0.1:47111`) that publishes checks and obtained items for external trackers, online or offline.  See [TRACKER_FEED.md](TRACKER_FEED.md).
+
 ## Installing
 - Set up OpenKH for your preferred platform (Steam and EGS are supported).  Ensure you have both lua backend and panacea installed.
 - Ensure you have "Kingdom Hearts 1" selected at the top right in the dropdown.
@@ -36,6 +38,8 @@ If you'd like to make ASM changes, the `build.py` script automatically picks up 
 If you'd like to make a change to KH1Overlay, the code lives in `/KH1Overlay/`, split by concern.  Like ASM edits, `build.py` will automatically build the project when you run it.
 
 Dear ImGui is not checked into this repository.  `build_imgui.py` downloads the pinned release tag, extracts only the files the overlay compiles, and applies the local patches listed in that script, all into `/KH1Overlay/external/imgui/` (gitignored).  `build.py` runs it for you, and so does the project's pre-build step, so building from Visual Studio or `KH1Overlay/build.ps1` works the same way.  The first build needs network access; after that the extracted copy is reused.
+
+CivetWeb, which serves the tracker feed WebSocket, is handled the same way: `build_civetweb.py` fetches the pinned release into `/KH1Overlay/external/civetweb/` (gitignored), and both `build.py` and the pre-build step run it.
 
 ### Lua Edits
 If you'd like make changes or add a lua script, they structure is automatically picked up in `build.py`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.

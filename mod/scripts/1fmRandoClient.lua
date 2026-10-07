@@ -7,6 +7,7 @@ local overlay_bridge = require("client.overlay_bridge")
 local connection     = require("client.connection")
 local game_state     = require("client.game_state")
 local map_update     = require("client.map_update")
+local tracker_feed   = require("client.tracker_feed")
 
 local ERROR_LOG_INTERVAL_FRAMES = 600
 
@@ -67,6 +68,7 @@ function _OnInit()
         require("VersionCheck")
         state.message_format = state.AP.RenderFormat.ANSI
         game_state.init()
+        tracker_feed.init()
     else
         ConsolePrint("KH1 not detected, not running script")
     end
@@ -78,6 +80,7 @@ function _OnFrame()
     run_section("overlay",       overlay_bridge.frame)
     run_section("game state",    game_state.frame)
     run_section("map update",    map_update.frame)
+    run_section("tracker feed",  tracker_feed.frame)
     run_section("location sync", connection.send_pending_locations)
     run_section("network poll",  connection.poll)
 end

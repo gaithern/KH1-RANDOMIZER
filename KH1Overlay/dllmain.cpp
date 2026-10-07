@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "log.h"
 #include "overlay_window.h"
+#include "tracker_server.h"
 
 // Main entry point for the overlay process.
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
@@ -12,6 +13,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
     } else if (reason == DLL_PROCESS_DETACH) {
         (void)lpReserved;
         RequestOverlayShutdown();
+        RequestTrackerShutdown();
     }
     return TRUE;
 }

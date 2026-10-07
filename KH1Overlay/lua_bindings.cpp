@@ -8,6 +8,7 @@
 #include "lua_api.h"
 #include "overlay_state.h"
 #include "overlay_window.h"
+#include "tracker_server.h"
 
 // --- LUA-CALLABLE FUNCTIONS ---
 // Every function here runs on the game thread, inside
@@ -133,6 +134,26 @@ extern "C" int l_request_reconnect(void* L) {
     return 1;
 }
 
+// Tracker feed: clear history so trackers start over.
+// Called when the Lua client (re)loads.
+extern "C" int l_tracker_reset(void* L) {
+    (void)L;
+    TrackerReset();
+    return 0;
+}
+
+// Tracker feed: publish one event, a JSON object string.
+extern "C" int l_tracker_event(void* L) {
+    TrackerPublishEvent(p_lua_tolstring(L, 1, nullptr));
+    return 0;
+}
+
+// Tracker feed: replace the status message, a JSON object string.
+extern "C" int l_tracker_status(void* L) {
+    TrackerPublishStatus(p_lua_tolstring(L, 1, nullptr));
+    return 0;
+}
+
 // Define the registration table for functions lua
 // side can call.
 static const luaL_Reg kh1_overlay_lib[] = {
@@ -147,6 +168,9 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {"request_reconnect", reinterpret_cast<void*>(l_request_reconnect)},
     {"get_death_link", reinterpret_cast<void*>(l_get_death_link)},
+    {"tracker_reset", reinterpret_cast<void*>(l_tracker_reset)},
+    {"tracker_event", reinterpret_cast<void*>(l_tracker_event)},
+    {"tracker_status", reinterpret_cast<void*>(l_tracker_status)},
     {nullptr, nullptr}
 };
 
