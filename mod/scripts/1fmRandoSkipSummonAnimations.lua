@@ -24,9 +24,14 @@ end
 
 local function apply(on)
     local base = kh1_native.get_module_base()
+    -- Shorten the step duration of three summon intro steps to 1.0
+    -- 1. Opener (camera swing to Sora's face)
+    -- 2. Hides world, waits for load of summon
+    -- 3. Starts the summon director script in the relevant file
     for i, d in ipairs(STEP_DURATIONS) do
         kh1_native.write_bytes(base + g_SummonStepTable + (i - 1) * 16, string.pack("<f", on and 1.0 or d))
     end
+    -- NOOP the camera swing, summon fade out, and summon fade in
     for _, c in ipairs(calls) do
         kh1_native.patch_code(base + c[1], on and NOP5 or c[2], 1)
     end
