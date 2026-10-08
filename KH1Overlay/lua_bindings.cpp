@@ -146,6 +146,12 @@ extern "C" int l_tracker_set_locations(void* L) {
     return 0;
 }
 
+// Tracker API: replace the JSON served at GET /settings.
+extern "C" int l_tracker_set_settings(void* L) {
+    TrackerSetSettings(p_lua_tolstring(L, 1, nullptr));
+    return 0;
+}
+
 // Define the registration table for functions lua
 // side can call.
 static const luaL_Reg kh1_overlay_lib[] = {
@@ -162,6 +168,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"get_death_link", reinterpret_cast<void*>(l_get_death_link)},
     {"tracker_set_state", reinterpret_cast<void*>(l_tracker_set_state)},
     {"tracker_set_locations", reinterpret_cast<void*>(l_tracker_set_locations)},
+    {"tracker_set_settings", reinterpret_cast<void*>(l_tracker_set_settings)},
     {nullptr, nullptr}
 };
 

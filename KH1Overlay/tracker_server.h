@@ -9,5 +9,8 @@ void TrackerSetState(const char* json);
 // Replace the JSON served at GET /locations.
 void TrackerSetLocations(const char* json);
 
+// Replace the JSON served at GET /settings.
+void TrackerSetSettings(const char* json);
+
 // Ask the server thread to stop.  Safe to call from DllMain.
 void RequestTrackerShutdown();

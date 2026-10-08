@@ -34,6 +34,24 @@ A catalog of the groups trackers file things under, and every location with its 
 
 `groups` is in display order: the thirteen worlds, then `levels`, `synthesis`, `starting_accessory` and `other` for locations not tied to a world.  World groups carry `world`, the game's world ID, which is the same number as `world` in `/state`.
 
+## `GET /settings`
+
+The seed's settings, as the apworld generated them (its slot data).  They don't change during a run; fetch them once, and again if `seed` or `slot` in `/state` changes.
+
+```json
+{"api": 1,
+ "settings": {
+   "logic_difficulty": "normal",
+   "destiny_islands": true,
+   "end_of_the_world_unlock": "lucky_emblems",
+   "required_lucky_emblems_eotw": 7,
+   "final_rest_door_key": "lucky_emblems",
+   "required_lucky_emblems_door": 10
+ }}
+```
+
+Keys and values are the apworld's option names, so new options appear without an API change; treat a missing key as that option's default.  Left out: `seed`, `slot_name`, `starting_items` and `remote_location_ids` (covered by `/state`), synthesis item names (they reveal placements), and the spell cost and effectiveness tables.  Randomizers without this endpoint answer `404`.
+
 ## `GET /state`
 
 The current snapshot.  Every list is rebuilt from current data, so reloads, reconnects and new saves need no special handling.

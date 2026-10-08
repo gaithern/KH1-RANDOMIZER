@@ -6,6 +6,7 @@
 --   /locations  static catalog of every location: name and group
 --   /state      snapshot of checks, items and progression, rebuilt only
 --               when one of its inputs changes
+--   /settings   the seed's settings, minus spoilers
 --
 -- Everything is derived from current data on each rebuild, so reloads,
 -- reconnects and new saves need no special handling.
@@ -338,6 +339,26 @@ local function build_locations()
     return { api = API_VERSION, groups = GROUPS, locations = catalog }
 end
 
+-- Settings left out of /settings: spoilers, data /state already covers, and
+-- bulky tables trackers have no use for.
+local HIDDEN_SETTINGS = {
+    seed = true,
+    slot_name = true,
+    starting_items = true,
+    remote_location_ids = true,
+    synthesis_item_name_byte_arrays = true,
+    spell_effectiveness = true,
+    spell_mp_costs = true,
+}
+
+local function build_settings()
+    local published = {}
+    for key, value in pairs(settings()) do
+        if not HIDDEN_SETTINGS[key] then published[key] = value end
+    end
+    return { api = API_VERSION, settings = published }
+end
+
 local function init()
     local overlay = state.overlay
     enabled = overlay ~= nil and type(overlay.tracker_set_state) == "function"
@@ -347,6 +368,9 @@ local function init()
     end
     -- Built once per load; json.lua's cost doesn't matter here.
     overlay.tracker_set_locations(json.encode(build_locations()))
+    if type(overlay.tracker_set_settings) == "function" then
+        overlay.tracker_set_settings(json.encode(build_settings()))
+    end
 end
 
 local function frame()

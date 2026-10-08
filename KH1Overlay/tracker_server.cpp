@@ -11,20 +11,22 @@
 #include "log.h"
 #include "tracker_server.h"
 
-// Tracker API.  CivetWeb serves two read-only JSON documents that Lua
+// Tracker API.  CivetWeb serves three read-only JSON documents that Lua
 // rebuilds whenever something changes; see TRACKER_FEED.md.  This file
 // only stores the latest strings and answers requests.  All tracker
 // logic lives in client/tracker_feed.lua.
 //
 //   GET /state      current snapshot (checks, items, progression)
 //   GET /locations  static catalog: location id -> name and group
+//   GET /settings   the seed's settings
 
 static const char* NOT_READY = "{\"error\":\"not ready\"}";
 static const auto START_RETRY = std::chrono::seconds(2);
 
-static std::mutex g_mutex;          // guards the two documents
+static std::mutex g_mutex;          // guards the three documents
 static std::string g_state;
 static std::string g_locations;
+static std::string g_settings;
 
 static std::atomic<bool> g_shuttingDown{false};
 static std::once_flag g_startOnce;
@@ -55,7 +57,7 @@ static int HandleDocument(mg_connection* conn, void* cbdata) {
 }
 
 static int HandleOther(mg_connection* conn, void*) {
-    SendJson(conn, 404, "{\"error\":\"not found\",\"endpoints\":[\"/state\",\"/locations\"]}");
+    SendJson(conn, 404, "{\"error\":\"not found\",\"endpoints\":[\"/state\",\"/locations\",\"/settings\"]}");
     return 404;
 }
 
@@ -73,6 +75,7 @@ static mg_context* StartServer() {
     if (!ctx) return nullptr;
     mg_set_request_handler(ctx, "/state$", HandleDocument, &g_state);
     mg_set_request_handler(ctx, "/locations$", HandleDocument, &g_locations);
+    mg_set_request_handler(ctx, "/settings$", HandleDocument, &g_settings);
     mg_set_request_handler(ctx, "/", HandleOther, nullptr);
     return ctx;
 }
@@ -115,6 +118,10 @@ void TrackerSetState(const char* json) {
 
 void TrackerSetLocations(const char* json) {
     Store(g_locations, json);
+}
+
+void TrackerSetSettings(const char* json) {
+    Store(g_settings, json);
 }
 
 // Only sets a flag: DllMain can't wait on threads, and the process
