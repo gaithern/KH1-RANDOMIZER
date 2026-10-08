@@ -224,7 +224,7 @@ local function local_entry(location_id)
             entry = jobject({
                 { "item",        jnum(item_id) },
                 { "name",        jstr(item_name(item_id)) },
-                { "source",      jstr("local") },
+                { "source",      jstr("game") },
                 { "location",    jnum(location_id) },
                 { "progression", jbool(is_progression_location(location_id)) },
             })
@@ -287,12 +287,12 @@ local function update_received()
         local record = records[i]
         local source = "multiworld"
         if record.player == SERVER_PLAYER then source = "server"
-        elseif state.is_self(record.player) then source = "local" end
+        elseif state.is_self(record.player) then source = "remote" end
         cache.received[i] = jobject({
             { "item",        jnum(record.item) },
             { "name",        jstr(item_name(record.item)) },
             { "source",      jstr(source) },
-            { "location",    source == "local" and jnum(record.location) or nil },
+            { "location",    source == "remote" and jnum(record.location) or nil },
             { "sender",      source == "multiworld" and jstr(player_alias(record.player)) or nil },
             { "progression", jbool(((record.flags or 0) & 1) ~= 0) },
             { "index",       jnum(record.index or (i - 1)) },
