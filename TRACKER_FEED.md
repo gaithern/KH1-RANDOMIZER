@@ -4,7 +4,7 @@
 
 There are currently 3 separate endpoints to get information from.  I will be using python to show example calls and responses, but you should be able to access it in other ways.
 
-## State
+## `/state`
 ### Call Example
 ```python
 import requests
@@ -13,7 +13,7 @@ from pprint import pprint
 
 tracker_url = "http://127.0.0.1:47111"
 state_endpoint = "/state"
-location_endpoint = "/location"
+location_endpoint = "/locations"
 settings_endpoint = "/settings"
 
 response = requests.get(f"{tracker_url}{state_endpoint}")
@@ -36,10 +36,36 @@ pprint(json.loads(response.text))
  'connected': True,
  'current_group': 'traverse_town',
  'in_gummi': False,
- 'local_items': [{'item': 2641206, 'location': 2656500, 'name': 'Watergleam'},
-                 {'item': 2641020, 'location': 2656800, 'name': 'Fire Ring'},
-                 {'item': 2641041, 'location': 2656801, 'name': 'Gaia Bangle'},
-                 {'item': 2641037, 'location': 2656803, 'name': 'Golem Chain'}],
+ 'items': [{'item': 2641206,
+            'location': 2656500,
+            'name': 'Watergleam',
+            'progression': True,
+            'source': 'game'},
+           {'item': 2641020,
+            'location': 2656800,
+            'name': 'Fire Ring',
+            'progression': False,
+            'source': 'game'},
+           {'item': 2641041,
+            'location': 2656801,
+            'name': 'Gaia Bangle',
+            'progression': False,
+            'source': 'game'},
+           {'item': 2641037,
+            'location': 2656803,
+            'name': 'Golem Chain',
+            'progression': False,
+            'source': 'game'},
+           {'index': 4,
+            'item': 2641001,
+            'name': 'Potion',
+            'progression': False,
+            'source': 'server'},
+           {'index': 5,
+            'item': 2641002,
+            'name': 'Hi-Potion',
+            'progression': False,
+            'source': 'server'}],
  'player': 1,
  'progression_remaining': {'agrabah': 18,
                            'deep_jungle': 13,
@@ -54,19 +80,7 @@ pprint(json.loads(response.text))
                            'synthesis': 9,
                            'traverse_town': 41,
                            'wonderland': 17},
- 'received_items': [{'index': 4,
-                     'item': 2641001,
-                     'location': -1,
-                     'name': 'Potion',
-                     'player': 0,
-                     'progression': False},
-                    {'index': 5,
-                     'item': 2641002,
-                     'location': -1,
-                     'name': 'Hi-Potion',
-                     'player': 0,
-                     'progression': False}],
- 'revision': 34,
+ 'revision': 9,
  'seed': '44199210537897117323',
  'slot': 'KH1',
  'starting_items': [{'item': 2641149, 'name': 'Wonderland'},
@@ -84,8 +98,7 @@ pprint(json.loads(response.text))
  'world': 3}
  ```
 
-
- ### Reading the response
+### Reading the response
  - `api`
    - Data Type: `int`
    - Meaning: version number of tracker API's response format.
@@ -101,7 +114,7 @@ pprint(json.loads(response.text))
 - `in_gummi`
   - Data Type: `bool`
   - Meaning: Shows whether player is currently in the Gummi ship.
-- `local_items`
+- `items`
   - Data Type: `list[Item]`
   - Meaning: List of items found locally (not sent by server).  Worked out by checking locations found against the `item_location_map.json` for the seed, so it persists across saves/reloads etc.
   - `item`
@@ -113,6 +126,16 @@ pprint(json.loads(response.text))
   - `name`
     - Data Type: `string`
     - Meaning: Translated item name.
+  - `progression`
+    - Data Type: `bool`
+    - Meaning: Shows if the item found/received was a progression item.  Determined via reading `progression_locations.json` when the item is a local item.
+  - `source`
+    - Data Type: `bool`
+    - Meaning:
+      - `game`: Our location, and handled by the game.
+      - `remote` Our location, and handled by the server.
+      - `multiworld`: Another player found the item.
+      - `server`: A server grant like `!getitem`, no location.
 - `player`
   - Data Type: `int`
   - Meaning: Archipelago connection player ID.
@@ -120,7 +143,187 @@ pprint(json.loads(response.text))
 - `progression_remaining`
   - Data Type: `Dict[world:num_of_prog_locations]`
   - Meaning: Lookup for determining how many locations are left in a world that contain a progression item (for self or another player in the MW).  Worked out via `progression_locations.json`.  Useful for things like [All Blue Numbers (ABN) for KH2 Rando](https://tommadness.github.io/KH2Randomizer/overview/).
-- `received_items`
-  - Data Type: `list[remote_items]`
-  - Meaning: List of items received from the server.
-  - 
+- `revision`
+  - Data Type: `int`
+  - Meaning: counter that increments each time `/state` is rebuilt.
+- `seed`
+  - Data Type: `string`
+  - Meaning: Indicator of seed value from Archipelago seed generation.
+- `slot`
+  - Data Type: `string`
+  - Meaning: Slot name input at generation time in YAML.
+- `starting_items`
+  - Data Type: `list[Item]`
+  - Meaning: List of starting items
+  - `item`: ItemID
+  - `name`: Translated item name.
+- `victory`
+  - Data Type: `bool`
+  - Meaning: Shows if a player has entered the final cutscenes.
+- `world`
+  - Data Type: `int`
+  - Meaning: Shows the numeric world value the player is currently in.  Parallel to `current_group`.
+
+## `/locations`
+### Call Example
+```python
+import requests
+import json
+from pprint import pprint
+
+tracker_url = "http://127.0.0.1:47111"
+state_endpoint = "/state"
+location_endpoint = "/locations"
+settings_endpoint = "/settings"
+
+response = requests.get(f"{tracker_url}{location_endpoint}")
+pprint(json.loads(response.text))
+```
+
+### Response Example
+```json
+{'api': 1,
+ 'groups': [{'key': 'destiny_islands', 'name': 'Destiny Islands', 'world': 1},
+            {'key': 'traverse_town', 'name': 'Traverse Town', 'world': 3},
+            {'key': 'wonderland', 'name': 'Wonderland', 'world': 4},
+            {'key': 'deep_jungle', 'name': 'Deep Jungle', 'world': 5},
+            {'key': 'hundred_acre_wood', 'name': '100 Acre Wood', 'world': 6},
+            {'key': 'agrabah', 'name': 'Agrabah', 'world': 8},
+            {'key': 'atlantica', 'name': 'Atlantica', 'world': 9},
+            {'key': 'halloween_town', 'name': 'Halloween Town', 'world': 10},
+            {'key': 'olympus_coliseum',
+             'name': 'Olympus Coliseum',
+             'world': 11},
+            {'key': 'monstro', 'name': 'Monstro', 'world': 12},
+            {'key': 'neverland', 'name': 'Neverland', 'world': 13},
+            {'key': 'hollow_bastion', 'name': 'Hollow Bastion', 'world': 15},
+            {'key': 'end_of_the_world',
+             'name': 'End of the World',
+             'world': 16},
+            {'key': 'levels', 'name': 'Levels'},
+            {'key': 'synthesis', 'name': 'Synthesis'},
+            {'key': 'starting_accessory', 'name': 'Starting Accessories'},
+            {'key': 'other', 'name': 'Other'}],
+ 'locations': {'2650011': {'group': 'destiny_islands',
+                           'name': 'Destiny Islands Chest'},
+               '2650211': {'group': 'traverse_town',
+                           'name': 'Traverse Town 1st District Candle Puzzle '
+                                   'Chest'},
+                ...}
+}
+```
+
+### Reading the response
+ - `api`
+   - Data Type: `int`
+   - Meaning: version number of tracker API's response format.
+- `groups`
+  - Data Type: `list[Group]`
+  - Meaning: List of location group information.
+  - `key`: Location group key name.
+  - `name`: Location group translated name.
+  - `world`: Location group corresponding world ID.
+- `locations`
+  - Data Type: `Dict[locationID:Location]`
+  - Meaning: Dictionary of locations by location ID.
+  - `group`: Group location key.
+  - `name`: Translated location name.
+
+
+## `/settings`
+### Call Example
+```python
+import requests
+import json
+from pprint import pprint
+
+tracker_url = "http://127.0.0.1:47111"
+state_endpoint = "/state"
+location_endpoint = "/locations"
+settings_endpoint = "/settings"
+
+response = requests.get(f"{tracker_url}{settings_endpoint}")
+pprint(json.loads(response.text))
+```
+
+### Response Example
+```json
+{'api': 1,
+ 'settings': {'accessory_augments': False,
+              'atlantica': False,
+              'augment_abilities_from_pool': False,
+              'auto_attack': False,
+              'auto_save': True,
+              'bad_kingdom_key': False,
+              'beep_hack': False,
+              'consistent_finishers': True,
+              'cups_solo_time_trial': 1,
+              'cups_standard': 1,
+              'day_2_materials': 4,
+              'destiny_islands': True,
+              'donald_death_link': False,
+              'early_skip': True,
+              'end_of_the_world_unlock': 'lucky_emblems',
+              'evidence_bundle': False,
+              'exp_multiplier': 8,
+              'exp_zero_in_pool': False,
+              'extra_shared_abilities': True,
+              'fast_camera': False,
+              'faster_animations': True,
+              'final_rest_door_key': 'lucky_emblems',
+              'force_stats_on_levels': 2,
+              'four_by_three': False,
+              'goofy_death_link': False,
+              'halloween_town_key_item_bundle': False,
+              'homecoming_materials': 10,
+              'hundred_acre_wood': True,
+              'individual_spell_level_costs': False,
+              'interact_in_battle': True,
+              'jungle_slider': True,
+              'keyblades_unlock_chests': False,
+              'level_checks': 99,
+              'logic_difficulty': 'normal',
+              'materials_in_pool': 13,
+              'max_ap_cost': 5,
+              'min_ap_cost': 0,
+              'mythril_in_pool': 20,
+              'mythril_price': 500,
+              'one_hp': False,
+              'orichalcum_in_pool': 20,
+              'orichalcum_price': 500,
+              'puppy_value': 3,
+              'randomize_ap_costs': 'randomize',
+              'randomize_emblem_pieces': False,
+              'randomize_party_member_starting_accessories': True,
+              'randomize_postcards': 'all',
+              'randomize_puppies': 'true',
+              'randomize_spell_mp_costs': 'off',
+              'remote_items': 'off',
+              'required_lucky_emblems_door': 7,
+              'required_lucky_emblems_eotw': 4,
+              'required_postcards': 8,
+              'required_puppies': 80,
+              'scaling_spell_potency': False,
+              'shorten_go_mode': True,
+              'skip_hundred_acre_wood_minigames': True,
+              'skip_summon_animations': True,
+              'slides_bundle': False,
+              'slot_2_level_checks': 0,
+              'spell_mp_cost_max': 300,
+              'spell_mp_cost_min': 15,
+              'stacking_world_items': False,
+              'starting_tools': True,
+              'super_bosses': False,
+              'unlock_0_volume': False,
+              'unskippable': True,
+              'warp_anywhere': False,
+              'world_version': [1, 3, 0]}}
+```
+
+### Reading the response
+ - `api`
+   - Data Type: `int`
+   - Meaning: version number of tracker API's response format.
+ - `settings`
+   - Data Type: `Dict[settings_name:settings_val]`
+   - Meaning: Dictionary of settings values, looked up by settings name.
