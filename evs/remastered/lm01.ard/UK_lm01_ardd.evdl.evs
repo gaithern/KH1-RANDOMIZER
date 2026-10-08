@@ -9,6 +9,7 @@ globals {
     CURRENT_WORLD = save_data2[0x1C];
     DIALOG_STATE = save_data2[3];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
+    INTERACT_IN_BATTLE = save_data[0x4E];
     GIFT_LM_UNDERSEA_VALLEY_FIRE_CLAM = 0xF;
     GIFT_LM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM = 0xC;
     GIFT_LM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM = 0xD;
@@ -197,7 +198,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0x14);
                 local13 = Call_cos(0x14);
                 local12 = Push_actor_coord_X(mo_shll1_s2_lm1) - ((0x78 * local12) / 0x2710);
@@ -326,7 +327,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_OCEAN_FLOOR_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -370,7 +371,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(-0x2D);
                 local13 = Call_cos(-0x2D);
                 local12 = Push_actor_coord_X(mo_shll2_s2_lm1) - ((0x78 * local12) / 0x2710);
@@ -499,7 +500,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_PILLAR_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -543,7 +544,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(-5);
                 local13 = Call_cos(-5);
                 local12 = Push_actor_coord_X(mo_shll3_s2_lm1) - ((0x78 * local12) / 0x2710);
@@ -672,7 +673,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_WALL_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -716,7 +717,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(-0x87);
                 local13 = Call_cos(-0x87);
                 local12 = Push_actor_coord_X(mo_shll5_s2_lm1) - ((0x78 * local12) / 0x2710);
@@ -845,7 +846,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_LOWER_CAVE_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -889,7 +890,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0xB4);
                 local13 = Call_cos(0xB4);
                 local12 = Push_actor_coord_X(mo_shll6_s2_lm1) - ((0x78 * local12) / 0x2710);
@@ -1018,7 +1019,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_HIGHER_CAVE_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -1062,7 +1063,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0xB4);
                 local13 = Call_cos(0xB4);
                 local12 = Push_actor_coord_X(mo_shll_f2_lm1) - ((0x78 * local12) / 0x2710);
@@ -1214,7 +1215,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_UNDERSEA_VALLEY_FIRE_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;

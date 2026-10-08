@@ -21,6 +21,7 @@ function _OnInit()
                 {DAY_2_MATERIALS_REQUIRED, "day_2_materials"},
                 {HOMECOMING_MATERIALS_REQUIRED, "homecoming_materials"},
                 {SHORTEN_GO_MODE, "shorten_go_mode"},
+                {INTERACT_IN_BATTLE, "interact_in_battle"},
                 {SKIP_100_ACRE_WOOD_MINIGAMES, "skip_hundred_acre_wood_minigames"},
                 {CUPS_STANDARD, "cups_standard"},
                 {CUPS_SOLO_TT, "cups_solo_time_trial"},

@@ -3,6 +3,7 @@ globals {
     CURRENT_WORLD = save_data2[0x1C];
     DIALOG_STATE = save_data2[3];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
+    INTERACT_IN_BATTLE = save_data[0x4E];
     GIFT_LM_URSULAS_LAIR_USE_FIRE_ON_URCHIN_CHEST = 6;
 }
 
@@ -146,7 +147,7 @@ kgr 0 {
                 if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
                     local2 = 1;
                 }
-                local19 = 0;
+                local19 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 if (local19 == 0) {
                     bit[0x6ACF] = local2;
                 } else {
@@ -447,7 +448,7 @@ kgr 0 {
                 local0 = 1;
             L1:
                 if (!(save_data2[0x1A1] == 0)) goto L2;
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 if ((local1 == 1) & (local2 == 0)) {
                     Set_wait_timer(1);
                     MOVE_NOTURN(0xA, 0x128E, -0x393, 0x23BE);
