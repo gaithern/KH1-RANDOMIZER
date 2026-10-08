@@ -124,8 +124,8 @@ local function checked_set()
     return checked
 end
 
--- Remote locations get their items from the server, so they show up in
--- received_items rather than local_items.
+-- Remote locations get their items from the server, so their entries come
+-- from items_received rather than the seed's item_location_map.
 local function remote_set()
     local ids = state.is_connected and state.remote_location_ids() or nil
     if not ids or #ids == 0 then ids = settings()["remote_location_ids"] end
@@ -186,11 +186,11 @@ end
 -- Snapshot sections, each cached under the inputs it depends on
 
 local cache = {
-    checks_key = nil,         -- checked_locations, local_items, progression_remaining
+    checks_key = nil,         -- checked_locations, local items, progression_remaining
     checked_json = "[]",
-    local_json = "[]",
+    local_json = "",          -- encoded items granted by the game, comma-joined
     progression_json = nil,
-    received = {},            -- encoded received_items entries, append-only
+    received = {},            -- encoded items delivered by the server, append-only
     starting_key = nil,
     starting_json = "[]",
     aliases = {},             -- player number -> name
@@ -205,6 +205,12 @@ local function player_alias(player)
     return alias or nil
 end
 
+local progression_set = nil
+local function is_progression_location(location_id)
+    progression_set = progression_set or to_set(seed_vars["progression_locations"])
+    return progression_set[location_id] == true
+end
+
 -- The item at a location never changes, so each entry is encoded once:
 -- location -> JSON string, or false when it holds no KH1 item for this player.
 local local_entries = {}
@@ -216,9 +222,11 @@ local function local_entry(location_id)
         entry = false
         if item_id and item_id ~= items.AP_ITEM_ID and items.kind_of(item_id) then
             entry = jobject({
-                { "location", jnum(location_id) },
-                { "item",     jnum(item_id) },
-                { "name",     jstr(item_name(item_id)) },
+                { "item",        jnum(item_id) },
+                { "name",        jstr(item_name(item_id)) },
+                { "source",      jstr("local") },
+                { "location",    jnum(location_id) },
+                { "progression", jbool(is_progression_location(location_id)) },
             })
         end
         local_entries[location_id] = entry
@@ -232,7 +240,7 @@ local function local_items_json(sorted_checked, remote)
         local entry = local_entry(location_id)
         if entry and not remote[location_id] then parts[#parts + 1] = entry end
     end
-    return "[" .. table.concat(parts, ",") .. "]"
+    return table.concat(parts, ",")
 end
 
 -- Per-group count of progression locations not yet checked.  Only counts are
@@ -277,15 +285,17 @@ local function update_received()
     end
     for i = #cache.received + 1, #records do
         local record = records[i]
-        local from_other = record.player ~= SERVER_PLAYER and not state.is_self(record.player)
+        local source = "multiworld"
+        if record.player == SERVER_PLAYER then source = "server"
+        elseif state.is_self(record.player) then source = "local" end
         cache.received[i] = jobject({
-            { "index",       jnum(record.index or (i - 1)) },
             { "item",        jnum(record.item) },
             { "name",        jstr(item_name(record.item)) },
-            { "player",      jnum(record.player) },
-            { "sender",      from_other and jstr(player_alias(record.player)) or nil },
-            { "location",    jnum(record.location) },
+            { "source",      jstr(source) },
+            { "location",    source == "local" and jnum(record.location) or nil },
+            { "sender",      source == "multiworld" and jstr(player_alias(record.player)) or nil },
             { "progression", jbool(((record.flags or 0) & 1) ~= 0) },
+            { "index",       jnum(record.index or (i - 1)) },
         })
     end
 end
@@ -302,6 +312,13 @@ local function update_starting()
         end
     end
     cache.starting_json = "[" .. table.concat(parts, ",") .. "]"
+end
+
+-- Game-granted items first, then server deliveries in the order received.
+local function items_json()
+    local received = table.concat(cache.received, ",")
+    local sep = (cache.local_json ~= "" and received ~= "") and "," or ""
+    return "[" .. cache.local_json .. sep .. received .. "]"
 end
 
 local function build_state()
@@ -323,8 +340,7 @@ local function build_state()
         { "in_gummi",              jbool(kh1_lua_library.is_in_gummi_garage()) },
         { "victory",               jbool(state.game.victory) },
         { "checked_locations",     cache.checked_json },
-        { "local_items",           cache.local_json },
-        { "received_items",        "[" .. table.concat(cache.received, ",") .. "]" },
+        { "items",                 items_json() },
         { "starting_items",        cache.starting_json },
         { "progression_remaining", cache.progression_json },
     })

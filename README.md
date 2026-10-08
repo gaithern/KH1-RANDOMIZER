@@ -1,17 +1,17 @@
 # KH1 Randomizer
 
-The core mod for Kingdom Hearts Final Mix Archipelago Randomizer functionality.  This is built on top of [OpenKH](https://github.com/OpenKH/OpenKh/)'s modding framework (Lua Backend + Panacea).  The mod handles applying seed specific variables from Archipelago generation by reading JSON artifacts unique to a seed, and applying them to the game via memory manipulation.  It also includes a built in client to connect to Archipelago for multiworld integration.
+The core mod for Kingdom Hearts Final Mix Archipelago Randomizer functionality.  This is built on top of [OpenKH](https://github.com/OpenKH/OpenKh/)'s modding framework (Lua Backend + Panacea).  The mod handles reading seed specific variables from Archipelago generation via JSON artifacts unique to a seed, and applying them to the game via memory manipulation.  It also includes a built in client to connect to Archipelago for multiworld integration.
 
 ## Requirements/Notes
-- This mod requires [KH1-LUA-LIBRARY](https://github.com/gaithern/KH1-LUA-LIBRARY) and a seed mod from Archipelago generation to be installed (see [Setup Guide](https://imhex.werwolv.net/))
+- This mod requires [KH1-LUA-LIBRARY](https://github.com/gaithern/KH1-LUA-LIBRARY) and a seed mod from Archipelago generation to be installed (see [Setup Guide](https://www.kh1fmrando.com/setup_guide))
 - The EV edits are currently only performed for the English files of the game.  The game separates/copies out core game logic by language, and thus English is the only supported language at this time.
 
 
 ## Repository Layout
 
 The repository contains:
-- The mod itself (files in `/mod/`) including the lua scripts, DLL for the client, assembled event script binaries, mdls files for enemies and summons (to change drops) and a few art assets such as for the title screen.
-- The disassembled EV files (`/asm/`) that contain the non-binary event script changes.  Disassembled and can be reassembled back into binaries using [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS).
+- The mod itself (files in `/mod/`) including the lua scripts, DLL for the client/tracker API, assembled event script binaries, mdls files for enemies and summons and a few art assets such as for the title screen.
+- The disassembled EV files (`/evs/`) that contain the non-binary event script changes.  Disassembled and can be reassembled back into binaries using [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS).
 - Scripts to build the mod.
 
 ## KH1Overlay
@@ -29,23 +29,23 @@ It also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47111`) th
 - Ensure you also have your `gaithern/KH1-LUA-LIBRARY` and your seed mod from generation installed.
 
 ## Building/Making Changes
-If you would like to build this mod (if you're making changes to it), `build.py` will automatically compile the mod and create the mod.yml that OpenKH needs to make the mod install-able.  There are few notes for each component for editing, so please review the following:
+If you would like to build this mod (like if you're making changes to it), `build.py` will automatically compile the mod and create the mod.yml that OpenKH needs to make the mod install-able.  There are few notes for each component for editing, so please review the following:
 
-### ASM Edits
-If you'd like to make ASM changes, the `build.py` script automatically picks up and assembles the ASM files in the `/asm/` folder.  This folder should have the same structure as the extracted game files.  `build.py` assumes the location of `KH1-EVDL-TOOLS` and extracted KH1 data (location's on my PC), so you'll have to overwrite those locations.
+### EVS Edits
+If you'd like to make EVS changes, the `build.py` script automatically picks up and assembles the EVS files in the `/evs/` folder.  This folder should have the same structure as the extracted game files.  `build.py` assumes the location of `KH1-EVDL-TOOLS` and extracted KH1 data (location's on my PC), so you'll have to overwrite those locations.
 
 ### KH1Overlay
-If you'd like to make a change to KH1Overlay, the code lives in `/KH1Overlay/`, split by concern.  Like ASM edits, `build.py` will automatically build the project when you run it.
+If you'd like to make a change to KH1Overlay, the code lives in `/KH1Overlay/`, split by subject area.  Like EVS edits, `build.py` will automatically build the project when you run it.
 
 Dear ImGui is not checked into this repository.  `build_imgui.py` downloads the pinned release tag, extracts only the files the overlay compiles, and applies the local patches listed in that script, all into `/KH1Overlay/external/imgui/` (gitignored).  `build.py` runs it for you, and so does the project's pre-build step, so building from Visual Studio or `KH1Overlay/build.ps1` works the same way.  The first build needs network access; after that the extracted copy is reused.
 
 CivetWeb, which serves the tracker API, is handled the same way: `build_civetweb.py` fetches the pinned release into `/KH1Overlay/external/civetweb/` (gitignored), and both `build.py` and the pre-build step run it.
 
 ### Lua Edits
-If you'd like make changes or add a lua script, they structure is automatically picked up in `build.py`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.
+If you'd like make changes or add a lua script, they are automatically picked up in `build.py` and added to `mod.yml`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.
 
 ### MDLS and Other Binary Edits
-Currently, MDLS files are edited using a hex editor.  I reocmmend [ImHex](https://imhex.werwolv.net/).
+Currently, MDLS files are edited using a hex editor.  I recommend [ImHex](https://imhex.werwolv.net/) if you'd like to try to make changes to them.
 
 ### Discord Notifications
-There is a custom discord notification GitHub action defined in `/.github/workflows/discord-notify.yml/`  This is to update the [KH1 Archipelago Randomizer Discord](https://www.kh1fmrando.com/discord) with changes to main (and main only, don't want to spam the channel).  The webhook URL is defined in a repository secret, and more can be added if we want to in the future.
+There is a custom discord notification GitHub action defined in `/.github/workflows/discord-notify.yml/`  This is to update the [KH1 Archipelago Randomizer Discord](https://www.kh1fmrando.com/discord) with changes to main (and main only, don't want to spam the channel).  The webhook URL is defined in a repository secret, and more channels can be added if we want to in the future.
