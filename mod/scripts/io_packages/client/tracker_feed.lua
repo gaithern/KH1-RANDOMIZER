@@ -49,8 +49,6 @@ local GROUPS = {
     { key = "end_of_the_world",   name = "End of the World",     world = 16 },
     { key = "levels",             name = "Levels" },
     { key = "synthesis",          name = "Synthesis" },
-    { key = "starting_accessory", name = "Starting Accessories" },
-    { key = "other",              name = "Other" },
 }
 
 local WORLD_GROUP = {}
@@ -63,12 +61,11 @@ local function world_group(world_id)
 end
 
 local function group_of(rec)
-    if rec.world then return world_group(rec.world) or "other" end
+    if rec.world then return world_group(rec.world) end
     local name = rec.name or ""
     if name:find("^Level ") then return "levels" end
     if name:find("Synth Item") then return "synthesis" end
-    if name:find("Starting Accessory") then return "starting_accessory" end
-    return "other"
+    return nil
 end
 
 -- Item names can carry in-game glyph codes; trackers get plain text.
@@ -252,8 +249,8 @@ local function progression_json(checked)
     for _, location_id in ipairs(list) do
         location_id = tonumber(location_id)
         local rec = location_id and locations.get()[location_id]
-        if rec then
-            local group = group_of(rec)
+        local group = rec and group_of(rec)
+        if group then
             remaining[group] = (remaining[group] or 0) + (checked[location_id] and 0 or 1)
         end
     end
@@ -349,7 +346,10 @@ end
 local function build_locations()
     local catalog = {}
     for location_id, rec in pairs(locations.get()) do
-        catalog[tostring(location_id)] = { name = rec.name, group = group_of(rec) }
+        local group = group_of(rec)
+        if group then
+            catalog[tostring(location_id)] = { name = rec.name, group = group }
+        end
     end
     -- An array, so trackers can keep this display order.
     return { api = API_VERSION, groups = GROUPS, locations = catalog }
