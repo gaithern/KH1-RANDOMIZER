@@ -1629,6 +1629,7 @@ local function build()
         },
         [2654493] = {
             name = "Hollow Bastion Entrance Hall Push the Statue Chest",
+            world = 15,
             address = chests_opened_address + 0x1C0,
             bit = 3,
             value = 0x01,
