@@ -31,6 +31,7 @@ local function signature()
         tostring(kh1_lua_library.is_in_gummi_garage()),
         tostring(state.game.victory),
         #state.game.locations,
+        #state.game.server_locations,
         #state.game.items_received,
     }, "|")
 end
@@ -43,6 +44,7 @@ local function build_state()
         in_gummi = kh1_lua_library.is_in_gummi_garage(),
         victory = state.game.victory,
         checked_locations = state.game.locations,
+        server_checked_locations = state.game.server_locations,
         items = state.game.items_received,
     })
 end

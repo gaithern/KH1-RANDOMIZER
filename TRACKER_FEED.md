@@ -25,6 +25,7 @@ item_location_map = requests.get(f"{tracker_url}/item_location_map").json()
   "in_gummi": false,
   "victory": false,
   "checked_locations": [2656500, 2656800, 2656801],
+  "server_checked_locations": [2656500, 2656800],
   "items": [
     {"item": 2641001, "location": -1, "player": 0, "flags": 0, "index": 4},
     {"item": 2641206, "location": 2656123, "player": 2, "flags": 1, "index": 5}
@@ -51,7 +52,10 @@ item_location_map = requests.get(f"{tracker_url}/item_location_map").json()
   - Meaning: Whether the player has entered the final cutscenes.
 - `checked_locations`
   - Data Type: `list[int]`
-  - Meaning: Location IDs the player has checked.  Look up the item at each in `/item_location_map`.
+  - Meaning: Location IDs the player has checked in the game.  Look up the item at each in `/item_location_map`.
+- `server_checked_locations`
+  - Data Type: `list[int]`
+  - Meaning: Location IDs the Archipelago server reports as checked, including ones checked by a release or `!collect`.  May overlap with `checked_locations`.
 - `items`
   - Data Type: `list[Item]`
   - Meaning: Items received from the Archipelago server, in the order received.  Items the game hands out at its own locations are not included; work those out from `checked_locations` and `/item_location_map`.

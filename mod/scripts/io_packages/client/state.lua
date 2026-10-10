@@ -28,6 +28,7 @@ local state = {
     game = {
         victory = false,
         locations = {},
+        server_locations = {},
         world = 0,
         sora_koed = false,
         hinted_locations = {},
@@ -40,6 +41,7 @@ local state = {
 
 local function reset_game_state()
     state.game.items_received = {}
+    state.game.server_locations = {}
     state.game.slot_data = {}
     state.game.victory = false
     state.game.goal_sent = false

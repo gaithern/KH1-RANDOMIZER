@@ -132,6 +132,9 @@ local function connect(server, slot, password)
 
     local function on_location_checked(locations)
         ConsolePrint("Locations checked: " .. table.concat(locations, ", "))
+        for _, location_id in ipairs(locations) do
+            table.insert(state.game.server_locations, location_id)
+        end
     end
 
     local function on_print(msg)
