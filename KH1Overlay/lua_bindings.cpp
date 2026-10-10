@@ -134,21 +134,9 @@ extern "C" int l_request_reconnect(void* L) {
     return 1;
 }
 
-// Tracker API: replace the JSON served at GET /state.
-extern "C" int l_tracker_set_state(void* L) {
-    TrackerSetState(p_lua_tolstring(L, 1, nullptr));
-    return 0;
-}
-
-// Tracker API: replace the JSON served at GET /locations.
-extern "C" int l_tracker_set_locations(void* L) {
-    TrackerSetLocations(p_lua_tolstring(L, 1, nullptr));
-    return 0;
-}
-
-// Tracker API: replace the JSON served at GET /settings.
-extern "C" int l_tracker_set_settings(void* L) {
-    TrackerSetSettings(p_lua_tolstring(L, 1, nullptr));
+// Tracker API: replace the JSON served at GET /<path>.
+extern "C" int l_tracker_set(void* L) {
+    TrackerSet(p_lua_tolstring(L, 1, nullptr), p_lua_tolstring(L, 2, nullptr));
     return 0;
 }
 
@@ -166,9 +154,7 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {"request_reconnect", reinterpret_cast<void*>(l_request_reconnect)},
     {"get_death_link", reinterpret_cast<void*>(l_get_death_link)},
-    {"tracker_set_state", reinterpret_cast<void*>(l_tracker_set_state)},
-    {"tracker_set_locations", reinterpret_cast<void*>(l_tracker_set_locations)},
-    {"tracker_set_settings", reinterpret_cast<void*>(l_tracker_set_settings)},
+    {"tracker_set", reinterpret_cast<void*>(l_tracker_set)},
     {nullptr, nullptr}
 };
 
