@@ -34,3 +34,5 @@ bool TakeConnectRequest(ConnectRequest& out);
 void QueueMessage(const char* text);
 bool TakeMessage(std::string& out);
 bool QueueReconnect();
+void SetDeathLink(bool enabled);
+bool GetDeathLink();

@@ -61,6 +61,12 @@ void DrawForm() {
                 QueueConnect(host_buf, slot_buf, pass_buf);
                 LogDebug("Connect clicked, connection request pending");
             }
+
+            ImGui::Separator();
+            bool deathLink = GetDeathLink();
+            if (ImGui::Checkbox("Death Link", &deathLink)) {
+                SetDeathLink(deathLink);
+            }
             ImGui::EndTabItem();
         }
         

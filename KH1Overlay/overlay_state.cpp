@@ -35,6 +35,7 @@ namespace {
     std::string g_defaultSlot;
     bool g_messagePending = false;
     std::string g_pendingMessage;
+    bool g_deathLink = false;
 
     // These structs allow the compiler to automatically
     // call their destructor - in effect automatically
@@ -160,4 +161,16 @@ bool QueueReconnect() {
     if (!g_everConnected || g_pendingSlot.empty()) return false;
     g_pending = true;
     return true;
+}
+
+// Setter for the death link checkbox
+void SetDeathLink(bool enabled) {
+    WriteLock lock;
+    g_deathLink = enabled;
+}
+
+// Getter for the death link checkbox
+bool GetDeathLink() {
+    ReadLock lock;
+    return g_deathLink;
 }

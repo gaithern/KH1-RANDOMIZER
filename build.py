@@ -3,7 +3,7 @@
 build.py — full build: compile KH1Overlay, reassemble asm/ into mod/, then
 regenerate mod.yml.
 
-Runs build_imgui.py to fetch the Dear ImGui sources KH1Overlay needs, then the
+Runs build_imgui.py and build_civetweb.py to fetch the sources KH1Overlay needs, then the
 KH1Overlay MSBuild project (its post-build step drops kh1_overlay.dll straight
 into mod/scripts/io_packages/), then build_mod.py, then generate_mod_yml.py.
 Any extra arguments are forwarded to build_mod.py (e.g. --game-data).
@@ -59,6 +59,12 @@ def build_overlay():
     imgui = subprocess.run([sys.executable, str(ROOT / 'build_imgui.py')])
     if imgui.returncode != 0:
         print('\nCould not prepare the Dear ImGui sources.', file=sys.stderr)
+        return False
+
+    # CivetWeb serves the tracker feed; fetched the same way as Dear ImGui.
+    civetweb = subprocess.run([sys.executable, str(ROOT / 'build_civetweb.py')])
+    if civetweb.returncode != 0:
+        print('\nCould not prepare the CivetWeb sources.', file=sys.stderr)
         return False
 
     result = subprocess.run([

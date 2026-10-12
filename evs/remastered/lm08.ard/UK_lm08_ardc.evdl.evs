@@ -3,6 +3,7 @@ globals {
     CURRENT_WORLD = save_data2[0x1C];
     DIALOG_STATE = save_data2[3];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
+    INTERACT_IN_BATTLE = save_data[0x4E];
     TORN_PAGES_AVAILABLE = save_data[0x800];
     GIFT_LM_BELOW_DECK_CLAM = 0x19;
     GIFT_LM_SUNKEN_SHIP_INSIDE_SHIP_CHEST = 2;
@@ -148,7 +149,7 @@ kgr 0 {
                 if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
                     local2 = 1;
                 }
-                local19 = 0;
+                local19 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 if (local19 == 0) {
                     bit[0x6ACF] = local2;
                 } else {
@@ -169,7 +170,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(-0x82);
                 local13 = Call_cos(-0x82);
                 local12 = Push_actor_coord_X(mo_shll1_s2_lm3) - ((0x78 * local12) / 0x2710);
@@ -298,7 +299,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_BELOW_DECK_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;

@@ -3,6 +3,7 @@ globals {
     CURRENT_WORLD = save_data2[0x1C];
     DIALOG_STATE = save_data2[3];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
+    INTERACT_IN_BATTLE = save_data[0x4E];
     GIFT_LM_UNDERSEA_CAVE_CLAM = 0x1B;
 }
 
@@ -170,7 +171,7 @@ kgr 0 {
         on_touch {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((runtime.dword[0xA18] == 3) & (ATLANTICA_CLAM_UNDERSEA_CAVE_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -213,7 +214,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 if (!(runtime.dword[0xA18] == 1)) goto L1;
                 if ((local1 == 0) | (ATLANTICA_CLAM_UNDERSEA_CAVE_CLAM == 1)) {
                     Motion_change_no_loop(1);

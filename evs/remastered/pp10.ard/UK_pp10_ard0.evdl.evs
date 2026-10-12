@@ -2822,35 +2822,57 @@ kgr 0 {
             local25 = 0;
             local5 = Get_game_clear_flag();
             Display_register_value(local5);
-            runtime.dword[0xA10] = 0;
-            if ((0x78 <= NEVERLAND_PROGRESS) & (local5 == 0)) {
-                runtime.dword[0xA10] = 1;
-                Display_register_value(local16);
-            }
-            if ((0x96 <= NEVERLAND_PROGRESS) & (local5 == 1)) {
-                runtime.dword[0xA10] = 1;
-                Display_register_value(local15);
-            }
+            runtime.dword[0xA10] = 1;
             if ((NEVERLAND_PROGRESS < 0x96) & (local5 == 1)) {
             } else {
                 Set_polygon_attribute(0xAA, 8, 0);
             }
-            if (runtime.dword[0xA10] == 1) {
-                runtime.dword[0xA08] = (runtime.dword[0xA04] / 0xE10) % 0xC;
-                Display_register_value(runtime.dword[0xA08]);
-                runtime.dword[0xA0C] = (runtime.dword[0xA04] - ((runtime.dword[0xA08] * 0x3C) * 0x3C)) / 0x3C;
-                Display_register_value(runtime.dword[0xA0C]);
-            }
+            runtime.dword[0xA0C] = 0;
+            local0 = 0xC;
         }
         main {
-            if (!(runtime.dword[0xA10] == 1)) goto L1;
             start(mo_cho_s1.entry_12, level=6);
             start(mvf_cho_s1_d.entry_12, level=6);
-            start(mo_tan_s1.entry_11, level=6);
-            start(mvf_tan_s1_d.entry_11, level=6);
-        L1:
-            if (1) {
-                if (!(runtime.dword[0xA10] == 1)) goto L2;
+            while (1) {
+                runtime.dword[0xA08] = 0;
+                if (NL_CLOCK_TOWER_1100_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 0xB;
+                }
+                if (NL_CLOCK_TOWER_1000_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 0xA;
+                }
+                if (NL_CLOCK_TOWER_0900_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 9;
+                }
+                if (NL_CLOCK_TOWER_0800_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 8;
+                }
+                if (NL_CLOCK_TOWER_0700_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 7;
+                }
+                if (NL_CLOCK_TOWER_0600_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 6;
+                }
+                if (NL_CLOCK_TOWER_0500_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 5;
+                }
+                if (NL_CLOCK_TOWER_0400_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 4;
+                }
+                if (NL_CLOCK_TOWER_0300_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 3;
+                }
+                if (NL_CLOCK_TOWER_0200_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 2;
+                }
+                if (NL_CLOCK_TOWER_0100_DOOR_OPENED == 0) {
+                    runtime.dword[0xA08] = 1;
+                }
+                if (runtime.dword[0xA08] != local0) {
+                    local0 = runtime.dword[0xA08];
+                    start(mo_tan_s1.entry_11, level=6);
+                    start(mvf_tan_s1_d.entry_11, level=6);
+                }
                 if ((NL_CLOCK_TOWER_1200_DOOR_OPENED == 1) & (local14 == 0)) {
                     local14 = 1;
                     Start_resident_effect(1);
@@ -2917,13 +2939,12 @@ kgr 0 {
                     Set_wait_timer(1);
                     Change_resident_effect_coords(0xC, -0x1F8, -0x716, -0x32 + 0x46);
                 }
-                if (!((NL_CLOCK_TOWER_1100_DOOR_OPENED == 1) & (local25 == 0))) goto L2;
-                local25 = 1;
-                Start_resident_effect(0xD);
-                Set_wait_timer(1);
-                Change_resident_effect_coords(0xD, -0x109, -0x7FD, -0x32 + 0x46);
-            L2:
-                goto L1;
+                if ((NL_CLOCK_TOWER_1100_DOOR_OPENED == 1) & (local25 == 0)) {
+                    local25 = 1;
+                    Start_resident_effect(0xD);
+                    Set_wait_timer(1);
+                    Change_resident_effect_coords(0xD, -0x109, -0x7FD, -0x32 + 0x46);
+                }
             }
         }
     }

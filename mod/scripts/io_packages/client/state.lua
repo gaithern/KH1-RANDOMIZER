@@ -15,6 +15,7 @@ local state = {
     message_format = nil,
 
     is_connected = false,
+    death_link = false,
     connect_failures = 0,
     connect_attempt_time = nil,
     last_attempted_slot = nil,
@@ -27,6 +28,7 @@ local state = {
     game = {
         victory = false,
         locations = {},
+        server_locations = {},
         world = 0,
         sora_koed = false,
         hinted_locations = {},
@@ -39,6 +41,7 @@ local state = {
 
 local function reset_game_state()
     state.game.items_received = {}
+    state.game.server_locations = {}
     state.game.slot_data = {}
     state.game.victory = false
     state.game.goal_sent = false
@@ -61,8 +64,7 @@ local function remote_location_ids()
 end
 
 local function death_link_enabled()
-    local mode = state.game.slot_data and state.game.slot_data.death_link
-    return mode == "on" or mode == "toggle"
+    return state.death_link
 end
 
 state.reset_game_state = reset_game_state

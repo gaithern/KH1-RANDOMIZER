@@ -1,0 +1,246 @@
+globals {
+    SKIP_SUMMON_ANIMATIONS = save_data[0x52];
+}
+kgr 0 {
+    thread 0 {
+        main {
+            start(thread_1.entry_11, level=6);
+            await(thread_1.entry_11, level=6);
+        }
+    }
+
+    thread 1 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            if (SKIP_SUMMON_ANIMATIONS == 1) {
+                start(thread_2.entry_17, level=6);
+                await(thread_2.entry_17, level=6);
+                start(thread_3.entry_14, level=6);
+                await(thread_3.entry_14, level=6);
+                Summon_end_command();
+            } else {
+                Enter_event_mode();
+                Event_camera_on();
+                Start_effect(0);
+                Start_effect(0xA);
+                Play_camera_motion(0);
+                Play_SE2(0x2755, 0);
+                start(thread_4.entry_11, level=6);
+                start(thread_2.entry_11, level=6);
+                Set_wait_timer(0x4B);
+                Play_camera_motion(5);
+                Blur_on();
+                start(thread_4.entry_12, level=6);
+                Set_wait_timer(0x1E);
+                await(thread_2.entry_11, level=6);
+                start(thread_4.entry_13, level=6);
+                Blur_off();
+                Play_camera_motion(1);
+                Play_SE2(0x2756, 0);
+                start(thread_2.entry_12, level=6);
+                await(thread_2.entry_12, level=6);
+                Play_camera_motion(4);
+                start(thread_4.entry_14, level=6);
+                start(thread_2.entry_13, level=6);
+                await(thread_2.entry_13, level=6);
+                start(thread_2.entry_14, level=6);
+                Blur_on();
+                Play_camera_motion(3);
+                Play_SE2(0x2757, 0);
+                start(thread_4.entry_15, level=6);
+                start(thread_3.entry_11, level=6);
+                Set_wait_timer(0xA0);
+                Blur_off();
+                Play_camera_motion(2);
+                Play_SE2(0x2758, 0);
+                start(thread_4.entry_16, level=6);
+                start(thread_2.entry_15, level=6);
+                Set_wait_timer(0x21);
+                start(thread_3.entry_12, level=6);
+                await(thread_3.entry_12, level=6);
+                Clear_event_effect();
+                start(thread_3.entry_13, level=6);
+                start(thread_2.entry_16, level=6);
+                await(thread_2.entry_16, level=6);
+                Exit_event_mode();
+                Summon_end_command();
+            }
+        }
+    }
+
+    thread 2 {
+        init {
+            Set_char_ID(0x10000);
+            Char_ctrl_off();
+            Collision_off();
+            Clipping_off();
+            Motion_ctrl_off();
+            Hide_char_shadow();
+            Set_char_position(0, 0, 0);
+            Turn_char(0, 0);
+        }
+        main {
+            Wait_turn_end();
+            while (1) {
+            }
+        }
+        entry_11 {
+            Motion_change_no_loop(0xC8);
+            Set_wait_timer(0x5A);
+        }
+        entry_12 {
+            Hide_body_parts(1, 1);
+            Motion_change_no_loop_frame(0xC9, 0, 0x19);
+            Set_wait_timer(0x3C);
+        }
+        entry_13 {
+            Change_motion(0xCA);
+            Set_wait_timer(0x5A);
+        }
+        entry_14 {
+            Show_body_parts(1, 1);
+            Hide_char();
+            Turn_char(0x14A, 0);
+        }
+        entry_15 {
+            Show_char();
+            Start_texture_animation(thread_2, 0x42B, 0);
+            Start_texture_animation(thread_2, 0x3E, 0);
+            Motion_change_no_loop(0xCB);
+            Set_wait_timer(1);
+            Wait_motion_end();
+        }
+        entry_16 {
+            Start_texture_animation(thread_2, 0xC, 0);
+            Start_texture_animation(thread_2, 0x1E, 0);
+            Collision_on();
+            Clipping_on();
+            Motion_ctrl_on();
+            Show_char_shadow();
+        }
+        entry_17 {
+            Change_motion(0);
+            Start_texture_animation(thread_2, 0xC, 0);
+            Start_texture_animation(thread_2, 0x1E, 0);
+            Collision_on();
+            Clipping_on();
+            Motion_ctrl_on();
+            Show_char_shadow();
+        }
+    }
+
+    thread 3 {
+        init {
+            Display_model(0x70004);
+            Set_char_ID(0x70004);
+            Char_ctrl_off();
+            Collision_off();
+            Motion_ctrl_off();
+            Hide_char();
+            Set_char_position(-0xA, -0x8C, 0);
+            Turn_char(0, 0);
+        }
+        main {
+            Wait_turn_end();
+            while (1) {
+            }
+        }
+        entry_11 {
+            Show_char();
+            Start_texture_animation(thread_3, 0x413, 0);
+            Start_texture_animation(thread_3, 0x415, 0);
+            Hide_body_parts(2, 2);
+            Show_body_parts(3, 3);
+            Motion_change_no_loop(0xC8);
+            Set_wait_timer(0xA0);
+            Start_texture_animation(thread_3, 0x412, 0);
+            Start_texture_animation(thread_3, 0x414, 0);
+            Hide_body_parts(3, 3);
+            Show_body_parts(2, 2);
+            Set_wait_timer(0x21);
+        }
+        entry_12 {
+            Motion_change_no_loop_interp(0xC9, 0xA);
+            Play_battle_voice(1);
+            Set_wait_timer(1);
+            Wait_motion_end();
+        }
+        entry_13 {
+            Motion_ctrl_on();
+            Collision_off();
+        }
+        entry_14 {
+            Change_motion(0);
+            Show_char();
+            Motion_ctrl_on();
+            Collision_off();
+        }
+    }
+
+    thread 4 {
+        main {
+            while (1) {
+            }
+        }
+        entry_11 {
+            Start_effect(1);
+            Start_effect(0xB);
+            Set_wait_timer(1);
+            Set_loaded_effect_location_bone(1, thread_2, 0x30, 2);
+            Set_loaded_effect_location_bone(0xB, thread_2, 0x30, 2);
+            Set_wait_timer(0x3C);
+            Clear_loaded_effect_ID(1);
+        }
+        entry_12 {
+            Clear_loaded_effect_ID(0xB);
+            Start_effect(2);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(2, 0, 0, 0x3C);
+        }
+        entry_13 {
+            Start_effect(3);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(3, 0, 0, 0x3C);
+        }
+        entry_14 {
+            Clear_loaded_effect_ID(3);
+            Start_effect(4);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(4, 0, 0, 0x3C);
+        }
+        entry_15 {
+            Clear_loaded_effect_ID(0xA);
+            Clear_loaded_effect_ID(4);
+            Start_effect(0xC);
+            Start_effect(0xD);
+            Start_effect(0xF);
+            Start_effect(0x10);
+            Set_wait_timer(1);
+            Set_loaded_effect_start_frame(0xC, 0x14);
+            Set_loaded_effect_location(0xC, 0, -0xA0, 0x14);
+            Change_effect_rotation(0xC, 0, -0x2D, 0);
+            Change_effect_scale(0xC, 0x19, 0x19, 0x19);
+            Change_effect_scale(0xD, 5, 5, 5);
+            Set_loaded_effect_location(0xD, 0, 0, 0);
+            Set_loaded_effect_location_bone(0xF, thread_3, 0x1056, 0);
+            Set_loaded_effect_location_bone(0x10, thread_3, 0x1011, 0);
+        }
+        entry_16 {
+            Clear_loaded_effect_ID(0xC);
+            Clear_loaded_effect_ID(0xD);
+            Clear_loaded_effect_ID(0xE);
+            Clear_loaded_effect_ID(0xF);
+            Clear_loaded_effect_ID(0x10);
+            Clear_loaded_effect_ID(0x11);
+            Clear_loaded_effect_ID(0x12);
+            Start_effect(9);
+            Set_wait_timer(1);
+            Set_loaded_effect_location(9, 0xA, -0xAA, 0);
+            Change_effect_scale(9, 0x24, 0x24, 0x24);
+            Change_effect_rotation(9, 0, 0x96, 0);
+        }
+    }
+}

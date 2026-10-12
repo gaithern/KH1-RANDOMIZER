@@ -8,6 +8,7 @@
 #include "lua_api.h"
 #include "overlay_state.h"
 #include "overlay_window.h"
+#include "tracker_server.h"
 
 // --- LUA-CALLABLE FUNCTIONS ---
 // Every function here runs on the game thread, inside
@@ -115,6 +116,12 @@ extern "C" int l_poll_connect_request(void* L) {
     return 1;
 }
 
+// Getter for the death link checkbox
+extern "C" int l_get_death_link(void* L) {
+    p_lua_pushboolean(L, GetDeathLink() ? 1 : 0);
+    return 1;
+}
+
 // Reconnection handler.  Used to auto reconnect in event 
 // of hot reload or a paused game causing disconnect.
 extern "C" int l_request_reconnect(void* L) {
@@ -125,6 +132,12 @@ extern "C" int l_request_reconnect(void* L) {
 
     p_lua_pushboolean(L, queued ? 1 : 0);
     return 1;
+}
+
+// Tracker API: replace the JSON served at GET /<path>.
+extern "C" int l_tracker_set(void* L) {
+    TrackerSet(p_lua_tolstring(L, 1, nullptr), p_lua_tolstring(L, 2, nullptr));
+    return 0;
 }
 
 // Define the registration table for functions lua
@@ -140,6 +153,8 @@ static const luaL_Reg kh1_overlay_lib[] = {
     {"poll_send_message", reinterpret_cast<void*>(l_poll_send_message)},
     {"poll_connect_request", reinterpret_cast<void*>(l_poll_connect_request)},
     {"request_reconnect", reinterpret_cast<void*>(l_request_reconnect)},
+    {"get_death_link", reinterpret_cast<void*>(l_get_death_link)},
+    {"tracker_set", reinterpret_cast<void*>(l_tracker_set)},
     {nullptr, nullptr}
 };
 

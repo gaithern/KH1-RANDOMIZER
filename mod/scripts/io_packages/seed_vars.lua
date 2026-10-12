@@ -6,6 +6,7 @@ local names = {
     "settings",
     "item_location_map",
     "location_spheres",
+    "progression_locations",
     "ap_costs",
     "mp_costs",
     "keyblade_stats",

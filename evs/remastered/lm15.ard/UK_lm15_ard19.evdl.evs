@@ -9,6 +9,7 @@ globals {
     EVENT_POSITION_Y = save_data2[0x10];
     EVENT_POSITION_Z = save_data2[0x12];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
+    INTERACT_IN_BATTLE = save_data[0x4E];
     TRINITY_EVENT_PARAM = save_data2[0x18];
     WHITE_TRINITIES_ACTIVATED = save_data2[0x6B];
     WHITE_TRINITY_LEARNED = bit[0x6ADC];
@@ -168,7 +169,7 @@ kgr 0 {
                 if (((0x7C <= local20) & (local20 <= 0x82)) & (local20 != 0x7E)) {
                     local2 = 1;
                 }
-                local19 = 0;
+                local19 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 if (local19 == 0) {
                     bit[0x6ACF] = local2;
                 } else {
@@ -189,7 +190,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(-0xDE);
                 local13 = Call_cos(-0xDE);
                 local12 = Push_actor_coord_X(mo_shll1_s2_lm6) - ((0x78 * local12) / 0x2710);
@@ -318,7 +319,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_TRITON_S_PALACE_WALL_LEFT_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -362,7 +363,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0x7A);
                 local13 = Call_cos(0x7A);
                 local12 = Push_actor_coord_X(mo_shll2_s2_lm6) - ((0x78 * local12) / 0x2710);
@@ -491,7 +492,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_TRITON_S_PALACE_NEAR_PATH_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -535,7 +536,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0xA9);
                 local13 = Call_cos(0xA9);
                 local12 = Push_actor_coord_X(mo_shll3_s2_lm6) - ((0x78 * local12) / 0x2710);
@@ -664,7 +665,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_TRITON_S_PALACE_WALL_RIGHT_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
@@ -708,7 +709,7 @@ kgr 0 {
         }
         main {
             while (1) {
-                local1 = 0;
+                local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
                 local12 = Call_sin(0x20);
                 local13 = Call_cos(0x20);
                 local12 = Push_actor_coord_X(mo_shll_th2_lm6) - ((0x78 * local12) / 0x2710);
@@ -860,7 +861,7 @@ kgr 0 {
             if (!(runtime.dword[0xA10] == 0)) goto L1;
             Make_non_pressable();
             Display_register_value(local0);
-            local1 = 0;
+            local1 = (INTERACT_IN_BATTLE == 0) & Check_battle_or_normal_mode();
             if (!(((local0 == 3) & (ATLANTICA_CLAM_TRITON_S_PALACE_THUNDER_CLAM == 0)) & (local1 == 0))) goto L2;
             local20 = Get_motion_number_actor(sora);
             local14 = 0;
