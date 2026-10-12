@@ -46,6 +46,3 @@ If you'd like make changes or add a lua script, they are automatically picked up
 
 ### MDLS and Other Binary Edits
 Currently, MDLS files are edited using a hex editor.  I recommend [ImHex](https://imhex.werwolv.net/) if you'd like to try to make changes to them.
-
-### Discord Notifications
-There is a custom discord notification GitHub action defined in `/.github/workflows/discord-notify.yml/`  This is to update the [KH1 Archipelago Randomizer Discord](https://www.kh1fmrando.com/discord) with changes to main (and main only, don't want to spam the channel).  The webhook URL is defined in a repository secret, and more channels can be added if we want to in the future.
