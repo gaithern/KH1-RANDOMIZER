@@ -2,7 +2,6 @@ LUAGUI_NAME = "1fmRandoAllowDestinyIslands"
 LUAGUI_AUTH = "denho, Gicu"
 LUAGUI_DESC = "Kingdom Hearts Rando Allow Landing in Destiny Islands"
 
-local seed_vars = require("seed_vars")
 local ok = false
 
 local function enable_di_landing(destiny_islands_item)
@@ -31,7 +30,7 @@ function _OnInit()
     if GAME_ID == 0xAF71841E and ENGINE_TYPE == "BACKEND" then
         require("VersionCheck")
         if canExecute then
-            ok = seed_vars["settings"]["destiny_islands"]
+            ok = true
         end
     else
         ConsolePrint("KH1 not detected, not running script")
