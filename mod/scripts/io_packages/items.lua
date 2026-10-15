@@ -265,7 +265,7 @@ local items = {
     [242] = { name = "Strength {0x7C}",         icon = "",              sort =  3042, filler = false },  -- vanilla: Blaze Gem
     [243] = { name = "Defense {0x7C}",          icon = "",              sort =  3051, filler = false },  -- vanilla: Frost Shard
     [244] = { name = "Item Slot {0x7C}",        icon = "",              sort =  3052, filler = false },  -- vanilla: Frost Gem
-    [245] = { name = "Accessory Slot {0x7C}",   icon = ICON.KEY_ITEM,   sort =  3061, filler = false },  -- vanilla: Thunder Shard
+    [245] = { name = "Accessory Slot {0x7C}",   icon = "",              sort =  3061, filler = false },  -- vanilla: Thunder Shard
     [246] = { name = "Thunder Gem",             icon = ICON.KEY_ITEM,   sort =  3062, filler = false },
     [247] = { name = "Shiny Crystal",           icon = ICON.KEY_ITEM,   sort =  3073, filler = false },
     [248] = { name = "Bright Shard",            icon = ICON.KEY_ITEM,   sort =  3081, filler = false },
