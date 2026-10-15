@@ -2,6 +2,7 @@ globals {
     CAN_PROGRESS_DI_DAY_1 = save_data[0x412];
     CAN_PROGRESS_DI_DAY_2 = save_data[0x400];
     CURRENT_WORLD = save_data2[0x1C];
+    DAY_2_MATERIALS_REQUIRED = save_data[0x4B];
     DESTINY_ISLANDS_PROGRESS = save_data[0x902];
     DI04_SET_NUMBER = save_data2[0x476];
     DIALOG_STATE = save_data2[3];
@@ -18,9 +19,9 @@ globals {
     DI_ROPE_COUNT = save_data[0x40E];
     GIFT_TABLE_ITEM = save_data2[0x3C4];
     HOMECOMING_ARRIVAL_PENDING = save_data[0x4D];
-    HOMECOMING_MATERIALS_REQUIRED = save_data[0x4B];
     KAIRI_GIVES_HINT = save_data[0x444];
     KAIRI_SAYS_YOURE_HOPELESS = save_data[0x445];
+    RAFT_FINISH = save_data[0x53];
     RIKU_RACE_COUNT = save_data[0x422];
     SORA_VS_RIKU_RIKU_SCORE = save_data[0x438];
     SORA_VS_RIKU_SORA_SCORE = save_data[0x436];
@@ -6580,7 +6581,7 @@ kgr 4 {
                 DI_ROPE_COUNT = DI_ROPE_COUNT + runtime.dword[0x914];
                 DI_DAY2_SUPPLY_COUNT_40F = DI_DAY2_SUPPLY_COUNT_40F + runtime.dword[0x918];
                 DI_DAY2_SUPPLY_COUNT_411 = DI_DAY2_SUPPLY_COUNT_411 + runtime.dword[0x91C];
-                runtime.dword[0x924] = HOMECOMING_MATERIALS_REQUIRED - Check_bag_item_count(ITEM_BLAZING_STONE);
+                runtime.dword[0x924] = DAY_2_MATERIALS_REQUIRED - Check_bag_item_count(ITEM_BLAZING_STONE);
                 runtime.dword[0x928] = 0;
                 runtime.dword[0x92C] = 0;
                 runtime.dword[0x930] = 0;
@@ -6595,8 +6596,10 @@ kgr 4 {
                     runtime.dword[0x938] = 0;
                     start(kairi_2.entry_18, level=6);
                     await(kairi_2.entry_18, level=6);
-                    start(kairi_2.entry_12, level=6);
-                    await(kairi_2.entry_12, level=6);
+                    if (RAFT_FINISH == 1) {
+                        start(kairi_2.entry_12, level=6);
+                        await(kairi_2.entry_12, level=6);
+                    }
                 }
                 if (((((runtime.dword[0x90C] == 0) & (runtime.dword[0x910] == 0)) & (runtime.dword[0x914] == 0)) & (runtime.dword[0x918] == 0)) & (runtime.dword[0x91C] == 0)) {
                     start(thread_4.entry_11, level=6);
