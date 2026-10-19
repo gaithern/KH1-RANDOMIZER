@@ -1,12 +1,13 @@
 ---@diagnostic disable: undefined-global
 
--- Feeds the tracker API served by kh1_overlay on http://127.0.0.1:47111
+-- Feeds the tracker API served by client.tracker_server on http://127.0.0.1:47111
 -- (see TRACKER_FEED.md).  /state is the client's live state; every seed
 -- JSON file is served as-is under its own name.  Trackers do the rest.
 
 local json            = require("json")
 local kh1_lua_library = require("kh1_lua_library")
 local state           = require("client.state")
+local tracker_server  = require("client.tracker_server")
 
 local SEED_FILES = {
     "ap_costs",
@@ -50,16 +51,14 @@ local function build_state()
 end
 
 local function init()
-    local overlay = state.overlay
-    enabled = overlay ~= nil and type(overlay.tracker_set) == "function"
+    enabled = tracker_server.start()
     if not enabled then
-        ConsolePrint("Tracker API disabled: kh1_overlay has no tracker support")
         return
     end
     for _, name in ipairs(SEED_FILES) do
         local f = io.open(SCRIPT_PATH .. "/io_packages/json/" .. name .. ".json", "r")
         if f then
-            overlay.tracker_set(name, f:read("*a"))
+            tracker_server.set_document(name, f:read("*a"))
             f:close()
         end
     end
@@ -68,9 +67,11 @@ end
 local function frame()
     if not enabled then return end
     local current = signature()
-    if current == last_signature then return end
-    last_signature = current
-    state.overlay.tracker_set("state", build_state())
+    if current ~= last_signature then
+        last_signature = current
+        tracker_server.set_document("state", build_state())
+    end
+    tracker_server.frame()
 end
 
 return {

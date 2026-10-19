@@ -5,7 +5,7 @@ local seed_vars       = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
 local state           = require("client.state")
 local notifications   = require("client.notifications")
-local overlay_bridge  = require("client.overlay_bridge")
+local connection_details = require("client.connection_details")
 local kh1_items       = require("items")
 
 local MAX_CONNECT_FAILURES = 3
@@ -52,10 +52,10 @@ local function connect(server, slot, password)
         state.connect_attempt_time = nil
         if state.connect_failures >= MAX_CONNECT_FAILURES then
             state.ap = nil
-            overlay_bridge.set_error("3 connection failures, stopping: " .. tostring(msg))
+            state.connection_error = "3 connection failures, stopping: " .. tostring(msg)
             notify("3 failures, stopping.")
         else
-            overlay_bridge.set_error("Failed to connect: " .. tostring(msg))
+            state.connection_error = "Failed to connect: " .. tostring(msg)
             notify("Failed to connect...")
         end
     end
@@ -64,7 +64,7 @@ local function connect(server, slot, password)
         ConsolePrint("Socket disconnected")
         state.is_connected = false
         state.connect_attempt_time = nil
-        overlay_bridge.set_error("Disconnected from host")
+        state.connection_error = "Disconnected from host"
         notify("Disconnected...")
         state.reset_game_state()
     end
@@ -81,7 +81,7 @@ local function connect(server, slot, password)
             ConsolePrint("Slot connected, but seed mismatch: expected " .. tostring(expected_seed) .. ", got " .. tostring(slot_data.seed))
             state.ap:reset()
             drop_client()
-            overlay_bridge.set_error("Seed mismatch: the installed mod's seed does not match the connected slot's seed")
+            state.connection_error = "Seed mismatch: the installed mod's seed does not match the connected slot's seed"
             notify("Seed mismatch!")
             return
         end
@@ -89,7 +89,8 @@ local function connect(server, slot, password)
         ConsolePrint("Slot connected successfully!")
         state.is_connected = true
         state.connect_attempt_time = nil
-        overlay_bridge.set_error(nil)
+        state.connection_error = nil
+        connection_details.save(server, slot, password, true)
         notify("Connected!")
         state.reset_game_state()
         state.game.slot_data = slot_data
@@ -102,7 +103,7 @@ local function connect(server, slot, password)
         ConsolePrint("Slot refused: " .. reason_text)
         state.is_connected = false
         state.connect_attempt_time = nil
-        overlay_bridge.set_error("Slot refused: " .. reason_text)
+        state.connection_error = "Slot refused: " .. reason_text
         notify("Slot refused:", reason_text)
     end
 
@@ -139,13 +140,12 @@ local function connect(server, slot, password)
 
     local function on_print(msg)
         ConsolePrint(msg)
-        overlay_bridge.push_chat_message(msg)
     end
 
     local function on_print_json(msg, extra)
         local rendered_ok, rendered = pcall(state.ap.render_json, state.ap, msg, state.message_format)
         if rendered_ok and rendered then
-            overlay_bridge.push_chat_message(rendered)
+            ConsolePrint(rendered)
         end
         if extra.type == "ItemSend" then
             notifications.item_sent(extra)
@@ -180,14 +180,16 @@ end
 
 local function request_connect(pending)
     if pending.slot == "" then
-        overlay_bridge.set_error("No slot name entered")
+        state.connection_error = "No slot name entered"
         notify("No slot name!")
         return
     end
     ConsolePrint("Connecting to: " .. pending.slot)
+    connection_details.save(pending.host, pending.slot, pending.password, false)
     state.connect_failures = 0
     state.last_attempted_slot = pending.slot
-    overlay_bridge.set_error(nil)
+    state.last_attempted_host = pending.host
+    state.connection_error = nil
     state.connect_attempt_time = os.clock()
     connect(pending.host, pending.slot, pending.password)
     notify("Attempting to connect...")
@@ -208,7 +210,7 @@ local function check_timeout()
     if state.connect_attempt_time and not state.is_connected
         and (os.clock() - state.connect_attempt_time) > CONNECT_TIMEOUT_SECONDS then
         drop_client()
-        overlay_bridge.set_error("Host did not respond (connection timed out)")
+        state.connection_error = "Host did not respond (connection timed out)"
         notify("Connection timed out.")
     end
 end

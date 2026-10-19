@@ -6,9 +6,6 @@ local state = {
     ---@type any
     ap = nil,
 
-    ---@type any
-    overlay = nil,
-
     game_name = "Kingdom Hearts",
     items_handling = 3,
     client_version = {1, 1, 0},
@@ -18,7 +15,9 @@ local state = {
     death_link = false,
     connect_failures = 0,
     connect_attempt_time = nil,
+    connection_error = nil,
     last_attempted_slot = nil,
+    last_attempted_host = nil,
 
     sync = {
         last_sent_location_index = 0,
