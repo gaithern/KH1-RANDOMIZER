@@ -1,6 +1,5 @@
 ---@diagnostic disable: undefined-global
 
-local cffi   = require("cffi")
 local json   = require("json")
 local native = require("helpers.native")
 local state  = require("client.state")
@@ -12,20 +11,41 @@ local function details_block()
     return native.persistent_block(DETAILS_SLOT_NAME, DETAILS_SIZE)
 end
 
+local function read_text(address, maximum_length)
+    local bytes = ReadArray(address, maximum_length, true)
+    local characters = {}
+    for i = 1, #bytes do
+        if bytes[i] == 0 then
+            break
+        end
+        characters[i] = string.char(bytes[i])
+    end
+    return table.concat(characters)
+end
+
+local function write_text(address, text)
+    local bytes = {}
+    for i = 1, #text do
+        bytes[i] = string.byte(text, i)
+    end
+    bytes[#text + 1] = 0
+    WriteArray(address, bytes, true)
+end
+
 local function load()
     local block = details_block()
     if block == 0 then
-        return nil
+        return nil, "could not open the shared memory block"
     end
-    local text = cffi.string(cffi.cast("const char*", block))
+    local text = read_text(block, DETAILS_SIZE)
     if text == "" then
-        return nil
+        return nil, "nothing has been saved yet"
     end
     local decoded, details = pcall(json.decode, text)
     if not decoded or type(details) ~= "table" then
-        return nil
+        return nil, "could not decode the saved text: " .. tostring(details)
     end
-    return details
+    return details, nil
 end
 
 local function write(details)
@@ -37,7 +57,7 @@ local function write(details)
     if #text >= DETAILS_SIZE then
         return
     end
-    cffi.copy(cffi.cast("char*", block), text, #text + 1)
+    write_text(block, text)
 end
 
 local function save(host, slot, password, reconnect)

@@ -46,11 +46,22 @@ local LISTENER_SLOT_NAME = "tracker_server_listener"
 local documents = {}
 local connections = {}
 local listener = INVALID_SOCKET
+local listener_slot = 0
 local started = false
 local frames_until_bind_retry = 0
 local receive_buffer = cffi.new("char[?]", RECEIVE_BUFFER_SIZE)
+local receive_buffer_address = cffi.tonumber(cffi.cast("uintptr_t", receive_buffer))
 local non_blocking_flag = cffi.new("uint32_t[1]", 1)
 local close_when_lua_closes = nil
+
+local function received_text(count)
+    local bytes = ReadArray(receive_buffer_address, count, true)
+    local characters = {}
+    for i = 1, #bytes do
+        characters[i] = string.char(bytes[i])
+    end
+    return table.concat(characters)
+end
 
 local function would_block()
     return cffi.tonumber(winsock.WSAGetLastError()) == WOULD_BLOCK_ERROR
@@ -60,33 +71,20 @@ local function make_non_blocking(socket)
     winsock.ioctlsocket(socket, NON_BLOCKING_COMMAND, non_blocking_flag)
 end
 
-local function listener_slot()
-    return native.persistent_slot(LISTENER_SLOT_NAME)
-end
-
-local function forget_listener()
-    local slot = listener_slot()
-    if slot ~= 0 then
-        native.write_slot(slot, 0)
+local function remember_listener(socket)
+    if listener_slot ~= 0 then
+        native.write_slot(listener_slot, socket)
     end
 end
 
 local function close_previous_listener()
-    local slot = listener_slot()
-    if slot == 0 then
+    if listener_slot == 0 then
         return
     end
-    local previous = native.read_slot(slot)
+    local previous = native.read_slot(listener_slot)
     if previous ~= 0 then
         winsock.closesocket(previous)
-        native.write_slot(slot, 0)
-    end
-end
-
-local function remember_listener(socket)
-    local slot = listener_slot()
-    if slot ~= 0 then
-        native.write_slot(slot, socket)
+        remember_listener(0)
     end
 end
 
@@ -129,7 +127,7 @@ local function close_everything()
     if listener ~= INVALID_SOCKET then
         winsock.closesocket(listener)
         listener = INVALID_SOCKET
-        forget_listener()
+        remember_listener(0)
     end
 end
 
@@ -181,7 +179,7 @@ local function receive_request(connection)
     if count == SOCKET_ERROR then
         return would_block()
     end
-    connection.request = connection.request .. cffi.string(receive_buffer, count)
+    connection.request = connection.request .. received_text(count)
     if string.find(connection.request, "\r\n\r\n", 1, true) ~= nil then
         connection.response = response_for_request(connection.request)
     elseif #connection.request > MAXIMUM_REQUEST_SIZE then
@@ -237,6 +235,7 @@ local function start()
         ConsolePrint("Tracker API disabled: could not start Winsock")
         return false
     end
+    listener_slot = native.persistent_slot(LISTENER_SLOT_NAME)
     close_previous_listener()
     close_when_lua_closes = setmetatable({}, { __gc = close_everything })
     started = true

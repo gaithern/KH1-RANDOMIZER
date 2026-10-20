@@ -9,7 +9,6 @@ local game_state            = require("client.game_state")
 local map_update            = require("client.map_update")
 local tracker_feed          = require("client.tracker_feed")
 local archipelago_menu      = require("archipelago_menu")
-local archipelago_main_menu = require("archipelago_main_menu")
 
 local ERROR_LOG_INTERVAL_FRAMES = 600
 
@@ -74,21 +73,21 @@ local function set_death_link(enabled)
 end
 
 local function setup_archipelago_menu()
-    if not archipelago_main_menu.install() then
-        ConsolePrint("Could not add the Archipelago menu to the pause menu")
-        return
-    end
-    archipelago_menu.set_handlers({
+    local added, problem = archipelago_menu.install({
         connect = connect_from_menu,
         status_text = connection_status_text,
         death_link = state.death_link_enabled,
         set_death_link = set_death_link,
     })
+    if not added then
+        ConsolePrint("Could not add the Archipelago menu to the pause menu: " .. tostring(problem))
+    end
 end
 
 local function restore_previous_connection()
-    local details = connection_details.load()
+    local details, problem = connection_details.load()
     if details == nil then
+        ConsolePrint("No saved connection details: " .. tostring(problem))
         return
     end
     state.death_link = details.death_link == true
@@ -113,8 +112,14 @@ function _OnInit()
         state.message_format = state.AP.RenderFormat.TEXT
         game_state.init()
         tracker_feed.init()
-        setup_archipelago_menu()
-        restore_previous_connection()
+        local menu_worked, menu_error = pcall(setup_archipelago_menu)
+        if not menu_worked then
+            ConsolePrint("Archipelago menu setup failed: " .. tostring(menu_error))
+        end
+        local restore_worked, restore_error = pcall(restore_previous_connection)
+        if not restore_worked then
+            ConsolePrint("Restoring the previous connection failed: " .. tostring(restore_error))
+        end
     else
         ConsolePrint("KH1 not detected, not running script")
     end
