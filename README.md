@@ -10,15 +10,17 @@ The core mod for Kingdom Hearts Final Mix Archipelago Randomizer functionality. 
 ## Repository Layout
 
 The repository contains:
-- The mod itself (files in `/mod/`) including the lua scripts, DLL for the client/tracker API, assembled event script binaries, mdls files for enemies and summons and a few art assets such as for the title screen.
+- The mod itself (files in `/mod/`) including the lua scripts, assembled event script binaries, mdls files for enemies and summons and a few art assets such as for the title screen.
 - The disassembled EV files (`/evs/`) that contain the non-binary event script changes.  Disassembled and can be reassembled back into binaries using [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS).
 - Scripts to build the mod.
 
-## KH1Overlay
+## Archipelago Menu
 
-A small native DLL that injects Dear ImGUI into the game process, exposing lua-callable functions that `1fmRandoClient.lua` uses to display connection info and some additional game/seed info.
+The pause menu has an extra "Archipelago" row (hidden at save points).  It opens an in-game menu where you type the server address, slot name and password with the keyboard (Ctrl+V pastes), toggle Death Link, view the seed's settings, and connect.  The connection status is shown in the menu's help box.  Connection details survive a script reload, and the client reconnects automatically after one.
 
-It also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47111`) that serves checks and obtained items as JSON for external trackers, online or offline.  See [TRACKER_FEED.md](TRACKER_FEED.md).
+## Tracker API
+
+The client also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47111`) that serves checks and obtained items as JSON for external trackers, online or offline.  It is written in Lua (`/mod/scripts/io_packages/client/tracker_server.lua`) and needs no extra DLL.  See [TRACKER_FEED.md](TRACKER_FEED.md).
 
 ## Installing
 - Set up OpenKH for your preferred platform (Steam and EGS are supported).  Ensure you have both lua backend and panacea installed.
@@ -33,13 +35,6 @@ If you would like to build this mod (like if you're making changes to it), `buil
 
 ### EVS Edits
 If you'd like to make EVS changes, the `build.py` script automatically picks up and assembles the EVS files in the `/evs/` folder.  This folder should have the same structure as the extracted game files.  `build.py` assumes the location of `KH1-EVDL-TOOLS` and extracted KH1 data (location's on my PC), so you'll have to overwrite those locations.
-
-### KH1Overlay
-If you'd like to make a change to KH1Overlay, the code lives in `/KH1Overlay/`, split by subject area.  Like EVS edits, `build.py` will automatically build the project when you run it.
-
-Dear ImGui is not checked into this repository.  `build_imgui.py` downloads the pinned release tag, extracts only the files the overlay compiles, and applies the local patches listed in that script, all into `/KH1Overlay/external/imgui/` (gitignored).  `build.py` runs it for you, and so does the project's pre-build step, so building from Visual Studio or `KH1Overlay/build.ps1` works the same way.  The first build needs network access; after that the extracted copy is reused.
-
-CivetWeb, which serves the tracker API, is handled the same way: `build_civetweb.py` fetches the pinned release into `/KH1Overlay/external/civetweb/` (gitignored), and both `build.py` and the pre-build step run it.
 
 ### Lua Edits
 If you'd like make changes or add a lua script, they are automatically picked up in `build.py` and added to `mod.yml`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.

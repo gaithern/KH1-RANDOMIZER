@@ -3,6 +3,8 @@ LUAGUI_NAME = "1fmRandoLevelUpRewards"
 LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Handle Level Up Rewards"
 
+local kh1_lua_library = require("kh1_lua_library")
+
 local applied = false
 
 local stats_base_offset    = 0x3AC0 
@@ -38,7 +40,7 @@ end
 function _OnFrame()
     if not canExecute then return end
     if applied then return end
-    if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
+    if not kh1_lua_library.is_btltbl_loaded() then return end
     apply_level_up_rewards()
     applied = true
 end
