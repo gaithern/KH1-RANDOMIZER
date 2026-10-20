@@ -11,6 +11,7 @@ local names = {
     "mp_costs",
     "keyblade_stats",
     "spell_effectiveness",
+    "party_level_ups",
 }
 
 local function load_json_dir(dir_path)

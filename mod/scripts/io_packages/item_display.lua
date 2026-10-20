@@ -51,7 +51,7 @@ end
 
 local function fallback_name(item_id)
     local kind = items.kind_of(item_id)
-    if kind == "shared_ability" or kind == "sora_ability" then
+    if kind == "shared_ability" or kind == "sora_ability" or kind == "donald_ability" or kind == "goofy_ability" then
         return "Unknown Ability"
     end
     if kind == "item" then
