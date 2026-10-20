@@ -3,6 +3,7 @@ local text = require("modules.menus.text")
 
 local MAXIMUM_LENGTHS = { host = 30, slot = 16, password = 30 }
 local MAXIMUM_LISTED_VALUES = 8
+local KEY_F4 = 0x73
 
 local fields = { host = "archipelago.gg:", slot = "", password = "" }
 local handlers = {}
@@ -93,6 +94,7 @@ local function install(new_handlers)
         label = "Archipelago",
         help = "Connect to an Archipelago server.",
         title = "Archipelago",
+        title_screen = { key = KEY_F4 },
         rows = {
             text_row("Host", "host", false),
             text_row("Slot", "slot", false),
@@ -130,4 +132,5 @@ end
 return {
     install = install,
     set_fields = set_fields,
+    frame = menus.frame,
 }

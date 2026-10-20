@@ -131,6 +131,7 @@ function _OnFrame()
     run_section("game state",    game_state.frame)
     run_section("map update",    map_update.frame)
     run_section("tracker feed",  tracker_feed.frame)
+    run_section("menus",         archipelago_menu.frame)
     run_section("location sync", connection.send_pending_locations)
     run_section("network poll",  connection.poll)
 end
