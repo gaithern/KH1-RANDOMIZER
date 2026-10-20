@@ -13,13 +13,13 @@ local SEED_FILES = {
     "ap_costs",
     "item_location_map",
     "items",
-    "keyblade_stats",
     "location_spheres",
     "locations",
     "mp_costs",
     "progression_locations",
     "settings",
     "spell_effectiveness",
+    "weapon_stats",
 }
 
 local enabled = false

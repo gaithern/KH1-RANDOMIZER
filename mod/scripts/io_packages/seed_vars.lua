@@ -9,7 +9,7 @@ local names = {
     "progression_locations",
     "ap_costs",
     "mp_costs",
-    "keyblade_stats",
+    "weapon_stats",
     "spell_effectiveness",
     "party_level_ups",
 }
