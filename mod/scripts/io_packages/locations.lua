@@ -9,6 +9,7 @@ local function build()
     local ansems_reports_address       = reports
     local olympus_flags_address        = continue             + 0xF36
     local event_flags                  = evidence
+    local rare_heartless_flags_address = saveData1            + 0x628
 
     return {
         [2650011] = {
@@ -5509,6 +5510,120 @@ local function build()
             gift = 0x0E,
             address = olympus_flags_address + 0x2,
             bit = 0,
+            value = 0x01,
+        },
+        [2659201] = {
+            name = "White Mushroom Fire x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659202] = {
+            name = "White Mushroom Blizzard x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659203] = {
+            name = "White Mushroom Thunder x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 3,
+            value = 0x01,
+        },
+        [2659204] = {
+            name = "White Mushroom Cure x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 4,
+            value = 0x01,
+        },
+        [2659205] = {
+            name = "White Mushroom Gravity x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 5,
+            value = 0x01,
+        },
+        [2659206] = {
+            name = "White Mushroom Stop x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 6,
+            value = 0x01,
+        },
+        [2659207] = {
+            name = "White Mushroom Aero x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 7,
+            value = 0x01,
+        },
+        [2659208] = {
+            name = "Rare Truffle Juggle 100 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 8,
+            value = 0x01,
+        },
+        [2659209] = {
+            name = "Pink Agaricus 100 Hits Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659210] = {
+            name = "Gigas Shadow 7th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659211] = {
+            name = "Sniperwild 30th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 3,
+            value = 0x01,
+        },
+        [2659212] = {
+            name = "Pot Scorpion 11th Pot Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 4,
+            value = 0x01,
+        },
+        [2659213] = {
+            name = "Grand Ghost Defeat Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 5,
+            value = 0x01,
+        },
+        [2659214] = {
+            name = "Chimera 9 Heads Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 6,
+            value = 0x01,
+        },
+        [2659215] = {
+            name = "Jet Balloon Defeat Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 7,
+            value = 0x01,
+        },
+        [2659216] = {
+            name = "Neoshadow 7th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 8,
+            value = 0x01,
+        },
+        [2659217] = {
+            name = "Black Fungi Defeat Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659218] = {
+            name = "Stealth Soldier Defeat Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659219] = {
+            name = "Black Ballade 4 Strikes Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 3,
             value = 0x01,
         },
     }
