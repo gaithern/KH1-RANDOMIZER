@@ -79,8 +79,7 @@ local function connect(server, slot, password)
         local expected_seed = seed_vars["settings"] and seed_vars["settings"]["seed"]
         if expected_seed and slot_data.seed and tostring(slot_data.seed) ~= tostring(expected_seed) then
             ConsolePrint("Slot connected, but seed mismatch: expected " .. tostring(expected_seed) .. ", got " .. tostring(slot_data.seed))
-            state.ap:reset()
-            drop_client()
+            state.drop_requested = true
             state.connection_error = "Seed mismatch: the installed mod's seed does not match the connected slot's seed"
             notify("Seed mismatch!")
             return
@@ -187,6 +186,7 @@ local function request_connect(pending)
     ConsolePrint("Connecting to: " .. pending.slot)
     connection_details.save(pending.host, pending.slot, pending.password, false)
     state.connect_failures = 0
+    state.drop_requested = false
     state.last_attempted_slot = pending.slot
     state.last_attempted_host = pending.host
     state.connection_error = nil
@@ -253,7 +253,17 @@ local function send_goal()
     state.ap:StatusUpdate(state.AP.ClientStatus.GOAL)
 end
 
+local function drop_client_if_requested()
+    if not state.drop_requested then return end
+    state.drop_requested = false
+    if state.ap then
+        state.ap:reset()
+    end
+    drop_client()
+end
+
 local function frame()
+    drop_client_if_requested()
     refresh_connection_state()
     check_timeout()
 end

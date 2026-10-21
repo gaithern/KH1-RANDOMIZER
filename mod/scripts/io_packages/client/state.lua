@@ -16,6 +16,7 @@ local state = {
     connect_failures = 0,
     connect_attempt_time = nil,
     connection_error = nil,
+    drop_requested = false,
     last_attempted_slot = nil,
     last_attempted_host = nil,
 
