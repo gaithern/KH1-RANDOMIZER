@@ -10,7 +10,6 @@ local names = {
     "ap_costs",
     "mp_costs",
     "weapon_stats",
-    "keyblade_elements",
     "spell_effectiveness",
     "party_level_ups",
 }
