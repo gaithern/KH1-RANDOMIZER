@@ -1,7 +1,5 @@
 ---@diagnostic disable: undefined-global
 
-local FLAGS_OFFSET = 0x628
-
 local locations = {
     { location_id = 2659201, key = "white_mushroom_fire",     flag_byte = 0, flag_bit = 1, tables = { { bd_name = "ex_2350.bd", offset = 0x220 }, { bd_name = "ex_2351.bd", offset = 0x220 } } },
     { location_id = 2659202, key = "white_mushroom_blizzard", flag_byte = 0, flag_bit = 2, tables = { { bd_name = "ex_2350.bd", offset = 0x254 }, { bd_name = "ex_2351.bd", offset = 0x254 } } },
@@ -28,7 +26,7 @@ local locations = {
 }
 
 local function flag_address(location)
-    return saveData1 + FLAGS_OFFSET + location.flag_byte
+    return RARE_HEARTLESS_DROP_FLAGS_1 + location.flag_byte
 end
 
 local function find(key)

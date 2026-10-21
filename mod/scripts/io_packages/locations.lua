@@ -9,7 +9,7 @@ local function build()
     local ansems_reports_address       = reports
     local olympus_flags_address        = continue             + 0xF36
     local event_flags                  = evidence
-    local rare_heartless_flags_address = saveData1            + 0x628
+    local rare_heartless_flags_address = RARE_HEARTLESS_DROP_FLAGS_1
 
     return {
         [2650011] = {
