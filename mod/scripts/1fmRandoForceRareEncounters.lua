@@ -1,15 +1,22 @@
 ---@diagnostic disable: undefined-global
 LUAGUI_NAME = "1fmRandoForceRareEncounters"
 LUAGUI_AUTH = "Gicu"
-LUAGUI_DESC = "Forces the rare Heartless encounters the randomizer would otherwise make unreachable, until their drop is collected"
+LUAGUI_DESC = "Forces the rare Heartless encounters until their drop is collected"
 
 local one_time_drop_locations = require("one_time_drop_locations")
 
+local white_mushroom_keys = {
+    "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_cure",
+    "white_mushroom_gravity", "white_mushroom_stop", "white_mushroom_aero",
+}
+
 local encounters = {
-    { location_key = "sniperwild",   set_byte_offset = -0xC7, rare_set = 0x13, normal_set = 0x03, progress_offset = 0x12, progress_needed = 0x14 },
-    { location_key = "gigas_shadow", set_byte_offset = -0xAD, rare_set = 0x14, normal_set = 0x0E, progress_offset = 0x07, progress_needed = 0x30 },
-    { location_key = "pot_scorpion", set_byte_offset = -0x7E, rare_set = 0x11, normal_set = 0x0F, progress_offset = 0x08, progress_needed = 0x58 },
-    { location_key = "jet_balloon",  set_byte_offset = -0x37, rare_set = 0x14, normal_set = 0x0E, progress_offset = 0x0D, progress_needed = 0x64 },
+    { location_keys = { "sniperwild" },    set_byte_offset = -0xC7, rare_set = 0x13, normal_set = 0x03, progress_offset = 0x12, progress_needed = 0x14 },
+    { location_keys = { "gigas_shadow" },  set_byte_offset = -0xAD, rare_set = 0x14, normal_set = 0x0E, progress_offset = 0x07, progress_needed = 0x30 },
+    { location_keys = { "pot_scorpion" },  set_byte_offset = -0x7E, rare_set = 0x11, normal_set = 0x0F, progress_offset = 0x08, progress_needed = 0x58 },
+    { location_keys = { "jet_balloon" },   set_byte_offset = -0x37, rare_set = 0x14, normal_set = 0x0E, progress_offset = 0x0D, progress_needed = 0x64 },
+    { location_keys = { "black_ballade" }, set_byte_offset = -0xA2, rare_set = 0x0E, normal_set = 0x0D, progress_offset = 0x05, progress_needed = 0x5F },
+    { location_keys = white_mushroom_keys, set_byte_offset = -0x98, rare_set = 0x13, normal_set = 0x0E, progress_offset = 0x05, progress_needed = 0x5F },
 }
 
 local ok = false
@@ -22,7 +29,12 @@ local function should_force(encounter)
     if not story_complete(encounter) then
         return false
     end
-    return not one_time_drop_locations.is_collected(encounter.location_key)
+    for _, location_key in ipairs(encounter.location_keys) do
+        if not one_time_drop_locations.is_collected(location_key) then
+            return true
+        end
+    end
+    return false
 end
 
 local function update_forced_encounters()
