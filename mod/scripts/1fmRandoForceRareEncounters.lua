@@ -30,6 +30,10 @@ local function halloween_town_complete()
     return ReadByte(HALLOWEEN_TOWN_PROGRESS) >= 0x6A
 end
 
+local function monstro_complete()
+    return ReadByte(MONSTRO_PROGRESS) >= 0x3F
+end
+
 local function neverland_complete()
     return ReadByte(NEVERLAND_PROGRESS) >= 0x64
 end
@@ -54,6 +58,8 @@ local encounters = {
     { location_keys = { "pot_scorpion" },                set_byte_offset = -0x7E, rare_set = 0x11, normal_set = 0x0F, story_complete = agrabah_complete },
     { location_keys = { "jet_balloon" },                 set_byte_offset = -0x37, rare_set = 0x14, normal_set = 0x0E, story_complete = neverland_complete },
     { location_keys = { "black_ballade" },               set_byte_offset = -0xA2, rare_set = 0x0E, normal_set = 0x0D, story_complete = deep_jungle_complete },
+    { location_keys = { "grand_ghost" },                 set_byte_offset = -0x48, rare_set = 0x0F, normal_set = 0x0E, story_complete = monstro_complete },
+    { location_keys = { "chimera" },                     set_byte_offset = -0x56, rare_set = 0x11, normal_set = 0x0F, story_complete = halloween_town_complete },
     { location_keys = basic_white_mushroom_keys,         set_byte_offset = -0xC2, rare_set = 0x13, normal_set = 0x10, story_complete = traverse_town_complete },
     { location_keys = basic_white_mushroom_keys,         set_byte_offset = -0xAA, rare_set = 0x13, normal_set = 0x0E, story_complete = wonderland_complete },
     { location_keys = camp_white_mushroom_keys,          set_byte_offset = -0x98, rare_set = 0x13, normal_set = 0x0E, story_complete = deep_jungle_complete },
