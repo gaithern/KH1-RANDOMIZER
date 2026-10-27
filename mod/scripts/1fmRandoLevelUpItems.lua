@@ -21,7 +21,7 @@ end
 
 local function process_level(level)
     local loc_map = seed_vars["item_location_map"]
-    local slot1_item = loc_map[tostring(2658000 + level)]
+    local slot1_item = seed_vars["sora_level_ups"][tostring(level)]
     local slot2_item = loc_map[tostring(2658100 + level)]
 
     local line1, line2 = nil, nil

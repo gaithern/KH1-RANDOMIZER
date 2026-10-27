@@ -11,6 +11,7 @@ local names = {
     "mp_costs",
     "weapon_stats",
     "spell_effectiveness",
+    "sora_level_ups",
     "party_level_ups",
 }
 
