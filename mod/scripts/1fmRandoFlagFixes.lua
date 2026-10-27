@@ -4,6 +4,8 @@ LUAGUI_DESC = "Kingdom Hearts 1FM AP Flag Fixes"
 
 debug_on = true
 
+local SNIPERWILD_RARE_SET = 0x13
+
 local prevTTFlag = 0
 
 debug_statements = {}
@@ -54,7 +56,9 @@ function FlagFixes()
     if ReadByte(cutsceneFlags + 4) >= 0x31 then
         debugPrint("Section 11")
         WriteByte(worldFlagBase - 0xBE, 2) -- Cid in accessory shop
-        WriteByte(worldFlagBase - 0xC7, 3)
+        if ReadByte(worldFlagBase - 0xC7) ~= SNIPERWILD_RARE_SET then
+            WriteByte(worldFlagBase - 0xC7, 3)
+        end
     end
     if ReadByte(cutsceneFlags + 9) < 0x14 then -- Fix monstro DI cutscene softlock
         debugPrint("Section 12")

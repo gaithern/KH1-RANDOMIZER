@@ -9,6 +9,7 @@ local function build()
     local ansems_reports_address       = reports
     local olympus_flags_address        = continue             + 0xF36
     local event_flags                  = evidence
+    local rare_heartless_flags_address = RARE_HEARTLESS_DROP_FLAGS_1
 
     return {
         [2650011] = {
@@ -5509,6 +5510,120 @@ local function build()
             gift = 0x0E,
             address = olympus_flags_address + 0x2,
             bit = 0,
+            value = 0x01,
+        },
+        [2659201] = {
+            name = "Traverse Town Red Room White Mushroom Fire x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659202] = {
+            name = "Wonderland Lotus Forest White Mushroom Blizzard x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659203] = {
+            name = "End of the World Linked Worlds White Mushroom Thunder x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 3,
+            value = 0x01,
+        },
+        [2659204] = {
+            name = "Deep Jungle Camp White Mushroom Cure x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 4,
+            value = 0x01,
+        },
+        [2659205] = {
+            name = "Agrabah Cave of Wonders Treasure Room White Mushroom Gravity x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 5,
+            value = 0x01,
+        },
+        [2659206] = {
+            name = "Atlantica Below Deck White Mushroom Stop x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 6,
+            value = 0x01,
+        },
+        [2659207] = {
+            name = "Halloween Town Graveyard White Mushroom Aero x3 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 7,
+            value = 0x01,
+        },
+        [2659208] = {
+            name = "Halloween Town Bridge Rare Truffle Juggle 100 Reward",
+            address = rare_heartless_flags_address + 0x0,
+            bit = 8,
+            value = 0x01,
+        },
+        [2659209] = {
+            name = "Deep Jungle Tree House Pink Agaricus 100 Hits Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659210] = {
+            name = "Wonderland Bizarre Room Gigas Shadow 7th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659211] = {
+            name = "Traverse Town 2nd District Sniperwild 30th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 3,
+            value = 0x01,
+        },
+        [2659212] = {
+            name = "Agrabah Palace Gates Pot Scorpion 11th Pot Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 4,
+            value = 0x01,
+        },
+        [2659213] = {
+            name = "Monstro Stomach Grand Ghost Defeat Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 5,
+            value = 0x01,
+        },
+        [2659214] = {
+            name = "Halloween Town Manor Ruins Chimera 9 Heads Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 6,
+            value = 0x01,
+        },
+        [2659215] = {
+            name = "Neverland Pirate Ship Jet Balloon Defeat Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 7,
+            value = 0x01,
+        },
+        [2659216] = {
+            name = "End of the World Linked Worlds Neoshadow 7th Defeated Reward",
+            address = rare_heartless_flags_address + 0x1,
+            bit = 8,
+            value = 0x01,
+        },
+        [2659217] = {
+            name = "Agrabah Bazaar Black Fungi Defeat Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 1,
+            value = 0x01,
+        },
+        [2659218] = {
+            name = "Hollow Bastion Grand Hall Stealth Soldier Defeat Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 2,
+            value = 0x01,
+        },
+        [2659219] = {
+            name = "Deep Jungle Bamboo Thicket Black Ballade 4 Strikes Reward",
+            address = rare_heartless_flags_address + 0x2,
+            bit = 3,
             value = 0x01,
         },
     }
