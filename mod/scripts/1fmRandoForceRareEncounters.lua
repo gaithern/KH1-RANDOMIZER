@@ -38,13 +38,6 @@ local function neverland_complete()
     return ReadByte(NEVERLAND_PROGRESS) >= 0x64
 end
 
-local function neverland_complete_and_jet_balloon_collected()
-    if not neverland_complete() then
-        return false
-    end
-    return one_time_drop_locations.is_collected("jet_balloon")
-end
-
 local function linked_worlds_first_fight_cleared()
     return kh1_lua_library.ReadBit(EOTW_LINKED_WORLDS_FIRST_FIGHT_CLEARED, EOTW_LINKED_WORLDS_FIRST_FIGHT_CLEARED_BIT) == 1
 end
@@ -64,7 +57,7 @@ local encounters = {
     { location_keys = { "gigas_shadow" },                set_byte_offset = -0xAD, rare_set = 0x14, normal_set = 0x0E, story_complete = wonderland_complete },
     { location_keys = { "pot_scorpion" },                set_byte_offset = -0x7E, rare_set = 0x11, normal_set = 0x0F, story_complete = agrabah_complete },
     { location_keys = { "jet_balloon" },                 set_byte_offset = -0x37, rare_set = 0x14, normal_set = 0x0E, story_complete = neverland_complete },
-    { location_keys = { "rare_truffle" },                set_byte_offset = -0x37, rare_set = 0x13, normal_set = 0x0E, story_complete = neverland_complete_and_jet_balloon_collected },
+    { location_keys = { "rare_truffle" },                set_byte_offset = -0x47, rare_set = 0x18, normal_set = 0x0E, story_complete = monstro_complete },
     { location_keys = { "black_ballade" },               set_byte_offset = -0xA2, rare_set = 0x0E, normal_set = 0x0D, story_complete = deep_jungle_complete },
     { location_keys = { "grand_ghost" },                 set_byte_offset = -0x48, rare_set = 0x0F, normal_set = 0x0E, story_complete = monstro_complete },
     { location_keys = { "chimera" },                     set_byte_offset = -0x56, rare_set = 0x11, normal_set = 0x0F, story_complete = halloween_town_complete },
