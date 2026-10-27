@@ -17,9 +17,8 @@ local locations = {
     { location_id = 2659214, key = "chimera",                 flag_byte = 1, flag_bit = 6, tables = { { bd_name = "ex_2260.bd", offset = 0x5E8 } } },
     { location_id = 2659215, key = "jet_balloon",             flag_byte = 1, flag_bit = 7, tables = { { bd_name = "ex_2480.bd", offset = 0x0EC } } },
     { location_id = 2659216, key = "neoshadow",               flag_byte = 1, flag_bit = 8, tables = { { bd_name = "ex_2420.bd", offset = 0x2E4 } } },
-    { location_id = 2659217, key = "black_fungi",             flag_byte = 2, flag_bit = 1, tables = { { bd_name = "ex_2380.bd", offset = 0x204 }, { bd_name = "ex_2380.bd", offset = 0x238 },
-                                                                                                      { bd_name = "ex_2380.bd", offset = 0x26C }, { bd_name = "ex_2381.bd", offset = 0x204 },
-                                                                                                      { bd_name = "ex_2381.bd", offset = 0x238 }, { bd_name = "ex_2381.bd", offset = 0x26C } } },
+    { location_id = 2659217, key = "black_fungi",             flag_byte = 2, flag_bit = 1, tables = { { bd_name = "ex_2380.bd", offset = 0x1D0 }, { bd_name = "ex_2380.bd", offset = 0x204 },
+                                                                                                      { bd_name = "ex_2380.bd", offset = 0x238 }, { bd_name = "ex_2380.bd", offset = 0x26C } } },
     { location_id = 2659218, key = "stealth_soldier",         flag_byte = 2, flag_bit = 2, tables = { { bd_name = "ex_2430.bd", offset = 0x2AC } } },
     { location_id = 2659219, key = "black_ballade",           flag_byte = 2, flag_bit = 3, tables = { { bd_name = "ex_2460.bd", offset = 0x200 } } },
 }
