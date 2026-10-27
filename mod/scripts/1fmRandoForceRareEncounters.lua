@@ -38,19 +38,20 @@ local function neverland_complete()
     return ReadByte(NEVERLAND_PROGRESS) >= 0x64
 end
 
+local function hollow_bastion_complete()
+    return ReadByte(HOLLOW_BASTION_PROGRESS) >= 0xC3
+end
+
 local function linked_worlds_first_fight_cleared()
     return kh1_lua_library.ReadBit(EOTW_LINKED_WORLDS_FIRST_FIGHT_CLEARED, EOTW_LINKED_WORLDS_FIRST_FIGHT_CLEARED_BIT) == 1
 end
 
-local basic_white_mushroom_keys = { "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder" }
-local camp_white_mushroom_keys = { "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_cure" }
-local treasure_room_white_mushroom_keys = { "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_gravity" }
-local sunken_ship_white_mushroom_keys = { "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_stop" }
-local graveyard_white_mushroom_keys = { "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_aero" }
-local all_white_mushroom_keys = {
-    "white_mushroom_fire", "white_mushroom_blizzard", "white_mushroom_thunder", "white_mushroom_cure",
-    "white_mushroom_gravity", "white_mushroom_stop", "white_mushroom_aero",
-}
+local function linked_worlds_first_fight_cleared_and_neoshadow_collected()
+    if not linked_worlds_first_fight_cleared() then
+        return false
+    end
+    return one_time_drop_locations.is_collected("neoshadow")
+end
 
 local encounters = {
     { location_keys = { "sniperwild" },                  set_byte_offset = -0xC7, rare_set = 0x13, normal_set = 0x03, story_complete = traverse_town_complete },
@@ -63,13 +64,15 @@ local encounters = {
     { location_keys = { "chimera" },                     set_byte_offset = -0x56, rare_set = 0x11, normal_set = 0x0F, story_complete = halloween_town_complete },
     { location_keys = { "black_fungi" },                 set_byte_offset = -0x80, rare_set = 0x18, normal_set = 0x0F, story_complete = agrabah_complete },
     { location_keys = { "pink_agaricus" },               set_byte_offset = -0xA4, rare_set = 0x14, normal_set = 0x0D, story_complete = deep_jungle_complete },
-    { location_keys = basic_white_mushroom_keys,         set_byte_offset = -0xC2, rare_set = 0x13, normal_set = 0x10, story_complete = traverse_town_complete },
-    { location_keys = basic_white_mushroom_keys,         set_byte_offset = -0xAA, rare_set = 0x13, normal_set = 0x0E, story_complete = wonderland_complete },
-    { location_keys = camp_white_mushroom_keys,          set_byte_offset = -0x98, rare_set = 0x13, normal_set = 0x0E, story_complete = deep_jungle_complete },
-    { location_keys = treasure_room_white_mushroom_keys, set_byte_offset = -0x79, rare_set = 0x18, normal_set = 0x0F, story_complete = agrabah_complete },
-    { location_keys = sunken_ship_white_mushroom_keys,   set_byte_offset = -0x68, rare_set = 0x13, normal_set = 0x0F, story_complete = atlantica_complete },
-    { location_keys = graveyard_white_mushroom_keys,     set_byte_offset = -0x5C, rare_set = 0x18, normal_set = 0x0F, story_complete = halloween_town_complete },
-    { location_keys = all_white_mushroom_keys,           set_byte_offset = -0x05, rare_set = 0x10, normal_set = 0x0E, story_complete = linked_worlds_first_fight_cleared },
+    { location_keys = { "white_mushroom_fire" },         set_byte_offset = -0xC2, rare_set = 0x13, normal_set = 0x10, story_complete = traverse_town_complete },
+    { location_keys = { "white_mushroom_blizzard" },     set_byte_offset = -0xAA, rare_set = 0x13, normal_set = 0x0E, story_complete = wonderland_complete },
+    { location_keys = { "white_mushroom_cure" },         set_byte_offset = -0x98, rare_set = 0x13, normal_set = 0x0E, story_complete = deep_jungle_complete },
+    { location_keys = { "white_mushroom_gravity" },      set_byte_offset = -0x79, rare_set = 0x18, normal_set = 0x0F, story_complete = agrabah_complete },
+    { location_keys = { "white_mushroom_stop" },         set_byte_offset = -0x68, rare_set = 0x13, normal_set = 0x0F, story_complete = atlantica_complete },
+    { location_keys = { "white_mushroom_aero" },         set_byte_offset = -0x5C, rare_set = 0x18, normal_set = 0x0F, story_complete = halloween_town_complete },
+    { location_keys = { "stealth_soldier" },             set_byte_offset = -0x24, rare_set = 0x13, normal_set = 0x0E, story_complete = hollow_bastion_complete },
+    { location_keys = { "neoshadow" },                   set_byte_offset = -0x05, rare_set = 0x12, normal_set = 0x0E, story_complete = linked_worlds_first_fight_cleared },
+    { location_keys = { "white_mushroom_thunder" },      set_byte_offset = -0x05, rare_set = 0x10, normal_set = 0x0E, story_complete = linked_worlds_first_fight_cleared_and_neoshadow_collected },
 }
 
 local ok = false
