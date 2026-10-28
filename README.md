@@ -20,7 +20,7 @@ The pause menu has an extra "Archipelago" row (hidden at save points).  It opens
 
 ## Tracker API
 
-The client also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47111`) that serves checks and obtained items as JSON for external trackers, online or offline.  It is written in Lua (`/mod/scripts/io_packages/client/tracker_server.lua`) and needs no extra DLL.  See [TRACKER_FEED.md](TRACKER_FEED.md).
+The client also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47111`) that serves checks and obtained items as JSON for external trackers, online or offline.  See [TRACKER_FEED.md](TRACKER_FEED.md).
 
 ## Installing
 - Set up OpenKH for your preferred platform (Steam and EGS are supported).  Ensure you have both lua backend and panacea installed.
@@ -34,7 +34,7 @@ The client also hosts the tracker API, a local HTTP server (`http://127.0.0.1:47
 If you would like to build this mod (like if you're making changes to it), `build.py` will automatically compile the mod and create the mod.yml that OpenKH needs to make the mod install-able.  There are few notes for each component for editing, so please review the following:
 
 ### EVS Edits
-If you'd like to make EVS changes, the `build.py` script automatically picks up and assembles the EVS files in the `/evs/` folder.  This folder should have the same structure as the extracted game files.  `build.py` assumes the location of `KH1-EVDL-TOOLS` and extracted KH1 data (location's on my PC), so you'll have to overwrite those locations.
+If you'd like to make EVS changes, the `build.py` script automatically picks up and assembles the EVS files in the `/evs/` folder.  This folder should have the same structure as the extracted game files.  `build.py` assumes the location of `KH1-EVDL-TOOLS` and extracted KH1 data (locations on my PC), so you'll have to overwrite those locations.
 
 ### Lua Edits
 If you'd like make changes or add a lua script, they are automatically picked up in `build.py` and added to `mod.yml`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.
