@@ -27,6 +27,10 @@ function _OnFrame()
 				and ReadInt(minitimer) >= 9000.0
 			)
 			and not (
+				ReadInt(minitimer) > 0
+				and ReadInt(minigameTimerState) ~= 2
+			)
+			and not (
 				ReadByte(world) == 1 and ReadByte(room) == 2
 				and (ReadByte(dialog) >= 1 and ReadByte(dialog) <= 5)
 			) then
