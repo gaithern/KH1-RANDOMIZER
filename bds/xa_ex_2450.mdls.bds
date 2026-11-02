@@ -1,0 +1,2324 @@
+bd ex_2450_00.bd {
+    func entry(arg0) seed 0x0313 {
+        locals[0] = arg0;
+        if (subroutine_0(locals[0])) {
+            SpawnObj(globals[0][3], 0xF, 0x4E20, &heap[0]);
+            locals[32] = 0;
+            while (locals[32] < 5) {
+                PickRandomFloorPointInRing(&heap[0], 40.0, 80.0, &locals[16]);
+                SpawnObj(globals[0][3], 0xF, 0x4E20, &locals[16]);
+                subroutine_24(FrameDelta());
+                *(&locals[32]) += 1;
+            }
+        }
+        return;
+    }
+    func subroutine_0(arg0) -> 1 {
+        locals[0] = arg0;
+        GetBodyPos(*globals[0], &locals[16]);
+        locals[32] = (*globals[0])[12]:4;
+        VecScale(&locals[32], 1200.0);
+        locals[48] = RayCast(&locals[16], &locals[32], &heap[0]);
+        return locals[48];
+    }
+    func subroutine_1(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[32] = MakeAttack(*globals[0], GetActor(), globals[0][4]);
+        locals[32][4] = (*globals[0])[4]:4;
+        *locals[32] |= 0x40;
+        ApplyAttackToActor(locals[32], locals[4]);
+        locals[32][20] = 15.0;
+        GetAttachPointPos(locals[4], 0x8003, 0.0, &locals[16]);
+        SpawnObj(globals[0][3], 0x15, 0x4E20, &locals[16]);
+        globals[0][6] = 1;
+        return;
+    }
+    func subroutine_2(arg0) {
+        locals[0] = arg0;
+        subroutine_3(locals[0]);
+        if (heap[8]) {
+            if (subroutine_14(heap[4], 0) == 0) {
+                heap[4] = SpawnEffectAtPoint(globals[0][3], 0x10, heap[0], 8, 0.0);
+            }
+        } else {
+            if (subroutine_14(heap[4], 0) != 0) {
+                heap[4] = KillEffect(heap[4]);
+            }
+        }
+        return;
+    }
+    func subroutine_3(arg0) {
+        locals[0] = arg0;
+        heap[8] = 0;
+        if (((globals[4] && IsActive(heap[0])) && IsActive((*globals[0])[29])) && subroutine_8(heap[0], 0x8000)) {
+            heap[8] = subroutine_4(heap[0]);
+        }
+        return;
+    }
+    func subroutine_4(arg0) -> 1 {
+        locals[0] = arg0;
+        locals[88] = 0;
+        GetBodyPos(*globals[0], &locals[64]);
+        GetBodyPos(locals[0], &locals[48]);
+        VecSub(&locals[48], &locals[64]);
+        VecNormalize(&locals[48]);
+        locals[80] = CosAngle(&(*globals[0])[12], &locals[48]);
+        if ((locals[80] > CosDeg(35.0)) && ((&locals[48])[3] < 1200.0)) {
+            locals[32] = load(&locals[48], 4);
+            VecScale(&locals[32], (&locals[32])[3]);
+            locals[84] = RayCast(&locals[64], &locals[32], &locals[16]);
+            if (!locals[84]) {
+                locals[88] = 1;
+            }
+        }
+        return locals[88];
+    }
+    func subroutine_5(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[4];
+        heap[8] = 0;
+        heap[4] = 0;
+        globals[0][6] = 0;
+        return;
+    }
+    func subroutine_6(arg0, arg1) -> 1 {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        return (RandFloat01() * (locals[0] - locals[4])) + locals[4];
+    }
+    func subroutine_7(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[136] & 1;
+    }
+    func subroutine_8(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return heap[0] & locals[4];
+    }
+    func subroutine_9(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        *locals[0] |= 0x80;
+        locals[0][3] = locals[4];
+        return;
+    }
+    func subroutine_10(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        subroutine_11(locals[0], locals[4]);
+        *locals[0] |= 8;
+        return;
+    }
+    func subroutine_11(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 1.0;
+        locals[0][25] = -1.0 / locals[4];
+        return;
+    }
+    func subroutine_12(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 0.0;
+        locals[0][25] = 1.0 / locals[4];
+        return;
+    }
+    func subroutine_13(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return locals[0] -.i locals[4];
+    }
+    func subroutine_14(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return locals[0] - locals[4];
+    }
+    func subroutine_15(arg0) -> 1 {
+        locals[0] = arg0;
+        return (locals[0] - 0) != 0;
+    }
+    func subroutine_16(arg0) -> 1 {
+        locals[0] = arg0;
+        return (subroutine_19(locals[0]) == 6) || (subroutine_19(locals[0]) == 7);
+    }
+    func subroutine_17(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[0] & 0x20;
+    }
+    func subroutine_18(arg0) -> 1 {
+        locals[0] = arg0;
+        return (heap[12] >> 6) & 0xF;
+    }
+    func subroutine_19(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[12] & 0x1F;
+    }
+    func subroutine_20(arg0, arg1, arg2, arg3, arg4) -> 1 {
+        locals[4] = arg4;
+        locals[8] = arg3;
+        locals[12] = arg2;
+        locals[16] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[16];
+        heap[4] = locals[12];
+        heap[8] = locals[8];
+        heap[12] = locals[4];
+        return locals[0];
+    }
+    init func subroutine_21(arg0) {
+        locals[0] = arg0;
+        globals[0] = locals[0];
+        StartThread(0, @subroutine_22);
+        globals[4] = 1;
+        SpawnActorEffect(*globals[0], 0x80E);
+        SpawnActorEffect(*globals[0], 0x80C);
+        if (subroutine_23(88.0, *globals[0], 0xD3)) {
+            globals[4] = 0;
+            abort;
+        }
+        locals[32] = 0;
+        while (locals[32] < 3) {
+            if ((((locals[32] * 0x10) + &globals[16]))[2]) {
+                subroutine_1(&locals[16], *(((locals[32] * 0x10) + &globals[16])));
+            }
+            *(&locals[32]) += 1;
+        }
+        globals[4] = 0;
+        entry(&locals[16]);
+        return;
+    }
+    func subroutine_22() {
+        subroutine_5(0 + &globals[16], GetEntity(0));
+        subroutine_5(0x10 + &globals[16], GetEntity(1));
+        subroutine_5(0x20 + &globals[16], GetEntity(2));
+        loop {
+            locals[0] = 0;
+            while (locals[0] < 3) {
+                if (((globals[4] - 0) == 0) || !(IsActive((*globals[0])[29]))) {
+                    ExitThread();
+                }
+                subroutine_2((locals[0] * 0x10) + &globals[16]);
+                *(&locals[0]) += 1;
+            }
+            yield;
+        }
+        return;
+    }
+    func subroutine_23(arg0, arg1, arg2) -> 1 {
+        locals[0] = arg2;
+        locals[4] = arg1;
+        locals[8] = arg0;
+        locals[12] = 0;
+        loop {
+            if (!(((locals[8] - 0.0) > 0.0))) goto L1;
+            if (GetActionState(locals[4]) != locals[0]) {
+                locals[12] = 1;
+                goto L1;
+            }
+            *(&locals[8]) -= FrameDelta();
+            yield;
+            while (subroutine_7(locals[4])) {
+                yield;
+            }
+        }
+    L1:
+        return locals[12];
+    }
+    func subroutine_24(arg0) {
+        locals[0] = arg0;
+        while ((locals[0] - 0.0) > 0.0) {
+            *(&locals[0]) -= FrameDelta();
+            yield;
+        }
+        return;
+    }
+}
+
+bd ex_2450_01.bd {
+    func entry(arg0, arg1, arg2) seed 0x0313 {
+        locals[4] = arg2;
+        locals[8] = arg1;
+        locals[0] = arg0;
+        heap[0] = SpawnObj(globals[0][3], 0xA, 0x4E20, locals[8]);
+        heap[16] = load(locals[8], 4);
+        heap[32] = load(locals[4], 4);
+        subroutine_16(&heap[48], 0.0, RandFloat01() * 360.0, 0.0, 0.0);
+        SetRotation(heap[0], &heap[48]);
+        StartThread(locals[0], @subroutine_0);
+        return;
+    }
+    func subroutine_0(arg0) {
+        locals[0] = arg0;
+        loop {
+            locals[16] = load(&heap[32], 4);
+            VecScale(&locals[16], FrameDelta());
+            locals[32] = MoveWithMapCollision(&heap[16], &locals[16], 30.0, &heap[16]);
+            SetVec(heap[0], &heap[16]);
+            if (!locals[32]) {
+                goto L1;
+            }
+            SetVec(heap[0], &heap[16]);
+            (&heap[32])[1] += 0.8 * FrameDelta();
+            yield;
+        }
+    L1:
+        heap[4] = SpawnObj(globals[0][3], 0xB, 0x4E20, &heap[16]);
+        SetRotation(heap[4], &heap[48]);
+        locals[36] = 90.0;
+        while ((locals[36] - 0.0) > 0.0) {
+            locals[40] = NextLiveEntity(0);
+            loop {
+                if (!((subroutine_10(locals[40], 0) != 0))) goto L2;
+                if (subroutine_1(locals[0], locals[40])) {
+                    locals[36] = 0.0;
+                    goto L2;
+                }
+                locals[40] = NextLiveEntity(locals[40]);
+            }
+        L2:
+            *(&locals[36]) -= FrameDelta();
+            yield;
+        }
+        StopEffect(heap[0]);
+        StopEffect(heap[4]);
+        return;
+    }
+    func subroutine_1(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[12] = 0;
+        if ((IsDamageable(locals[4]) && ((locals[4][28] - 0) == 0)) && (((*locals[4] & 0x400) - 0) == 0)) {
+            locals[16] = load(&heap[16], 4);
+            VecSub(&locals[16], &locals[4][4]);
+            if (VecLength(&locals[16]) < 50.0) {
+                subroutine_2(locals[4]);
+                SpawnObj(globals[0][3], 4, 0x4E20, &heap[16]);
+                SpawnObj(globals[0][3], 5, 0x4E20, &heap[16]);
+                locals[12] = 1;
+            }
+        }
+        return locals[12];
+    }
+    func subroutine_2(arg0) {
+        locals[0] = arg0;
+        if (GetCharacterId(locals[0]) < 0xA) {
+            LendMotionSet(*globals[0], locals[0]);
+            SetMotion(locals[0], 0x10000C8, 0.0, 0.0);
+            QueueMotion(locals[0], 0x40000000, 8.0, 0.0);
+            subroutine_6(locals[0], 30.0);
+            AddMunny(ineg(GetDropMunnyValue(globals[0][4])));
+            subroutine_4(locals[0], globals[0][4]);
+        } else {
+            SendMessage(locals[0], 0, 0x3E9);
+        }
+        return;
+    }
+    func subroutine_3(arg0, arg1) -> 1 {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        return (RandFloat01() * (locals[0] - locals[4])) + locals[4];
+    }
+    func subroutine_4(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        GetBodyPos(locals[0], &locals[16]);
+        SpawnPrizeDrops(locals[4], &locals[16]);
+        return;
+    }
+    func subroutine_5(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[136] & 1;
+    }
+    func subroutine_6(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        *locals[0] |= 0x80;
+        locals[0][3] = locals[4];
+        return;
+    }
+    func subroutine_7(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        subroutine_8(locals[0], locals[4]);
+        *locals[0] |= 8;
+        return;
+    }
+    func subroutine_8(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 1.0;
+        locals[0][25] = -1.0 / locals[4];
+        return;
+    }
+    func subroutine_9(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 0.0;
+        locals[0][25] = 1.0 / locals[4];
+        return;
+    }
+    func subroutine_10(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return locals[0] - locals[4];
+    }
+    func subroutine_11(arg0) -> 1 {
+        locals[0] = arg0;
+        return (locals[0] - 0) != 0;
+    }
+    func subroutine_12(arg0) -> 1 {
+        locals[0] = arg0;
+        return (subroutine_15(locals[0]) == 6) || (subroutine_15(locals[0]) == 7);
+    }
+    func subroutine_13(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[0] & 0x20;
+    }
+    func subroutine_14(arg0) -> 1 {
+        locals[0] = arg0;
+        return (heap[12] >> 6) & 0xF;
+    }
+    func subroutine_15(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[12] & 0x1F;
+    }
+    func subroutine_16(arg0, arg1, arg2, arg3, arg4) -> 1 {
+        locals[4] = arg4;
+        locals[8] = arg3;
+        locals[12] = arg2;
+        locals[16] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[16];
+        heap[4] = locals[12];
+        heap[8] = locals[8];
+        heap[12] = locals[4];
+        return locals[0];
+    }
+    init func subroutine_17(arg0) {
+        locals[0] = arg0;
+        globals[0] = locals[0];
+        SpawnActorEffect(*locals[0], 0x809);
+        subroutine_18(80.0);
+        if (GetActionState(*locals[0]) != 0xC8) {
+            abort;
+        }
+        GetAttachPointPos(*locals[0], 0x1C, 1.0, &locals[48]);
+        locals[32] = (*locals[0])[12]:4;
+        locals[68] = 0.0;
+        locals[64] = 5.0;
+        locals[72] = 0;
+        while (locals[72] < locals[0][6]) {
+            locals[16] = load(&locals[32], 4);
+            RotateDeg(&locals[16], locals[68]);
+            VecScale(&locals[16], subroutine_3(8.0, 10.0));
+            (&locals[16])[1] = fneg(subroutine_3(10.0, 15.0));
+            entry((locals[72] * 0x40) + &globals[16], &locals[48], &locals[16]);
+            locals[64] = fneg(locals[64]) * subroutine_3(1.5, 2.5);
+            locals[68] = locals[68] + locals[64];
+            *(&locals[72]) += 1;
+        }
+        return;
+    }
+    func subroutine_18(arg0) {
+        locals[0] = arg0;
+        while ((locals[0] - 0.0) > 0.0) {
+            *(&locals[0]) -= FrameDelta();
+            yield;
+        }
+        return;
+    }
+}
+
+bd ex_2450_02.bd {
+    func entry(arg0, arg1, arg2) seed 0x0313 {
+        locals[4] = arg2;
+        locals[8] = arg1;
+        locals[0] = arg0;
+        heap[0] = SpawnObj(globals[0][3], 0xA, 0x4E20, locals[8]);
+        heap[16] = load(locals[8], 4);
+        heap[32] = load(locals[4], 4);
+        subroutine_16(&heap[48], 0.0, RandFloat01() * 360.0, 0.0, 0.0);
+        SetRotation(heap[0], &heap[48]);
+        StartThread(locals[0], @subroutine_0);
+        return;
+    }
+    func subroutine_0(arg0) {
+        locals[0] = arg0;
+        loop {
+            locals[16] = load(&heap[32], 4);
+            VecScale(&locals[16], FrameDelta());
+            locals[32] = MoveWithMapCollision(&heap[16], &locals[16], 30.0, &heap[16]);
+            SetVec(heap[0], &heap[16]);
+            if (!locals[32]) {
+                goto L1;
+            }
+            SetVec(heap[0], &heap[16]);
+            (&heap[32])[1] += 0.8 * FrameDelta();
+            yield;
+        }
+    L1:
+        heap[4] = SpawnObj(globals[0][3], 0xB, 0x4E20, &heap[16]);
+        SetRotation(heap[4], &heap[48]);
+        locals[36] = 90.0;
+        while ((locals[36] - 0.0) > 0.0) {
+            locals[40] = NextLiveEntity(0);
+            loop {
+                if (!((subroutine_10(locals[40], 0) != 0))) goto L2;
+                if (subroutine_1(locals[0], locals[40])) {
+                    locals[36] = 0.0;
+                    goto L2;
+                }
+                locals[40] = NextLiveEntity(locals[40]);
+            }
+        L2:
+            *(&locals[36]) -= FrameDelta();
+            yield;
+        }
+        StopEffect(heap[0]);
+        StopEffect(heap[4]);
+        return;
+    }
+    func subroutine_1(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[12] = 0;
+        if ((IsDamageable(locals[4]) && ((locals[4][28] - 0) == 0)) && (((*locals[4] & 0x400) - 0) == 0)) {
+            locals[16] = load(&heap[16], 4);
+            VecSub(&locals[16], &locals[4][4]);
+            if (VecLength(&locals[16]) < 50.0) {
+                subroutine_2(locals[4]);
+                SpawnObj(globals[0][3], 4, 0x4E20, &heap[16]);
+                SpawnObj(globals[0][3], 5, 0x4E20, &heap[16]);
+                locals[12] = 1;
+            }
+        }
+        return locals[12];
+    }
+    func subroutine_2(arg0) {
+        locals[0] = arg0;
+        if (GetCharacterId(locals[0]) < 0xA) {
+            LendMotionSet(*globals[0], locals[0]);
+            SetMotion(locals[0], 0x10000C8, 0.0, 0.0);
+            QueueMotion(locals[0], 0x40000000, 8.0, 0.0);
+            subroutine_6(locals[0], 30.0);
+            AddMunny(ineg(GetDropMunnyValue(globals[0][4])));
+            subroutine_4(locals[0], globals[0][4]);
+        } else {
+            SendMessage(locals[0], 0, 0x3E9);
+        }
+        return;
+    }
+    func subroutine_3(arg0, arg1) -> 1 {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        return (RandFloat01() * (locals[0] - locals[4])) + locals[4];
+    }
+    func subroutine_4(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        GetBodyPos(locals[0], &locals[16]);
+        SpawnPrizeDrops(locals[4], &locals[16]);
+        return;
+    }
+    func subroutine_5(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[136] & 1;
+    }
+    func subroutine_6(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        *locals[0] |= 0x80;
+        locals[0][3] = locals[4];
+        return;
+    }
+    func subroutine_7(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        subroutine_8(locals[0], locals[4]);
+        *locals[0] |= 8;
+        return;
+    }
+    func subroutine_8(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 1.0;
+        locals[0][25] = -1.0 / locals[4];
+        return;
+    }
+    func subroutine_9(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 0.0;
+        locals[0][25] = 1.0 / locals[4];
+        return;
+    }
+    func subroutine_10(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return locals[0] - locals[4];
+    }
+    func subroutine_11(arg0) -> 1 {
+        locals[0] = arg0;
+        return (locals[0] - 0) != 0;
+    }
+    func subroutine_12(arg0) -> 1 {
+        locals[0] = arg0;
+        return (subroutine_15(locals[0]) == 6) || (subroutine_15(locals[0]) == 7);
+    }
+    func subroutine_13(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[0] & 0x20;
+    }
+    func subroutine_14(arg0) -> 1 {
+        locals[0] = arg0;
+        return (heap[12] >> 6) & 0xF;
+    }
+    func subroutine_15(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[12] & 0x1F;
+    }
+    func subroutine_16(arg0, arg1, arg2, arg3, arg4) -> 1 {
+        locals[4] = arg4;
+        locals[8] = arg3;
+        locals[12] = arg2;
+        locals[16] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[16];
+        heap[4] = locals[12];
+        heap[8] = locals[8];
+        heap[12] = locals[4];
+        return locals[0];
+    }
+    init func subroutine_17(arg0) {
+        locals[0] = arg0;
+        globals[0] = locals[0];
+        GetAttachPointPos(*locals[0], 0x1C, 1.0, &locals[48]);
+        locals[32] = locals[0][1][4]:4;
+        VecSub(&locals[32], &locals[48]);
+        VecNormalize(&locals[32]);
+        locals[68] = 0.0;
+        locals[64] = 5.0;
+        locals[72] = 0;
+        while (locals[72] < locals[0][6]) {
+            locals[16] = load(&locals[32], 4);
+            RotateDeg(&locals[16], locals[68]);
+            VecScale(&locals[16], subroutine_3(3.0, 10.0));
+            (&locals[16])[1] = fneg(subroutine_3(5.0, 10.0));
+            entry((locals[72] * 0x40) + &globals[16], &locals[48], &locals[16]);
+            locals[64] = fneg(locals[64]) * subroutine_3(1.5, 2.5);
+            locals[68] = locals[68] + locals[64];
+            *(&locals[72]) += 1;
+        }
+        return;
+    }
+    func subroutine_18(arg0) {
+        locals[0] = arg0;
+        while ((locals[0] - 0.0) > 0.0) {
+            *(&locals[0]) -= FrameDelta();
+            yield;
+        }
+        return;
+    }
+}
+
+bd ex_2450.bd {
+    names {
+        self = globals[0];
+    }
+
+    stat_page stats_0 {
+        hp = 28;
+        attack_level = 7;
+        defense_level = 7;
+        min_damage_taken = 5;
+        max_damage_taken = 12;
+        mp_recovery_on_hit = 20;
+        knockback_weight = 1.0;
+        exp = 1;
+        unknown_20 = 5013;
+        outgoing_damage_multiplier = 1.0;
+        resist_00_unknown = 50;
+        resist_01_physical = 100;
+        resist_02_fire = 49;
+        resist_03_blizzard = 50;
+        resist_04_thunder = 50;
+        resist_05_unknown = 100;
+        resist_06_unknown = 100;
+        resist_07_unknown = 100;
+        resist_08_percent_hp = 4;
+        resist_09_stop = 30;
+        resist_0a_stun = 50;
+        resist_0b_heal = 100;
+        resist_0c_unknown = 100;
+        resist_0d_unknown = 100;
+        resist_0e_unknown = 100;
+        resist_0f_unknown = 100;
+        unknown_68 = 1;
+    }
+    stat_page stats_1 {
+        hp = 90;
+        attack_level = 17;
+        defense_level = 17;
+        min_damage_taken = 10;
+        max_damage_taken = 40;
+        mp_recovery_on_hit = 49;
+        knockback_weight = 1.0;
+        exp = 10;
+        unknown_20 = 5013;
+        outgoing_damage_multiplier = 2.0;
+        resist_00_unknown = 50;
+        resist_01_physical = 100;
+        resist_02_fire = 49;
+        resist_03_blizzard = 50;
+        resist_04_thunder = 50;
+        resist_05_unknown = 100;
+        resist_06_unknown = 100;
+        resist_07_unknown = 100;
+        resist_08_percent_hp = 3;
+        resist_09_stop = 20;
+        resist_0a_stun = 50;
+        resist_0b_heal = 100;
+        resist_0c_unknown = 100;
+        resist_0d_unknown = 100;
+        resist_0e_unknown = 100;
+        resist_0f_unknown = 100;
+        unknown_68 = 1;
+    }
+    data data_0 {
+        00 00 00 00 00 00 00 00 04 00 00 00 04 00 00 00
+        ff ff ff ff 0a 00 00 00 00 00 00 00 00 00 00 00
+        03 00 00 00 06 00 00 00 02 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 06 00 00 00 00 00 00 00
+        6e 00 00 00 00 00 00 00 0a 00 00 00 03 00 00 00
+        06 00 00 00 00 00 00 00 00 00 00 00 00 00 48 42
+        00 00 00 00 00 00 80 3f 00 00 00 00 6c 52 00 00
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 06 00 01 00 00 00 00 00
+        6e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 80 3f 00 00 00 00 6d 52 00 00
+    }
+    drop_table drops_0 {
+        small_munny = 0;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_1 {
+        small_munny = 20;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.2, 3);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    data data_1 {
+        14 00 00 00 05 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        00 00 00 00
+    }
+    drop_table drops_2 {
+        small_munny = 0;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 3;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_3 {
+        small_munny = 0;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 3;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_4 {
+        small_munny = 0;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 1;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_5 {
+        small_munny = 0;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 1;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_6 {
+        small_munny = 5;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_7 {
+        small_munny = 20;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 6;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(1.0, 1);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_8 {
+        small_munny = 25;
+        medium_munny = 0;
+        large_munny = 0;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 6;
+        large_mp = 0;
+        prize(1.0, 142);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_9 {
+        small_munny = 25;
+        medium_munny = 0;
+        large_munny = 1;
+        small_hp = 0;
+        large_hp = 2;
+        small_mp = 0;
+        large_mp = 0;
+        prize(1.0, 2);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_10 {
+        small_munny = 25;
+        medium_munny = 0;
+        large_munny = 2;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 2;
+        prize(1.0, 143);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    drop_table drops_11 {
+        small_munny = 30;
+        medium_munny = 0;
+        large_munny = 3;
+        small_hp = 0;
+        large_hp = 0;
+        small_mp = 0;
+        large_mp = 0;
+        prize(0.0, 0);
+        prize(0.0, 0);
+        prize(0.0, 0);
+    }
+    data data_2 {
+        14 00 00 00 00 00 00 00 18 00 00 00 1c 00 00 00
+        02 00 00 00 00 00 00 00 00 ea 1e ea 00 00 00 00
+    }
+    func entry() seed 0x0172 {
+        globals[48][2] += 1;
+        locals[0] = ftoi(globals[48][2]);
+        if (locals[0] > 40.0) {
+            *(&locals[0]) -= 40.0;
+        } else if (locals[0] > 30.0) {
+            *(&locals[0]) -= 30.0;
+        } else if (locals[0] > 20.0) {
+            *(&locals[0]) -= 20.0;
+        } else if (locals[0] > 10.0) {
+            *(&locals[0]) -= 10.0;
+        }
+        locals[32] = (subroutine_59())[4]:4;
+        (&locals[32])[1] -= 30.0;
+        (&locals[32])[1] -= 10.0 * locals[0];
+        if ((&locals[32])[1] < -130.0) {
+            (&locals[32])[1] += 100.0;
+        }
+        if (!(*globals[48])) {
+            locals[32] = (subroutine_59())[4]:4;
+            (&locals[32])[1] -= 130.0;
+            if (globals[48][2] == 6) {
+                SpawnPrizeDrops(&drops_7, &locals[32]);
+            } else if (globals[48][2] == 0xC) {
+                SpawnPrizeDrops(&drops_8, &locals[32]);
+            } else if (globals[48][2] == 0x12) {
+                SpawnPrizeDrops(&drops_9, &locals[32]);
+            } else if (globals[48][2] == 0x18) {
+                SpawnPrizeDrops(&drops_10, &locals[32]);
+            } else if (globals[48][2] == 0x1E) {
+                SpawnPrizeDrops(&drops_11, &locals[32]);
+                subroutine_38();
+            }
+        }
+        SetDefeated(self);
+        GetAttachPointPos(self, 0x8003, 0.0, &locals[16]);
+        SpawnObj(self[26], 0, 0, &locals[16]);
+        subroutine_83(self, 30.0);
+        RecordDefeat(self);
+        subroutine_0();
+        locals[48] = self.stats[26];
+        *(&locals[48]) *=.i globals[48][2];
+        if (!(*globals[48])) {
+            GiveExpAtPosUnscaled(&locals[32], locals[48]);
+        }
+        return;
+    }
+    func subroutine_0() {
+        switch (globals[48][1]) {
+        case 0:
+            locals[0] = &drops_2;
+        case 1:
+            locals[0] = &drops_3;
+        case 2:
+            locals[0] = &drops_4;
+        case 3:
+            locals[0] = &drops_5;
+        case 4:
+            locals[0] = &drops_6;
+        }
+        if (*globals[48]) {
+            locals[0] = &drops_0;
+        }
+        subroutine_69(self, locals[0]);
+        return;
+    }
+    func subroutine_1() {
+        subroutine_76(self, subroutine_47(self.attacker));
+        subroutine_61(&globals[4], @subroutine_2);
+        return;
+    }
+    func subroutine_2 asm {
+        IsSummonActive t0 #0xdd
+        bz @L0826
+        push [glob+48] x1
+        load x1
+        lnot
+        pop
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        abort
+        jmp @L0826
+    @L0826:
+        push [glob+32] x1
+        push #3
+        sub.i
+        cmp.eqz.i
+        bz @L085A
+        call subroutine_20 locals=2
+        call subroutine_23 locals=2
+        push [glob+48] x1
+        call subroutine_33 locals=2
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        jmp @L098A
+    @L085A:
+        push [glob+48] x1
+        load x1
+        lnot
+        bz @L0970
+        push [glob+0] x1
+        push [glob+0] x1
+        idxadd 29
+        load x1
+        call subroutine_78 locals=2
+        push [glob+32] x1
+        push #2
+        sub.i
+        cmp.eqz.i
+        bz @L0956
+        push [glob+0] x1
+        idxadd 31
+        load x1
+        call subroutine_59 locals=2
+        call subroutine_86 locals=2
+        cmp.eqz.i
+        bz @L0934
+        call subroutine_14 locals=2
+        bz @L08DE
+        call subroutine_54 locals=2
+        push #400f
+        sub.f
+        cmp.ltz.f
+        bz @L08C0
+        call subroutine_27 locals=2
+        jmp @L08C0
+    @L08C0:
+        call subroutine_23 locals=2
+        push [glob+48] x1
+        call subroutine_33 locals=2
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        jmp @L0930
+    @L08DE:
+        push [glob+40] x1
+        push #0
+        sub.i
+        cmp.eqz.i
+        bz @L090C
+        push #1
+        store [glob+40]
+        lea [glob+4]
+        push #1
+        call subroutine_63 locals=2
+        jmp @L092A
+    @L090C:
+        call subroutine_23 locals=2
+        push [glob+48] x1
+        call subroutine_33 locals=2
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        jmp @L092A
+    @L092A:
+        abort
+        jmp @L0930
+    @L0930:
+        jmp @L0952
+    @L0934:
+        call subroutine_23 locals=2
+        push [glob+48] x1
+        call subroutine_33 locals=2
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        jmp @L0952
+    @L0952:
+        jmp @L096C
+    @L0956:
+        call subroutine_21 locals=2
+        lea [glob+4]
+        push #1
+        call subroutine_63 locals=2
+        jmp @L096C
+    @L096C:
+        jmp @L0986
+    @L0970:
+        call subroutine_15 locals=2
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=2
+        jmp @L0986
+    @L0986:
+        jmp @L098A
+    @L098A:
+        abort
+        ret
+    }
+    func subroutine_3() {
+        subroutine_76(self, subroutine_59());
+        subroutine_61(&globals[4], @subroutine_4);
+        return;
+    }
+    func subroutine_4() {
+        subroutine_23();
+        loop {
+            subroutine_18();
+            subroutine_15();
+            yield;
+        }
+        return;
+    }
+    func subroutine_5() {
+        subroutine_61(&globals[4], @subroutine_6);
+        return;
+    }
+    func subroutine_6() {
+        loop {
+            subroutine_7();
+            yield;
+        }
+        return;
+    }
+    func subroutine_7 asm {
+        push [glob+40] x1
+        push #1
+        sub.i
+        cmp.eqz.i
+        bz @L0AC6
+        push #0
+        store [glob+40]
+        push [glob+0] x1
+        idxadd 29
+        load x1
+        idxadd 4
+        load x4
+        store [loc+16]
+        push #0f
+        store [loc+4]
+    @L0A10:
+        push [loc+4] x1
+        push #180f
+        sub.f
+        cmp.ltz.f
+        bz @L0A76
+        push [glob+0] x1
+        lea [loc+16]
+        push #1
+        MoveTo t0 #0x28
+        store [loc+0]
+        lea [loc+4]
+        dup
+        load x1
+        FrameDelta t0 #0x05
+        add.f
+        store.ind
+        yield
+        push #6f
+        call subroutine_40 locals=10
+        dup
+        bnz @L0A66
+        push [loc+0] x1
+        push #300f
+        sub.f
+        cmp.lez.f
+        lor.i
+    @L0A66:
+        bz @L0A72
+        jmp @L0A76
+        jmp @L0A72
+    @L0A72:
+        jmp @L0A10
+    @L0A76:
+        push #30f
+        push #90f
+        push #0f
+        push #1f
+        call subroutine_10 locals=10
+        push #30f
+        push #90f
+        push #1f
+        push #1f
+        call subroutine_10 locals=10
+        push #30f
+        push #60f
+        call subroutine_66 locals=10
+        call subroutine_22 locals=10
+        jmp @L0AC6
+    @L0AC6:
+        push [glob+48] x1
+        idxadd 1
+        load x1
+        dup
+        push #0
+        sub.i
+        bnz @L0B74
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.7f
+        sub.f
+        cmp.ltz.f
+        bz @L0B0C
+        push #45f
+        push #120f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        jmp @L0B0C
+    @L0B0C:
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.8f
+        sub.f
+        cmp.ltz.f
+        bz @L0B44
+        push #180f
+        push #0f
+        push #0f
+        push #0f
+        call subroutine_10 locals=10
+        jmp @L0B5C
+    @L0B44:
+        push #90f
+        push #120f
+        call subroutine_66 locals=10
+        call subroutine_22 locals=10
+        jmp @L0B5C
+    @L0B5C:
+        push #45f
+        push #120f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        jmp @L0DCC
+    @L0B74:
+        dup
+        push #1
+        sub.i
+        bnz @L0BFC
+        call subroutine_26 locals=10
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.3f
+        sub.f
+        cmp.ltz.f
+        bz @L0BA6
+        call subroutine_26 locals=10
+        jmp @L0BA6
+    @L0BA6:
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.65f
+        sub.f
+        cmp.ltz.f
+        bz @L0BDE
+        push #120f
+        push #180f
+        push #0f
+        push #1f
+        call subroutine_10 locals=10
+        jmp @L0BF8
+    @L0BDE:
+        push [loc+8] x1
+        push #0.8f
+        sub.f
+        cmp.ltz.f
+        bz @L0BF8
+        call subroutine_26 locals=10
+        jmp @L0BF8
+    @L0BF8:
+        jmp @L0DCC
+    @L0BFC:
+        dup
+        push #2
+        sub.i
+        bnz @L0D1C
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.6f
+        sub.f
+        cmp.ltz.f
+        bz @L0CA6
+        call subroutine_19 locals=10
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.3f
+        sub.f
+        cmp.ltz.f
+        bz @L0C46
+        call subroutine_19 locals=10
+        jmp @L0CA2
+    @L0C46:
+        push [loc+8] x1
+        push #0.5f
+        sub.f
+        cmp.ltz.f
+        bz @L0C70
+        push #90f
+        push #120f
+        call subroutine_66 locals=10
+        call subroutine_22 locals=10
+        jmp @L0CA2
+    @L0C70:
+        push [loc+8] x1
+        push #0.9f
+        sub.f
+        cmp.ltz.f
+        bz @L0CA2
+        call subroutine_29 locals=10
+        push #60f
+        push #90f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        call subroutine_29 locals=10
+        jmp @L0CA2
+    @L0CA2:
+        jmp @L0CC6
+    @L0CA6:
+        call subroutine_29 locals=10
+        push #60f
+        push #90f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        call subroutine_29 locals=10
+        jmp @L0CC6
+    @L0CC6:
+        push #60f
+        push #90f
+        call subroutine_66 locals=10
+        push #1.5f
+        call subroutine_8 locals=10
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.6f
+        sub.f
+        cmp.ltz.f
+        bz @L0D18
+        call subroutine_29 locals=10
+        push #60f
+        push #90f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        call subroutine_29 locals=10
+        jmp @L0D18
+    @L0D18:
+        jmp @L0DCC
+    @L0D1C:
+        dup
+        push #3
+        sub.i
+        bnz @L0D82
+        push #15f
+        push #60f
+        call subroutine_66 locals=10
+        call subroutine_9 locals=10
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.7f
+        sub.f
+        cmp.ltz.f
+        bz @L0D7E
+        call subroutine_17 locals=10
+        store [loc+32]
+        push [loc+32] x1
+        bz @L0D7A
+        lea [glob+4]
+        push #2
+        call subroutine_63 locals=10
+        abort
+        jmp @L0D7A
+    @L0D7A:
+        jmp @L0D7E
+    @L0D7E:
+        jmp @L0DCC
+    @L0D82:
+        dup
+        push #4
+        sub.i
+        bnz @L0DCC
+        call subroutine_24 locals=10
+        RandFloat01 t0 #0x19
+        store [loc+8]
+        push [loc+8] x1
+        push #0.3f
+        sub.f
+        cmp.ltz.f
+        bz @L0DCC
+        push #75f
+        push #180f
+        push #0f
+        push #1f
+        call subroutine_10 locals=10
+        jmp @L0DCC
+    @L0DCC:
+        pop
+        ret
+    }
+    func subroutine_8(arg0, arg1) {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        SetMotion(self, 0xDC, 8.0, 0.0);
+        subroutine_11();
+        locals[8] = RandFloat01();
+        if (locals[8] < 0.5) {
+            *(&locals[0]) *= -1.0;
+        }
+        locals[12] = 0.0;
+        while (locals[12] < locals[4]) {
+            locals[16] = self.rot;
+            RotateDeg(&locals[16], locals[0] * FrameDelta());
+            FaceDir(self, &locals[16]);
+            *(&locals[12]) += FrameDelta();
+            yield;
+        }
+        return;
+    }
+    func subroutine_9(arg0) {
+        locals[0] = arg0;
+        *(&locals[32]) = subroutine_66(150.0, 250.0);
+        (&locals[32])[1] = 0.0;
+        (&locals[32])[2] = 0.0;
+        RotateDeg(&locals[32], subroutine_66(0.0, 360.0));
+        VecAdd(&locals[32], &self.pos);
+        *(&locals[16]) = subroutine_66(250.0, 350.0);
+        (&locals[16])[1] = 0.0;
+        (&locals[16])[2] = 0.0;
+        RotateDeg(&locals[16], subroutine_66(0.0, 360.0));
+        VecAdd(&locals[16], &self.pos);
+        subroutine_13(&locals[32], locals[0]);
+        if (subroutine_93(&self.pos, &globals[16]) > 1000.0) {
+            TurnTowardDir(self, &globals[16]);
+            subroutine_80(self, &globals[16], 0, 300.0);
+        } else {
+            TurnTowardDir(self, &locals[16]);
+            subroutine_13(&locals[16], locals[0]);
+        }
+        return;
+    }
+    func subroutine_10(arg0, arg1, arg2, arg3) {
+        locals[0] = arg3;
+        locals[4] = arg2;
+        locals[8] = arg1;
+        locals[12] = arg0;
+        subroutine_56();
+        subroutine_12(locals[8], locals[4]);
+        SetMotion(self, 0xDC, 8.0, 0.0);
+        subroutine_11();
+        subroutine_51(locals[12] * 0.5);
+        subroutine_12(locals[8], locals[0]);
+        subroutine_51(locals[12] * 0.5);
+        SetMotion(self, 0, 8.0, 0.0);
+        return;
+    }
+    func subroutine_11() {
+        SpawnActorEffect(self, 0x817);
+        return;
+    }
+    func subroutine_12(arg0, arg1) {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        locals[32] = RandFloat01();
+        if (locals[32] < locals[0]) {
+            locals[16] = self.rot;
+            locals[32] = RandFloat01();
+            if (locals[32] < 0.5) {
+                *(&locals[4]) *= -1.0;
+            }
+            RotateDeg(&locals[16], locals[4]);
+            TurnTowardDir(self, &locals[16]);
+        }
+        return;
+    }
+    func subroutine_13(arg0, arg1) {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        locals[8] = 0.0;
+        loop {
+            if (!((locals[8] < locals[0]))) goto L1;
+            locals[12] = MoveTo(self, locals[4], 0);
+            *(&locals[8]) += FrameDelta();
+            yield;
+            if (subroutine_40(1.2) || (locals[12] <= 20.0)) {
+                goto L1;
+            }
+        }
+    L1:
+        yield;
+        return;
+    }
+    func subroutine_14() -> 1 {
+        locals[36] = 0;
+        GetBodyPos(subroutine_59(), &locals[16]);
+        GetBodyPos(self, &locals[0]);
+        VecSub(&locals[16], &locals[0]);
+        VecNormalize(&locals[16]);
+        if (((&locals[16])[3] < 1200.0) && !(IsSoraLineOfSightBlocked(self))) {
+            locals[32] = CosAngle(&self.rot, &locals[16]);
+            if (locals[32] > CosDeg(35.0)) {
+                locals[36] = 1;
+            }
+        }
+        return locals[36];
+    }
+    func subroutine_15() {
+        if (IsSoraLineOfSightBlocked(self)) {
+            if (subroutine_70(self, subroutine_59()) > 450.00003) {
+                subroutine_16();
+            }
+        } else {
+            if (subroutine_70(self, subroutine_59()) > 1500.0) {
+                subroutine_16();
+            }
+        }
+        return;
+    }
+    func subroutine_16() {
+        subroutine_78(self, self.target);
+        subroutine_74(self, 30.0);
+        return;
+    }
+    func subroutine_17() -> 1 frame 2 {
+        locals[4] = 0;
+        subroutine_56();
+        subroutine_78(self, self.target);
+        locals[0] = LaunchEffectScript(self, 0, subroutine_59(), &data_0, 0);
+        SetMotion(self, 0xD3, 8.0, 0.0);
+        SpawnActorEffect(self, 0x817);
+        subroutine_52();
+        SetMotion(self, 0, 8.0, 0.0);
+        if (locals[0][6] == 1) {
+            locals[4] = 1;
+        }
+        return locals[4];
+    }
+    func subroutine_18() {
+        subroutine_56();
+        subroutine_78(self, self.target);
+        LaunchEffectScript(self, 0, subroutine_59(), &data_0, 0);
+        SetMotion(self, 0xD3, 8.0, 0.0);
+        subroutine_49(76.0);
+        subroutine_52();
+        SetMotion(self, 0, 8.0, 0.0);
+        return;
+    }
+    func subroutine_19() {
+        subroutine_56();
+        SpawnEffectOnBoneDelayed(self, 9, 0x1039, 0.0);
+        locals[0] = LaunchEffectScript(self, 1, self.target, &data_1, 0);
+        locals[0][6] = 1;
+        SetMotion(self, 0xC8, 0.0, 0.0);
+        subroutine_52();
+        SetMotion(self, 0, 8.0, 0.0);
+        locals[16] = self.rot;
+        RotateDeg(&locals[16], 180.0);
+        TurnTowardDir(self, &locals[16]);
+        subroutine_100(8.0);
+        return;
+    }
+    func subroutine_20() {
+        subroutine_69(self, &drops_1);
+        subroutine_55(0xD0, 0.0, 8.0);
+        return;
+    }
+    func subroutine_21() {
+        SetMotion(self, 0xD4, 8.0, 0.0);
+        subroutine_52();
+        SetMotion(self, 0, 8.0, 0.0);
+        return;
+    }
+    func subroutine_22(arg0) {
+        locals[0] = arg0;
+        subroutine_56();
+        BlendMotion(self, 0, 8.0);
+        subroutine_100(locals[0]);
+        return;
+    }
+    func subroutine_23() {
+        if (((globals[36] - 0) == 0) && !(*globals[48])) {
+            subroutine_56();
+            SpawnActorEffect(self, 0x12);
+            SpawnActorEffect(self, 0x16);
+            subroutine_79(self, self.target);
+            SetMotion(self, 0xD1, 8.0, 0.0);
+            subroutine_49(10.0);
+            PlayVibrationPattern(&data_2);
+            subroutine_50();
+            SetMotion(self, 0xCE, 8.0, 0.0);
+            subroutine_100(60.0);
+            globals[36] = 1;
+            subroutine_33(globals[48]);
+            subroutine_52();
+            SetMotion(self, 0, 8.0, 0.0);
+        }
+        return;
+    }
+    func subroutine_24() {
+        locals[20] = 0.0;
+        subroutine_56();
+        subroutine_25();
+        subroutine_29();
+        locals[28] = ftoi2(subroutine_66(4.0, 8.0));
+        while ((locals[28] - 0) > 0) {
+            *(&locals[0]) = subroutine_66(150.0, 250.0);
+            (&locals[0])[1] = 0.0;
+            (&locals[0])[2] = 0.0;
+            RotateDeg(&locals[0], subroutine_66(0.0, 360.0));
+            VecAdd(&locals[0], &self.pos);
+            if ((subroutine_93(&self.pos, &globals[16]) > 1500.0) && (locals[28] == 1)) {
+                locals[0] = load(&globals[16], 4);
+            }
+            locals[24] = 0.0;
+            loop {
+                if (!((locals[24] < 120.0))) goto L1;
+                if (locals[20] >= 52.0) {
+                    subroutine_25();
+                    locals[20] = 0.0;
+                }
+                BlendMotion(self, 0xCB, 8.0);
+                self.stats[3] = 15.0;
+                locals[16] = MoveTo(self, &locals[0], 0x10002);
+                *(&locals[24]) += FrameDelta();
+                *(&locals[20]) += FrameDelta();
+                yield;
+                if (subroutine_40(7.5) || (locals[16] <= 100.0)) {
+                    goto L1;
+                }
+            }
+        L1:
+            *(&locals[28]) -= 1;
+            yield;
+        }
+        subroutine_55(0xCC, 0.0, 8.0);
+        yield;
+        return;
+    }
+    func subroutine_25() {
+        SpawnActorEffectAtPoint(self, 8, 0xC, 0.0);
+        return;
+    }
+    func subroutine_26() {
+        if (subroutine_93(&self.pos, &globals[16]) > 500.0) {
+            locals[0] = load(&globals[16], 4);
+            VecSub(&locals[0], &self.pos);
+            VecNormalize(&locals[0]);
+        } else {
+            locals[0] = self.rot;
+            RotateDeg(&locals[0], subroutine_66(0.0, 180.0));
+        }
+        TurnTowardDir(self, &locals[0]);
+        VecScale(&locals[0], 30.0);
+        (&locals[0])[1] = 100.0;
+        subroutine_71(self, &locals[0], 0.9, 50.0, 3);
+        return;
+    }
+    func subroutine_27() {
+        subroutine_30();
+        subroutine_28();
+        return;
+    }
+    func subroutine_28() {
+        locals[0] = self.target.pos;
+        VecSub(&locals[0], &self.pos);
+        VecNormalize(&locals[0]);
+        VecScale(&locals[0], -1000.0);
+        VecAdd(&locals[0], &self.pos);
+        subroutine_80(self, &locals[0], 1, 10.0);
+        subroutine_29();
+        locals[16] = 0.0;
+        loop {
+            if (!((locals[16] < 180.0))) goto L1;
+            locals[20] = MoveTo(self, &locals[0], 1);
+            *(&locals[16]) += FrameDelta();
+            yield;
+            if (subroutine_40(6.0) || (locals[20] <= 50.0)) {
+                goto L1;
+            }
+        }
+    L1:
+        subroutine_56();
+        subroutine_55(0xCC, 0.0, 8.0);
+        yield;
+        return;
+    }
+    func subroutine_29() {
+        locals[0] = LaunchEffectScript(self, 2, self.target, &data_1, 0);
+        locals[0][6] = 1;
+        return;
+    }
+    func subroutine_30() {
+        subroutine_79(self, self.target);
+        locals[0] = self.rot;
+        VecScale(&locals[0], 40.0);
+        (&locals[0])[1] = 130.0;
+        subroutine_71(self, &locals[0], 0.9, 50.0, 3);
+        return;
+    }
+    func subroutine_31() {
+        subroutine_61(&globals[4], @subroutine_32);
+        return;
+    }
+    func subroutine_32() {
+        if (*globals[48]) {
+            SpawnActorEffect(self, 2);
+        } else {
+            if ((GetPlacementMode(self) - 0) != 0) {
+                subroutine_75(self);
+            }
+        }
+        subroutine_63(&globals[4], 1);
+        abort;
+        return;
+    }
+    func subroutine_33(arg0) {
+        locals[0] = arg0;
+        globals[36] = 1;
+        heap[0] = 1;
+        EnableEncounterZone(2);
+        DisableEncounterZone(1);
+        return;
+    }
+    func subroutine_34(arg0) {
+        locals[0] = arg0;
+        DisableEncounterZone(2);
+        if ((heap[0] - 0) == 0) {
+            heap[0] = 0;
+            globals[36] = 0;
+        } else {
+            EnableEncounterZone(2);
+            globals[36] = 1;
+        }
+        return;
+    }
+    func subroutine_35(arg0) {
+        locals[0] = arg0;
+        if (heap[8] < 6) {
+            locals[8] = 0;
+        } else if (heap[8] < 0xC) {
+            locals[8] = 1;
+        } else if (heap[8] < 0x12) {
+            locals[8] = 2;
+        } else if (heap[8] < 0x18) {
+            locals[8] = 3;
+        } else {
+            locals[8] = 4;
+        }
+        heap[4] = locals[8];
+        return;
+    }
+    func subroutine_36(arg0, arg1) {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        if (IsGameCleared()) {
+            SetBattleParams(self, locals[0]);
+        } else {
+            SetBattleParams(self, locals[4]);
+        }
+        return;
+    }
+    func subroutine_37() {
+        FadeOutBGM(180.0);
+        return;
+    }
+    func subroutine_38() {
+        FadeOutToWhite(1);
+        FadeIn(0x18);
+        return;
+    }
+    func subroutine_39(arg0) {
+        locals[0] = arg0;
+        if ((subroutine_86(self.attacker, subroutine_59()) == 0) && ((subroutine_91(locals[0]) == 1) || (subroutine_91(locals[0]) == 0xA))) {
+            subroutine_88(locals[0], 0);
+            abort;
+        }
+        return;
+    }
+    func subroutine_40(arg0) -> 1 {
+        locals[0] = arg0;
+        locals[32] = 0;
+        GetMoveDelta(self, &locals[16]);
+        if (VecLength(&locals[16]) < ((locals[0] * FrameDelta()) * 0.5)) {
+            locals[32] = 1;
+        }
+        return locals[32];
+    }
+    func subroutine_41() -> 1 {
+        locals[0] = GetMapInfo();
+        return locals[0][2];
+    }
+    func subroutine_42() -> 1 {
+        locals[0] = GetMapInfo();
+        return locals[0][1];
+    }
+    func subroutine_43() -> 1 {
+        locals[0] = GetMapInfo();
+        return *locals[0];
+    }
+    func subroutine_44() {
+        locals[0] = 30.0;
+        if (GetCharacterId(self) == 0x12D) {
+            subroutine_83(self, locals[0]);
+        } else {
+            subroutine_74(self, locals[0]);
+        }
+        return;
+    }
+    func subroutine_45(arg0) -> 1 {
+        locals[0] = arg0;
+        locals[60] = 0;
+        locals[32] = self.rot;
+        locals[16] = self.target.pos;
+        VecSub(&locals[16], &self.pos);
+        VecNormalize(&locals[16]);
+        RotateDeg(&locals[32], locals[0]);
+        locals[56] = CosAngle(&locals[32], &locals[16]);
+        locals[32] = self.rot;
+        RotateDeg(&locals[32], 90.0 - locals[0]);
+        locals[48] = CosAngle(&locals[32], &locals[16]);
+        locals[32] = self.rot;
+        RotateDeg(&locals[32], 90.0 + locals[0]);
+        locals[52] = CosAngle(&locals[32], &locals[16]);
+        if ((((locals[56] - 0.0) > 0.0) && ((locals[48] - 0.0) > 0.0)) && ((locals[52] - 0.0) < 0.0)) {
+            locals[60] = 1;
+        }
+        return locals[60];
+    }
+    func subroutine_46() -> 1 {
+        locals[32] = self.rot;
+        locals[16] = self.target.pos;
+        VecSub(&locals[16], &self.pos);
+        VecNormalize(&locals[16]);
+        RotateDeg(&locals[32], 90.0);
+        locals[0] = CosAngle(&locals[32], &locals[16]);
+        return locals[0];
+    }
+    func subroutine_47(arg0) -> 1 {
+        locals[0] = arg0;
+        if (subroutine_86(locals[0], 0) == 0) {
+            locals[0] = subroutine_59();
+        }
+        return locals[0];
+    }
+    func subroutine_48(arg0) -> 1 {
+        locals[0] = arg0;
+        locals[4] = 0;
+        if (((subroutine_91(locals[0]) == 8) || (subroutine_91(locals[0]) == 0xA)) || subroutine_89(locals[0])) {
+            locals[4] = 1;
+        }
+        return locals[4];
+    }
+    func subroutine_49(arg0) {
+        locals[0] = arg0;
+        locals[4] = 0.0;
+        loop {
+            if (!((locals[4] < locals[0]))) goto L1;
+            if (subroutine_53()) {
+                goto L1;
+            }
+            subroutine_78(self, self.target);
+            *(&locals[4]) += FrameDelta();
+            yield;
+        }
+    L1:
+        return;
+    }
+    func subroutine_50() {
+        loop {
+            if (!(!(IsMotionDone(self)))) goto L1;
+            if (subroutine_53()) {
+                goto L1;
+            }
+            subroutine_78(self, self.target);
+            yield;
+        }
+    L1:
+        return;
+    }
+    func subroutine_51(arg0) {
+        locals[0] = arg0;
+        locals[4] = 0.0;
+        loop {
+            if (!((locals[4] < locals[0]))) goto L1;
+            if (subroutine_53()) {
+                goto L1;
+            }
+            *(&locals[4]) += FrameDelta();
+            yield;
+        }
+    L1:
+        return;
+    }
+    func subroutine_52() {
+        loop {
+            if (!(!(IsMotionDone(self)))) goto L1;
+            if (subroutine_53()) {
+                goto L1;
+            }
+            yield;
+        }
+    L1:
+        return;
+    }
+    func subroutine_53() -> 1 {
+        locals[0] = 0;
+        if (GetActionState(self) == 6) {
+            locals[0] = 1;
+        }
+        return locals[0];
+    }
+    func subroutine_54() -> 1 {
+        locals[0] = subroutine_70(self, self.target);
+        return locals[0];
+    }
+    func subroutine_55(arg0, arg1, arg2) {
+        locals[0] = arg2;
+        locals[4] = arg1;
+        locals[8] = arg0;
+        SetMotion(self, locals[8] | 0x1000000, locals[4], 0.0);
+        QueueMotion(self, 0x40000000, locals[0], 0.0);
+        yield;
+        return;
+    }
+    func subroutine_56() {
+        while ((self.air - 0) != 0) {
+            yield;
+        }
+        return;
+    }
+    func subroutine_57(arg0) {
+        locals[0] = arg0;
+        *(&heap[0]) = 1.0;
+        (&heap[0])[1] = 1.0;
+        (&heap[0])[2] = 1.0;
+        (&heap[0])[3] = 0.5;
+        heap[16] = 0x100;
+        heap[20] = 0xC0;
+        heap[24] = 0;
+        heap[28] = 0;
+        heap[32] = 0.0;
+        heap[36] = 1;
+        return;
+    }
+    func subroutine_58(arg0) -> 1 {
+        locals[0] = arg0;
+        subroutine_94(&locals[32], 0.0, 1000000.0, 0.0, 1.0);
+        if ((RayCast(locals[0], &locals[32], &locals[16]) - 0) == 0) {
+            (&locals[16])[1] = locals[0][1] + 1000000.0;
+        }
+        return (&locals[16])[1];
+    }
+    func subroutine_59() -> 1 {
+        locals[0] = GetEntity(0);
+        return locals[0];
+    }
+    func subroutine_60(arg0, arg1, arg2, arg3) -> 1 {
+        locals[4] = arg3;
+        locals[8] = arg2;
+        locals[12] = arg1;
+        locals[0] = arg0;
+        locals[20] = PickTargetWeighted(heap[0], (locals[12] * 0x14) + heap[4], locals[8], locals[4]);
+        return locals[20];
+    }
+    func subroutine_61(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        heap[8] = ReplaceThread(heap[8], 0, locals[4]);
+        return;
+    }
+    func subroutine_62(arg0) -> 1 {
+        locals[0] = arg0;
+        if (heap[4]) {
+            locals[8] = heap[0];
+        } else {
+            locals[8] = -1;
+        }
+        heap[4] = 0;
+        return locals[8];
+    }
+    func subroutine_63(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[4];
+        heap[4] = 1;
+        return;
+    }
+    func subroutine_64(arg0) {
+        locals[0] = arg0;
+        heap[0] = 0;
+        heap[4] = 0;
+        heap[8] = 0;
+        return;
+    }
+    func subroutine_65(arg0, arg1, arg2) {
+        locals[0] = arg2;
+        locals[4] = arg1;
+        locals[8] = arg0;
+        subroutine_94(locals[8], subroutine_66(locals[4], locals[0]), 0.0, 0.0, 0.0);
+        RotateDeg(locals[8], RandFloat01() * 360.0);
+        return;
+    }
+    func subroutine_66(arg0, arg1) -> 1 {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        return (RandFloat01() * (locals[0] - locals[4])) + locals[4];
+    }
+    func subroutine_67(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        if (subroutine_89(locals[4]) || subroutine_90(locals[4])) {
+            locals[12] = -1;
+            goto L1;
+        }
+        locals[12] = ApplyHitDamage(locals[0], locals[4]);
+        if ((locals[12] - 0) == 0) {
+            goto L1;
+        }
+        if (!((((((subroutine_86(locals[4][1], 0) == 0) || (subroutine_91(locals[4]) == 9)) || (subroutine_91(locals[4]) == 0xB)) || (subroutine_91(locals[4]) == 8)) || (subroutine_91(locals[4]) == 0xA)))) goto L1;
+        locals[12] = -1;
+        goto L1;
+    L1:
+        return locals[12];
+    }
+    func subroutine_68(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        GetBodyPos(locals[0], &locals[16]);
+        SpawnPrizeDropsFloating(locals[4], &locals[16]);
+        return;
+    }
+    func subroutine_69(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        GetBodyPos(locals[0], &locals[16]);
+        SpawnPrizeDrops(locals[4], &locals[16]);
+        return;
+    }
+    func subroutine_70(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        if (subroutine_86(locals[4], 0) == 0) {
+            DebugNop42();
+        }
+        locals[16] = locals[4][4]:4;
+        VecSub(&locals[16], &heap[16]);
+        return VecLength(&locals[16]);
+    }
+    func subroutine_71(arg0, arg1, arg2, arg3, arg4) {
+        locals[4] = arg4;
+        locals[8] = arg3;
+        locals[12] = arg2;
+        locals[16] = arg1;
+        locals[0] = arg0;
+        SetMotion(locals[0], locals[4], 0.0, 0.0);
+        subroutine_100(GetMotionLength(locals[0], locals[4]));
+        SetMotion(locals[0], (locals[4] + 1) | 0x10000, 0.0, 0.0);
+        JumpArc(locals[0], locals[16], locals[12], locals[8]);
+        SetJumpMotion(locals[0], locals[4]);
+        while ((locals[0][28] == 3) || (locals[0][28] == 5)) {
+            yield;
+        }
+        return;
+    }
+    func subroutine_72(arg0, arg1, arg2) {
+        locals[4] = arg2;
+        locals[8] = arg1;
+        locals[0] = arg0;
+        SetMotion(locals[0], 0x1000003, 0.0, 0.0);
+        QueueMotion(locals[0], 0x40010004, 0.0, 0.0);
+        yield;
+        Jump(locals[0], locals[8], locals[4]);
+        return;
+    }
+    func subroutine_73(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        ClearActorFlags88(locals[0], 2);
+        GetAttachPointPos(locals[0], 0x8003, 0.0, &locals[16]);
+        locals[12] = SpawnObj(heap[104], 0, 0x4E20, &locals[16]);
+        if (subroutine_87(locals[12])) {
+            subroutine_94(&locals[16], fneg(locals[4][4]), 0.0, fneg((&locals[4][4])[2]), 0.0);
+            SetEffectDirection(locals[12], &locals[16]);
+        }
+        SpawnActorEffect(locals[0], 1);
+        SetDefeated(locals[0]);
+        subroutine_83(locals[0], 30.0);
+        RecordDefeat(locals[0]);
+        GiveExp(locals[0], locals[0][27][26]);
+        return;
+    }
+    func subroutine_74(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        SetMotion(locals[0], 0x40000046, 0.0, 0.0);
+        subroutine_82(locals[0], 0.0);
+        subroutine_100(locals[4]);
+        SpawnActorEffect(locals[0], 3);
+        subroutine_83(locals[0], 30.0);
+        loop {
+            yield;
+        }
+        return;
+    }
+    func subroutine_75(arg0) {
+        locals[0] = arg0;
+        SetMotion(locals[0], 0x45, 0.0, 0.0);
+        subroutine_85(locals[0], 30.0);
+        subroutine_82(locals[0], 30.0);
+        SpawnActorEffect(locals[0], 2);
+        subroutine_100(30.0);
+        *(&heap[0]) |= 4;
+        QueueMotion(locals[0], 0x40000000, 0.0, 0.0);
+        yield;
+        return;
+    }
+    func subroutine_76(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        if (subroutine_86(locals[4], 0) == 0) {
+            DebugNop42();
+        }
+        SetTarget(locals[0], locals[4]);
+        return;
+    }
+    func subroutine_77(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[136] & 1;
+    }
+    func subroutine_78(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[16] = locals[4][4]:4;
+        VecSub(&locals[16], &heap[16]);
+        TurnTowardDir(locals[0], &locals[16]);
+        return;
+    }
+    func subroutine_79(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        if (subroutine_86(locals[4], 0) == 0) {
+            DebugNop42();
+        } else {
+            locals[16] = locals[4][4]:4;
+            VecSub(&locals[16], &heap[16]);
+            FaceDir(locals[0], &locals[16]);
+        }
+        return;
+    }
+    func subroutine_80(arg0, arg1, arg2, arg3) -> 1 {
+        locals[4] = arg3;
+        locals[8] = arg2;
+        locals[12] = arg1;
+        locals[0] = arg0;
+        loop {
+            if (!(((locals[4] - 0.0) > 0.0))) goto L1;
+            locals[20] = MoveTo(locals[0], locals[12], locals[8]);
+            yield;
+            if (((locals[20] - 0.0) <= 0.0) && ((heap[112] - 0) == 0)) {
+                goto L1;
+            }
+            *(&locals[4]) -= FrameDelta();
+        }
+    L1:
+        return locals[20];
+    }
+    func subroutine_81(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        *(&heap[0]) &= bnot(locals[4]);
+        return;
+    }
+    func subroutine_82(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        *locals[0] |= 0x80;
+        locals[0][3] = locals[4];
+        return;
+    }
+    func subroutine_83(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        subroutine_84(locals[0], locals[4]);
+        *locals[0] |= 8;
+        return;
+    }
+    func subroutine_84(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 1.0;
+        locals[0][25] = -1.0 / locals[4];
+        return;
+    }
+    func subroutine_85(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[0][24] = 0.0;
+        locals[0][25] = 1.0 / locals[4];
+        return;
+    }
+    func subroutine_86(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        return locals[0] - locals[4];
+    }
+    func subroutine_87(arg0) -> 1 {
+        locals[0] = arg0;
+        return (locals[0] - 0) != 0;
+    }
+    func subroutine_88(arg0, arg1) {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        heap[12] = (heap[12] & -0x20) | locals[4];
+        return;
+    }
+    func subroutine_89(arg0) -> 1 {
+        locals[0] = arg0;
+        return (subroutine_92(locals[0]) == 6) || (subroutine_92(locals[0]) == 7);
+    }
+    func subroutine_90(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[0] & 0x20;
+    }
+    func subroutine_91(arg0) -> 1 {
+        locals[0] = arg0;
+        return (heap[12] >> 6) & 0xF;
+    }
+    func subroutine_92(arg0) -> 1 {
+        locals[0] = arg0;
+        return heap[12] & 0x1F;
+    }
+    func subroutine_93(arg0, arg1) -> 1 {
+        locals[4] = arg1;
+        locals[0] = arg0;
+        locals[16] = load(locals[4], 4);
+        VecSub(&locals[16], locals[0]);
+        return VecLength(&locals[16]);
+    }
+    func subroutine_94(arg0, arg1, arg2, arg3, arg4) -> 1 {
+        locals[4] = arg4;
+        locals[8] = arg3;
+        locals[12] = arg2;
+        locals[16] = arg1;
+        locals[0] = arg0;
+        heap[0] = locals[16];
+        heap[4] = locals[12];
+        heap[8] = locals[8];
+        heap[12] = locals[4];
+        return locals[0];
+    }
+    init func subroutine_95(arg0) {
+        locals[0] = arg0;
+        self = locals[0];
+        subroutine_96(locals[0]);
+        yield;
+        subroutine_31();
+        subroutine_76(self, subroutine_59());
+        loop {
+            if (*(&globals[4]) == 1) {
+                if (((subroutine_14() && (GetActionState(self) == 0xDC)) || (subroutine_70(self, subroutine_59()) < 250.0)) || *globals[48]) {
+                    subroutine_63(&globals[4], 2);
+                }
+            }
+            locals[4] = subroutine_62(&globals[4]);
+            if (locals[4] == 1) {
+                subroutine_5();
+            } else if (locals[4] == 2) {
+                subroutine_3();
+            } else if (locals[4] == 3) {
+                subroutine_1();
+            }
+            yield;
+            subroutine_35(globals[48]);
+        }
+        return;
+    }
+    func subroutine_96(arg0) {
+        locals[0] = arg0;
+        globals[48] = GetRoomVars();
+        subroutine_36(&stats_0, &stats_1);
+        self.stats[1] = 4.0;
+        self.stats[2] = 15.0;
+        self.stats[4] = 350.0;
+        globals[16] = self.pos;
+        subroutine_34(globals[48]);
+        subroutine_64(&globals[4]);
+        SetEventHandlers(@subroutine_99, @subroutine_97, @subroutine_98, 0);
+        return;
+    }
+    func subroutine_97(arg0, arg1) -> 1 {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        locals[8] = 0;
+        if (locals[0] == 0x3E9) {
+            subroutine_81(self, 4);
+            globals[32] = 3;
+            subroutine_63(&globals[4], 3);
+        }
+        return locals[8];
+    }
+    func subroutine_98(arg0, arg1) {
+        locals[0] = arg1;
+        locals[4] = arg0;
+        abort;
+        return;
+    }
+    func subroutine_99(arg0) {
+        locals[0] = arg0;
+        if (*globals[48]) {
+            globals[36] = 1;
+        }
+        if ((subroutine_91(locals[0]) != 1) && ((subroutine_92(locals[0]) == 4) || (subroutine_92(locals[0]) == 5))) {
+            subroutine_88(locals[0], 3);
+        }
+        locals[4] = subroutine_67(self, locals[0]);
+        if (subroutine_91(locals[0]) == 0xA) {
+            if ((GetHitAttackId(locals[0]) == 0x15) || (GetHitAttackId(locals[0]) == 0x16)) {
+                ClearActorFlags88(self, 2);
+            } else {
+                ApplyStun(self, 120.0);
+            }
+        }
+        if ((locals[4] - 0) == 0) {
+            if (subroutine_86(self.attacker, subroutine_59()) == 0) {
+                entry();
+            } else {
+                self.stats.hp = 1;
+                globals[32] = 2;
+                subroutine_63(&globals[4], 3);
+                abort;
+            }
+        } else if ((locals[4] - 0) < 0) {
+            if (subroutine_48(locals[0])) {
+                globals[32] = 2;
+                subroutine_63(&globals[4], 3);
+            }
+            abort;
+        } else {
+            globals[32] = 2;
+            if ((GetHitAttackId(locals[0]) == 0x13) || (GetHitAttackId(locals[0]) == 0x14)) {
+                PushOnHit(self, locals[0]);
+                if (!(*globals[48])) {
+                    subroutine_63(&globals[4], 3);
+                }
+                abort;
+            }
+            if (subroutine_86(self.attacker, subroutine_59()) != 0) {
+                if ((GetActionState(self) == 0xCE) || (GetActionState(self) == 0xD1)) {
+                    PushOnHit(self, locals[0]);
+                    abort;
+                }
+            }
+            if ((subroutine_92(locals[0]) == 4) || (subroutine_92(locals[0]) == 5)) {
+                ScriptedKnockback(self, locals[0], 0, 350.0, 35.0, 60.0);
+                globals[32] = 4;
+            }
+            subroutine_63(&globals[4], 3);
+            abort;
+        }
+        return;
+    }
+    func subroutine_100(arg0) {
+        locals[0] = arg0;
+        while ((locals[0] - 0.0) > 0.0) {
+            *(&locals[0]) -= FrameDelta();
+            yield;
+        }
+        return;
+    }
+}

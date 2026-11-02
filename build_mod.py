@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
 build_mod.py — reassemble every .asm file under asm/ (and every .evs file
-under evs/) against the pristine game files and write the patched result
-into mod/. When a script has both, evs/<rel>.evs wins over asm/<rel>.asm.
+under evs/, and every .bds file under bds/) against the pristine game files
+and write the patched result into mod/. When a script has both,
+evs/<rel>.evs wins over asm/<rel>.asm.
+
+Each bds/<rel>.bds is enemy AI source for the model <rel>, e.g.
+  bds/xa_ex_2350.mdls.bds
+    original: <game_data>/xa_ex_2350.mdls
+    output:   mod/xa_ex_2350.mdls
 
 Each asm/<rel>.asm maps to:
   - the original binary at <game_data>/<rel> (.asm suffix stripped)
@@ -29,6 +35,7 @@ Usage:
   python build_mod.py --game-data D:/path/to/data/kh1
 """
 import argparse
+import importlib.util
 import sys
 import os
 from pathlib import Path
@@ -43,6 +50,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
 ROOT = Path(__file__).parent
 ASM_DIR = ROOT / 'asm'
 EVS_DIR = ROOT / 'evs'
+BDS_DIR = ROOT / 'bds'
 MOD_DIR = ROOT / 'mod'
 DEFAULT_GAME_DATA = 'C:/OpenKH/OpenKHEGS/data/kh1'
 DEFAULT_EVDL_TOOLS_DIR = Path(r'C:\Users\gaith\Documents\GitHub\KH1-EVDL-TOOLS')
@@ -79,6 +87,19 @@ sys.path.insert(0, str(EVDL_TOOLS_DIR / 'ev' / 'evs'))
 import build as evs_build
 
 
+def load_bds_build():
+    evs_lang = sys.modules.pop('lang')
+    bds_build_path = EVDL_TOOLS_DIR / 'bd' / 'bds' / 'build.py'
+    spec = importlib.util.spec_from_file_location('bds_build', bds_build_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    sys.modules['lang'] = evs_lang
+    return module
+
+
+bds_build = load_bds_build()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--game-data', default=os.environ.get('KH1_GAME_DATA', DEFAULT_GAME_DATA),
@@ -92,8 +113,10 @@ def main():
 
     sources = {p.relative_to(ASM_DIR).with_suffix(''): p for p in ASM_DIR.rglob('*.asm')}
     sources.update({p.relative_to(EVS_DIR).with_suffix(''): p for p in EVS_DIR.rglob('*.evs')})
+    sources.update({p.relative_to(BDS_DIR).with_suffix(''): p for p in BDS_DIR.rglob('*.bds')})
     built = 0
     from_evs = 0
+    from_bds = 0
     skipped = []
     failed = []
 
@@ -109,13 +132,17 @@ def main():
                 for binl in evs_build.build_file(src_path, orig_path, mod_path):
                     print(f'  {rel}: new message strings written to {binl}')
                 from_evs += 1
+            elif src_path.suffix == '.bds':
+                bds_build.build_file(src_path, orig_path, mod_path)
+                from_bds += 1
             else:
                 evdl_asm.assemble_file(str(src_path), str(mod_path), str(orig_path))
             built += 1
         except Exception as e:
             failed.append(f'{rel} ({e})')
 
-    print(f'\n{built}/{len(sources)} file(s) built ({from_evs} from evs/, {built - from_evs} from asm/).')
+    from_asm = built - from_evs - from_bds
+    print(f'\n{built}/{len(sources)} file(s) built ({from_evs} from evs/, {from_bds} from bds/, {from_asm} from asm/).')
     if skipped:
         print(f'\n{len(skipped)} skipped (no original binary found):')
         for s in skipped:

@@ -12,6 +12,7 @@ The core mod for Kingdom Hearts Final Mix Archipelago Randomizer functionality. 
 The repository contains:
 - The mod itself (files in `/mod/`) including the lua scripts, assembled event script binaries, mdls files for enemies and summons and a few art assets such as for the title screen.
 - The disassembled EV files (`/evs/`) that contain the non-binary event script changes.  Disassembled and can be reassembled back into binaries using [KH1-EVDL-TOOLS](https://github.com/gaithern/KH1-EVDL-TOOLS).
+- The decompiled enemy AI (`/bds/`) for edited enemy models, compiled back into `.mdls` files with the same tools.
 - Scripts to build the mod.
 
 ## Archipelago Menu
@@ -39,5 +40,5 @@ If you'd like to make EVS changes, the `build.py` script automatically picks up 
 ### Lua Edits
 If you'd like make changes or add a lua script, they are automatically picked up in `build.py` and added to `mod.yml`, so adding the script to `/mod/scripts/` should be enough.  Try to use `KH1-LUA-LIBRARY` where possible.
 
-### MDLS and Other Binary Edits
-Currently, MDLS files are edited using a hex editor.  I recommend [ImHex](https://imhex.werwolv.net/) if you'd like to try to make changes to them.
+### BDS Edits
+Enemy AI changes live in `/bds/`, one file per model named after it (`bds/xa_ex_2350.mdls.bds` builds `mod/xa_ex_2350.mdls` from the original `xa_ex_2350.mdls`).  `build.py` picks them up automatically.
