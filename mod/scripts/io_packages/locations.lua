@@ -4979,7 +4979,7 @@ local function build()
             value = 0x01,
         },
         [2659212] = {
-            name = "Agrabah Palace Gates Pot Scorpion 11th Pot Reward",
+            name = "Agrabah Palace Gates Pot Scorpion Defeated Reward",
             address = rare_heartless_flags_address + 0x1,
             bit = 4,
             value = 0x01,
