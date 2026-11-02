@@ -1,34 +1,11 @@
 #!/usr/bin/env python3
 """
-build_mod.py — reassemble every .asm file under asm/ (and every .evs file
-under evs/, and every .bds file under bds/) against the pristine game files
-and write the patched result into mod/. When a script has both,
-evs/<rel>.evs wins over asm/<rel>.asm.
+build_mod.py — build asm/, evs/ and bds/ sources against the game files
+into mod/. asm/<rel>.asm, evs/<rel>.evs or bds/<rel>.bds patches
+<game_data>/<rel> and writes mod/<rel>; evs wins over asm.
 
-Each bds/<rel>.bds is enemy AI source for the model <rel>, e.g.
-  bds/xa_ex_2350.mdls.bds
-    original: <game_data>/xa_ex_2350.mdls
-    output:   mod/xa_ex_2350.mdls
-
-Each asm/<rel>.asm maps to:
-  - the original binary at <game_data>/<rel> (.asm suffix stripped)
-  - the mod output at         mod/<rel>       (.asm suffix stripped)
-e.g.:
-  asm/remastered/lm01.ard/UK_lm01_ard10.evdl.asm
-    original: <game_data>/remastered/lm01.ard/UK_lm01_ard10.evdl
-    output:   mod/remastered/lm01.ard/UK_lm01_ard10.evdl
-  asm/lm01.ard.asm
-    original: <game_data>/lm01.ard
-    output:   mod/lm01.ard
-
-<game_data> defaults to C:/OpenKH/OpenKHEGS/data/kh1 (the extracted KH1
-game files evdl_tool.py's GUI also defaults to). Override with --game-data
-or the KH1_GAME_DATA environment variable.
-
-evdl_tool.py itself lives in the separate KH1-EVDL-TOOLS repo, expected as a
-sibling checkout at C:/Users/gaith/Documents/GitHub/KH1-EVDL-TOOLS. Override
-with the KH1_EVDL_TOOLS_DIR environment variable, or if neither is found
-you'll be prompted for its location.
+<game_data>: --game-data, KH1_GAME_DATA, or C:/OpenKH/OpenKHEGS/data/kh1.
+KH1-EVDL-TOOLS: KH1_EVDL_TOOLS_DIR, or the sibling checkout.
 
 Usage:
   python build_mod.py
@@ -40,8 +17,6 @@ import sys
 import os
 from pathlib import Path
 
-# evdl_tool prints some non-ASCII characters (e.g. '→') in error
-# messages; on Windows the default console codepage can't encode them.
 if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -57,9 +32,6 @@ DEFAULT_EVDL_TOOLS_DIR = Path(r'C:\Users\gaith\Documents\GitHub\KH1-EVDL-TOOLS')
 
 
 def find_evdl_tools_dir():
-    """Locate the KH1-EVDL-TOOLS checkout containing evdl_tool.py: the
-    KH1_EVDL_TOOLS_DIR env var, then the default sibling-repo path, then an
-    interactive prompt."""
     env_dir = os.environ.get('KH1_EVDL_TOOLS_DIR')
     if env_dir and (Path(env_dir) / 'evdl_tool.py').is_file():
         return Path(env_dir)
