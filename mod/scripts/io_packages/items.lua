@@ -355,31 +355,31 @@ local sora_abilities = {
 }
 
 local donald_abilities = {
-    [2645005] = { name = "Donald Treasure Magnet" },
-    [2645009] = { name = "Donald Second Wind" },
-    [2645023] = { name = "Donald MP Haste" },
-    [2645024] = { name = "Donald MP Rage" },
-    [2645025] = { name = "Donald Second Chance" },
-    [2645026] = { name = "Donald Berserk" },
-    [2645027] = { name = "Donald Jackpot" },
-    [2645028] = { name = "Donald Lucky Strike" },
-    [2645062] = { name = "Donald Leaf Bracer" },
+    [2645005] = { name = "Treasure Magnet (Donald)" },
+    [2645009] = { name = "Second Wind (Donald)" },
+    [2645023] = { name = "MP Haste (Donald)" },
+    [2645024] = { name = "MP Rage (Donald)" },
+    [2645025] = { name = "Second Chance (Donald)" },
+    [2645026] = { name = "Berserk (Donald)" },
+    [2645027] = { name = "Jackpot (Donald)" },
+    [2645028] = { name = "Lucky Strike (Donald)" },
+    [2645062] = { name = "Leaf Bracer (Donald)" },
 }
 
 local goofy_abilities = {
-    [2646005] = { name = "Goofy Treasure Magnet" },
-    [2646009] = { name = "Goofy Second Wind" },
-    [2646023] = { name = "Goofy MP Haste" },
-    [2646024] = { name = "Goofy MP Rage" },
-    [2646025] = { name = "Goofy Second Chance" },
-    [2646026] = { name = "Goofy Berserk" },
-    [2646027] = { name = "Goofy Jackpot" },
-    [2646028] = { name = "Goofy Lucky Strike" },
-    [2646029] = { name = "Goofy Charge" },
-    [2646030] = { name = "Goofy Rocket" },
-    [2646031] = { name = "Goofy Tornado" },
-    [2646032] = { name = "Goofy MP Gift" },
-    [2646063] = { name = "Goofy Evolution" },
+    [2646005] = { name = "Treasure Magnet (Goofy)" },
+    [2646009] = { name = "Second Wind (Goofy)" },
+    [2646023] = { name = "MP Haste (Goofy)" },
+    [2646024] = { name = "MP Rage (Goofy)" },
+    [2646025] = { name = "Second Chance (Goofy)" },
+    [2646026] = { name = "Berserk (Goofy)" },
+    [2646027] = { name = "Jackpot (Goofy)" },
+    [2646028] = { name = "Lucky Strike (Goofy)" },
+    [2646029] = { name = "Charge (Goofy)" },
+    [2646030] = { name = "Rocket (Goofy)" },
+    [2646031] = { name = "Tornado (Goofy)" },
+    [2646032] = { name = "MP Gift (Goofy)" },
+    [2646063] = { name = "Evolution (Goofy)" },
 }
 
 -- ---------------------------------------------------------------------------
