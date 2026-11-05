@@ -14,6 +14,9 @@ open_cmds[86] = {0x02, 0x00, 0xFF, 0x00, 0x49, 0x01, 0x55, 0x00, 0x00, 0xFF, 0x0
 
 local na_cmd = {0x00, 0x00, 0xFF, 0x00, 0x48, 0x01, 0x54, 0x00, 0x00, 0xFF, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00}
 
+local trinity_cmd_idx = 84
+local trinity_cmd = {0x02, 0x00, 0xFF, 0x00, 0x47, 0x01, 0x53, 0x00, 0x00, 0xFF, 0x02, 0x02, 0x0F, 0x27, 0x0F, 0x27}
+
 local function has_correct_keyblade()
     local keyblade_offsets = {96, nil, 94, 98, 86, 92, nil, 87, 90, 89, 93, 99, 88, nil, 91, 97}
     local current_world = kh1_lua_library.get_world()
@@ -66,13 +69,16 @@ function _OnFrame()
                 WriteByte(examine_interaction, 0x70)
                 WriteByte(talk_interaction, 0x70)
                 WriteByte(chests_interaction, 0x73)
+                WriteByte(trinity_interaction, 0x71)
                 --WriteArray(battleModeCheck, {0xBA, 0x00, 0x00, 0x00, 0x00, 0x90})
                 interactset = true
             end
-            if get_dg_count() >= 2 then
-                WriteByte(trinity_interaction, 0x71) -- Forced
-            else
-                WriteByte(trinity_interaction, 0x75) -- Default
+            if ReadLong(commandMenuPointer) ~= 0 then
+                if get_dg_count() >= 2 then
+                    kh1_lua_library.set_command_data(trinity_cmd_idx, trinity_cmd)
+                else
+                    kh1_lua_library.set_command_data(trinity_cmd_idx, na_cmd)
+                end
             end
         end
     end

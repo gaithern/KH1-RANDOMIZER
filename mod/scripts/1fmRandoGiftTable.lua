@@ -36,6 +36,10 @@ local function get_gift_replacement(item_id)
         return {0xB1, value}
     elseif kind == "sora_ability" and value >= 1 then
         return {0x01, value}
+    elseif kind == "donald_ability" and value >= 1 then
+        return {0x11, value}
+    elseif kind == "goofy_ability" and value >= 1 then
+        return {0x21, value}
     end
 
     return {0xF0, PLACEHOLDER_GIFT_ID}

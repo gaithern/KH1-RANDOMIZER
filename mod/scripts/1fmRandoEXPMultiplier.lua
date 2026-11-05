@@ -3,6 +3,7 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM EXP Multiplier"
 
 local seed_vars = require("seed_vars")
+local kh1_lua_library = require("kh1_lua_library")
 
 local EXP_CHART_OFFSETS = {
     0x3C60, -- Sora Midday
@@ -40,7 +41,7 @@ function _OnFrame()
     if not canExecute then return end
     if seed_vars["settings"]["exp_multiplier"] == nil then return end
     if seed_vars["settings"]["exp_multiplier"] == 1.0 then return end
-    if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
+    if not kh1_lua_library.is_btltbl_loaded() then return end
     if ReadShort(jumpHeights - 0xAC + 0x3C60) ~= 18 then return end -- already applied
     apply_exp_mult()
 end

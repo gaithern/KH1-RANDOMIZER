@@ -4,6 +4,7 @@ LUAGUI_AUTH = "Gicu"
 LUAGUI_DESC = "Kingdom Hearts 1FM Handle Item Sort Order and Prices"
 
 local seed_vars = require("seed_vars")
+local kh1_lua_library = require("kh1_lua_library")
 local items     = require("items")
 
 local applied = false
@@ -52,7 +53,7 @@ end
 function _OnFrame()
     if not canExecute then return end
     if applied then return end
-    if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
+    if not kh1_lua_library.is_btltbl_loaded() then return end
     apply_sort_order()
     apply_sell_prices()
     apply_buy_prices()

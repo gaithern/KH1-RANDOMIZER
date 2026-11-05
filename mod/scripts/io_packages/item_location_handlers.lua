@@ -5,6 +5,9 @@ local kh1_lua_library = require("kh1_lua_library")
 local items           = require("items")
 local locations       = require("locations")
 
+local DONALD_PARTY_MEMBER = 1
+local GOOFY_PARTY_MEMBER  = 2
+
 local function set_check_number(check_number)
     --[[Writes the current check number directly as a 4-byte int across 4 unused gummi item slots
     (0x74-0x77), since set_gummi_qty_at_index would clamp this to 99 and a full seed can easily
@@ -83,6 +86,10 @@ local function handle_item_received(received_item_id)
         write_shared_ability(value)
     elseif kind == "sora_ability" then
         write_sora_ability(value)
+    elseif kind == "donald_ability" then
+        kh1_lua_library.give_party_member_ability(DONALD_PARTY_MEMBER, value)
+    elseif kind == "goofy_ability" then
+        kh1_lua_library.give_party_member_ability(GOOFY_PARTY_MEMBER, value)
     end
 end
 
