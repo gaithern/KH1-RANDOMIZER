@@ -10,6 +10,7 @@ local prevHUD = 0
 local autosave_count = 9
 local bossRush = false
 local skip_save = false
+local clear_settings_menu_allowed = false
 
 local function file_exists(name)
    local f=io.open(name,"r")
@@ -65,6 +66,7 @@ local function LoadAutoSave(autosave_num)
         WriteFloat(cam, -1.0 + ReadByte(config + 20) * 2)
         WriteFloat(cam + 4, 1.0 - ReadByte(config + 24) * 2)
         skip_save = true
+        clear_settings_menu_allowed = true
     else
         ConsolePrint("autosave_" .. tostring(autosave_num) .. ".dat does not exist!")
     end
@@ -83,6 +85,7 @@ local function SoftReset()
     WriteLong(closeMenu, 0)
     WriteInt(titlescreenamvtimer, 0)
     skip_save = true
+    clear_settings_menu_allowed = false
 end
 
 function _OnFrame()
@@ -115,8 +118,13 @@ function _OnFrame()
 
         lastInput = input
 
+        if clear_settings_menu_allowed then
+            WriteInt(settingsMenuAllowed, 0)
+        end
+
         -- For boss rush comment this if block out as it writes to the auto save files as well
         if ReadFloat(soraHUD) == 1 and prevHUD < 1  and not bossRush then
+            clear_settings_menu_allowed = false
             if not skip_save then
                 CycleAutoSaves()
                 autosave_filename = "autosave_1.dat"
