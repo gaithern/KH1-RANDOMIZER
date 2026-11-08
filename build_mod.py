@@ -1,40 +1,22 @@
 #!/usr/bin/env python3
 """
-build_mod.py — reassemble every .asm file under asm/ (and every .evs file
-under evs/) against the pristine game files and write the patched result
-into mod/. When a script has both, evs/<rel>.evs wins over asm/<rel>.asm.
+build_mod.py — build asm/, evs/ and bds/ sources against the game files
+into mod/. asm/<rel>.asm, evs/<rel>.evs or bds/<rel>.bds patches
+<game_data>/<rel> and writes mod/<rel>; evs wins over asm.
 
-Each asm/<rel>.asm maps to:
-  - the original binary at <game_data>/<rel> (.asm suffix stripped)
-  - the mod output at         mod/<rel>       (.asm suffix stripped)
-e.g.:
-  asm/remastered/lm01.ard/UK_lm01_ard10.evdl.asm
-    original: <game_data>/remastered/lm01.ard/UK_lm01_ard10.evdl
-    output:   mod/remastered/lm01.ard/UK_lm01_ard10.evdl
-  asm/lm01.ard.asm
-    original: <game_data>/lm01.ard
-    output:   mod/lm01.ard
-
-<game_data> defaults to C:/OpenKH/OpenKHEGS/data/kh1 (the extracted KH1
-game files evdl_tool.py's GUI also defaults to). Override with --game-data
-or the KH1_GAME_DATA environment variable.
-
-evdl_tool.py itself lives in the separate KH1-EVDL-TOOLS repo, expected as a
-sibling checkout at C:/Users/gaith/Documents/GitHub/KH1-EVDL-TOOLS. Override
-with the KH1_EVDL_TOOLS_DIR environment variable, or if neither is found
-you'll be prompted for its location.
+<game_data>: --game-data, KH1_GAME_DATA, or C:/OpenKH/OpenKHEGS/data/kh1.
+KH1-EVDL-TOOLS: KH1_EVDL_TOOLS_DIR, or the sibling checkout.
 
 Usage:
   python build_mod.py
   python build_mod.py --game-data D:/path/to/data/kh1
 """
 import argparse
+import importlib.util
 import sys
 import os
 from pathlib import Path
 
-# evdl_tool prints some non-ASCII characters (e.g. '→') in error
-# messages; on Windows the default console codepage can't encode them.
 if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -43,15 +25,13 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
 ROOT = Path(__file__).parent
 ASM_DIR = ROOT / 'asm'
 EVS_DIR = ROOT / 'evs'
+BDS_DIR = ROOT / 'bds'
 MOD_DIR = ROOT / 'mod'
 DEFAULT_GAME_DATA = 'C:/OpenKH/OpenKHEGS/data/kh1'
 DEFAULT_EVDL_TOOLS_DIR = Path(r'C:\Users\gaith\Documents\GitHub\KH1-EVDL-TOOLS')
 
 
 def find_evdl_tools_dir():
-    """Locate the KH1-EVDL-TOOLS checkout containing evdl_tool.py: the
-    KH1_EVDL_TOOLS_DIR env var, then the default sibling-repo path, then an
-    interactive prompt."""
     env_dir = os.environ.get('KH1_EVDL_TOOLS_DIR')
     if env_dir and (Path(env_dir) / 'evdl_tool.py').is_file():
         return Path(env_dir)
@@ -79,6 +59,19 @@ sys.path.insert(0, str(EVDL_TOOLS_DIR / 'ev' / 'evs'))
 import build as evs_build
 
 
+def load_bds_build():
+    evs_lang = sys.modules.pop('lang')
+    bds_build_path = EVDL_TOOLS_DIR / 'bd' / 'bds' / 'build.py'
+    spec = importlib.util.spec_from_file_location('bds_build', bds_build_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    sys.modules['lang'] = evs_lang
+    return module
+
+
+bds_build = load_bds_build()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--game-data', default=os.environ.get('KH1_GAME_DATA', DEFAULT_GAME_DATA),
@@ -92,8 +85,10 @@ def main():
 
     sources = {p.relative_to(ASM_DIR).with_suffix(''): p for p in ASM_DIR.rglob('*.asm')}
     sources.update({p.relative_to(EVS_DIR).with_suffix(''): p for p in EVS_DIR.rglob('*.evs')})
+    sources.update({p.relative_to(BDS_DIR).with_suffix(''): p for p in BDS_DIR.rglob('*.bds')})
     built = 0
     from_evs = 0
+    from_bds = 0
     skipped = []
     failed = []
 
@@ -109,13 +104,17 @@ def main():
                 for binl in evs_build.build_file(src_path, orig_path, mod_path):
                     print(f'  {rel}: new message strings written to {binl}')
                 from_evs += 1
+            elif src_path.suffix == '.bds':
+                bds_build.build_file(src_path, orig_path, mod_path)
+                from_bds += 1
             else:
                 evdl_asm.assemble_file(str(src_path), str(mod_path), str(orig_path))
             built += 1
         except Exception as e:
             failed.append(f'{rel} ({e})')
 
-    print(f'\n{built}/{len(sources)} file(s) built ({from_evs} from evs/, {built - from_evs} from asm/).')
+    from_asm = built - from_evs - from_bds
+    print(f'\n{built}/{len(sources)} file(s) built ({from_evs} from evs/, {from_bds} from bds/, {from_asm} from asm/).')
     if skipped:
         print(f'\n{len(skipped)} skipped (no original binary found):')
         for s in skipped:

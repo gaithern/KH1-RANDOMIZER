@@ -74,13 +74,13 @@ Each JSON file included with the seed is served unchanged at an endpoint of the 
 | `/ap_costs` | `ap_costs.json` |
 | `/item_location_map` | `item_location_map.json` |
 | `/items` | `items.json` |
-| `/keyblade_stats` | `keyblade_stats.json` |
 | `/location_spheres` | `location_spheres.json` |
 | `/locations` | `locations.json` |
 | `/mp_costs` | `mp_costs.json` |
 | `/progression_locations` | `progression_locations.json` |
 | `/settings` | `settings.json` |
 | `/spell_effectiveness` | `spell_effectiveness.json` |
+| `/weapon_stats` | `weapon_stats.json` |
 
 `/items` and `/locations` are the apworld's full catalogs, keyed by ID:
 

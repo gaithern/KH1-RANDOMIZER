@@ -188,7 +188,7 @@ kgr 0 {
                 Set_window_size(1, 0xE, 2);
                 Set_window_tail_location(1, 0xD);
                 Open_window(1);
-                Display_message(1, messages[0x1AC]="{0x0B}{0x0A}{0x07}{0x0C}Nothing really out of the ordinary…{lf}{0x0B}{0x0A}How did he get here?");
+                Display_message(1, messages[0x1AC]="{0x0B 00 0A 00}{0x07 0C 00}Nothing really out of the ordinary…{lf}{0x0B 00 0A 00}How did he get here?");
                 Wait_message_end();
                 goto L1;
             }
@@ -196,7 +196,7 @@ kgr 0 {
                 Set_window_position(1, -0x64, -0x78);
                 Set_window_size(1, 0xB, 2);
                 Open_window(1);
-                Display_message(1, messages[0x1AA]="{0x0B}{0x14}{0x07}{0x0C}I wonder where this door{lf}{0x0B}{0x14}leads…");
+                Display_message(1, messages[0x1AA]="{0x0B 00 14 00}{0x07 0C 00}I wonder where this door{lf}{0x0B 00 14 00}leads…");
                 Wait_message_end();
                 runtime.dword[0x900] = 1;
                 goto L1;
@@ -205,7 +205,7 @@ kgr 0 {
             Set_window_position(1, -0x64, -0x78);
             Set_window_size(1, 0xB, 3);
             Open_window(1);
-            Display_message(1, messages[0x1AB]="{0x0B}{0x14}{0x07}{0x0C}No doorknob, no keyhole.{lf}{0x0B}{0x14}What kind of door is this,{lf}{0x0B}{0x14}anyway?");
+            Display_message(1, messages[0x1AB]="{0x0B 00 14 00}{0x07 0C 00}No doorknob, no keyhole.{lf}{0x0B 00 14 00}What kind of door is this,{lf}{0x0B 00 14 00}anyway?");
             Wait_message_end();
             runtime.dword[0x900] = 0;
         L1:
@@ -257,7 +257,7 @@ kgr 0 {
                     Set_window_position(7, 0, 0x96);
                     Close_window(7);
                     Open_window_no_close(7);
-                    Display_message(7, messages[0x1C2]="{0x08}{0x0A}Seashore");
+                    Display_message(7, messages[0x1C2]="{0x08}{0x0A 00 00 00}Seashore");
                     goto L2;
                 }
                 if (!((local18 == 0) & (local19 == 1))) goto L2;
@@ -910,7 +910,7 @@ kgr 1 {
             Set_window_tail_type(0, 1);
             Set_window_position(0, 0, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x140]="{0x0A}{lf}{0x08}Wh{-}Who's there?{0x05}—");
+            Display_message(0, messages[0x140]="{0x0A 00 00 00}{lf}{0x08}Wh{-}Who's there?{0x05 20 00}");
             Wait_message_end();
             Wait_voice_finish(0);
         }
@@ -918,104 +918,104 @@ kgr 1 {
             Play_voice(1, 0x64, 0x64);
             Set_window_position(0, -0x46, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x141]="{0x0A}I've come to see the door to{lf}this world.{0x05}j");
+            Display_message(0, messages[0x141]="{0x0A 00 00 00}I've come to see the door to{lf}this world.{0x05 4E 00}");
             Wait_message_end();
         }
         entry_13 {
             Play_voice(2, 0x64, 0x64);
             Set_window_position(0, 0, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x142]="{0x0A}{lf}{0x08}Huh?{0x05}{0x0A}");
+            Display_message(0, messages[0x142]="{0x0A 00 00 00}{lf}{0x08}Huh?{0x05 0A 00}");
             Wait_message_end();
             Wait_voice_finish(2);
         }
         entry_14 {
             Play_voice(3, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x143]="{0x0A}{lf}{0x08}This world has been connected.{0x05}W");
+            Display_message(0, messages[0x143]="{0x0A 00 00 00}{lf}{0x08}This world has been connected.{0x05 41 00}");
             Wait_message_end();
             Wait_voice_finish(3);
         }
         entry_15 {
             Play_voice(4, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x144]="{0x0A}{lf}{0x08}Wh-What are you talking about?{0x05}R");
+            Display_message(0, messages[0x144]="{0x0A 00 00 00}{lf}{0x08}Wh-What are you talking about?{0x05 3C 00}");
             Wait_message_end();
             Wait_voice_finish(4);
         }
         entry_16 {
             Play_voice(5, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x145]="{0x0A}{lf}{0x08}Tied to the darkness…{0x05}Q");
+            Display_message(0, messages[0x145]="{0x0A 00 00 00}{lf}{0x08}Tied to the darkness…{0x05 3B 00}");
             Wait_message_end();
             Wait_voice_finish(5);
         }
         entry_17 {
             Play_voice(0, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x146]="{0x0A}{lf}{0x08}soon to be completely eclipsed.{0x05}g");
+            Display_message(0, messages[0x146]="{0x0A 00 00 00}{lf}{0x08}soon to be completely eclipsed.{0x05 4B 00}");
             Wait_message_end();
             Wait_voice_finish(0);
         }
         entry_18 {
             Play_voice(1, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x147]="{0x0A}{lf}{0x08}Well, whoever you are,{0x05}W");
-            Display_message(0, messages[0x148]="{0x0A}{lf}{0x08}stop freaking me out like this. Huh?{0x05}W");
+            Display_message(0, messages[0x147]="{0x0A 00 00 00}{lf}{0x08}Well, whoever you are,{0x05 41 00}");
+            Display_message(0, messages[0x148]="{0x0A 00 00 00}{lf}{0x08}stop freaking me out like this. Huh?{0x05 41 00}");
             Wait_message_end();
         }
         entry_19 {
             Open_window(0);
-            Display_message(0, messages[0x149]="{0x0A}{lf}{0x08}Wh{-}{0x05}{0x0A}");
+            Display_message(0, messages[0x149]="{0x0A 00 00 00}{lf}{0x08}Wh{-}{0x05 0A 00}");
             Wait_message_end();
         }
         entry_20 {
             Play_voice(2, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x14A]="{0x0A}{lf}{0x08}Wh-Where did you come from?{0x05}d");
+            Display_message(0, messages[0x14A]="{0x0A 00 00 00}{lf}{0x08}Wh-Where did you come from?{0x05 48 00}");
             Wait_message_end();
         }
         entry_21 {
             Play_voice(3, 0x64, 0x64);
             Set_window_position(0, -0x55, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x14B]="{0x0A}You do not yet know what lies{lf}beyond the door.{0x05}(");
+            Display_message(0, messages[0x14B]="{0x0A 00 00 00}You do not yet know what lies{lf}beyond the door.{0x05 74 00}");
             Wait_message_end();
         }
         entry_22 {
             Play_voice(4, 0x64, 0x64);
             Set_window_position(0, 0, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x14C]="{0x0A}{lf}{0x08}So, you're from another world!{0x05}E");
+            Display_message(0, messages[0x14C]="{0x0A 00 00 00}{lf}{0x08}So, you're from another world!{0x05 2F 00}");
             Wait_message_end();
         }
         entry_23 {
             Play_voice(5, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x14D]="{0x0A}{lf}{0x08}There is so very much to learn.{0x05}l");
-            Display_message(0, messages[0x14E]="{0x0A}{lf}{0x08}You understand so little.{0x05}v");
+            Display_message(0, messages[0x14D]="{0x0A 00 00 00}{lf}{0x08}There is so very much to learn.{0x05 50 00}");
+            Display_message(0, messages[0x14E]="{0x0A 00 00 00}{lf}{0x08}You understand so little.{0x05 5A 00}");
             Wait_message_end();
             Wait_voice_finish(5);
         }
         entry_24 {
             Play_voice(6, 0x64, 0x64);
             Open_window(0);
-            Display_message(0, messages[0x14F]="{0x0A}{lf}{0x08}Oh, yeah? Well, you'll see.{0x05}R");
+            Display_message(0, messages[0x14F]="{0x0A 00 00 00}{lf}{0x08}Oh, yeah? Well, you'll see.{0x05 3C 00}");
             Wait_message_end();
             Set_window_position(0, -0x41, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x150]="{0x0A}I'm gonna get out and learn{lf}what's out there!{0x05}M");
+            Display_message(0, messages[0x150]="{0x0A 00 00 00}I'm gonna get out and learn{lf}what's out there!{0x05 37 00}");
             Wait_message_end();
         }
         entry_25 {
             Play_voice(7, 0x64, 0x64);
             Set_window_position(0, 0, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x151]="{0x0A}{lf}{0x08}A meaningless effort.{0x05}<");
+            Display_message(0, messages[0x151]="{0x0A 00 00 00}{lf}{0x08}A meaningless effort.{0x05 78 00}");
             Wait_message_end();
             Set_window_position(0, -0x41, 0x84);
             Open_window(0);
-            Display_message(0, messages[0x152]="{0x0A}One who knows nothing can{lf}understand nothing.{0x05}<");
+            Display_message(0, messages[0x152]="{0x0A 00 00 00}One who knows nothing can{lf}understand nothing.{0x05 78 00}");
             Wait_message_end();
         }
     }

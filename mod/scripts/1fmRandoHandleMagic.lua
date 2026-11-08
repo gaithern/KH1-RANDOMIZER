@@ -47,7 +47,7 @@ end
 function _OnFrame()
     if not canExecute then return end
     if applied then return end
-    if ReadByte(jumpHeights - 0xAC) == 0x0 then return end -- btltbl.bin not loaded yet
+    if not kh1_lua_library.is_btltbl_loaded() then return end
     if seed_vars["mp_costs"] then apply_costs() end
     if seed_vars["spell_effectiveness"] then apply_effectiveness() end
     applied = true

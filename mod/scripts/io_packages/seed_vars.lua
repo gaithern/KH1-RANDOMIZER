@@ -9,8 +9,10 @@ local names = {
     "progression_locations",
     "ap_costs",
     "mp_costs",
-    "keyblade_stats",
+    "weapon_stats",
     "spell_effectiveness",
+    "sora_level_ups",
+    "party_level_ups",
 }
 
 local function load_json_dir(dir_path)

@@ -3,6 +3,8 @@
 local AP_ITEM_BASE        = 2641000
 local SHARED_ABILITY_BASE = 2642000
 local SORA_ABILITY_BASE   = 2643000
+local DONALD_ABILITY_BASE = 2645000
+local GOOFY_ABILITY_BASE  = 2646000
 local AP_ITEM_IDX         = 230
 local AP_ITEM_ID          = 2641230
 
@@ -265,7 +267,7 @@ local items = {
     [242] = { name = "Strength {0x7C}",         icon = "",              sort =  3042, filler = false },  -- vanilla: Blaze Gem
     [243] = { name = "Defense {0x7C}",          icon = "",              sort =  3051, filler = false },  -- vanilla: Frost Shard
     [244] = { name = "Item Slot {0x7C}",        icon = "",              sort =  3052, filler = false },  -- vanilla: Frost Gem
-    [245] = { name = "Accessory Slot {0x7C}",   icon = ICON.KEY_ITEM,   sort =  3061, filler = false },  -- vanilla: Thunder Shard
+    [245] = { name = "Accessory Slot {0x7C}",   icon = "",              sort =  3061, filler = false },  -- vanilla: Thunder Shard
     [246] = { name = "Thunder Gem",             icon = ICON.KEY_ITEM,   sort =  3062, filler = false },
     [247] = { name = "Shiny Crystal",           icon = ICON.KEY_ITEM,   sort =  3073, filler = false },
     [248] = { name = "Bright Shard",            icon = ICON.KEY_ITEM,   sort =  3081, filler = false },
@@ -352,11 +354,39 @@ local sora_abilities = {
     [2643065] = { name = "Combo Master" },
 }
 
+local donald_abilities = {
+    [2645005] = { name = "Treasure Magnet (Donald)" },
+    [2645009] = { name = "Second Wind (Donald)" },
+    [2645023] = { name = "MP Haste (Donald)" },
+    [2645024] = { name = "MP Rage (Donald)" },
+    [2645025] = { name = "Second Chance (Donald)" },
+    [2645026] = { name = "Berserk (Donald)" },
+    [2645027] = { name = "Jackpot (Donald)" },
+    [2645028] = { name = "Lucky Strike (Donald)" },
+    [2645062] = { name = "Leaf Bracer (Donald)" },
+}
+
+local goofy_abilities = {
+    [2646005] = { name = "Treasure Magnet (Goofy)" },
+    [2646009] = { name = "Second Wind (Goofy)" },
+    [2646023] = { name = "MP Haste (Goofy)" },
+    [2646024] = { name = "MP Rage (Goofy)" },
+    [2646025] = { name = "Second Chance (Goofy)" },
+    [2646026] = { name = "Berserk (Goofy)" },
+    [2646027] = { name = "Jackpot (Goofy)" },
+    [2646028] = { name = "Lucky Strike (Goofy)" },
+    [2646029] = { name = "Charge (Goofy)" },
+    [2646030] = { name = "Rocket (Goofy)" },
+    [2646031] = { name = "Tornado (Goofy)" },
+    [2646032] = { name = "MP Gift (Goofy)" },
+    [2646063] = { name = "Evolution (Goofy)" },
+}
+
 -- ---------------------------------------------------------------------------
 -- Helpers
 -- ---------------------------------------------------------------------------
 
--- "item", "shared_ability", "sora_ability", or nil for ids outside KH1's bands
+-- "item", "shared_ability", "sora_ability", "donald_ability", "goofy_ability", or nil for ids outside KH1's bands
 -- (nil / other games' items).
 local function kind_of(ap_id)
     ap_id = tonumber(ap_id)
@@ -364,6 +394,8 @@ local function kind_of(ap_id)
     if ap_id >= AP_ITEM_BASE and ap_id < SHARED_ABILITY_BASE then return "item" end
     if ap_id >= SHARED_ABILITY_BASE and ap_id < SORA_ABILITY_BASE then return "shared_ability" end
     if ap_id >= SORA_ABILITY_BASE and ap_id < SORA_ABILITY_BASE + 1000 then return "sora_ability" end
+    if ap_id >= DONALD_ABILITY_BASE and ap_id < DONALD_ABILITY_BASE + 1000 then return "donald_ability" end
+    if ap_id >= GOOFY_ABILITY_BASE and ap_id < GOOFY_ABILITY_BASE + 1000 then return "goofy_ability" end
     return nil
 end
 
@@ -374,6 +406,8 @@ local function value_of(ap_id)
     if kind == "item" then return tonumber(ap_id) - AP_ITEM_BASE end
     if kind == "shared_ability" then return tonumber(ap_id) - SHARED_ABILITY_BASE end
     if kind == "sora_ability" then return tonumber(ap_id) - SORA_ABILITY_BASE end
+    if kind == "donald_ability" then return tonumber(ap_id) - DONALD_ABILITY_BASE end
+    if kind == "goofy_ability" then return tonumber(ap_id) - GOOFY_ABILITY_BASE end
     return nil
 end
 
@@ -385,12 +419,14 @@ local function idx_of(ap_id)
     return idx
 end
 
--- The record for an id, from items / shared_abilities / sora_abilities, or nil.
+-- The record for an id, from items / shared_abilities / sora_abilities / donald_abilities / goofy_abilities, or nil.
 local function record_for(ap_id)
     local kind = kind_of(ap_id)
     if kind == "item" then return items[idx_of(ap_id)] end
     if kind == "shared_ability" then return shared_abilities[tonumber(ap_id)] end
     if kind == "sora_ability" then return sora_abilities[tonumber(ap_id)] end
+    if kind == "donald_ability" then return donald_abilities[tonumber(ap_id)] end
+    if kind == "goofy_ability" then return goofy_abilities[tonumber(ap_id)] end
     return nil
 end
 
@@ -414,6 +450,7 @@ local function icon_for(ap_id)
     local kind = kind_of(ap_id)
     if kind == "item" then return icon_for_idx(ap_id - AP_ITEM_BASE) end
     if kind == "shared_ability" or kind == "sora_ability" then return ICON.ABILITY end
+    if kind == "donald_ability" or kind == "goofy_ability" then return ICON.ABILITY end
     return ICON.AP
 end
 
@@ -421,6 +458,8 @@ return {
     AP_ITEM_BASE = AP_ITEM_BASE,
     SHARED_ABILITY_BASE = SHARED_ABILITY_BASE,
     SORA_ABILITY_BASE = SORA_ABILITY_BASE,
+    DONALD_ABILITY_BASE = DONALD_ABILITY_BASE,
+    GOOFY_ABILITY_BASE = GOOFY_ABILITY_BASE,
     AP_ITEM_IDX = AP_ITEM_IDX,
     AP_ITEM_ID = AP_ITEM_ID,
     ICON = ICON,
@@ -429,6 +468,8 @@ return {
     ACCESSORY_LAST_AP_ID = ACCESSORY_LAST_AP_ID,
     shared_abilities = shared_abilities,
     sora_abilities = sora_abilities,
+    donald_abilities = donald_abilities,
+    goofy_abilities = goofy_abilities,
     kind_of = kind_of,
     value_of = value_of,
     idx_of = idx_of,
