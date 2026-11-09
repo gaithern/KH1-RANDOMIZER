@@ -103,6 +103,9 @@ kgr 0 {
                     runtime[0xC81] = 2;
                     Delete_event_box(1);
                     Wait_all_enemies_defeated();
+                    Wait_battle_icon_display();
+                    Wait_limit_skill_end();
+                    Wait_summon_end();
                 }
                 runtime.dword[0x904] = Check_battle_or_normal_mode();
                 if ((runtime.dword[0x900] == 2) & (runtime[0xC81] == 2)) {
