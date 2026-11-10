@@ -44,11 +44,7 @@ local NOT_OPEN_MESSAGE_WIDTH = 10
 local NOT_OPEN_MESSAGE_HEIGHT = 0
 local NOT_OPEN_MESSAGE_TAIL = 0
 
-local ROOM_REQUIREMENTS = {
-    { world = 3, area = 0x5, progress = TRAVERSE_TOWN_PROGRESS, minimum = 0x23 },
-    { world = 3, area = 0x6, progress = TRAVERSE_TOWN_PROGRESS, minimum = 0x23 },
-    { world = 3, area = 0x13, progress = TRAVERSE_TOWN_PROGRESS, minimum = 0x31 },
-}
+local room_requirements = {}
 
 local STORY_TRANSITIONS = {
     { world = 3, area = 0x0, entrance = 0x21, progress = TRAVERSE_TOWN_PROGRESS, minimum = 0x1A, maximum = 0x1A },
@@ -87,6 +83,16 @@ local restore_when_lua_closes = nil
 
 local function door_key(world_number, area_number, entrance)
     return world_number * 0x10000 + area_number * 0x100 + entrance
+end
+
+local function build_room_requirements()
+    local traverse_town_progress = cutsceneFlags + TRAVERSE_TOWN_PROGRESS
+    room_requirements = {
+        { world = 3, area = 0x5, address = traverse_town_progress, minimum = 0x23 },
+        { world = 3, area = 0x6, address = traverse_town_progress, minimum = 0x23 },
+        { world = 3, area = 0x13, address = traverse_town_progress, minimum = 0x31 },
+        { world = 3, area = 0x14, address = MERLIN_INTRO_SEEN, minimum = 1 },
+    }
 end
 
 local function build_early_lookups()
@@ -250,9 +256,9 @@ local function send_to(destination)
 end
 
 local function is_room_open(world_number, area_number)
-    for _, requirement in ipairs(ROOM_REQUIREMENTS) do
+    for _, requirement in ipairs(room_requirements) do
         if requirement.world == world_number and requirement.area == area_number then
-            if ReadByte(cutsceneFlags + requirement.progress) < requirement.minimum then
+            if ReadByte(requirement.address) < requirement.minimum then
                 return false
             end
         end
@@ -343,6 +349,7 @@ local function install_hooks()
     ]]
     kh1_lua_library = require("kh1_lua_library")
     build_early_lookups()
+    build_room_requirements()
     hook_syscall(SYSCALL_CHANGE_AREA, shuffled_change_area)
     hook_syscall(SYSCALL_CHANGE_AREA_WHITEOUT, shuffled_change_area)
     hook_syscall(SYSCALL_LOAD_NEXT_MAP_TEXTURE, skipped_texture_preload)
