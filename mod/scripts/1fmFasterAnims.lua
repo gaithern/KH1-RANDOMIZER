@@ -28,7 +28,7 @@ function _OnFrame()
 			)
 			and not (
 				ReadInt(minitimer) > 0
-				and ReadInt(minigameTimerState) ~= 2
+				and ReadInt(minigameTimerState) == 0
 			)
 			and not (
 				ReadByte(world) == 1 and ReadByte(room) == 2
