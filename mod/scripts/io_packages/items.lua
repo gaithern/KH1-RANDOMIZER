@@ -357,6 +357,7 @@ local sora_abilities = {
 local donald_abilities = {
     [2645005] = { name = "Treasure Magnet (Donald)" },
     [2645009] = { name = "Second Wind (Donald)" },
+    [2645016] = { name = "Cheer (Donald)" },
     [2645023] = { name = "MP Haste (Donald)" },
     [2645024] = { name = "MP Rage (Donald)" },
     [2645025] = { name = "Second Chance (Donald)" },
@@ -369,6 +370,7 @@ local donald_abilities = {
 local goofy_abilities = {
     [2646005] = { name = "Treasure Magnet (Goofy)" },
     [2646009] = { name = "Second Wind (Goofy)" },
+    [2646016] = { name = "Cheer (Goofy)" },
     [2646023] = { name = "MP Haste (Goofy)" },
     [2646024] = { name = "MP Rage (Goofy)" },
     [2646025] = { name = "Second Chance (Goofy)" },
