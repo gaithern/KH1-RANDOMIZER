@@ -4,9 +4,42 @@ LUAGUI_DESC = "Kingdom Hearts 1FM Randomizer Handle Interacting in Battle and Ke
 
 local seed_vars = require("seed_vars")
 local kh1_lua_library = require("kh1_lua_library")
+local cffi = require("cffi")
+local call_redirect = require("helpers.call_redirect")
 local ok = false
 
 local interactset = false
+
+cffi.cdef[[
+    typedef void (*RandoOfferLimitCommand)(void);
+]]
+
+local original_offer_limit = nil
+local limit_offer_redirect_tried = false
+
+local function offer_limit_unless_held_by_object()
+    if kh1_lua_library.is_sora_held_by_object_event() then
+        return
+    end
+    original_offer_limit()
+end
+
+local function redirect_limit_offer()
+    limit_offer_redirect_tried = true
+    if fnc_cmdmenu_offer_limit == nil or fnc_cmdmenu_offer_limit_call == nil then
+        ConsolePrint("KH1-LUA-LIBRARY is out of date, limits can still interrupt opening chests in battle")
+        return
+    end
+    if kh1_lua_library.is_sora_held_by_object_event == nil then
+        ConsolePrint("KH1-LUA-LIBRARY is out of date, limits can still interrupt opening chests in battle")
+        return
+    end
+    original_offer_limit = cffi.cast("RandoOfferLimitCommand", BASE_ADDR + fnc_cmdmenu_offer_limit)
+    local redirected = call_redirect.redirect_call(fnc_cmdmenu_offer_limit_call, fnc_cmdmenu_offer_limit, "RandoOfferLimitCommand", offer_limit_unless_held_by_object)
+    if not redirected then
+        ConsolePrint("Could not redirect the limit command offer, limits can still interrupt opening chests in battle")
+    end
+end
 
 local open_cmds = {}
 open_cmds[56] = {0x02, 0x00, 0xFF, 0x00, 0x26, 0x01, 0x37, 0x00, 0x00, 0xFF, 0x02, 0x02, 0x0F, 0x27, 0x0F, 0x27}
@@ -72,6 +105,9 @@ function _OnFrame()
                 WriteByte(trinity_interaction, 0x71)
                 --WriteArray(battleModeCheck, {0xBA, 0x00, 0x00, 0x00, 0x00, 0x90})
                 interactset = true
+            end
+            if not limit_offer_redirect_tried then
+                redirect_limit_offer()
             end
             if ReadLong(commandMenuPointer) ~= 0 then
                 if get_dg_count() >= 2 then
