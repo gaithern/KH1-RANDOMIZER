@@ -5,6 +5,7 @@ globals {
     DIALOG_STATE = save_data2[3];
     DI_CLOTH_COUNT = save_data[0x40D];
     DI_COCONUT_DROP_BLOCKED = bit[0x6E07];
+    DI_DEFEAT_TRIO_DAY_2_REWARD = save_data[0x43];
     DI_DRINKING_WATER_TAKEN = save_data[0x407];
     DI_GATHER_COCONUT_REWARD = save_data[0x44];
     DI_LOG_COUNT = save_data[0x40C];
@@ -611,6 +612,7 @@ kgr 0 {
                 DIALOG_STATE = 2;
                 Close_window(7);
             }
+            if (!(DI_DEFEAT_TRIO_DAY_2_REWARD == 0)) goto L1;
             GIFT_TABLE_ITEM.dword = GIFT_DI_SEASHORE_DEFEAT_TRIO_DAY_2;
             Get_item_from_gift_table(GIFT_TABLE_ITEM.dword);
             Set_window_size(7, 0, 1);
@@ -626,6 +628,7 @@ kgr 0 {
             Play_SE2(0x1F, 0);
             Wait_message_end_ID(7);
             Close_window(7);
+            DI_DEFEAT_TRIO_DAY_2_REWARD = 1;
             if (!(DIALOG_STATE == 2)) goto L1;
             DIALOG_STATE = 3;
         L1:
