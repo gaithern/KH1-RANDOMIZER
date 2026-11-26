@@ -88,6 +88,7 @@ end
 local function build_room_requirements()
     local traverse_town_progress = cutsceneFlags + TRAVERSE_TOWN_PROGRESS
     room_requirements = {
+        { world = 3, area = 0x1, address = traverse_town_progress, minimum = 4 },
         { world = 3, area = 0x5, address = traverse_town_progress, minimum = 0x23 },
         { world = 3, area = 0x6, address = traverse_town_progress, minimum = 0x23 },
         { world = 3, area = 0x13, address = traverse_town_progress, minimum = 0x31 },

@@ -38,12 +38,12 @@ function FlagFixes()
         WriteByte(party1+1, 0xFF)
     end
 
-    -- Reset TT to avoid softlocks
-    if ReadByte(cutsceneFlags + 4) < 0x14 and ReadByte(world) ~= 3 and ReadByte(world) ~= 0xFF then
-        debugPrint("Section 3")
-        WriteByte(cutsceneFlags + 4, 0)
-        WriteByte(worldFlagBase - 0xC8, 2)
-    end
+    ---- Reset TT to avoid softlocks
+    --if ReadByte(cutsceneFlags + 4) < 0x14 and ReadByte(world) ~= 3 and ReadByte(world) ~= 0xFF then
+    --    debugPrint("Section 3")
+    --    WriteByte(cutsceneFlags + 4, 0)
+    --    WriteByte(worldFlagBase - 0xC8, 2)
+    --end
 
     prevTTFlag = ReadByte(cutsceneFlags + 4)
 
