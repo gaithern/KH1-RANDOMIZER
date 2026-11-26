@@ -31,6 +31,7 @@ local WORLD_TRAVERSE_TOWN = 3
 local WORLD_DEEP_JUNGLE = 5
 local WORLD_HOLLOW_BASTION = 0xF
 local TRAVERSE_TOWN_PROGRESS = 4
+local WONDERLAND_PROGRESS = 7
 local DEEP_JUNGLE_PROGRESS = 5
 local HOLLOW_BASTION_PROGRESS = 0xE
 
@@ -87,12 +88,14 @@ end
 
 local function build_room_requirements()
     local traverse_town_progress = cutsceneFlags + TRAVERSE_TOWN_PROGRESS
+    local wonderland_progress = cutsceneFlags + WONDERLAND_PROGRESS
     room_requirements = {
         { world = 3, area = 0x1, address = traverse_town_progress, minimum = 4 },
         { world = 3, area = 0x5, address = traverse_town_progress, minimum = 0x23 },
         { world = 3, area = 0x6, address = traverse_town_progress, minimum = 0x23 },
         { world = 3, area = 0x13, address = traverse_town_progress, minimum = 0x31 },
         { world = 3, area = 0x14, address = MERLIN_INTRO_SEEN, minimum = 1 },
+        { world = 4, area = 0x1, address = wonderland_progress, minimum = 7 },
     }
 end
 
