@@ -96,6 +96,7 @@ local function build_room_requirements()
         { world = 3, area = 0x13, address = traverse_town_progress, minimum = 0x31 },
         { world = 3, area = 0x14, address = MERLIN_INTRO_SEEN, minimum = 1 },
         { world = 4, area = 0x1, address = wonderland_progress, minimum = 7 },
+        { world = 4, area = 0x3, address = wonderland_progress, minimum = 7 },
     }
 end
 
